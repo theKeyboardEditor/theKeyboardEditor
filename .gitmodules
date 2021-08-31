@@ -1,0 +1,6 @@
+[submodule "vendor/Kha"]
+	path = vendor/Kha
+	url = https://github.com/Kode/Kha
+[submodule "vendor/zui"]
+	path = vendor/zui
+	url = https://github.com/armory3d/zui
