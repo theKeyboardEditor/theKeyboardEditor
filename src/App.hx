@@ -4,10 +4,8 @@ import kha.graphics2.Graphics;
 import kha.Assets;
 import kha.Color;
 import kha.Framebuffer;
-import kha.Scheduler;
 import kha.System;
 import zui.Zui;
-import zui.Id;
 
 class App {
 	var ui:Zui;
@@ -18,7 +16,7 @@ class App {
 	}
 
 	function loadingFinished() {
-		ui = new Zui({font: Assets.fonts.SourceSansProSemibold});
+		ui = new Zui({font: Assets.fonts.FiraSansSemiBold, theme: Themes.nord});
 		kha.System.notifyOnFrames(render);
 	}
 
@@ -30,11 +28,7 @@ class App {
 
 		// User interface
 		ui.begin(g);
-		if (ui.window(Id.handle(), 0, 0, System.windowWidth(), System.windowHeight())) {
-			if (ui.button("Hello")) {
-				trace("World");
-			}
-		}
+		new MenuElement(ui);
 		ui.end();
 	}
 }

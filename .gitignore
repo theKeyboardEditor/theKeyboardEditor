@@ -1,4 +1,4 @@
-.DS_STORE/
+.DS_Store
 build/
 # vim
 [._]*.s[a-v][a-z]
