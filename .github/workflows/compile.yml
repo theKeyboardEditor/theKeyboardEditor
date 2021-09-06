@@ -38,7 +38,7 @@ jobs:
           submodules: 'recursive'
 
       - name: Compile for Windows
-        run: node Kha/make -g direct3d12 -v vs2017
+        run: node vendor/Kha/make -g direct3d12 -v vs2017
   macos-build: 
     runs-on: macos-latest
     steps:
