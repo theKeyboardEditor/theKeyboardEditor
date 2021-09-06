@@ -29,6 +29,8 @@ class App {
 		// User interface
 		ui.begin(g);
 		new MenuElement(ui);
+		new ToolboxElement(ui);
+		new Pallete(ui);
 		ui.end();
 	}
 }

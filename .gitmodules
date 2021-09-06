@@ -3,4 +3,4 @@
 	url = https://github.com/Kode/Kha
 [submodule "vendor/zui"]
 	path = vendor/zui
-	url = https://github.com/armory3d/zui
+	url = https://github.com/theKeyboardEditor/zui

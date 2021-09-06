@@ -13,7 +13,7 @@ class MenuElement {
 
 	public function new(ui: Zui) {
 		if (ui.window(Id.handle(), 0, 0, System.windowWidth(), System.windowHeight())) {
-			ui.row([1/13, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20]);
+			ui.row([1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10]);
 			ui.text("theKeyboardEditor", Center, 0xff434c5e);
 
 			for (category in _categories) {
@@ -23,7 +23,7 @@ class MenuElement {
 							if (!_fileVisible) {
 								hideTabs();
 								_fileVisible = true;
-								_clickX = Std.int(ui.inputX);
+								_clickX = Std.int(1*System.windowWidth()/10);
 							} else {
 								hideTabs();
 							}
@@ -31,7 +31,7 @@ class MenuElement {
 							if (!_editVisible) {
 								hideTabs();
 								_editVisible = true;
-								_clickX = Std.int(ui.inputX);
+								_clickX = Std.int(2*System.windowWidth()/10);
 							} else {
 								hideTabs();
 							}
