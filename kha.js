@@ -212,16 +212,16 @@ MenuElement.hideTabs = function() {
 	MenuElement._editVisible = false;
 };
 MenuElement.test1 = function() {
-	haxe_Log.trace("test 1",{ fileName : "MenuElement.hx", lineNumber : 69, className : "MenuElement", methodName : "test1"});
+	haxe_Log.trace("test 1",{ fileName : "MenuElement.hx", lineNumber : 74, className : "MenuElement", methodName : "test1"});
 };
 MenuElement.test2 = function() {
-	haxe_Log.trace("test 2",{ fileName : "MenuElement.hx", lineNumber : 73, className : "MenuElement", methodName : "test2"});
+	haxe_Log.trace("test 2",{ fileName : "MenuElement.hx", lineNumber : 78, className : "MenuElement", methodName : "test2"});
 };
 MenuElement.test3 = function() {
-	haxe_Log.trace("test 3",{ fileName : "MenuElement.hx", lineNumber : 77, className : "MenuElement", methodName : "test3"});
+	haxe_Log.trace("test 3",{ fileName : "MenuElement.hx", lineNumber : 82, className : "MenuElement", methodName : "test3"});
 };
 MenuElement.test4 = function() {
-	haxe_Log.trace("test 4",{ fileName : "MenuElement.hx", lineNumber : 81, className : "MenuElement", methodName : "test4"});
+	haxe_Log.trace("test 4",{ fileName : "MenuElement.hx", lineNumber : 86, className : "MenuElement", methodName : "test4"});
 };
 MenuElement.prototype = {
 	__class__: MenuElement
@@ -33709,7 +33709,7 @@ js_Boot.__toStr = ({ }).toString;
 if(ArrayBuffer.prototype.slice == null) {
 	ArrayBuffer.prototype.slice = js_lib__$ArrayBuffer_ArrayBufferCompat.sliceImpl;
 }
-MenuElement._categories = ["File","Edit","Presets","Tools","Colors","Keycaps","Support"];
+MenuElement._categories = ["File","Edit","Presets","Toolbars","Palettes","Keycaps","Support"];
 MenuElement._fileVisible = false;
 MenuElement._editVisible = false;
 MenuElement._clickX = 0;
