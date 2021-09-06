@@ -13,7 +13,6 @@ class MenuTabElement {
 		handle = Id.handle();
 		if (y == null) y = 28;
 		if (ui.window(handle, x, y, Std.int(System.windowWidth()/10), System.windowHeight()-y)) {
-			// ui.text(title, Center, 0xff434c5e);
 			for (option in options.keys()) {
 				if (ui.button(option, Left)) {
 					options[option]();
