@@ -6,7 +6,7 @@ import kha.System;
 import kha.graphics2.Graphics;
 
 class MenuElement {
-	static var _categories = ["File", "Edit", "Presets", "Tools", "Colors", "Keycaps", "Support"];
+	static var _categories = ["File", "Edit", "Presets", "Toolbars", "Palettes", "Keycaps", "Support"];
 	static var _fileVisible = false;
 	static var _editVisible = false;
 	static var _clickX = 0;
@@ -42,13 +42,13 @@ class MenuElement {
 			}
 		}
 
-		if (_fileVisible) {
+		if (_fileVisible) { // file operations: Save, Load, Dowload, Upload, Import KLE, Export KLE, Export BOM.CSV
 			var fileTab = new MenuTabElement(_clickX, 28, "File", [
 					"Test 1" => test1,
 					"Test 2" => test2
 			], ui);
 			fileTab.handle.redraws = 60;
-		} else if (_editVisible) {
+		} else if (_editVisible) { // edit operations: Undo, Redo, History (list), Copy, Cut, Paste, Delete, Duplicate, Select all, Invert selection, Deselect
 			var editTab = new MenuTabElement(_clickX, 28, "Edit", [
 					"Test 1" => test1,
 					"Test 2" => test2,
@@ -58,6 +58,11 @@ class MenuElement {
 			editTab.handle.redraws = 60;
 		}
 	}
+//TODO:
+// Presets: <empty>, numpad, 104 ANSI, 105 ISO, 60%, Planck, 40%, possibly others
+// Toolbars: Key Shapes, Legend Ops, Color Ops, Advanced
+// Palletes: we better find some at least part way serious palettes
+// Keycaps: (global Keycap set/theme):SA, DSA, DCS, Cherry, Chicklet, Flat, Grid (can be set per key too, should affect only un-defined keys)
 
 	public static function hideTabs() {
 		_fileVisible = false;
