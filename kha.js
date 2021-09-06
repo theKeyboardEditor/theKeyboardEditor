@@ -263,7 +263,7 @@ var Pallete = function(ui) {
 		while(_g < _g1.length) {
 			var color = _g1[_g];
 			++_g;
-			ui.buttonRect(23,23,color);
+			ui.buttonRect(23,23,color,color,color);
 		}
 	}
 };
