@@ -43,13 +43,13 @@ class MenuElement {
 		}
 
 		if (_fileVisible) {
-			var fileTab = new MenuTabElement(_clickX, null, "File", [
+			var fileTab = new MenuTabElement(_clickX, 28, "File", [
 					"Test 1" => test1,
 					"Test 2" => test2
 			], ui);
 			fileTab.handle.redraws = 60;
 		} else if (_editVisible) {
-			var editTab = new MenuTabElement(_clickX, null, "Edit", [
+			var editTab = new MenuTabElement(_clickX, 28, "Edit", [
 					"Test 1" => test1,
 					"Test 2" => test2,
 					"Test 3" => test3,

@@ -11,7 +11,7 @@ class ToolboxElement {
 	public function new(ui: Zui) {
 		handle = Id.handle();
 		if (ui.window(handle, 0, 28, 120, System.windowHeight()-28, true)) {
-			ui.text("Shapes", Center, 0xff434c5e);
+			ui.text("Key Shapes", Center, 0xff434c5e);
 			ui.row([1/2, 1/2]);
 			ui.button("1u R1");
 			ui.button("1.25 R2");
