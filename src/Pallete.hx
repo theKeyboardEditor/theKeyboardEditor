@@ -14,7 +14,7 @@ class Pallete {
 			ui.text("Pallete name: Untitled", Center, 0xff434c5e);
 
 			for (color in _colors) {
-				ui.buttonRect(23, 23, color);
+				ui.buttonRect(23, 23, color, color, color);
 			}
 		}
 	}
