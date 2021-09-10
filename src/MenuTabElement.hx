@@ -6,6 +6,10 @@ import zui.Id;
 import kha.System;
 import kha.graphics2.Graphics;
 
+/*
+ * This is the class for each tab on the menu
+ * Note: This class is not related to the valve for a certain alcholic beverage, nor related to the discontinued soda. Do not drink!
+ */
 class MenuTabElement {
 	public var handle:Dynamic;
 

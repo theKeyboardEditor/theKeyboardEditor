@@ -5,13 +5,17 @@ import zui.Id;
 import kha.System;
 import kha.graphics2.Graphics;
 
+/*
+ * A class used to define the different toolbox windows
+ * "Lefty Loosey, Righty Tighty"
+ */
 class ToolboxElement {
 	public var handle:Dynamic;
 
-	public function new(ui: Zui) {
+	public function new(ui: Zui, loc: Localization) {
 		handle = Id.handle();
 		if (ui.window(handle, 0, 28, 120, System.windowHeight()-28, true)) {
-			ui.text("Key Shapes", Center, 0xff434c5e);
+			ui.text(loc.tr("Key Shapes"), Center, 0xff434c5e);
 			ui.row([1/2, 1/2]);
 			ui.button("1u R1");
 			ui.button("1.25 R2");

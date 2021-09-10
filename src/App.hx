@@ -7,15 +7,20 @@ import kha.Framebuffer;
 import kha.System;
 import zui.Zui;
 
+/*
+ * The main class for theKeyboardEditor, that is it.
+ */
 class App {
 	var ui:Zui;
 	var g:Graphics;
+	var loc:Localization;
 
 	public function new() {
 		Assets.loadEverything(loadingFinished);
 	}
 
 	function loadingFinished() {
+		loc = new Localization();
 		ui = new Zui({font: Assets.fonts.FiraSansSemiBold, theme: Themes.nord});
 		kha.System.notifyOnFrames(render);
 	}
@@ -28,9 +33,9 @@ class App {
 
 		// User interface
 		ui.begin(g);
-		new MenuElement(ui);
-		new ToolboxElement(ui);
-		new Pallete(ui);
+		new MenuElement(ui, loc);
+		new ToolboxElement(ui, loc);
+		new Pallete(ui, loc);
 		ui.end();
 	}
 }
