@@ -22,11 +22,17 @@ jobs:
       - name: Compile for Linux
         run: node vendor/Kha/make --compile -g opengl
 
-      - name: Deploy web versio
+      - name: Deploy web version
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: build/html5/ # The folder the action should deploy.
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux
+          path: build/
+
   windows-build:
     runs-on: windows-latest
     steps:
@@ -38,6 +44,12 @@ jobs:
 
       - name: Compile for Windows
         run: node vendor/Kha/make -g direct3d12 -v vs2017
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows
+          path: build/
+
   macos-build: 
     runs-on: macos-latest
     steps:
@@ -49,3 +61,8 @@ jobs:
 
       - name: Compile for macOS
         run: node vendor/Kha/make --compile
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macos
+          path: build/osx-build/build/Release/theKeyboardEditor.app
