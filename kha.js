@@ -16,7 +16,9 @@ App.__name__ = true;
 App.prototype = {
 	ui: null
 	,g: null
+	,loc: null
 	,loadingFinished: function() {
+		this.loc = new Localization();
 		this.ui = new zui_Zui({ font : kha_Assets.fonts.FiraSansSemiBold, theme : Themes.nord});
 		kha_System.notifyOnFrames($bind(this,this.render));
 	}
@@ -25,9 +27,9 @@ App.prototype = {
 		this.g.begin(true,kha_Color.fromBytes(67,76,94));
 		this.g.end();
 		this.ui.begin(this.g);
-		new MenuElement(this.ui);
-		new ToolboxElement(this.ui);
-		new Pallete(this.ui);
+		new MenuElement(this.ui,this.loc);
+		new ToolboxElement(this.ui,this.loc);
+		new Pallete(this.ui,this.loc);
 		this.ui.end();
 	}
 	,__class__: App
@@ -123,6 +125,62 @@ Lambda.array = function(it) {
 	}
 	return a;
 };
+var Localization = function() {
+	this.locales = new haxe_ds_StringMap();
+	this.currentLanguage = "English (US)";
+	var _localesJSON = JSON.parse(kha_Assets.blobs.locales_json.toString());
+	var _tempLocaleJSON;
+	var _g = new haxe_ds_StringMap();
+	var _g1 = 0;
+	var _g2 = Reflect.fields(_localesJSON);
+	while(_g1 < _g2.length) {
+		var locale = _g2[_g1];
+		++_g1;
+		_tempLocaleJSON = JSON.parse(kha_Assets.blobs.get(Reflect.field(_localesJSON,locale)).toString());
+		var _g3 = new haxe_ds_StringMap();
+		var _g4 = 0;
+		var _g5 = Reflect.fields(_tempLocaleJSON);
+		while(_g4 < _g5.length) {
+			var key = _g5[_g4];
+			++_g4;
+			_g3.h[key] = Reflect.field(_tempLocaleJSON,key);
+		}
+		_g.h[locale] = _g3;
+	}
+	this.locales = _g;
+};
+$hxClasses["Localization"] = Localization;
+Localization.__name__ = true;
+Localization.prototype = {
+	currentLanguage: null
+	,locales: null
+	,tr: function(v) {
+		if(this.currentLanguage != "English (US)" && this.locales.h[this.currentLanguage].h[v] != null) {
+			return this.locales.h[this.currentLanguage].h[v];
+		} else {
+			return v;
+		}
+	}
+	,toEnglish: function(value) {
+		var englishValue = "";
+		var h = this.locales.h[this.currentLanguage].h;
+		var key_h = h;
+		var key_keys = Object.keys(h);
+		var key_length = key_keys.length;
+		var key_current = 0;
+		while(key_current < key_length) {
+			var key = key_keys[key_current++];
+			if(value == this.locales.h[this.currentLanguage].h[key]) {
+				englishValue = key;
+			}
+		}
+		return englishValue;
+	}
+	,changeLanguage: function(language) {
+		this.currentLanguage = language;
+	}
+	,__class__: Localization
+};
 var Main = function() { };
 $hxClasses["Main"] = Main;
 Main.__name__ = true;
@@ -151,17 +209,19 @@ Main.setFullWindowCanvas = function() {
 	resize();
 };
 Math.__name__ = true;
-var MenuElement = function(ui) {
+var MenuElement = function(ui,loc) {
+	this._categories = [];
+	this._categories = [loc.tr("File"),loc.tr("Edit"),loc.tr("Presets"),loc.tr("Toolbars"),loc.tr("Palettes"),loc.tr("Keycaps"),loc.tr("Support")];
 	if(ui.window(zui_Handle.global.nest(0,null),0,0,kha_System.windowWidth(),kha_System.windowHeight())) {
 		ui.row([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]);
 		ui.text("theKeyboardEditor",1,-12366754);
 		var _g = 0;
-		var _g1 = MenuElement._categories;
+		var _g1 = this._categories;
 		while(_g < _g1.length) {
 			var category = _g1[_g];
 			++_g;
 			if(ui.button(category)) {
-				switch(category) {
+				switch(loc.toEnglish(category)) {
 				case "Edit":
 					if(!MenuElement._editVisible) {
 						MenuElement.hideTabs();
@@ -190,17 +250,23 @@ var MenuElement = function(ui) {
 	if(MenuElement._fileVisible) {
 		var fileTab = MenuElement._clickX;
 		var _g = new haxe_ds_StringMap();
-		_g.h["Test 1"] = MenuElement.test1;
-		_g.h["Test 2"] = MenuElement.test2;
+		var key = loc.tr("Test 1");
+		_g.h[key] = MenuElement.test1;
+		var key = loc.tr("Test 2");
+		_g.h[key] = MenuElement.test2;
 		var fileTab1 = new MenuTabElement(fileTab,28,"File",_g,ui);
 		fileTab1.handle.redraws = 60;
 	} else if(MenuElement._editVisible) {
 		var editTab = MenuElement._clickX;
 		var _g = new haxe_ds_StringMap();
-		_g.h["Test 1"] = MenuElement.test1;
-		_g.h["Test 2"] = MenuElement.test2;
-		_g.h["Test 3"] = MenuElement.test3;
-		_g.h["Test 4"] = MenuElement.test4;
+		var key = loc.tr("Test 1");
+		_g.h[key] = MenuElement.test1;
+		var key = loc.tr("Test 2");
+		_g.h[key] = MenuElement.test2;
+		var key = loc.tr("Test 3");
+		_g.h[key] = MenuElement.test3;
+		var key = loc.tr("Test 4");
+		_g.h[key] = MenuElement.test4;
 		var editTab1 = new MenuTabElement(editTab,28,"Edit",_g,ui);
 		editTab1.handle.redraws = 60;
 	}
@@ -212,19 +278,20 @@ MenuElement.hideTabs = function() {
 	MenuElement._editVisible = false;
 };
 MenuElement.test1 = function() {
-	haxe_Log.trace("test 1",{ fileName : "MenuElement.hx", lineNumber : 74, className : "MenuElement", methodName : "test1"});
+	haxe_Log.trace("test 1",{ fileName : "MenuElement.hx", lineNumber : 84, className : "MenuElement", methodName : "test1"});
 };
 MenuElement.test2 = function() {
-	haxe_Log.trace("test 2",{ fileName : "MenuElement.hx", lineNumber : 78, className : "MenuElement", methodName : "test2"});
+	haxe_Log.trace("test 2",{ fileName : "MenuElement.hx", lineNumber : 88, className : "MenuElement", methodName : "test2"});
 };
 MenuElement.test3 = function() {
-	haxe_Log.trace("test 3",{ fileName : "MenuElement.hx", lineNumber : 82, className : "MenuElement", methodName : "test3"});
+	haxe_Log.trace("test 3",{ fileName : "MenuElement.hx", lineNumber : 92, className : "MenuElement", methodName : "test3"});
 };
 MenuElement.test4 = function() {
-	haxe_Log.trace("test 4",{ fileName : "MenuElement.hx", lineNumber : 86, className : "MenuElement", methodName : "test4"});
+	haxe_Log.trace("test 4",{ fileName : "MenuElement.hx", lineNumber : 96, className : "MenuElement", methodName : "test4"});
 };
 MenuElement.prototype = {
-	__class__: MenuElement
+	_categories: null
+	,__class__: MenuElement
 };
 var MenuTabElement = function(x,y,title,options,ui) {
 	if(y == null) {
@@ -254,10 +321,10 @@ MenuTabElement.prototype = {
 	handle: null
 	,__class__: MenuTabElement
 };
-var Pallete = function(ui) {
+var Pallete = function(ui,loc) {
 	if(ui.window(zui_Handle.global.nest(3,null),0,kha_System.windowHeight() - 28,kha_System.windowWidth(),kha_System.windowHeight())) {
 		ui.row([0.125,0.0208333333333333322,0.0208333333333333322,0.0208333333333333322]);
-		ui.text("Pallete name: Untitled",1,-12366754);
+		ui.text("" + loc.tr("Pallette name") + ": Untitled",1,-12366754);
 		var _g = 0;
 		var _g1 = Pallete._colors;
 		while(_g < _g1.length) {
@@ -281,6 +348,18 @@ Reflect.field = function(o,field) {
 	} catch( _g ) {
 		return null;
 	}
+};
+Reflect.fields = function(o) {
+	var a = [];
+	if(o != null) {
+		var hasOwnProperty = Object.prototype.hasOwnProperty;
+		for( var f in o ) {
+		if(f != "__id__" && f != "hx__closures__" && hasOwnProperty.call(o,f)) {
+			a.push(f);
+		}
+		}
+	}
+	return a;
 };
 Reflect.isFunction = function(f) {
 	if(typeof(f) == "function") {
@@ -333,10 +412,10 @@ StringTools.replace = function(s,sub,by) {
 var Themes = function() { };
 $hxClasses["Themes"] = Themes;
 Themes.__name__ = true;
-var ToolboxElement = function(ui) {
+var ToolboxElement = function(ui,loc) {
 	this.handle = zui_Handle.global.nest(2,null);
 	if(ui.window(this.handle,0,28,120,kha_System.windowHeight() - 28,true)) {
-		ui.text("Key Shapes",1,-12366754);
+		ui.text(loc.tr("Key Shapes"),1,-12366754);
 		ui.row([0.5,0.5]);
 		ui.button("1u R1");
 		ui.button("1.25 R2");
@@ -1921,13 +2000,47 @@ kha__$Assets_SoundList.prototype = {
 	,__class__: kha__$Assets_SoundList
 };
 var kha__$Assets_BlobList = function() {
-	this.names = [];
+	this.names = ["en_US_json","locales_json"];
+	this.locales_jsonSize = 34;
+	this.locales_jsonDescription = { name : "locales_json", file_sizes : [34], files : ["locales.json"], type : "blob"};
+	this.locales_jsonName = "locales_json";
+	this.locales_json = null;
+	this.en_US_jsonSize = 305;
+	this.en_US_jsonDescription = { name : "en_US_json", file_sizes : [305], files : ["en_US.json"], type : "blob"};
+	this.en_US_jsonName = "en_US_json";
+	this.en_US_json = null;
 };
 $hxClasses["kha._Assets.BlobList"] = kha__$Assets_BlobList;
 kha__$Assets_BlobList.__name__ = true;
 kha__$Assets_BlobList.prototype = {
 	get: function(name) {
 		return Reflect.field(this,name);
+	}
+	,en_US_json: null
+	,en_US_jsonName: null
+	,en_US_jsonDescription: null
+	,en_US_jsonSize: null
+	,en_US_jsonLoad: function(done,failure) {
+		kha_Assets.loadBlob("en_US_json",function(blob) {
+			done();
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 144, className : "kha._Assets.BlobList", methodName : "en_US_jsonLoad"});
+	}
+	,en_US_jsonUnload: function() {
+		this.en_US_json.unload();
+		this.en_US_json = null;
+	}
+	,locales_json: null
+	,locales_jsonName: null
+	,locales_jsonDescription: null
+	,locales_jsonSize: null
+	,locales_jsonLoad: function(done,failure) {
+		kha_Assets.loadBlob("locales_json",function(blob) {
+			done();
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 144, className : "kha._Assets.BlobList", methodName : "locales_jsonLoad"});
+	}
+	,locales_jsonUnload: function() {
+		this.locales_json.unload();
+		this.locales_json = null;
 	}
 	,names: null
 	,__class__: kha__$Assets_BlobList
@@ -33709,7 +33822,6 @@ js_Boot.__toStr = ({ }).toString;
 if(ArrayBuffer.prototype.slice == null) {
 	ArrayBuffer.prototype.slice = js_lib__$ArrayBuffer_ArrayBufferCompat.sliceImpl;
 }
-MenuElement._categories = ["File","Edit","Presets","Toolbars","Palettes","Keycaps","Support"];
 MenuElement._fileVisible = false;
 MenuElement._editVisible = false;
 MenuElement._clickX = 0;
