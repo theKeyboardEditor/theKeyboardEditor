@@ -7,5 +7,4 @@ project.addShaders('shaders/**');
 project.addSources('src');
 // Libraries
 project.addLibrary('zui');
-project.addLibrary('firetongue');
 resolve(project);
