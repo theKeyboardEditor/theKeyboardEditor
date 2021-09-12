@@ -30,6 +30,7 @@ App.prototype = {
 		new MenuElement(this.ui,this.loc);
 		new ToolboxElement(this.ui,this.loc);
 		new Pallete(this.ui,this.loc);
+		new Properties(this.ui,this.loc);
 		this.ui.end();
 	}
 	,__class__: App
@@ -338,6 +339,23 @@ $hxClasses["Pallete"] = Pallete;
 Pallete.__name__ = true;
 Pallete.prototype = {
 	__class__: Pallete
+};
+var Properties = function(ui,loc) {
+	if(ui.window(zui_Handle.global.nest(4,null),kha_System.windowWidth() - 200,28,200,kha_System.windowHeight())) {
+		ui.text(loc.tr("Properties"),1,-12366754);
+		if(ui.panel(zui_Handle.global.nest(5,null),"Legends")) {
+			ui.text("Top Legend:");
+			ui.row([0.333333333333333315,0.333333333333333315,0.333333333333333315]);
+			ui.textInput(zui_Handle.global.nest(6,null));
+			ui.textInput(zui_Handle.global.nest(7,null));
+			ui.textInput(zui_Handle.global.nest(8,null));
+		}
+	}
+};
+$hxClasses["Properties"] = Properties;
+Properties.__name__ = true;
+Properties.prototype = {
+	__class__: Properties
 };
 var Reflect = function() { };
 $hxClasses["Reflect"] = Reflect;
@@ -2005,8 +2023,8 @@ var kha__$Assets_BlobList = function() {
 	this.locales_jsonDescription = { name : "locales_json", file_sizes : [34], files : ["locales.json"], type : "blob"};
 	this.locales_jsonName = "locales_json";
 	this.locales_json = null;
-	this.en_US_jsonSize = 305;
-	this.en_US_jsonDescription = { name : "en_US_json", file_sizes : [305], files : ["en_US.json"], type : "blob"};
+	this.en_US_jsonSize = 333;
+	this.en_US_jsonDescription = { name : "en_US_json", file_sizes : [333], files : ["en_US.json"], type : "blob"};
 	this.en_US_jsonName = "en_US_json";
 	this.en_US_json = null;
 };
@@ -33826,7 +33844,7 @@ MenuElement._fileVisible = false;
 MenuElement._editVisible = false;
 MenuElement._clickX = 0;
 Pallete._colors = [-12939,-12886583,-723724];
-Themes.nord = { NAME : "Nord Theme", WINDOW_BG_COL : -11774358, WINDOW_TINT_COL : -1, ACCENT_COL : -1324149, ACCENT_HOVER_COL : -12369085, ACCENT_SELECT_COL : -11513776, BUTTON_COL : -11774358, BUTTON_TEXT_COL : -1513499, BUTTON_HOVER_COL : -12366754, BUTTON_PRESSED_COL : -12893614, TEXT_COL : -1513499, LABEL_COL : -3618616, SEPARATOR_COL : -14671840, HIGHLIGHT_COL : -14656100, CONTEXT_COL : -14540254, PANEL_BG_COL : -12895429, FONT_SIZE : 13, ELEMENT_W : 100, ELEMENT_H : 24, ELEMENT_OFFSET : 4, ARROW_SIZE : 5, BUTTON_H : 22, CHECK_SIZE : 15, CHECK_SELECT_SIZE : 8, SCROLL_W : 9, TEXT_OFFSET : 8, TAB_W : 6, FILL_WINDOW_BG : false, FILL_BUTTON_BG : true, FILL_ACCENT_BG : false, LINK_STYLE : 0, FULL_TABS : false};
+Themes.nord = { NAME : "Nord Theme", WINDOW_BG_COL : -11774358, WINDOW_TINT_COL : -1, ACCENT_COL : -13749184, ACCENT_HOVER_COL : -12893614, ACCENT_SELECT_COL : -1324149, BUTTON_COL : -11774358, BUTTON_TEXT_COL : -1513499, BUTTON_HOVER_COL : -12366754, BUTTON_PRESSED_COL : -12893614, TEXT_COL : -1513499, LABEL_COL : -3618616, SEPARATOR_COL : -14671840, HIGHLIGHT_COL : -14656100, CONTEXT_COL : -14540254, PANEL_BG_COL : -12895429, FONT_SIZE : 13, ELEMENT_W : 100, ELEMENT_H : 24, ELEMENT_OFFSET : 4, ARROW_SIZE : 5, BUTTON_H : 22, CHECK_SIZE : 15, CHECK_SELECT_SIZE : 8, SCROLL_W : 9, TEXT_OFFSET : 8, TAB_W : 6, FILL_WINDOW_BG : false, FILL_BUTTON_BG : true, FILL_ACCENT_BG : false, LINK_STYLE : 0, FULL_TABS : false};
 haxe_Unserializer.DEFAULT_RESOLVER = new haxe__$Unserializer_DefaultResolver();
 haxe_Unserializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
 haxe_crypto_Base64.CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
