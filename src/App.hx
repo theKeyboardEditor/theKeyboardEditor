@@ -36,6 +36,7 @@ class App {
 		new MenuElement(ui, loc);
 		new ToolboxElement(ui, loc);
 		new Pallete(ui, loc);
+		new Properties(ui, loc);	
 		ui.end();
 	}
 }
