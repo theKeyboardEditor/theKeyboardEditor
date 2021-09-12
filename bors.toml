@@ -1,2 +1,2 @@
-status = [linux-web-build, windows-build, macos-build]
+status = ["linux-web-build", "windows-build", "macos-build"]
 block_labels = ["do-not-merge", "wip"]
