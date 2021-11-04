@@ -6,6 +6,9 @@ on:
   pull_request:
     branches:
       - master
+
+permissions: read-all|write-all
+
 jobs:
   linux-web-build:
     runs-on: ubuntu-latest
