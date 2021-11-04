@@ -1346,7 +1346,7 @@ haxe_ds_IntMap.prototype = {
 	}
 	,keys: function() {
 		var a = [];
-		for( var key in this.h ) if(this.h.hasOwnProperty(key)) a.push(key | 0);
+		for( var key in this.h ) if(this.h.hasOwnProperty(key)) a.push(+key);
 		return new haxe_iterators_ArrayIterator(a);
 	}
 	,iterator: function() {
