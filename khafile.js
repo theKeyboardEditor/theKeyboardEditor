@@ -11,6 +11,7 @@ project.addSources('src');
 
 // Libraries
 project.addLibrary('zui');
+project.addLibrary('cornerContour');
 await project.addProject('vendor/keyson');
 
 resolve(project);

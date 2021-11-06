@@ -7,3 +7,6 @@
 [submodule "vendor/keyson"]
 	path = vendor/keyson
 	url = https://github.com/theKeyboardEditor/keyson
+[submodule "vendor/cornerContour"]
+	path = vendor/cornerContour
+	url = https://github.com/nanjizal/cornerContour

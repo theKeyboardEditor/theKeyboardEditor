@@ -1,6 +1,6 @@
 package;
 
-import kha.graphics2.Graphics;
+import kha.graphics4.Graphics;
 import kha.Assets;
 import kha.Color;
 import kha.Framebuffer;
@@ -26,9 +26,11 @@ class App {
 	}
 
 	public function render(frames: Array<Framebuffer>): Void {
-		// Graphics2
-		g = frames[0].g2;
-		g.begin(true, Color.fromBytes(67, 76, 94));
+		// Graphics4
+		g = frames[0].g4;
+		g.begin();
+		g.clear(Color.fromBytes(67, 76, 94));
+		new Viewport(g);
 		g.end();
 
 		// User interface
