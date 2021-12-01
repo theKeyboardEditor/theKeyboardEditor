@@ -1996,7 +1996,7 @@ kha__$Assets_ImageList.prototype = {
 	,IconLoad: function(done,failure) {
 		kha_Assets.loadImage("Icon",function(image) {
 			done();
-		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 136, className : "kha._Assets.ImageList", methodName : "IconLoad"});
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 143, className : "kha._Assets.ImageList", methodName : "IconLoad"});
 	}
 	,IconUnload: function() {
 		this.Icon.unload();
@@ -2041,7 +2041,7 @@ kha__$Assets_BlobList.prototype = {
 	,en_US_jsonLoad: function(done,failure) {
 		kha_Assets.loadBlob("en_US_json",function(blob) {
 			done();
-		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 144, className : "kha._Assets.BlobList", methodName : "en_US_jsonLoad"});
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 151, className : "kha._Assets.BlobList", methodName : "en_US_jsonLoad"});
 	}
 	,en_US_jsonUnload: function() {
 		this.en_US_json.unload();
@@ -2054,7 +2054,7 @@ kha__$Assets_BlobList.prototype = {
 	,locales_jsonLoad: function(done,failure) {
 		kha_Assets.loadBlob("locales_json",function(blob) {
 			done();
-		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 144, className : "kha._Assets.BlobList", methodName : "locales_jsonLoad"});
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 151, className : "kha._Assets.BlobList", methodName : "locales_jsonLoad"});
 	}
 	,locales_jsonUnload: function() {
 		this.locales_json.unload();
@@ -2083,7 +2083,7 @@ kha__$Assets_FontList.prototype = {
 	,FiraSansSemiBoldLoad: function(done,failure) {
 		kha_Assets.loadFont("FiraSansSemiBold",function(font) {
 			done();
-		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 148, className : "kha._Assets.FontList", methodName : "FiraSansSemiBoldLoad"});
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 155, className : "kha._Assets.FontList", methodName : "FiraSansSemiBoldLoad"});
 	}
 	,FiraSansSemiBoldUnload: function() {
 		this.FiraSansSemiBold.unload();
@@ -2220,6 +2220,10 @@ kha_Assets.loadEverything = function(callback,filter,uncompressSoundsFilter,fail
 };
 kha_Assets.loadImage = function(name,done,failed,pos) {
 	var description = Reflect.field(kha_Assets.images,name + "Description");
+	if(description == null) {
+		(kha_Assets.reporter(failed,pos))({ url : name, error : "Name not found"});
+		return;
+	}
 	kha_LoaderImpl.loadImageFromDescription(description,function(image) {
 		kha_Assets.images[name] = image;
 		done(image);
@@ -2234,6 +2238,10 @@ kha_Assets.get_imageFormats = function() {
 };
 kha_Assets.loadBlob = function(name,done,failed,pos) {
 	var description = Reflect.field(kha_Assets.blobs,name + "Description");
+	if(description == null) {
+		(kha_Assets.reporter(failed,pos))({ url : name, error : "Name not found"});
+		return;
+	}
 	kha_LoaderImpl.loadBlobFromDescription(description,function(blob) {
 		kha_Assets.blobs[name] = blob;
 		done(blob);
@@ -2245,6 +2253,10 @@ kha_Assets.loadBlobFromPath = function(path,done,failed,pos) {
 };
 kha_Assets.loadSound = function(name,done,failed,pos) {
 	var description = Reflect.field(kha_Assets.sounds,name + "Description");
+	if(description == null) {
+		(kha_Assets.reporter(failed,pos))({ url : name, error : "Name not found"});
+		return;
+	}
 	kha_LoaderImpl.loadSoundFromDescription(description,function(sound) {
 		kha_Assets.sounds[name] = sound;
 		done(sound);
@@ -2259,6 +2271,10 @@ kha_Assets.get_soundFormats = function() {
 };
 kha_Assets.loadFont = function(name,done,failed,pos) {
 	var description = Reflect.field(kha_Assets.fonts,name + "Description");
+	if(description == null) {
+		(kha_Assets.reporter(failed,pos))({ url : name, error : "Name not found"});
+		return;
+	}
 	kha_LoaderImpl.loadFontFromDescription(description,function(font) {
 		kha_Assets.fonts[name] = font;
 		done(font);
@@ -2273,6 +2289,10 @@ kha_Assets.get_fontFormats = function() {
 };
 kha_Assets.loadVideo = function(name,done,failed,pos) {
 	var description = Reflect.field(kha_Assets.videos,name + "Description");
+	if(description == null) {
+		(kha_Assets.reporter(failed,pos))({ url : name, error : "Name not found"});
+		return;
+	}
 	kha_LoaderImpl.loadVideoFromDescription(description,function(video) {
 		kha_Assets.videos[name] = video;
 		done(video);
@@ -2424,14 +2444,15 @@ kha_Image.fromEncodedBytes = function(bytes,fileExtention,doneCallback,errorCall
 	imageElement.src = dataUrl;
 };
 kha_Image.fromVideo = function(video) {
+	var jsvideo = video;
 	if(kha_SystemImpl.gl == null) {
-		var img = new kha_CanvasImage(video.element.videoWidth,video.element.videoHeight,0,false);
-		img.video = video.element;
+		var img = new kha_CanvasImage(jsvideo.element.videoWidth,jsvideo.element.videoHeight,0,false);
+		img.video = jsvideo.element;
 		img.createTexture();
 		return img;
 	} else {
-		var img = new kha_WebGLImage(video.element.videoWidth,video.element.videoHeight,0,false,0,1);
-		img.video = video.element;
+		var img = new kha_WebGLImage(jsvideo.element.videoWidth,jsvideo.element.videoHeight,0,false,0,1);
+		img.video = jsvideo.element;
 		img.createTexture();
 		return img;
 	}
@@ -5552,6 +5573,8 @@ kha_Video.prototype = {
 		if(loop == null) {
 			loop = false;
 		}
+	}
+	,update: function(dt) {
 	}
 	,pause: function() {
 	}
