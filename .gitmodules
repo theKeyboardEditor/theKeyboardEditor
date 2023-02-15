@@ -1,5 +1,5 @@
 [submodule "vendor/Kha"]
-	path = vendor/Kha
+	path = Kha
 	url = https://github.com/Kode/Kha
 [submodule "vendor/zui"]
 	path = vendor/zui
