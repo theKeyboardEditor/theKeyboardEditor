@@ -6,5 +6,6 @@ project.addAssets('assets/**');
 project.addShaders('shaders/**');
 project.addSources('src');
 // Libraries
-project.addLibrary('zui');
+project.addLibrary('haxeui-core');
+await project.addProject('haxeui-kha');
 resolve(project);

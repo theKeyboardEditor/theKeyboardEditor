@@ -1,6 +1,9 @@
-[submodule "vendor/Kha"]
+[submodule "Kha"]
 	path = Kha
 	url = https://github.com/Kode/Kha
-[submodule "vendor/zui"]
-	path = vendor/zui
-	url = https://github.com/theKeyboardEditor/zui
+[submodule "vendor/haxeui-kha"]
+	path = vendor/haxeui-kha
+	url = https://github.com/haxeui/haxeui-kha
+[submodule "vendor/haxeui-core"]
+	path = vendor/haxeui-core
+	url = https://github.com/haxeui/haxeui-core

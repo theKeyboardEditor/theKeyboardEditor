@@ -1,0 +1,54 @@
+<menubar width="100%">
+	<menu text="theKeyboardEditor" />
+
+	<menu text="File">
+		<menuitem text="Item 1" />
+		<menuitem text="Item 2" />
+		<menuitem text="Item 3" />
+		<menuitem text="Item 4" />
+		<menuitem text="Item 5" />
+	</menu>
+
+	<menu text="Edit">
+		<menuitem text="Item 1" />
+		<menuitem text="Item 2" />
+		<menuitem text="Item 3" />
+		<menuitem text="Item 4" />
+		<menuitem text="Item 5" />    
+	</menu>    
+
+	<menu text="Presets">
+		<menuitem text="Item 1" />
+		<menuitem text="Item 2" />
+		<menuitem text="Item 3" />
+		<menuitem text="Item 4" />
+		<menuitem text="Item 5" />     
+	</menu>    
+
+	<menu text="Toolbars">
+		<menuitem text="Item 1" />
+		<menuitem text="Item 2" />
+		<menuitem text="Item 3" />
+		<menuitem text="Item 4" />
+		<menuitem text="Item 5" />
+	</menu>    
+
+	<menu text="Palettes">
+		<menuitem text="Item 1" />
+		<menuitem text="Item 2" />
+		<menuitem text="Item 3" />
+		<menuitem text="Item 4" />
+		<menuitem text="Item 5" />
+	</menu> 
+
+	<menu text="Keycaps">
+		<menuitem text="Item 1" />
+		<menuitem text="Item 2" />
+		<menuitem text="Item 3" />
+		<menuitem text="Item 4" />
+		<menuitem text="Item 5" />
+	</menu>
+	
+	<spacer width="100%" />
+	<button text="Support" />
+</menubar>

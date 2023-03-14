@@ -13,13 +13,12 @@ import js.Browser.window;
 
 /*
  * Used for window creation and calling the app class.
- * The main class is lying to you about how important it is, don't trust it!
  */
 class Main {
 	public static function main() {
 		System.start({title: "theKeyboardEditor", width: 1920, height: 1080}, function (_) {
 			setFullWindowCanvas();
-			var app = new App();
+			new MainView();
 		});
 	}
 

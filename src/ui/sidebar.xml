@@ -1,0 +1,9 @@
+<hbox style="background-color: white; padding: 10px; spacing: 48px;">
+	<frame text="Frame 1">
+		<vbox>
+			<button text="Item 1" />
+			<button text="Item 2" />
+			<button text="Item 3" />
+		</vbox>
+	</frame>
+</hbox>
