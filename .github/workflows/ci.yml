@@ -17,13 +17,13 @@ jobs:
           submodules: 'recursive'
 
       - name: Compile for Web
-        run: node vendor/Kha/make html5
+        run: node Kha/make html5
 
       - name: Install dependencies for Linux compilation
         run: sudo apt install -y make g++ libxinerama-dev libxrandr-dev libasound2-dev libxi-dev mesa-common-dev libgl-dev libxcursor-dev libvulkan-dev libudev-dev
 
       - name: Compile for Linux
-        run: node vendor/Kha/make --compile -g opengl
+        run: node Kha/make --compile -g opengl
 
       - name: Deploy builds
         uses: JamesIves/github-pages-deploy-action@4.1.5
@@ -48,7 +48,7 @@ jobs:
           submodules: 'recursive'
 
       - name: Compile for Windows
-        run: node vendor/Kha/make -g direct3d12 -v vs2017
+        run: node Kha/make -g direct3d12 -v vs2017
 
       - name: Deploy build
         uses: actions/upload-artifact@v2
@@ -67,7 +67,7 @@ jobs:
           submodules: 'recursive'
 
       - name: Compile for macOS
-        run: node vendor/Kha/make --compile
+        run: node Kha/make --compile
 
       - name: Deploy build
         uses: actions/upload-artifact@v2
