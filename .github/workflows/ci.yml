@@ -14,13 +14,16 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-          submodules: 'recursive'
+          submodules: true
+
+      - name: Get Kha Dependencies
+        run: ./Kha/get_dlc
 
       - name: Compile for Web
         run: node Kha/make html5
 
       - name: Install dependencies for Linux compilation
-        run: sudo apt install -y make g++ libxinerama-dev libxrandr-dev libasound2-dev libxi-dev mesa-common-dev libgl-dev libxcursor-dev libvulkan-dev libudev-dev
+        run: sudo apt install -y make g++ libwayland-bin wayland-protocols libxkbcommon-dev libegl1-mesa-dev libxinerama-dev libxrandr-dev libasound2-dev libxi-dev mesa-common-dev libgl-dev libxcursor-dev libvulkan-dev libudev-dev
 
       - name: Compile for Linux
         run: node Kha/make --compile -g opengl
