@@ -50,5 +50,5 @@
 	</menu>
 	
 	<spacer width="100%" />
-	<button text="Support" />
+	<button text="Support" onclick="kha.System.loadUrl('https://www.youtube.com/watch?v=5BZLz21ZS_Y');" />
 </menubar>

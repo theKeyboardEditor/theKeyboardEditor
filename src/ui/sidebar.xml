@@ -1,9 +1,32 @@
-<hbox style="background-color: white; padding: 10px; spacing: 48px;">
-	<frame text="Frame 1">
-		<vbox>
-			<button text="Item 1" />
-			<button text="Item 2" />
-			<button text="Item 3" />
-		</vbox>
+<hbox style="background-color: white; width: 10%; height: 100%; padding: 10px; margin: 0px; spacing: 48px;">
+    <style>
+        .key-button {
+        }
+    </style>
+    <frame style="width: 100%;" text="Key Shapes">
+        <hbox>
+            <vbox>
+                <button styleName="key-button" text="1u R1" />
+                <button styleName="key-button" text="1.5u R2" />
+                <button styleName="key-button" text="2u R3" />
+                <button styleName="key-button" text="2.75 R4" />
+                <button styleName="key-button" text="7U R5" />
+                <button styleName="key-button" text="BAE" />
+                <button styleName="key-button" text="N+" />
+                <button styleName="key-button" text="1u R2" />
+                <button styleName="key-button" text="1u R4" />
+            </vbox>
+            <vbox>
+                <button styleName="key-button" text="1.25 R2" />
+                <button styleName="key-button" text="1.75 R3" />
+                <button styleName="key-button" text="2.25 R2" />
+                <button styleName="key-button" text="6.25 R5" />
+                <button styleName="key-button" text="ISO" />
+                <button styleName="key-button" text="ANSI" />
+                <button styleName="key-button" text="N ent" />
+                <button styleName="key-button" text="1u R3" />
+                <button styleName="key-button" text="2.25 R3" />
+            </vbox>
+        </hbox>
 	</frame>
 </hbox>

@@ -7,5 +7,5 @@ project.addShaders('shaders/**');
 project.addSources('src');
 // Libraries
 project.addLibrary('haxeui-core');
-await project.addProject('haxeui-kha');
+await project.addProject('vendor/haxeui-kha');
 resolve(project);
