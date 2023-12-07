@@ -1,32 +1,41 @@
-<hbox style="background-color: white; width: 10%; height: 100%; padding: 10px; margin: 0px; spacing: 48px;">
+<box width="200px" style="background-color: #1d2021; height: 100%; padding: 10px; margin: 0px; spacing: 48px;" >
     <style>
-        .key-button {
+        .frame-title {
+            color: #ebdbb2;
+        }
+
+        .frame-left-line, .frame-right-line {
+            background-color: #504945;
+        }
+
+        .frame-border {
+            border-color: #504945;
         }
     </style>
-    <frame style="width: 100%;" text="Key Shapes">
-        <hbox>
-            <vbox>
-                <button styleName="key-button" text="1u R1" />
-                <button styleName="key-button" text="1.5u R2" />
-                <button styleName="key-button" text="2u R3" />
-                <button styleName="key-button" text="2.75 R4" />
-                <button styleName="key-button" text="7U R5" />
-                <button styleName="key-button" text="BAE" />
-                <button styleName="key-button" text="N+" />
-                <button styleName="key-button" text="1u R2" />
-                <button styleName="key-button" text="1u R4" />
+    <frame text="Keys" width="100%" styleName="greenframe" style="color: #FFFF00;">
+        <hbox width="100%">
+            <vbox width="100%">
+                <button styleName="key-button" text="1u R1" width="100%"/>
+                <button styleName="key-button" text="1.5u R2" width="100%"/>
+                <button styleName="key-button" text="2u R3" width="100%"/>
+                <button styleName="key-button" text="2.75 R4" width="100%"/>
+                <button styleName="key-button" text="7U R5" width="100%"/>
+                <button styleName="key-button" text="BAE" width="100%"/>
+                <button styleName="key-button" text="N+" width="100%"/>
+                <button styleName="key-button" text="1u R2" width="100%"/>
+                <button styleName="key-button" text="1u R4" width="100%"/>
             </vbox>
-            <vbox>
-                <button styleName="key-button" text="1.25 R2" />
-                <button styleName="key-button" text="1.75 R3" />
-                <button styleName="key-button" text="2.25 R2" />
-                <button styleName="key-button" text="6.25 R5" />
-                <button styleName="key-button" text="ISO" />
-                <button styleName="key-button" text="ANSI" />
-                <button styleName="key-button" text="N ent" />
-                <button styleName="key-button" text="1u R3" />
-                <button styleName="key-button" text="2.25 R3" />
+            <vbox width="100%">
+                <button styleName="key-button" text="1.25 R2" width="100%"/>
+                <button styleName="key-button" text="1.75 R3" width="100%"/>
+                <button styleName="key-button" text="2.25 R2" width="100%"/>
+                <button styleName="key-button" text="6.25 R5" width="100%"/>
+                <button styleName="key-button" text="ISO" width="100%"/>
+                <button styleName="key-button" text="ANSI" width="100%"/>
+                <button styleName="key-button" text="N ent" width="100%"/>
+                <button styleName="key-button" text="1u R3" width="100%"/>
+                <button styleName="key-button" text="2.25 R3" width="100%"/>
             </vbox>
         </hbox>
-	</frame>
-</hbox>
+    </frame>
+</box>

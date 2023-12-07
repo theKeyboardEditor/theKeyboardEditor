@@ -21,8 +21,6 @@ class MainView {
 		Assets.loadEverything(loadingFinished);
 	}
 
-	public function boo() {}
-
 	function loadingFinished() {
 		kha.System.notifyOnFrames(render);
 		haxe.ui.Toolkit.init();
@@ -40,7 +38,7 @@ class MainView {
 
 	public function render(frames: Array<Framebuffer>): Void {
 		g = new SDFPainter(frames[0]);
-		g.begin(true, Color.fromBytes(67, 76, 94));
+		g.begin(true, 0xFF282828);
 		g.sdfRect(500, 50, 54, 54, {
 			tr: 7,
 			br: 7,
