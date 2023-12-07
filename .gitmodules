@@ -7,3 +7,6 @@
 [submodule "vendor/haxeui-core"]
 	path = vendor/haxeui-core
 	url = https://github.com/haxeui/haxeui-core
+[submodule "vendor/keyson"]
+	path = vendor/keyson
+	url = https://github.com/theKeyboardEditor/keyson

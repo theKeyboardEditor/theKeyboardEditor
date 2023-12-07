@@ -2,7 +2,6 @@
     <style>
         menubar {
             background-color: #1d2021;
-            border-color: #1d2021; 
         }
     </style>
     <menu text="theKeyboardEditor" />

@@ -1,5 +1,6 @@
 package;
 
+import keyson.Keyson;
 import kha.graphics2.Graphics;
 import kha.Assets;
 import kha.Color;
@@ -18,12 +19,19 @@ class MainView {
 	var view: haxe.ui.containers.VBox;
 
 	public function new() {
-		Assets.loadEverything(loadingFinished);
+		Assets.loadEverything(init);
 	}
 
-	function loadingFinished() {
+	function init() {
+		final keeb = Keyson.parse(Assets.blobs.keyboard_json.toString());
+		trace(keeb.board[0].keys);
+
 		kha.System.notifyOnFrames(render);
+
+		// HaxeUI Initialization
+		haxe.ui.Toolkit.theme = 'keyboard-editor-theme';
 		haxe.ui.Toolkit.init();
+
 		screen = Screen.instance;
 
 		view = new haxe.ui.containers.VBox();
@@ -33,6 +41,7 @@ class MainView {
 		view.addComponent(toolbar);
 		var sidebar = ComponentBuilder.fromFile("ui/sidebar.xml");
 		view.addComponent(sidebar);
+
 		screen.addComponent(view);
 	}
 
