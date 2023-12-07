@@ -49,21 +49,22 @@ class MainView {
 		g = new SDFPainter(frames[0]);
 		g.begin(true, 0xFF282828);
 		for (key in keyboard.board[0].keys) {
-			trace("boo");
-			drawKey(g, 54 * key.position[0] + 250, 54 * key.position[1] + 50);
+			drawKey(g, key, [250, 50]);
 		}
 		screen.renderTo(g);
 		g.end();
 	}
 
-	private function drawKey(g: SDFPainter, x: Float, y: Float, width: Float = 0, height: Float = 0) {
-		g.sdfRect(x, y, 54, 54, {
+	private function drawKey(g: SDFPainter, key: keyson.Key, offset: Array<Float>) {
+		// Keycap Bottom
+		g.sdfRect(54 * key.position[0] + offset[0], 54 * key.position[1] + offset[1], 54, 54, {
 			tr: 7,
 			br: 7,
 			tl: 7,
 			bl: 7
 		}, 1, 0x18000000, 2.2, 0xffCCCCCC, 0xffCCCCCC, 0xffCCCCCC, 0xffCCCCCC);
-		g.sdfRect(x + 6, y + 3, 42, 42, {
+		// Keycap Top
+		g.sdfRect(54 * key.position[0] + offset[0] + 6, 54 * key.position[1] + offset[1] + 3, 42, 42, {
 			tr: 5,
 			br: 5,
 			tl: 5,
