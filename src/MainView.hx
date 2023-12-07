@@ -17,14 +17,14 @@ class MainView {
 	var g: SDFPainter;
 	var screen: Screen;
 	var view: haxe.ui.containers.VBox;
+	var keyboard: Keyson;
 
 	public function new() {
 		Assets.loadEverything(init);
 	}
 
-	function init() {
-		final keeb = Keyson.parse(Assets.blobs.keyboard_json.toString());
-		trace(keeb.board[0].keys);
+	private function init() {
+		keyboard = Keyson.parse(Assets.blobs.keyboard_json.toString());
 
 		kha.System.notifyOnFrames(render);
 
@@ -45,22 +45,29 @@ class MainView {
 		screen.addComponent(view);
 	}
 
-	public function render(frames: Array<Framebuffer>): Void {
+	private function render(frames: Array<Framebuffer>): Void {
 		g = new SDFPainter(frames[0]);
 		g.begin(true, 0xFF282828);
-		g.sdfRect(500, 50, 54, 54, {
+		for (key in keyboard.board[0].keys) {
+			trace("boo");
+			drawKey(g, 54 * key.position[0] + 250, 54 * key.position[1] + 50);
+		}
+		screen.renderTo(g);
+		g.end();
+	}
+
+	private function drawKey(g: SDFPainter, x: Float, y: Float, width: Float = 0, height: Float = 0) {
+		g.sdfRect(x, y, 54, 54, {
 			tr: 7,
 			br: 7,
 			tl: 7,
 			bl: 7
 		}, 1, 0x18000000, 2.2, 0xffCCCCCC, 0xffCCCCCC, 0xffCCCCCC, 0xffCCCCCC);
-		g.sdfRect(500 + 6, 50 + 3, 42, 42, {
+		g.sdfRect(x + 6, y + 3, 42, 42, {
 			tr: 5,
 			br: 5,
 			tl: 5,
 			bl: 5
 		}, 1, 0x18000000, 2.2, 0xffFCFCFC, 0xffFCFCFC, 0xffFCFCFC, 0xffFCFCFC);
-		screen.renderTo(g);
-		g.end();
 	}
 }

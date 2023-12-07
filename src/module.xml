@@ -1,0 +1,77 @@
+<module id="haxeui-core" priority="-2">
+    <themes>
+        <global>
+            <style resource="haxeui-core/styles/global.css" priority="-4" />
+        </global>
+        <keyboard-editor-theme parent="default">
+            <!-- normal  -->
+            <var name="normal-background-color-start" value="#3e4142" />
+            <var name="normal-background-color-end" value="#36383a" />
+            <var name="normal-border-color" value="#222426" />
+            <var name="normal-text-color" value="#aaaaaa" />
+            <var name="normal-border-size" value="1px" />
+            <var name="normal-border-radius" value="2px" />
+            <var name="normal-inner-shadow" value="drop-shadow(1, 45, #000000, 0.2, 2, 2, 1, 3, true)" />
+            <!-- hover -->
+            <var name="hover-background-color-start" value="#434647" />
+            <var name="hover-background-color-end" value="#393b3c" />
+            <var name="hover-text-color" value="#bbbbbb" />
+            <var name="hover-border-color" value="#222426" />
+            <!-- down -->
+            <var name="down-background-color-start" value="#393c3c" />
+            <var name="down-background-color-end" value="#313335" />
+            <var name="down-text-color" value="#999999" />
+            <var name="down-border-color" value="#222426" />
+            <!-- disabled -->
+            <var name="disabled-background-color-start" value="#36393a" />
+            <var name="disabled-background-color-end" value="#313335" />
+            <var name="disabled-text-color" value="#595959" />
+            <var name="disabled-border-color" value="#26292b" />
+            <!-- selection -->
+            <var name="selection-background-color" value="#415982" />
+            <var name="selection-text-color" value="#d4d4d4" />
+            <var name="selection-background-color-hover" value="#323e52" />
+            <!-- accent -->
+            <var name="accent-color" value="#3c5177" />
+            <var name="accent-color-darker" value="#407dbf" />
+            <var name="accent-color-lighter" value="#323e52" />
+            <var name="accent-gradient-start" value="#334666" />
+            <var name="accent-gradient-end" value="#2f3746" />
+            <!-- warning / error / success -->
+            <var name="warning-border-color" value="#807100" />
+            <var name="warning-background-color-start" value="#4d4400" />
+            <var name="warning-background-color-end" value="#473f00" />
+            <var name="error-border-color" value="#8b160e" />
+            <var name="error-background-color-start" value="#4a1721" />
+            <var name="error-background-color-end" value="#3a121a" />
+            <var name="success-border-color" value="#146c43" />
+            <var name="success-background-color-start" value="#0c4129" />
+            <var name="success-background-color-end" value="#093421" />
+            <!-- misc -->
+            <var name="default-background-color" value="#2c2f30" />
+            <var name="secondary-background-color" value="#3d3f41" />
+            <var name="tertiary-background-color" value="#313435" />
+            <var name="solid-background-color" value="#3d3f41" />
+            <var name="solid-background-color-alt" value="#2d2e2f" />
+            <var name="solid-background-color-hover" value="#393b3c" />
+            <var name="solid-background-color-down" value="#313335" />
+            <var name="solid-background-color-disabled" value="#2f3132" />
+            <var name="lighter-text-color" value="#737373" />
+            <!--
+                <var name="error-background-color" value="#cf6679" />
+                <var name="error-text-color" value="#880000" />
+            -->
+                <var name="modal-background-color" value="#181a1b" />
+                <!-- special cases -->
+                <var name="scrollbar-background-color" value="#2c2f30" />
+                <var name="contrast-background-color" value="#aaaaaa" />
+                <var name="scrollbar-button-color" value="#3e4142" />
+                <var name="dialog-title-color" value="#aaaaaa" />
+                <var name="tooltip-background-color" value="#3d3f41" />
+                <var name="dialog-shadow" value="drop-shadow(1, 45, #000000, 0.2, 30, 2, 1, 3, false)" />
+                <var name="menu-shadow" value="drop-shadow(2, 45, #000000, 0.15, 6, 1, 30, 35, false)" />
+
+                <style resource="haxeui-core/styles/dark/scrollbars.css" priority="-2" />
+            </keyboard-editor-theme>
+    </themes>
+</module>
