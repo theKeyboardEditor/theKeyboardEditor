@@ -2552,21 +2552,14 @@ MainView.prototype = {
 		while(_g < _g1.length) {
 			var key = _g1[_g];
 			++_g;
-			haxe_Log.trace("boo",{ fileName : "MainView.hx", lineNumber : 52, className : "MainView", methodName : "render"});
-			this.drawKey(this.g,54 * key.position[0] + 250,54 * key.position[1] + 50);
+			this.drawKey(this.g,key,[250,50]);
 		}
 		this.screen.renderTo(this.g);
 		this.g.end();
 	}
-	,drawKey: function(g,x,y,width,height) {
-		if(height == null) {
-			height = 0;
-		}
-		if(width == null) {
-			width = 0;
-		}
-		g.sdfRect(x,y,54,54,{ tr : 7, br : 7, tl : 7, bl : 7},1,402653184,2.2,-3355444,-3355444,-3355444,-3355444);
-		g.sdfRect(x + 6,y + 3,42,42,{ tr : 5, br : 5, tl : 5, bl : 5},1,402653184,2.2,-197380,-197380,-197380,-197380);
+	,drawKey: function(g,key,offset) {
+		g.sdfRect(54 * key.position[0] + offset[0],54 * key.position[1] + offset[1],54,54,{ tr : 7, br : 7, tl : 7, bl : 7},1,402653184,2.2,-3355444,-3355444,-3355444,-3355444);
+		g.sdfRect(54 * key.position[0] + offset[0] + 6,54 * key.position[1] + offset[1] + 3,42,42,{ tr : 5, br : 5, tl : 5, bl : 5},1,402653184,2.2,-197380,-197380,-197380,-197380);
 	}
 	,__class__: MainView
 };
