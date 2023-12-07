@@ -10,6 +10,7 @@ project.addSources('src');
 project.addLibrary('haxeui-core');
 await project.addProject('vendor/haxeui-kha');
 await project.addProject('vendor/keyson/');
+project.addLibrary('slide');
 
 project.addDefine('message-reporting=pretty');
 resolve(project);

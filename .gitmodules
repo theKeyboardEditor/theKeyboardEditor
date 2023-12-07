@@ -10,3 +10,6 @@
 [submodule "vendor/keyson"]
 	path = vendor/keyson
 	url = https://github.com/theKeyboardEditor/keyson
+[submodule "vendor/slide"]
+	path = vendor/slide
+	url = https://github.com/AndreiRudenko/slide
