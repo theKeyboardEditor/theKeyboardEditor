@@ -17,8 +17,8 @@ import js.Browser.window;
 class Main {
 	public static function main() {
 		System.start({title: "theKeyboardEditor", width: 1920, height: 1080}, function(_) {
-			final app = new MainView();
 			setFullWindowCanvas();
+			final app = new MainView();
 		});
 	}
 

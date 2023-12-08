@@ -19,11 +19,15 @@ import haxe.ui.backend.kha.SDFPainter;
  */
 class MainView {
 	// Render Surfaces
+	var screen: Screen;
 	var g: SDFPainter;
 	var view: haxe.ui.containers.VBox;
 
+	// Viewport Constants
+	inline static final speed: Int = 10;
+
 	// Viewport Offsets
-	var viewportX: Int = 250;
+	var viewportX: Int = 200;
 	var viewportY: Int = 50;
 
 	// State
@@ -32,7 +36,6 @@ class MainView {
 
 	public function new() {
 		this.inputState = new InputState();
-		this.keyboard = Keyson.parse(Assets.blobs.keyboard_json.toString());
 		Assets.loadEverything(loadingFinished);
 		Scheduler.addTimeTask(update, 0, 1 / 60);
 	}
@@ -41,14 +44,18 @@ class MainView {
 	 * Ran after all assets are loaded
 	 */
 	private function loadingFinished() {
+		this.keyboard = Keyson.parse(Assets.blobs.keyboard_json.toString());
+
 		// Initialize keyboard
 		if (Keyboard.get() != null) {
 			Keyboard.get().notify(onDown, onUp);
 		}
 
 		// HaxeUI Initialization
-		haxe.ui.Toolkit.theme = 'keyboard-editor-theme';
+		haxe.ui.Toolkit.theme = 'dark';
 		haxe.ui.Toolkit.init();
+
+		this.screen = Screen.instance;
 
 		// Create base box
 		view = new haxe.ui.containers.VBox();
@@ -60,7 +67,7 @@ class MainView {
 		var sidebar = ComponentBuilder.fromFile("ui/sidebar.xml");
 		view.addComponent(sidebar);
 
-		Screen.instance.addComponent(view);
+		screen.addComponent(view);
 
 		// And now render!
 		System.notifyOnFrames(render);
@@ -77,7 +84,7 @@ class MainView {
 		for (key in keyboard.board[0].keys) {
 			drawKey(g, key, {x: this.viewportX, y: this.viewportY});
 		}
-		Screen.instance.renderTo(g);
+		screen.renderTo(g);
 
 		g.end();
 	}
@@ -87,19 +94,19 @@ class MainView {
 	 */
 	public function update() {
 		if (inputState.up) {
-			viewportY -= 10;
+			viewportY -= speed;
 		}
 
 		if (inputState.down) {
-			viewportY += 10;
+			viewportY += speed;
 		}
 
 		if (inputState.left) {
-			viewportX -= 10;
+			viewportX -= speed;
 		}
 
 		if (inputState.right) {
-			viewportX += 10;
+			viewportX += speed;
 		}
 	}
 
@@ -120,16 +127,16 @@ class MainView {
 	/**
 	 * Draws a key based on the keyson.Key object
 	 */
-	private function drawKey(g: SDFPainter, key: keyson.Key, offset: {x: Int, y: Int}) {
+	private function drawKey(g: SDFPainter, key: keyson.Key, offset: {x: Int, y: Int}, width: Int = 1) {
 		// Keycap Bottom
-		g.sdfRect(54 * key.position[Axis.X] + offset.x, 54 * key.position[Axis.Y] + offset.y, 54, 54, {
+		g.sdfRect(54 * key.position[Axis.X] + offset.x, 54 * key.position[Axis.Y] + offset.y, 54 * width, 54, {
 			tr: 7,
 			br: 7,
 			tl: 7,
 			bl: 7
 		}, 1, 0x18000000, 2.2, 0xffCCCCCC, 0xffCCCCCC, 0xffCCCCCC, 0xffCCCCCC);
 		// Keycap Top
-		g.sdfRect(54 * key.position[Axis.X] + offset.x + 6, 54 * key.position[Axis.Y] + offset.y + 3, 42, 42, {
+		g.sdfRect(54 * key.position[Axis.X] + offset.x + 6, 54 * key.position[Axis.Y] + offset.y + 3, 42 * width, 42, {
 			tr: 5,
 			br: 5,
 			tl: 5,
