@@ -24,7 +24,7 @@ class MainView {
 	var view: haxe.ui.containers.VBox;
 
 	// Viewport Constants
-	inline static final speed: Int = 10;
+	inline static final speed: Int = 6;
 
 	// Viewport Offsets
 	var viewportX: Int = 200;
