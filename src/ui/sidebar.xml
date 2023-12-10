@@ -1,5 +1,5 @@
 <box width="200px" style="background-color: #1d2021; height: 100%; padding: 10px; margin: 0px; spacing: 48px;" >
-    <frame text="Key Shapes">
+    <frame text="Key Shapes" style="width: 100%;">
         <hbox>
             <vbox>
                 <button styleName="key-button" text="1u R1" width="100%" />

@@ -21,10 +21,9 @@ class MainView {
 	// Render Surfaces
 	var screen: Screen;
 	var g: SDFPainter;
-	var view: haxe.ui.containers.VBox;
 
 	// Viewport Constants
-	inline static final speed: Int = 6;
+	inline static final speed: Int = 7;
 
 	// Viewport Offsets
 	var viewportX: Int = 200;
@@ -58,16 +57,28 @@ class MainView {
 		this.screen = Screen.instance;
 
 		// Create base box
-		view = new haxe.ui.containers.VBox();
+		var view = new haxe.ui.containers.VBox();
+		view.styleString = "spacing: 0;";
 		view.percentWidth = view.percentHeight = 100;
+		screen.addComponent(view);
 
 		// Render elements
-		var toolbar = ComponentBuilder.fromFile("ui/toolbar.xml");
-		view.addComponent(toolbar);
-		var sidebar = ComponentBuilder.fromFile("ui/sidebar.xml");
-		view.addComponent(sidebar);
+		final tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");
+		view.addComponent(tabbar);
 
-		screen.addComponent(view);
+		var left = new haxe.ui.containers.HBox();
+		left.styleString = "spacing: 0; height: 100%;";
+		view.addComponent(left);
+		{
+			final modeSelector = ComponentBuilder.fromFile("ui/modeselector.xml");
+			left.addComponent(modeSelector);
+
+			final sidebar = ComponentBuilder.fromFile("ui/sidebar.xml");
+			left.addComponent(sidebar);
+		}
+
+		final statusBar = ComponentBuilder.fromFile("ui/status.xml");
+		view.addComponent(statusBar);
 
 		// And now render!
 		System.notifyOnFrames(render);
@@ -94,19 +105,19 @@ class MainView {
 	 */
 	public function update() {
 		if (inputState.up) {
-			viewportY -= speed;
-		}
-
-		if (inputState.down) {
 			viewportY += speed;
 		}
 
+		if (inputState.down) {
+			viewportY -= speed;
+		}
+
 		if (inputState.left) {
-			viewportX -= speed;
+			viewportX += speed;
 		}
 
 		if (inputState.right) {
-			viewportX += speed;
+			viewportX -= speed;
 		}
 	}
 

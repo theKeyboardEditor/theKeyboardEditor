@@ -1,0 +1,13 @@
+<vbox styleName="modeSelector">
+    <style>
+        .modeSelector {
+            width: 48px;
+            height: 100%;
+            background-color: #282828;
+        }
+    </style>
+    <!-- -->
+    <vbox>
+        <image resource="haxeui-core/styles/default/haxeui.png" style="width: 48px; height: 48px;" />
+    </vbox>
+</vbox>

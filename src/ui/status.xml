@@ -1,0 +1,15 @@
+<hbox styleName="status" width="100%">
+    <style>
+        .status {
+            padding-top: 6px;
+            padding-bottom: 6px;
+            padding-left: 12px;
+            background-color: #3b5dc9;
+        }
+
+        .status label {
+            color: white;
+        }
+    </style>
+    <label text="Status" />
+</hbox>
