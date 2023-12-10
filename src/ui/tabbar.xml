@@ -5,10 +5,27 @@
             spacing: 0;
             background-color: #1d2021;
         }
+        .menu-item-picker {
+            background-color: #1d2021;
+            border: none;
+        }
+        .item-picker-container {
+            border: none;
+        }
     </style>
-    <box verticalAlign="center" style="width: 64px;">
-        <image resource="kebab-dropdown.png" horizontalAlign="center" width="16px" height="16px"/>
-    </box>
+    <menu-item-picker showText="false" showIcon="false" width="64px" panelWidth="200" animatable="false" verticalAlign="center">
+        <item-renderer id="itemPickerRenderer">
+            <image resource="kebab-dropdown" horizontalAlign="center" />
+        </item-renderer>
+        <data>
+            <item text="New" />
+            <item text="Open" />
+            <item text="Save" />
+            <item text="Import" />
+            <item text="Export" />
+        </data>
+    </menu-item-picker>
+
     <tabbar>
         <button text="Project 1"/>
         <button text="Project 2"/>

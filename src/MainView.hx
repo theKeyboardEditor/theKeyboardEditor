@@ -51,7 +51,7 @@ class MainView {
 		}
 
 		// HaxeUI Initialization
-		haxe.ui.Toolkit.theme = 'dark';
+		haxe.ui.Toolkit.theme = 'keyboard-editor-theme';
 		haxe.ui.Toolkit.init();
 
 		this.screen = Screen.instance;
