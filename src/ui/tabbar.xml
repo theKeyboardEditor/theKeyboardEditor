@@ -6,8 +6,8 @@
             background-color: #1d2021;
         }
     </style>
-    <box style="width: 48px; horizontal-align: center; vertical-align: center;">
-        <image resource="kebab-dropdown.png" width="16px" height="16px"/>
+    <box verticalAlign="center" style="width: 64px;">
+        <image resource="kebab-dropdown.png" horizontalAlign="center" width="16px" height="16px"/>
     </box>
     <tabbar>
         <button text="Project 1"/>
