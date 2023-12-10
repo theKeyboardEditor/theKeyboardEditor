@@ -2,26 +2,26 @@
 
 ![GitHub](https://img.shields.io/github/license/theKeyboardEditor/theKeyboardEditor?style=for-the-badge)
 
-A work in progress keyboard layout editor software.
+A theoretical keyboard layout editor software.
 
 ## Dependencies
-For the kha build system to work you will need ``nodejs`` any other dependencies should be included.
+- `node`: Used for the build system
 
 ## Setup
 ```
 # Start by cloning theKeyboardEditor and all its submodules
-$ git clone --recurse-submodules -j8 https://github.com/theKeyboardEditor/theKeyboardEditor
-# Now move into it
-$ cd theKeyboardEditor
+git clone --shallow-submodules -j8 https://github.com/theKeyboardEditor/theKeyboardEditor && cd theKeyboardEditor
+# Get Kha dependencies
+./Kha/get_dlc
 ```
 
 ## Compilation
 ```
 # First compile to the web target, for other targets look at the Kha wiki
-$ node vendor/Kha/make html5
+$ node Kha/make html5 --compile
 # Then start a **development** web server
-$ node vendor/Kha/make html5 --server
-# If you look at localhost:8080 you should see theKeyboardEditor!
+$ node Kha/make html5 --server
+# Now take a peek at http://localhost:8080 and you should see the editor!
 ```
 
 ## License
