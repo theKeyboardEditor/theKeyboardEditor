@@ -2358,11 +2358,13 @@ MainView.prototype = {
 		c0.set_styleNames("tabbar");
 		var rootComponent = c0;
 		var c0 = new haxe_ui_containers_Box();
-		c0.set_styleString("width: 48px; horizontal-align: center; vertical-align: center;");
+		c0.set_styleString("width: 64px;");
+		c0.set_verticalAlign("center");
 		var c1 = new haxe_ui_components_Image();
 		c1.set_width(16.);
 		c1.set_height(16.);
 		c1.set_resource(haxe_ui_util_Variant.fromString("kebab-dropdown.png"));
+		c1.set_horizontalAlign("center");
 		c0.addComponent(c1);
 		rootComponent.addComponent(c0);
 		var c2 = new haxe_ui_components_TabBar();
@@ -2385,17 +2387,46 @@ MainView.prototype = {
 		var left = new haxe_ui_containers_HBox();
 		left.set_styleString("spacing: 0; height: 100%;");
 		view.addComponent(left);
-		haxe_ui_Toolkit.styleSheet.parse("\n        .modeSelector {\n            width: 48px;\n            height: 100%;\n            background-color: #282828;\n        }\n    ","user");
+		haxe_ui_Toolkit.styleSheet.parse("\n        .modeSelector {\n            width: 64px;\n            height: 100%;\n            background-color: #282828;\n        }\n        .modeSelector button {\n            width: 64px;\n            height: 64px;\n        }\n    ","user");
 		var c0 = new haxe_ui_containers_VBox();
 		c0.set_styleSheet(new haxe_ui_styles_StyleSheet());
 		c0.set_styleNames("modeSelector");
 		var rootComponent = c0;
-		var c0 = new haxe_ui_containers_VBox();
-		var c1 = new haxe_ui_components_Image();
-		c1.set_styleString("width: 48px; height: 48px;");
-		c1.set_resource(haxe_ui_util_Variant.fromString("haxeui-core/styles/default/haxeui.png"));
-		c0.addComponent(c1);
+		var c0 = new haxe_ui_components_Button();
+		c0.set_width(32.);
+		c0.set_height(32.);
+		c0.set_text("Place");
+		c0.set_iconPosition("top");
+		c0.set_icon(haxe_ui_util_Variant.fromString("place-mode.png"));
 		rootComponent.addComponent(c0);
+		var c1 = new haxe_ui_components_Button();
+		c1.set_width(32.);
+		c1.set_height(32.);
+		c1.set_text("Unit");
+		c1.set_iconPosition("top");
+		c1.set_icon(haxe_ui_util_Variant.fromString("unit-mode.png"));
+		rootComponent.addComponent(c1);
+		var c2 = new haxe_ui_components_Button();
+		c2.set_width(32.);
+		c2.set_height(32.);
+		c2.set_text("Legend");
+		c2.set_iconPosition("top");
+		c2.set_icon(haxe_ui_util_Variant.fromString("legend-mode.png"));
+		rootComponent.addComponent(c2);
+		var c3 = new haxe_ui_components_Button();
+		c3.set_width(32.);
+		c3.set_height(32.);
+		c3.set_text("Keyboard");
+		c3.set_iconPosition("top");
+		c3.set_icon(haxe_ui_util_Variant.fromString("keyboard-mode.png"));
+		rootComponent.addComponent(c3);
+		var c4 = new haxe_ui_components_Button();
+		c4.set_width(32.);
+		c4.set_height(32.);
+		c4.set_text("Color");
+		c4.set_iconPosition("top");
+		c4.set_icon(haxe_ui_util_Variant.fromString("color-mode.png"));
+		rootComponent.addComponent(c4);
 		rootComponent.bindingRoot = true;
 		var modeSelector = rootComponent;
 		left.addComponent(modeSelector);
@@ -41323,11 +41354,31 @@ kha__$Assets_AssetData._get = function(this1,key) {
 	return Reflect.getProperty(this1,key);
 };
 var kha__$Assets_ImageList = function() {
-	this.names = ["Icon","kebab_dropdown"];
+	this.names = ["Icon","color_mode","kebab_dropdown","keyboard_mode","legend_mode","place_mode","unit_mode"];
+	this.unit_modeSize = 475;
+	this.unit_modeDescription = { name : "unit_mode", original_height : 32, file_sizes : [475], original_width : 32, files : ["unit-mode.png"], type : "image"};
+	this.unit_modeName = "unit_mode";
+	this.unit_mode = null;
+	this.place_modeSize = 682;
+	this.place_modeDescription = { name : "place_mode", original_height : 32, file_sizes : [682], original_width : 32, files : ["place-mode.png"], type : "image"};
+	this.place_modeName = "place_mode";
+	this.place_mode = null;
+	this.legend_modeSize = 594;
+	this.legend_modeDescription = { name : "legend_mode", original_height : 32, file_sizes : [594], original_width : 32, files : ["legend-mode.png"], type : "image"};
+	this.legend_modeName = "legend_mode";
+	this.legend_mode = null;
+	this.keyboard_modeSize = 548;
+	this.keyboard_modeDescription = { name : "keyboard_mode", original_height : 32, file_sizes : [548], original_width : 32, files : ["keyboard-mode.png"], type : "image"};
+	this.keyboard_modeName = "keyboard_mode";
+	this.keyboard_mode = null;
 	this.kebab_dropdownSize = 805;
 	this.kebab_dropdownDescription = { name : "kebab_dropdown", original_height : 72, file_sizes : [805], original_width : 72, files : ["kebab-dropdown.png"], type : "image"};
 	this.kebab_dropdownName = "kebab_dropdown";
 	this.kebab_dropdown = null;
+	this.color_modeSize = 942;
+	this.color_modeDescription = { name : "color_mode", original_height : 32, file_sizes : [942], original_width : 32, files : ["color-mode.png"], type : "image"};
+	this.color_modeName = "color_mode";
+	this.color_mode = null;
 	this.IconSize = 44534;
 	this.IconDescription = { name : "Icon", original_height : 1024, file_sizes : [44534], original_width : 1024, files : ["Icon.png"], type : "image"};
 	this.IconName = "Icon";
@@ -41352,6 +41403,19 @@ kha__$Assets_ImageList.prototype = {
 		this.Icon.unload();
 		this.Icon = null;
 	}
+	,color_mode: null
+	,color_modeName: null
+	,color_modeDescription: null
+	,color_modeSize: null
+	,color_modeLoad: function(done,failure) {
+		kha_Assets.loadImage("color_mode",function(image) {
+			done();
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 142, className : "kha._Assets.ImageList", methodName : "color_modeLoad"});
+	}
+	,color_modeUnload: function() {
+		this.color_mode.unload();
+		this.color_mode = null;
+	}
 	,kebab_dropdown: null
 	,kebab_dropdownName: null
 	,kebab_dropdownDescription: null
@@ -41364,6 +41428,58 @@ kha__$Assets_ImageList.prototype = {
 	,kebab_dropdownUnload: function() {
 		this.kebab_dropdown.unload();
 		this.kebab_dropdown = null;
+	}
+	,keyboard_mode: null
+	,keyboard_modeName: null
+	,keyboard_modeDescription: null
+	,keyboard_modeSize: null
+	,keyboard_modeLoad: function(done,failure) {
+		kha_Assets.loadImage("keyboard_mode",function(image) {
+			done();
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 142, className : "kha._Assets.ImageList", methodName : "keyboard_modeLoad"});
+	}
+	,keyboard_modeUnload: function() {
+		this.keyboard_mode.unload();
+		this.keyboard_mode = null;
+	}
+	,legend_mode: null
+	,legend_modeName: null
+	,legend_modeDescription: null
+	,legend_modeSize: null
+	,legend_modeLoad: function(done,failure) {
+		kha_Assets.loadImage("legend_mode",function(image) {
+			done();
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 142, className : "kha._Assets.ImageList", methodName : "legend_modeLoad"});
+	}
+	,legend_modeUnload: function() {
+		this.legend_mode.unload();
+		this.legend_mode = null;
+	}
+	,place_mode: null
+	,place_modeName: null
+	,place_modeDescription: null
+	,place_modeSize: null
+	,place_modeLoad: function(done,failure) {
+		kha_Assets.loadImage("place_mode",function(image) {
+			done();
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 142, className : "kha._Assets.ImageList", methodName : "place_modeLoad"});
+	}
+	,place_modeUnload: function() {
+		this.place_mode.unload();
+		this.place_mode = null;
+	}
+	,unit_mode: null
+	,unit_modeName: null
+	,unit_modeDescription: null
+	,unit_modeSize: null
+	,unit_modeLoad: function(done,failure) {
+		kha_Assets.loadImage("unit_mode",function(image) {
+			done();
+		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 142, className : "kha._Assets.ImageList", methodName : "unit_modeLoad"});
+	}
+	,unit_modeUnload: function() {
+		this.unit_mode.unload();
+		this.unit_mode = null;
 	}
 	,names: null
 	,__class__: kha__$Assets_ImageList
