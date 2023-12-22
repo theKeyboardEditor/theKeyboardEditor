@@ -25,30 +25,31 @@ class MainScene extends Scene {
 	override function create() {
 		var width:Int;
 		var height:Int;
+		var gapX:Int; 
+		var gapY:Int; 
 		var unit:Int; // always 1U for positioning
 		// Called when scene has finished preloading
 		// Render keys
 		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 		for (k in keyboard.board[0].keys) {
 			trace ("shape:>"+k.shape+"<");
-			width=100;
-			height=100;
 			unit=100;
+			gapX=Std.int((keyboard.board[0].keyStep[Axis.X] - keyboard.board[0].capSize[Axis.X])/keyboard.board[0].keyStep[Axis.X]*unit);
+			gapY=Std.int((keyboard.board[0].keyStep[Axis.Y] - keyboard.board[0].capSize[Axis.Y])/keyboard.board[0].keyStep[Axis.Y]*unit);
+			width=unit-gapX;
+			height=unit-gapY;
 			switch k.shape {
 			case "2U":
-			trace (">>2U");
-			width=200;
-			height=100;
+			width=unit*2-gapX;
+			height=unit-gapY;
 			case "2U vertical":
-			trace (">>2U vertical");
-			width=100;
-			height=200;
+			width=unit-gapX;
+			height=unit*2-gapY;
 			case other:
-			trace (">>other");
-			width=100;
-			height=100;
+			width=unit-gapX;
+			height=unit-gapY;
 			}
-			
+			trace("gaps:",gapX,gapY);
 			var key = new KeyRenderer(width, height);
 			key.pos(unit * key.scaleTo * k.position[Axis.X] + 500, unit * key.scaleTo * k.position[Axis.Y] + 50);
 
