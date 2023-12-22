@@ -19,20 +19,38 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
 		// JSON
 		assets.add(Texts.NUMPAD);
+		
 	}
 
 	override function create() {
+		var width:Int;
+		var height:Int;
+		var unit:Int; // always 1U for positioning
 		// Called when scene has finished preloading
 		// Render keys
 		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 		for (k in keyboard.board[0].keys) {
-			var key = new KeyRenderer();
-			key.scaleTo = 54 / 100;
-			key.sizeX = 100;
-			key.sizeY = 100;
-			key.size(key.sizeX * key.scaleTo, key.sizeY * key.scaleTo);
-			key.pos(key.width * k.position[Axis.X] + 500, key.height * k.position[Axis.Y] + 50);
-			trace("MainScene>>h/w:",key.height,key.width,"sizes",key.sizeX,key.sizeY);
+			trace ("shape:>"+k.shape+"<");
+			width=100;
+			height=100;
+			unit=100;
+			switch k.shape {
+			case "2U":
+			trace (">>2U");
+			width=200;
+			height=100;
+			case "2U vertical":
+			trace (">>2U vertical");
+			width=100;
+			height=200;
+			case other:
+			trace (">>other");
+			width=100;
+			height=100;
+			}
+			
+			var key = new KeyRenderer(width, height);
+			key.pos(unit * key.scaleTo * k.position[Axis.X] + 500, unit * key.scaleTo * k.position[Axis.Y] + 50);
 
 			this.add(key);
 		}
