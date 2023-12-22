@@ -23,9 +23,13 @@ class MainScene extends Scene {
 
 	override function create() {
 		// Called when scene has finished preloading
-		var key = new KeyRenderer();
-		key.pos(500, 100);
-		this.add(key);
+		// Render keys
+		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
+		for (k in keyboard.board[0].keys) {
+			var key = new KeyRenderer();
+			key.pos(key.width * k.position[Axis.X] + 500, key.height * k.position[Axis.Y] + 50);
+			this.add(key);
+		}
 
 		// Create base container
 		var view = new haxe.ui.containers.VBox();
@@ -65,4 +69,13 @@ class MainScene extends Scene {
 
 		super.destroy();
 	}
+}
+
+/**
+ * We define the X and Y axes exclusively for convenience here
+ * It will compile down to just X = 0, Y = 1
+ */
+enum abstract Axis(Int) to Int {
+	var X;
+	var Y;
 }

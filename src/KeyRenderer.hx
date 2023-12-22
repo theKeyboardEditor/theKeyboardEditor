@@ -41,7 +41,7 @@ class KeyRenderer extends Visual {
 
 		scaleTo = 54 / 100;
 		sizeX = 100;
-		sizeY = 200;
+		sizeY = 100;
 
 		size(sizeX * scaleTo, sizeY * scaleTo);
 
