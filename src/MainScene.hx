@@ -9,14 +9,14 @@ class MainScene extends Scene {
 	override function preload() {
 		// Add any asset you want to load here
 		assets.add(Images.CERAMIC);
-        // MODES
+		// MODES
 		assets.add(Images.ICONS__PLACE_MODE);
 		assets.add(Images.ICONS__UNIT_MODE);
 		assets.add(Images.ICONS__LEGEND_MODE);
 		assets.add(Images.ICONS__KEYBOARD_MODE);
 		assets.add(Images.ICONS__COLOR_MODE);
-        // MISC ICONS
-        assets.add(Images.ICONS__KEBAB_DROPDOWN);
+		// MISC ICONS
+		assets.add(Images.ICONS__KEBAB_DROPDOWN);
 		// JSON
 		assets.add(Texts.NUMPAD);
 	}
@@ -27,11 +27,11 @@ class MainScene extends Scene {
 		key.pos(500, 100);
 		this.add(key);
 
-        // Create base container
+		// Create base container
 		var view = new haxe.ui.containers.VBox();
 		view.styleString = "spacing: 0;";
 		view.percentWidth = view.percentHeight = 100;
-        Screen.instance.addComponent(view);
+		Screen.instance.addComponent(view);
 
 		// Render elements
 		final tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");

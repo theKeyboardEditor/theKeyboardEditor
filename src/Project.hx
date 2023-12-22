@@ -18,10 +18,10 @@ class Project extends Entity {
 		app.onceReady(this, ready);
 	}
 
-    function ready() {
-        Toolkit.init();
-        // Set MainScene as the current scene (see MainScene.hx)
-        app.scenes.main = new MainScene();
-        Toolkit.theme = 'keyboard-editor-theme';
-    }
+	function ready() {
+		Toolkit.init();
+		// Set MainScene as the current scene (see MainScene.hx)
+		app.scenes.main = new MainScene();
+		Toolkit.theme = 'keyboard-editor-theme';
+	}
 }
