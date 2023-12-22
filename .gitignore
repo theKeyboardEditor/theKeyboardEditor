@@ -1,5 +1,10 @@
 .DS_Store
+.haxelib
 build/
+project/
+out/
+gen/
+completion.hxml
 # vim
 [._]*.s[a-v][a-z]
 !*.svg

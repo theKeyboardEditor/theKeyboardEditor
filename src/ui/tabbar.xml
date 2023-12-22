@@ -15,7 +15,7 @@
     </style>
     <menu-item-picker showText="false" showIcon="false" width="64px" panelWidth="200" animatable="false" verticalAlign="center">
         <item-renderer id="itemPickerRenderer">
-            <image resource="kebab-dropdown" horizontalAlign="center" />
+            <image resource="icons/kebab-dropdown" horizontalAlign="center" />
         </item-renderer>
         <data>
             <item text="New" />

@@ -11,9 +11,9 @@
         }
     </style>
     <!-- -->
-    <button text="Place" icon="place-mode.png" width="32px" height="32px" iconPosition="top" />
-    <button text="Unit" icon="unit-mode.png" width="32px" height="32px" iconPosition="top" />
-    <button text="Legend" icon="legend-mode.png" width="32px" height="32px" iconPosition="top" />
-    <button text="Keyboard" icon="keyboard-mode.png" width="32px" height="32px" iconPosition="top" />
-    <button text="Color" icon="color-mode.png" width="32px" height="32px" iconPosition="top" />
+    <button text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
+    <button text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
+    <button text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
+    <button text="Keyboard" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
+    <button text="Color" icon="icons/color-mode" width="32px" height="32px" iconPosition="top" />
 </vbox>
