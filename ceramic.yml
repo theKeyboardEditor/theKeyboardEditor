@@ -61,7 +61,7 @@ app:
     - haxeui-core: git:https://github.com/haxeui/haxeui-core.git
     - haxeui-ceramic: git:https://github.com/Jarrio/haxeui-ceramic.git
     - json2object: git:https://github.com/elnabo/json2object.git
-    - hxjsonast: git:https://github.com/nadako/hxjsonast.git
+    - hxjsonast: 1.1.0:https://github.com/nadako/hxjsonast.git
 
   defines:
     - ceramic_no_skip
