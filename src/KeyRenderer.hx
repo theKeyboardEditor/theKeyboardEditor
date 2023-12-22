@@ -5,25 +5,28 @@ import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class KeyRenderer extends Visual {
-	var color1: Int;
-	var color2: Int;
-	var xInner: Float;
-	var yInner: Float;
-	var rInner: Float;
-	var borderInner: Int;
-	var thicknessInner: Int;
-	var offsetInner: Float;
-	var xOuter: Float;
-	var yOuter: Float;
-	var rOuter: Float;
-	var borderOuter: Int;
-	var thicknessOuter: Int;
-	var scaleTo: Float;
-	var sizeX: Int;
-	var sizeY: Int;
-
+	public var color1: Int;
+	public var color2: Int;
+	public var xInner: Float;
+	public var yInner: Float;
+	public var rInner: Float;
+	public var borderInner: Int;
+	public var thicknessInner: Int;
+	public var offsetInner: Float;
+	public var xOuter: Float;
+	public var yOuter: Float;
+	public var rOuter: Float;
+	public var borderOuter: Int;
+	public var thicknessOuter: Int;
+	public var scaleTo: Float;
+	public var sizeX: Float;
+	public var sizeY: Float;
+	var scaledX: Float;
+	var scaledY: Float;
+	
 	override public function new() {
 		super();
+
 
 		color1 = 0xffFCFCFC;
 		color2 = 0xffCCCCCC;
@@ -36,20 +39,22 @@ class KeyRenderer extends Visual {
 		xOuter = 0;
 		yOuter = 0;
 		rOuter = 7;
-		borderOuter = 0x00000000;
+		borderOuter = 0xFFAAAAAA;
 		thicknessOuter = 1;
+//		scaleTo = 54 / 100;
+//		sizeX = 100;
+//		sizeY = 100;
+scaledX= this.sizeX * this.scaleTo;
+scaledY= this.sizeY * this.scaleTo;
+		size(scaledX, scaledY);
 
-		scaleTo = 54 / 100;
-		sizeX = 100;
-		sizeY = 100;
-
-		size(sizeX * scaleTo, sizeY * scaleTo);
+		trace("Renderer>>>h/w:",height,width,"sizes",this.sizeX,this.sizeY,"scale",this.scaledX,this.scaledY);
 
 		// public function new(color:Color, x:Float, y:Float, radius:Float, w:Float, h:Float, border:Color = Color.NONE, thickness:Int = 1)
-		final fg = new RoundedRect(color1, xInner, yInner, rInner, this.width - offsetInner, this.height - offsetInner, borderInner, thicknessInner);
+		final fg = new RoundedRect(this.color1, this.xInner, this.yInner, this.rInner, this.sizeX * this.scaleTo - this.offsetInner, this.sizeY * this.scaleTo - this.offsetInner, this.borderInner, this.thicknessInner);
 		this.add(fg);
-
-		final bg = new RoundedRect(color2, xOuter, yOuter, rOuter, this.width, this.height, borderOuter, thicknessOuter);
+		
+		final bg = new RoundedRect(this.color2, this.xOuter, this.yOuter, this.rOuter, this.sizeX * this.scaleTo, this.sizeY * this.scaleTo, this.borderOuter, this.thicknessOuter);
 		this.add(bg);
 	}
 }
