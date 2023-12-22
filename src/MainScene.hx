@@ -17,6 +17,8 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__COLOR_MODE);
         // MISC ICONS
         assets.add(Images.ICONS__KEBAB_DROPDOWN);
+		// JSON
+		assets.add(Texts.NUMPAD);
 	}
 
 	override function create() {
