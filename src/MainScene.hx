@@ -19,15 +19,40 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
 		// JSON
 		assets.add(Texts.NUMPAD);
+		
 	}
 
 	override function create() {
+		var width:Int;
+		var height:Int;
+		var gapX:Int; 
+		var gapY:Int; 
+		var unit:Int; // always 1U for positioning
 		// Called when scene has finished preloading
 		// Render keys
 		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 		for (k in keyboard.board[0].keys) {
-			var key = new KeyRenderer();
-			key.pos(key.width * k.position[Axis.X] + 500, key.height * k.position[Axis.Y] + 50);
+			trace ("shape:>"+k.shape+"<");
+			unit=100;
+			gapX=Std.int((keyboard.board[0].keyStep[Axis.X] - keyboard.board[0].capSize[Axis.X])/keyboard.board[0].keyStep[Axis.X]*unit);
+			gapY=Std.int((keyboard.board[0].keyStep[Axis.Y] - keyboard.board[0].capSize[Axis.Y])/keyboard.board[0].keyStep[Axis.Y]*unit);
+			width=unit-gapX;
+			height=unit-gapY;
+			switch k.shape {
+			case "2U":
+			width=unit*2-gapX;
+			height=unit-gapY;
+			case "2U vertical":
+			width=unit-gapX;
+			height=unit*2-gapY;
+			case other:
+			width=unit-gapX;
+			height=unit-gapY;
+			}
+			trace("gaps:",gapX,gapY);
+			var key = new KeyRenderer(width, height);
+			key.pos(unit * key.scaleTo * k.position[Axis.X] + 500, unit * key.scaleTo * k.position[Axis.Y] + 50);
+
 			this.add(key);
 		}
 

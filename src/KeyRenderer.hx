@@ -5,51 +5,27 @@ import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class KeyRenderer extends Visual {
-	var color1: Int;
-	var color2: Int;
-	var xInner: Float;
-	var yInner: Float;
-	var rInner: Float;
-	var borderInner: Int;
-	var thicknessInner: Int;
-	var offsetInner: Float;
-	var xOuter: Float;
-	var yOuter: Float;
-	var rOuter: Float;
-	var borderOuter: Int;
-	var thicknessOuter: Int;
-	var scaleTo: Float;
-	var sizeX: Int;
-	var sizeY: Int;
+	public var fgColor: Int = 0xffFCFCFC;
+	public var bgColor: Int = 0xFFCCCCCC;
+	public var xInner: Float = 3;
+	public var yInner: Float = 3 / 2;
+	public var borderInner: Int = 0x00000000;
+	public var thicknessInner: Int = 1;
+	public var offsetInner: Float = 3 * 4;
+	public var borderOuter: Int = 0xFFAAAAAA;
+	public var thicknessOuter: Int = 1;
+	public var scaleTo: Float = 54 / 100;
 
-	override public function new() {
+	override public function new(width: Int, height: Int) {
 		super();
-
-		color1 = 0xffFCFCFC;
-		color2 = 0xffCCCCCC;
-		xInner = 3;
-		yInner = xInner / 2;
-		rInner = 7;
-		borderInner = 0x00000000;
-		thicknessInner = 1;
-		offsetInner = xInner * 4;
-		xOuter = 0;
-		yOuter = 0;
-		rOuter = 7;
-		borderOuter = 0x00000000;
-		thicknessOuter = 1;
-
-		scaleTo = 54 / 100;
-		sizeX = 100;
-		sizeY = 100;
-
-		size(sizeX * scaleTo, sizeY * scaleTo);
+		size(width * scaleTo, height * scaleTo);
 
 		// public function new(color:Color, x:Float, y:Float, radius:Float, w:Float, h:Float, border:Color = Color.NONE, thickness:Int = 1)
-		final fg = new RoundedRect(color1, xInner, yInner, rInner, this.width - offsetInner, this.height - offsetInner, borderInner, thicknessInner);
+		final fg = new RoundedRect(this.fgColor, xInner, yInner, 7, this.width - this.offsetInner,
+			this.height - this.offsetInner, this.borderInner, this.thicknessInner);
 		this.add(fg);
 
-		final bg = new RoundedRect(color2, xOuter, yOuter, rOuter, this.width, this.height, borderOuter, thicknessOuter);
+		final bg = new RoundedRect(this.bgColor, 0, 0, 7, this.width, this.height, this.borderOuter, this.thicknessOuter);
 		this.add(bg);
 	}
 }
