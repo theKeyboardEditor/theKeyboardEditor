@@ -28,6 +28,13 @@ class MainScene extends Scene {
 		var gapX: Int;
 		var gapY: Int;
 		var unit: Int; // always 1U for positioning
+		var width1: Int;
+		var height1: Int;
+		var width2: Int;
+		var height2: Int;
+		var offsetX2: Int;
+		var offsetY2: Int;
+
 		// Render keys
 		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 
@@ -50,11 +57,86 @@ class MainScene extends Scene {
 					height = unit - gapY;
 			}
 
-			var key = new KeyRenderer(width, height);
+			var key = new SquareKeyRenderer(width, height);
 			key.pos(unit * key.scaleTo * k.position[Axis.X] + 500, unit * key.scaleTo * k.position[Axis.Y] + 50);
 
 			this.add(key);
 		}
+
+		//testing the hooked keys here
+//Normal ISO
+		unit = 100;
+		gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
+		gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
+		width = unit - gapX;
+		height = unit - gapY;
+		width1 = 150 - gapX;
+		height1 = 100 - gapY;
+		width2 = 125 - gapX;
+		height2 = 200 - gapY;
+		offsetX2= 25 + Std.int(gapX/2);
+		offsetY2= 0 + Std.int(gapY/2);
+		var key = new HookedKeyRenderer(width1,height1,width2,height2,offsetX2,offsetY2);
+		key.pos(unit * key.scaleTo * 5 + 500, unit * key.scaleTo * 5 + 50);
+		this.add(key);
+
+//reverse ISO
+		width1 = 125 - gapX;
+		height1 = 200 - gapY;
+		width2 = 150 - gapX;
+		height2 = 100 - gapY;
+		offsetX2= 0 + Std.int(gapX/2);
+		offsetY2= 100 + Std.int(gapY/2);
+		var key = new HookedKeyRenderer(width1,height1,width2,height2,offsetX2,offsetY2);
+		key.pos(unit * key.scaleTo * 3.75 + 500, unit * key.scaleTo * 5 + 50);
+		this.add(key);
+
+//Normal BAE
+		width1 = 150 - gapX;
+		height1 = 200 - gapY;
+		width2 = 225 - gapX;
+		height2 = 100 - gapY;
+		offsetX2= -75 - Std.int(gapX/2);
+		offsetY2= 100 + Std.int(gapY/2);
+		var key = new HookedKeyRenderer(width1,height1,width2,height2,offsetX2,offsetY2);
+		key.pos(unit * key.scaleTo * 2.25 + 500, unit * key.scaleTo * 5 + 50);
+//		key.rotation = 180;
+		this.add(key);
+
+//reverse BAE
+		width1 = 225 - gapX;
+		height1 = 100 - gapY;
+		width2 = 150 - gapX;
+		height2 = 200 - gapY;
+		offsetX2= 0 - Std.int(gapX/2);
+		offsetY2= 0 + Std.int(gapY/2);
+		var key = new HookedKeyRenderer(width1,height1,width2,height2,offsetX2,offsetY2);
+		key.pos(unit * key.scaleTo * 0 + 500, unit * key.scaleTo * 5 + 50);
+		this.add(key);
+
+//Normal XT 2U enter
+		width1 = 100 - gapX;
+		height1 = 200 - gapY;
+		width2 = 200 - gapX;
+		height2 = 100 - gapY;
+		offsetX2= -100 - Std.int(gapX/2);
+		offsetY2= 100 + Std.int(gapY/2);
+		var key = new HookedKeyRenderer(width1,height1,width2,height2,offsetX2,offsetY2);
+		key.pos(unit * key.scaleTo * 2 + 500, unit * key.scaleTo * 7 + 50);
+//		key.rotation = 180;
+		this.add(key);
+
+//AEK odd ball ISO enter
+		width1 = 125 - gapX;
+		height1 = 100 - gapY;
+		width2 = 100 - gapX;
+		height2 = 200 - gapY;
+		offsetX2= 25 + Std.int(gapX/2);
+		offsetY2= 0 + Std.int(gapY/2);
+		var key = new HookedKeyRenderer(width1,height1,width2,height2,offsetX2,offsetY2);
+		key.pos(unit * key.scaleTo * 3 + 500, unit * key.scaleTo * 7 + 50);
+		this.add(key);
+
 
 		// Create base container
 		var view = new haxe.ui.containers.VBox();
