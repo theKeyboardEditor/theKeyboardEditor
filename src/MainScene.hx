@@ -6,8 +6,8 @@ import haxe.ui.ComponentBuilder;
 import haxe.ui.core.Screen;
 
 class MainScene extends Scene {
+	// Add any asset you want to load here
 	override function preload() {
-		// Add any asset you want to load here
 		assets.add(Images.CERAMIC);
 		// MODES
 		assets.add(Images.ICONS__PLACE_MODE);
@@ -19,37 +19,37 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
 		// JSON
 		assets.add(Texts.NUMPAD);
-		
 	}
 
+	// Called when scene has finished preloading
 	override function create() {
-		var width:Int;
-		var height:Int;
-		var gapX:Int; 
-		var gapY:Int; 
-		var unit:Int; // always 1U for positioning
-		// Called when scene has finished preloading
+		var width: Int;
+		var height: Int;
+		var gapX: Int;
+		var gapY: Int;
+		var unit: Int; // always 1U for positioning
 		// Render keys
 		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
+
 		for (k in keyboard.board[0].keys) {
-			trace ("shape:>"+k.shape+"<");
-			unit=100;
-			gapX=Std.int((keyboard.board[0].keyStep[Axis.X] - keyboard.board[0].capSize[Axis.X])/keyboard.board[0].keyStep[Axis.X]*unit);
-			gapY=Std.int((keyboard.board[0].keyStep[Axis.Y] - keyboard.board[0].capSize[Axis.Y])/keyboard.board[0].keyStep[Axis.Y]*unit);
-			width=unit-gapX;
-			height=unit-gapY;
+			unit = 100;
+			gapX = Std.int((keyboard.board[0].keyStep[Axis.X] - keyboard.board[0].capSize[Axis.X]) / keyboard.board[0].keyStep[Axis.X] * unit);
+			gapY = Std.int((keyboard.board[0].keyStep[Axis.Y] - keyboard.board[0].capSize[Axis.Y]) / keyboard.board[0].keyStep[Axis.Y] * unit);
+			width = unit - gapX;
+			height = unit - gapY;
+
 			switch k.shape {
-			case "2U":
-			width=unit*2-gapX;
-			height=unit-gapY;
-			case "2U vertical":
-			width=unit-gapX;
-			height=unit*2-gapY;
-			case other:
-			width=unit-gapX;
-			height=unit-gapY;
+				case "2U":
+					width = unit * 2 - gapX;
+					height = unit - gapY;
+				case "2U vertical":
+					width = unit - gapX;
+					height = unit * 2 - gapY;
+				case other:
+					width = unit - gapX;
+					height = unit - gapY;
 			}
-			trace("gaps:",gapX,gapY);
+
 			var key = new KeyRenderer(width, height);
 			key.pos(unit * key.scaleTo * k.position[Axis.X] + 500, unit * key.scaleTo * k.position[Axis.Y] + 50);
 
@@ -81,17 +81,16 @@ class MainScene extends Scene {
 		view.addComponent(statusBar);
 	}
 
+	// Here, you can add code that will be executed at every frame
 	override function update(delta: Float) {
-		// Here, you can add code that will be executed at every frame
 	}
 
+	// Called everytime the scene size has changed
 	override function resize(width: Float, height: Float) {
-		// Called everytime the scene size has changed
 	}
 
+	// Perform any cleanup before final destroy
 	override function destroy() {
-		// Perform any cleanup before final destroy
-
 		super.destroy();
 	}
 }
