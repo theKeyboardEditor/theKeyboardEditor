@@ -28,29 +28,6 @@ class MainScene extends Scene {
 		final viewport = new Viewport(keyboard.board[0]);
 		this.add(viewport);
 
-		//// Normal XT 2U enter
-		// width1 = 100 - gapX;
-		// height1 = 200 - gapY;
-		// width2 = 200 - gapX;
-		// height2 = 100 - gapY;
-		// offsetX2 = -100 - Std.int(gapX / 2);
-		// offsetY2 = 100 + Std.int(gapY / 2);
-		// var key = new HookedKeyRenderer(width1, height1, width2, height2, offsetX2, offsetY2);
-		// key.pos(unit * key.scaleTo * 2 + 500, unit * key.scaleTo * 7 + 50);
-		////		key.rotation = 180;
-		// this.add(key);
-
-		//// AEK odd ball ISO enter
-		// width1 = 125 - gapX;
-		// height1 = 100 - gapY;
-		// width2 = 100 - gapX;
-		// height2 = 200 - gapY;
-		// offsetX2 = 25 + Std.int(gapX / 2);
-		// offsetY2 = 0 + Std.int(gapY / 2);
-		// var key = new HookedKeyRenderer(width1, height1, width2, height2, offsetX2, offsetY2);
-		// key.pos(unit * key.scaleTo * 3 + 500, unit * key.scaleTo * 7 + 50);
-		// this.add(key);
-
 		// Create base container
 		var view = new haxe.ui.containers.VBox();
 		view.styleString = "spacing: 0;";

@@ -71,8 +71,24 @@ class Viewport extends Scene {
 					final widthSouth = 150 - gapX;
 					final heightSouth = 200 - gapY;
 					final offsetSouthX = 0 - Std.int(gapX / 2);
-					final offsetNorthY = 0 + Std.int(gapY / 2);
-					key = new HookedKeyRenderer(width1, height1, width2, height2, offsetX2, offsetY2);
+					final offsetSouthY = 0 + Std.int(gapY / 2);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+				case "XT 2U":
+					final widthNorth = 100 - gapX;
+					final heightNorth = 200 - gapY;
+					final widthSouth = 200 - gapX;
+					final heightSouth = 100 - gapY;
+					final offsetSouthX = -100 - Std.int(gapX / 2);
+					final offsetSouthY = 100 + Std.int(gapY / 2);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+				case "AEK":
+					final widthNorth = 125 - gapX;
+					final heightNorth = 100 - gapY;
+					final widthSouth = 100 - gapX;
+					final heightSouth = 200 - gapY;
+					final offsetSouthX = 25 + Std.int(gapX / 2);
+					final offsetSouthY = 0 + Std.int(gapY / 2);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
 				default:
 					// 1U
 					var width = unit - gapX;

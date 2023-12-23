@@ -6,6 +6,8 @@ import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class LShapeKey extends Visual implements KeyRenderer {
+	public var unitScale: Float = 54 / 100;
+
 	var topColor: Int = 0xffFCFCFC;
 	var bodyColor: Int = 0xFFCCCCCC;
 	var xInner: Float = 4;
@@ -15,7 +17,6 @@ class LShapeKey extends Visual implements KeyRenderer {
 	var offsetInner: Float = 4 * 4;
 	var borderOuter: Int = 0xFFAAAAAA;
 	var thicknessOuter: Int = 0;
-	var unitScale: Float = 54 / 100;
 	var roundedCorner: Int = 12;
 
 	var widthNorth: Int;
