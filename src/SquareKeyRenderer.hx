@@ -22,8 +22,8 @@ class SquareKeyRenderer extends Visual {
 		size(width * scaleTo, height * scaleTo);
 
 		// public function new(color:Color, x:Float, y:Float, radius:Float, w:Float, h:Float, border:Color = Color.NONE, thickness:Int = 1)
-		final fg = new RoundedRect(this.topColor, xInner, yInner, roundedCorner * scaleTo, this.width - this.offsetInner, this.height - this.offsetInner, this.borderInner,
-			this.thicknessInner);
+		final fg = new RoundedRect(this.topColor, xInner, yInner, roundedCorner * scaleTo, this.width - this.offsetInner, this.height - this.offsetInner,
+			this.borderInner, this.thicknessInner);
 		this.add(fg);
 
 		final bg = new RoundedRect(this.bodyColor, 0, 0, roundedCorner * scaleTo, this.width, this.height, this.borderOuter, this.thicknessOuter);
