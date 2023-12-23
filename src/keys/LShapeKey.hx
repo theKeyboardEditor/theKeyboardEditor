@@ -6,17 +6,17 @@ import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class LShapeKey extends Visual implements KeyRenderer {
-	public var topColor: Int = 0xffFCFCFC;
-	public var bodyColor: Int = 0xFFCCCCCC;
-	public var xInner: Float = 4;
-	public var yInner: Float = 4 / 2;
-	public var borderInner: Int = 0x00000000;
-	public var thicknessInner: Int = 0;
-	public var offsetInner: Float = 4 * 4;
-	public var borderOuter: Int = 0xFFAAAAAA;
-	public var thicknessOuter: Int = 0;
-	public var unitScale: Float = 54 / 100;
-	public var roundedCorner: Int = 12;
+	var topColor: Int = 0xffFCFCFC;
+	var bodyColor: Int = 0xFFCCCCCC;
+	var xInner: Float = 4;
+	var yInner: Float = 4 / 2;
+	var borderInner: Int = 0x00000000;
+	var thicknessInner: Int = 0;
+	var offsetInner: Float = 4 * 4;
+	var borderOuter: Int = 0xFFAAAAAA;
+	var thicknessOuter: Int = 0;
+	var unitScale: Float = 54 / 100;
+	var roundedCorner: Int = 12;
 
 	var widthNorth: Int;
 	var heightNorth: Int;
@@ -43,14 +43,14 @@ class LShapeKey extends Visual implements KeyRenderer {
 			// here we assume the BAE situation (negative X offset)
 			size(widthSouth * unitScale, heightNorth * unitScale);
 			if (offsetSouthY < 100) {
-				//Inverted BAE
+				// Inverted BAE
 				arcRotation = -90;
 				arcPosX = (widthSouth + roundedCorner) * unitScale;
 				arcPosY = (heightNorth + roundedCorner) * unitScale;
 				arcPosXInner = xInner + widthSouth * unitScale - roundedCorner * unitScale;
 				arcPosYInner = yInner / 2 + heightNorth * unitScale - roundedCorner * unitScale;
 			} else {
-				//Upright BAE
+				// Upright BAE
 				arcRotation = 90;
 				arcPosX = -1 * roundedCorner * unitScale;
 				arcPosY = (offsetSouthY - roundedCorner) * unitScale;
@@ -61,14 +61,14 @@ class LShapeKey extends Visual implements KeyRenderer {
 			// here we assume the ISO situation (positive X offset)
 			size(widthNorth * unitScale, heightSouth * unitScale);
 			if (offsetSouthY > 100) {
-				//Inverted ISO
+				// Inverted ISO
 				arcRotation = 180;
 				arcPosX = (widthNorth + roundedCorner) * unitScale;
 				arcPosY = (offsetSouthY - roundedCorner) * unitScale;
 				arcPosXInner = 2 * xInner + roundedCorner * unitScale + (widthNorth * unitScale - offsetInner);
 				arcPosYInner = 2 * yInner + offsetSouthY * unitScale - roundedCorner * unitScale;
 			} else {
-				//Upright ISO
+				// Upright ISO
 				arcRotation = 0;
 				arcPosX = (offsetSouthX - roundedCorner) * unitScale;
 				arcPosY = (heightNorth + roundedCorner) * unitScale;
@@ -106,11 +106,12 @@ class LShapeKey extends Visual implements KeyRenderer {
 		arc2.pos(arcPosXInner, arcPosYInner);
 		this.add(arc2);
 
-		final bd = new RoundedRect(this.bodyColor, 0, 0, roundedCorner * unitScale, widthNorth * unitScale, heightNorth * unitScale, this.borderOuter, this.thicknessOuter);
+		final bd = new RoundedRect(this.bodyColor, 0, 0, roundedCorner * unitScale, widthNorth * unitScale, heightNorth * unitScale, this.borderOuter,
+			this.thicknessOuter);
 		bd.depth = 1;
 		this.add(bd);
-		final bd = new RoundedRect(this.bodyColor, offsetSouthX / 2 * unitScale, offsetSouthY / 2 * unitScale, roundedCorner * unitScale, widthSouth * unitScale,
-			heightSouth * unitScale, this.borderOuter, this.thicknessOuter);
+		final bd = new RoundedRect(this.bodyColor, offsetSouthX / 2 * unitScale, offsetSouthY / 2 * unitScale, roundedCorner * unitScale,
+			widthSouth * unitScale, heightSouth * unitScale, this.borderOuter, this.thicknessOuter);
 		bd.depth = 1;
 		this.add(bd);
 
@@ -124,7 +125,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 		arc2.rotation = arcRotation;
 		arc2.pos(arcPosX, arcPosY);
 		this.add(arc2);
-	
+
 		return this;
 	}
 }

@@ -24,7 +24,7 @@ class RectangularKey extends Visual implements KeyRenderer {
 
 	public function create(): Visual {
 		final fg = new RoundedRect(this.topColor, xInner, yInner, roundedCorner * unitScale, this.width - this.offsetInner, this.height - this.offsetInner,
-				this.borderInner, this.thicknessInner);
+			this.borderInner, this.thicknessInner);
 		this.add(fg);
 
 		final bg = new RoundedRect(this.bodyColor, 0, 0, roundedCorner * unitScale, this.width, this.height, this.borderOuter, this.thicknessOuter);

@@ -5,6 +5,7 @@ import keyson.Keyson.Keyboard;
 
 class Viewport extends Scene {
 	var keyboard: Keyboard;
+
 	inline static final unit = 100;
 
 	override public function new(keyboard: Keyboard) {
@@ -33,15 +34,45 @@ class Viewport extends Scene {
 					// Normal ISO
 					gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
 					gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
-					final width = unit - gapX;
-					final height = unit - gapY;
-					final width1 = 150 - gapX;
-					final height1 = 100 - gapY;
-					final width2 = 125 - gapX;
-					final height2 = 200 - gapY;
-					final offsetX2 = 25 + Std.int(gapX / 2);
-					final offsetY2 = 0 + Std.int(gapY / 2);
-					key = new keys.LShapeKey(width1, height1, width2, height2, offsetX2, offsetY2);
+					final widthNorth = 150 - gapX;
+					final heightNorth = 100 - gapY;
+					final widthNorth = 125 - gapX;
+					final heightSouth = 200 - gapY;
+					final offsetSouthX = 25 + Std.int(gapX / 2);
+					final offsetSouthY = 0 + Std.int(gapY / 2);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+				case "ISO Inverted":
+					// Inverted ISO
+					// This is an ISO enter but with the top of the keycap reversed
+					gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
+					gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
+					final widthNorth = 125 - gapX;
+					final heightNorth = 200 - gapY;
+					final widthSouth = 150 - gapX;
+					final heightSouth = 100 - gapY;
+					final offsetSouthX = 0 + Std.int(gapX / 2);
+					final offsetSouthY = 100 + Std.int(gapY / 2);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+				case "BAE":
+					// Normal BAE
+					gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
+					gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
+					final widthNorth = 150 - gapX;
+					final heightNorth = 200 - gapY;
+					final widthSouth = 225 - gapX;
+					final heightSouth = 100 - gapY;
+					final offsetSouthX = -75 - Std.int(gapX / 2);
+					final offsetSouthY = 100 + Std.int(gapY / 2);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+				case "BAE Inverted":
+					// Inverted BAE
+					final widthNorth = 225 - gapX;
+					final heightNorth = 100 - gapY;
+					final widthSouth = 150 - gapX;
+					final heightSouth = 200 - gapY;
+					final offsetSouthX = 0 - Std.int(gapX / 2);
+					final offsetNorthY = 0 + Std.int(gapY / 2);
+					key = new HookedKeyRenderer(width1, height1, width2, height2, offsetX2, offsetY2);
 				default:
 					// 1U
 					var width = unit - gapX;
