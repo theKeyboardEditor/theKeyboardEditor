@@ -35,7 +35,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 		this.widthNorth = widthNorth;
 		this.heightNorth = heightNorth;
 		this.widthSouth = widthSouth;
-		this.heightSouth = widthSouth;
+		this.heightSouth = heightSouth;
 		this.offsetSouthX = offsetSouthX;
 		this.offsetSouthY = offsetSouthY;
 
