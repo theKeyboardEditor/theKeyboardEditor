@@ -86,7 +86,7 @@ class Keyboard {
 	public var units: String; // units of measurement
 	public var caseColor: String;
 	public var keysColor: String;
-	public var labelSizeUnits: String; // "px,pc,mm,thou"
+	public var labelSizeUnits: String; // "px,pc,mm,thou,U/100"
 	public var labelFont: String;
 	public var sublabelFont: String;
 	public var labelFontSize: Float;
@@ -191,7 +191,7 @@ class KeyLabel {
 	public function new(glyph: String) {
 		this.keysColor = "";
 		this.labelFont = "";
-		this.labelFontSize = 12; // sane default
+		this.labelFontSize = 32; // sane default
 		this.labelColor = "";
 		this.labelPosition = [0.0, 0.0];
 		this.profile = "";

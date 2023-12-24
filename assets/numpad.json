@@ -39,11 +39,11 @@
       "caseColor": "white",
       "keysColor": "white",
       "font": "sans",
-      "labelSizeUnits": "px",
-      "labelSize": 9,
-      "sublabelSize": 7,
+      "labelSizeUnits": "U/100",
+      "labelFontSize": 32,
+      "sublabelFontSize": 18,
       "labelColor": "black",
-      "labelPosition": [1.27, 1.27],
+      "labelPosition": [5.12, 5.12],
       "sublabelColor": "black",
       "profile": "XDA",
       "keySculpt": "R3",
@@ -55,7 +55,8 @@
           "position": [0, 0],
           "shape": "1U",
           "label": {
-            "glyph": "Num Lock"
+            "glyph": "Num \nLock",
+            "labelFontSize": "28"
           }
         },
         {
@@ -105,9 +106,7 @@
           "position": [2, 1],
           "shape": "1U",
           "label": {
-            "glyph": "9",
-            "Size": "9px",
-            "Color": "black"
+            "glyph": "9"
           },
           "sublabels": ["", "", "", "", "", "", "PgUp", "", ""]
         },
@@ -115,10 +114,10 @@
           "keyId": 7,
           "position": [3, 1],
           "Stabilizer": "2U",
-          "shape": "ISO Inverted",
+          "shape": "2U Vertical",
           "label": {
             "glyph": "+",
-            "position": [1.27, 17.78]
+            "labelPosition": [5.12, 80]
           }
         },
         {
@@ -177,12 +176,13 @@
         },
         {
           "keyId": 14,
-          "position": [5, 3],
+          "position": [3, 3],
           "Stabilizer": "2U",
-          "shape": "BAE Inverted",
+          "shape": "2U Vertical",
           "label": {
             "glyph": "Enter",
-            "position": [1.27, 17.78]
+            "labelFontSize": "28",
+            "labelPosition": [5.12, 80]
           }
         },
         {

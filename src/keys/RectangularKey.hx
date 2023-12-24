@@ -5,7 +5,6 @@ import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class RectangularKey extends Visual implements KeyRenderer {
-	public var unitScale: Float = 54 / 100;
 
 //TODO make one of this two values a shade of the other
 	var topColor: Int = 0xffFCFCFC;
@@ -32,7 +31,6 @@ class RectangularKey extends Visual implements KeyRenderer {
 		final bottom = new RoundedRect(this.bodyColor, 0, 0, roundedCorner, this.width, this.height, 0, 0);
 		this.add(bottom);
 
-		this.scale(this.unitScale,this.unitScale);
 		return this;
 	}
 }

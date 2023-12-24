@@ -7,7 +7,6 @@ import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class LShapeKey extends Visual implements KeyRenderer {
-	public var unitScale: Float = 54 / 100;
 
 //TODO make one of this two values a shade of the other
 	var topColor: Int = 0xffFCFCFC;
@@ -125,7 +124,6 @@ class LShapeKey extends Visual implements KeyRenderer {
 		bottomArc.pos(arcPosX, arcPosY);
 		this.add(bottomArc);
 
-		this.scale(this.unitScale,this.unitScale);
 		return this;
 	}
 }
