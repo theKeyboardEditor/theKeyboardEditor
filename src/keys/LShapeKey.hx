@@ -1,6 +1,7 @@
 package keys;
 
 import ceramic.Arc;
+import ceramic.Quad;
 import ceramic.Color;
 import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
@@ -8,27 +9,26 @@ import haxe.ui.backend.ceramic.RoundedRect;
 class LShapeKey extends Visual implements KeyRenderer {
 	public var unitScale: Float = 54 / 100;
 
+//TODO make one of this two values a shade of the other
 	var topColor: Int = 0xffFCFCFC;
 	var bodyColor: Int = 0xFFCCCCCC;
-	var xInner: Float = 4;
-	var yInner: Float = 4 / 2;
-	var borderInner: Int = 0x00000000;
-	var thicknessInner: Int = 0;
-	var offsetInner: Float = 4 * 4;
-	var borderOuter: Int = 0xFFAAAAAA;
-	var thicknessOuter: Int = 0;
+	// we are in the 1U = 100 units of scale ratio here:
+	//this is the preset for OEM/Cherry profile keycaps (TODO more presets)
+	var topX: Float = 12;
+	var topY: Float = 12 * 0.25;
+	var topOffset: Float = 12 * 2;
 	var roundedCorner: Int = 12;
 
-	var widthNorth: Int;
+	var widthNorth: Int; // North is the further away member of the pair
 	var heightNorth: Int;
-	var widthSouth: Int;
+	var widthSouth: Int; // South is the closer member of the piar
 	var heightSouth: Int;
-	var arcRotation: Float;
+	var arcRotation: Float; // The radius of the inside corner
 	var arcPosX: Float;
 	var arcPosY: Float;
-	var arcPosXInner: Float;
-	var arcPosYInner: Float;
-	var offsetSouthX: Int;
+	var arcPosTopX: Float;
+	var arcPosTopY: Float;
+	var offsetSouthX: Int;  // The closer member's offset 
 	var offsetSouthY: Int;
 
 	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int) {
@@ -40,92 +40,92 @@ class LShapeKey extends Visual implements KeyRenderer {
 		this.offsetSouthX = offsetSouthX;
 		this.offsetSouthY = offsetSouthY;
 
-//here we proccess how the inner radius is to be oriented only
-		if (offsetSouthX < 0) {
-			// here we assume the BAE situation (negative X offset)
-			size(widthSouth * unitScale, heightNorth * unitScale);
-			if (offsetSouthY < 100) {
-				// Inverted BAE
+//here we proccess how the inner radius alone is to be oriented and positioned
+		if (offsetSouthX < 0) { // is the 2nd member Westward from the top member?
+			// Yes, here we assume it's a BAE situation 
+			size(widthSouth, heightNorth);
+			if (offsetSouthY < 100) { // is the member northward in the shape?
+				// Yes, inverted BAE
 				arcRotation = -90;
-				arcPosX = (widthSouth + roundedCorner) * unitScale;
-				arcPosY = (heightNorth + roundedCorner) * unitScale;
-				arcPosXInner = xInner + widthSouth * unitScale - roundedCorner * unitScale;
-				arcPosYInner = yInner / 2 + heightNorth * unitScale - roundedCorner * unitScale;
+				arcPosX = widthSouth + roundedCorner;
+				arcPosY = heightNorth + roundedCorner;
+				arcPosTopX = topX + widthSouth - roundedCorner;
+				arcPosTopY = topY + heightNorth - roundedCorner;
 			} else {
-				// Upright BAE
+				// No, upright BAE
 				arcRotation = 90;
-				arcPosX = -1 * roundedCorner * unitScale;
-				arcPosY = (offsetSouthY - roundedCorner) * unitScale;
-				arcPosXInner = 2 * xInner - roundedCorner * unitScale;
-				arcPosYInner = 2 * yInner + offsetSouthY * unitScale - roundedCorner * unitScale;
+				arcPosX = -1 * roundedCorner;
+				arcPosY = offsetSouthY - roundedCorner;
+				arcPosTopX = topX - roundedCorner;
+				arcPosTopY = topY + offsetSouthY - roundedCorner;
 			}
-		} else {
-			// here we assume the ISO situation (positive X offset)
-			size(widthNorth * unitScale, heightSouth * unitScale);
-			if (offsetSouthY > 100) {
-				// Inverted ISO
+		} else { // No, the 2nd member is aligned with or Eastward of the member:
+			// we assume it's an ISO situation
+			size(widthNorth, heightSouth);
+			if (offsetSouthY > 100) { //Is the 2nd member Southward in the shape?
+				// Yes, inverted ISO
 				arcRotation = 180;
-				arcPosX = (widthNorth + roundedCorner) * unitScale;
-				arcPosY = (offsetSouthY - roundedCorner) * unitScale;
-				arcPosXInner = 2 * xInner + roundedCorner * unitScale + (widthNorth * unitScale - offsetInner);
-				arcPosYInner = 2 * yInner + offsetSouthY * unitScale - roundedCorner * unitScale;
+				arcPosX = widthNorth + roundedCorner;
+				arcPosY = offsetSouthY - roundedCorner;
+				arcPosTopX = topX + roundedCorner + (widthNorth - topOffset);
+				arcPosTopY = topY + offsetSouthY - roundedCorner;
 			} else {
-				// Upright ISO
+				// No, upright ISO
 				arcRotation = 0;
-				arcPosX = (offsetSouthX - roundedCorner) * unitScale;
-				arcPosY = (heightNorth + roundedCorner) * unitScale;
-				arcPosXInner = 2 * xInner + offsetSouthX * unitScale - roundedCorner * unitScale;
-				arcPosYInner = yInner / 2 + heightNorth * unitScale - roundedCorner * unitScale;
+				arcPosX = offsetSouthX - roundedCorner;
+				arcPosY = heightNorth + roundedCorner;
+				arcPosTopX = topX + offsetSouthX - roundedCorner;
+				arcPosTopY = topY + heightNorth - roundedCorner;
 			}
 		}
 	}
 
 	public function create(): Visual {
-		// first draw the North portion of the keyshape
-		final fg = new RoundedRect(this.topColor, xInner, yInner, roundedCorner * unitScale, widthNorth * unitScale - this.offsetInner,
-			heightNorth * unitScale - this.offsetInner, this.borderInner, this.thicknessInner);
-		fg.depth = 2;
-		this.add(fg);
 
-		// then draw the South portion of the keyshape
-		final fg = new RoundedRect(this.topColor, xInner + (offsetSouthX / 2 * unitScale), yInner + offsetSouthY / 2 * unitScale,
-															roundedCorner * unitScale,
-															 widthSouth * unitScale - this.offsetInner, heightSouth * unitScale - this.offsetInner,
-															  this.borderInner, this.thicknessInner);
-		fg.depth = 2;
-		this.add(fg);
+		// first draw the North member of the keyshape
+		final top = new RoundedRect(this.topColor, 0, 0, roundedCorner, widthNorth - this.topOffset, heightNorth - this.topOffset, 0, 0);
+		top.pos(topX,topY);
+		top.depth = 2;
+		this.add(top);
 
-		final arc2 = new Arc();
-		arc2.color = topColor;
-		arc2.radius = roundedCorner * unitScale;
-		arc2.borderPosition = OUTSIDE; // how the drawn line rides the arc
-		arc2.angle = 90;
-		arc2.depth = 3; // this is in the sense of layers?
-		arc2.thickness = roundedCorner;
-		arc2.rotation = arcRotation;
-		arc2.pos(arcPosXInner, arcPosYInner);
-		this.add(arc2);
+		// then draw the South member of the keyshape
+		final top = new RoundedRect(this.topColor, 0, 0, roundedCorner, widthSouth - this.topOffset, heightSouth - this.topOffset, 0, 0);
+		top.pos(topX + offsetSouthX,topY + offsetSouthY);
+		top.depth = 2;
+		this.add(top);
 
-		final bd = new RoundedRect(this.bodyColor, 0, 0, roundedCorner * unitScale, widthNorth * unitScale, heightNorth * unitScale, this.borderOuter,
-			this.thicknessOuter);
-		bd.depth = 1;
-		this.add(bd);
-		final bd = new RoundedRect(this.bodyColor, offsetSouthX / 2 * unitScale, offsetSouthY / 2 * unitScale, roundedCorner * unitScale,
-			widthSouth * unitScale, heightSouth * unitScale, this.borderOuter, this.thicknessOuter);
-		bd.depth = 1;
-		this.add(bd);
+		final topArc = new Arc();
+		topArc.color = topColor;
+		topArc.radius = roundedCorner;
+		topArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+		topArc.angle = 90;
+		topArc.depth = 3; // this is in the sense of layers
+		topArc.thickness = roundedCorner; // with this thickness we cover the underlying sharp corner
+		topArc.rotation = arcRotation;
+		topArc.pos(arcPosTopX, arcPosTopY);
+		this.add(topArc);
 
-		final arc2 = new Arc();
-		arc2.color = bodyColor;
-		arc2.radius = roundedCorner * unitScale;
-		arc2.borderPosition = OUTSIDE; // how the drawn line rides the arc
-		arc2.angle = 90;
-		arc2.depth = 2; // this is in the sense of layers?
-		arc2.thickness = roundedCorner;
-		arc2.rotation = arcRotation;
-		arc2.pos(arcPosX, arcPosY);
-		this.add(arc2);
+		final bottom = new RoundedRect(this.bodyColor, 0, 0, roundedCorner, widthNorth, heightNorth, 0, 0);
+		bottom.depth = 1;
+		this.add(bottom);
 
+		final bottom = new RoundedRect(this.bodyColor, 0, 0, roundedCorner, widthSouth, heightSouth, 0, 0);
+		bottom.pos(offsetSouthX, offsetSouthY);
+		bottom.depth = 1;
+		this.add(bottom);
+
+		final bottomArc = new Arc();
+		bottomArc.color = bodyColor;
+		bottomArc.radius = roundedCorner;
+		bottomArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+		bottomArc.angle = 90;
+		bottomArc.depth = 2; // this is in the sense of layers
+		bottomArc.thickness = roundedCorner;
+		bottomArc.rotation = arcRotation;
+		bottomArc.pos(arcPosX, arcPosY);
+		this.add(bottomArc);
+
+		this.scale(this.unitScale,this.unitScale);
 		return this;
 	}
 }
