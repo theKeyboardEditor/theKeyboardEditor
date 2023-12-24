@@ -34,8 +34,8 @@ class Viewport extends Scene {
 				case "ISO":
 					// Normal ISO
 					// we shouldn't override the gap now on:
-					// gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
-					// gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
+					//gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
+					//gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
 					final widthNorth = 150 - gapX;
 					final heightNorth = 100 - gapY;
 					final widthSouth = 125 - gapX;
@@ -47,8 +47,8 @@ class Viewport extends Scene {
 					// Inverted ISO
 					// This is an ISO enter but with the top of the keycap reversed
 					// we shouldn't override the gap now on:
-					// gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
-					// gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
+					//gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
+					//gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
 					final widthNorth = 125 - gapX;
 					final heightNorth = 200 - gapY;
 					final widthSouth = 150 - gapX;
@@ -59,8 +59,8 @@ class Viewport extends Scene {
 				case "BAE":
 					// Normal BAE
 					// we shouldn't override the gap now on:
-					// gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
-					// gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
+					//gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
+					//gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
 					final widthNorth = 150 - gapX;
 					final heightNorth = 200 - gapY;
 					final widthSouth = 225 - gapX;
