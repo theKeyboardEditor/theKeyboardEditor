@@ -15,7 +15,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 	var topX: Float = 12;
 	var topY: Float = 12 * 0.25;
 	var topOffset: Float = 12 * 2;
-	var roundedCorner: Int = 12;
+	var roundedCorner: Float = 12;
 
 	var widthNorth: Int; // North is the further away member of the pair
 	var heightNorth: Int;
