@@ -103,38 +103,40 @@ class Viewport extends Scene {
 			key.pos(unit * k.position[Axis.X] + 500, unit * k.position[Axis.Y] + 100);
 			this.add(key.create());
 
-			keyLabel = new LabelRenderer(k.label.glyph);
-			keyLabel.labelColor = 0xFF00000F;
-			// is the label position set specifically?
-			if (k.label.labelPosition != null) { // yes we adjust specifically
-				labelOffsetX = k.label.labelPosition[Axis.X];
-				labelOffsetY = k.label.labelPosition[Axis.Y];
-				// trace ("key >"+k.label.glyph+"<",labelOffsetX,labelOffsetY);
-			} else { // no we use the global coordinates
-				labelOffsetX = this.keyboard.labelPosition[Axis.X];
-				labelOffsetY = this.keyboard.labelPosition[Axis.Y];
-				// trace("global coordinates set.");
-			}
-			// is the fontsize set specifically?
-			if (k.label.labelFontSize != 0) { // TODO make this detect per key font change
-				keyLabel.labelFontSize = k.label.labelFontSize;
-				trace("custom", k.label.labelFontSize);
-			} else {
-				keyLabel.labelFontSize = this.keyboard.labelFontSize;
-				trace("uniform", this.keyboard.labelFontSize);
-			}
+			for (l in k.labels) {
+				keyLabel = new LabelRenderer(l.glyph);
+				keyLabel.labelColor = 0xFF00000F;
+				// is the label position set specifically?
+				if (l.labelPosition != null) { // yes we adjust specifically
+					labelOffsetX = l.labelPosition[Axis.X];
+					labelOffsetY = l.labelPosition[Axis.Y];
+					// trace ("key >"+k.label.glyph+"<",labelOffsetX,labelOffsetY);
+				} else { // no we use the global coordinates
+					labelOffsetX = this.keyboard.labelPosition[Axis.X];
+					labelOffsetY = this.keyboard.labelPosition[Axis.Y];
+					// trace("global coordinates set.");
+				}
+				// is the fontsize set specifically?
+				if (l.labelFontSize != 0) { // TODO make this detect per key font change
+					keyLabel.labelFontSize = l.labelFontSize;
+					trace("custom", l.labelFontSize);
+				} else {
+					keyLabel.labelFontSize = this.keyboard.keyboardFontSize;
+					trace("uniform", this.keyboard.keyboardFontSize);
+				}
 
-			keyLabel.depth = 4;
+				keyLabel.depth = 4;
 
-			keyLabel.pos(labelOffsetX
-				+ keyLabel.topX
-				+ unit * k.position[Axis.X]
-				+ 500,
-				labelOffsetY
-				+ keyLabel.topY
-				+ unit * k.position[Axis.Y]
-				+ 100);
-			this.add(keyLabel.create());
+				keyLabel.pos(labelOffsetX
+					+ keyLabel.topX
+					+ unit * k.position[Axis.X]
+					+ 500,
+					labelOffsetY
+					+ keyLabel.topY
+					+ unit * k.position[Axis.Y]
+					+ 100);
+				this.add(keyLabel.create());
+			}
 		}
 	}
 }

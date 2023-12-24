@@ -87,16 +87,15 @@ class Keyboard {
 	public var caseColor: String;
 	public var keysColor: String;
 	public var labelSizeUnits: String; // "px,pc,mm,thou,U/100"
-	public var labelFont: String;
+	public var keyboardFont: String;
 	public var sublabelFont: String;
-	public var labelFontSize: Float;
+	public var keyboardFontSize: Float;
 	public var sublabelFontSize: Float;
 	public var labelColor: String;
 	public var labelPosition: Array<Float>;
 	public var sublabelColor: String;
 	public var profile: String;
 	public var keySculpt: String;
-	public var amountOfUnits: Int;
 	public var position: Array<Float>; // case/element position
 	public var angle: Array<Float>; // maybe one day we will be 3D
 	public var relativeRotationCenter: Array<Float>; // case center offset
@@ -113,27 +112,26 @@ class Keyboard {
 		this.caseColor = "";
 		this.keysColor = "";
 		this.labelSizeUnits = "px"; // "px,pc,mm,thou"
-		this.labelFont = "unknown";
+		this.keyboardFont = "unknown";
 		this.sublabelFont = "unknown";
-		this.labelFontSize = 12; // somewhat sane default
-		this.sublabelFontSize = 7; // questionably sane default
+		this.keyboardFontSize = 24; // somewhat sane default
+		this.sublabelFontSize = 18; // questionably sane default
 		this.labelColor = "";
 		this.labelPosition = [0.0, 0.0];
 		this.sublabelColor = "";
 		this.profile = "Cherry";
 		this.keySculpt = "R3";
-		this.amountOfUnits = 1;
 		this.position = [0.0, 0.0]; // placement of the unit
 		this.angle = [0, 0, 0]; //     rotation around the anchor point
 		this.size = 0; //          number of keys/elements
 		this.keys = [];
 	}
 
-	public function addKey(shap: String, pos: Array<Float>, lab: String) {
+	public function addKey(shape: String, pos: Array<Float>, lab: String) {
 		// calculate a new ID
 		var uid = this.keys.length;
 		// define a new key:
-		var newKnob = new Key(uid, shap, pos, new Keyson.KeyLabel(lab));
+		var newKnob = new Key(uid, shape, pos, new Keyson.KeyLabel(lab));
 		// append the new key to the end of the array
 		this.keys.push(newKnob);
 	}
@@ -154,8 +152,8 @@ class Key {
 	public var homingFeature: String;
 	public var keysColor: String;
 	public var spacerSize: Array<Float>;
-	public var label: KeyLabel;
-	public var sublabels: Sublabel;
+	public var amountOfLabels: Int;
+	public var labels: Array<KeyLabel>;
 
 	public function new(keyId: Int, shape: String, position: Array<Float>, label: KeyLabel) {
 		this.keyId = keyId; // unique key ID
@@ -170,8 +168,12 @@ class Key {
 		this.homingFeature = ""; // "Bar", "Dot", "Sculpt"
 		this.spacerSize = [0.0, 0.0]; // in units of U (1 x 2 U)
 		this.keysColor = "";
-		this.label = label;
-		this.sublabels = new Sublabel();
+		this.amountOfLabels = 1;
+		this.labels = [];
+	}
+
+	public function addLabel(glyph: String, position: Array<Float>) {
+		var newLabel = new KeyLabel(glyph);
 	}
 }
 
@@ -184,18 +186,14 @@ class KeyLabel {
 	public var labelFontSize: Int;
 	public var labelColor: String;
 	public var labelPosition: Array<Float>;
-	public var profile: String;
-	public var keySculpt: String;
 	public var glyph: String;
 
 	public function new(glyph: String) {
 		this.keysColor = "";
 		this.labelFont = "";
-		this.labelFontSize = 32; // sane default
+		this.labelFontSize = 24; // sane default
 		this.labelColor = "";
-		this.labelPosition = [0.0, 0.0];
-		this.profile = "";
-		this.keySculpt = "";
+		this.labelPosition = [5.0, 5.0];
 		this.glyph = glyph;
 	}
 }
@@ -206,7 +204,8 @@ class KeyLabel {
 // TODO do we want actual sublabels or we better be served with
 // peer equal individual glyphs in an array?
 
-class Sublabel {
+/*
+	class Sublabel {
 	// the Keyboard options or here define their own
 	public var sublabelFont: String;
 	public var sublabelFontSize: Int;
@@ -220,8 +219,8 @@ class Sublabel {
 		sublabelColor = "";
 		positions = ["", "", "", "", "", "", "", "", ""];
 	}
-}
-
+	}
+ */
 /*
  * Various key position features/replacements and their
  * respective properties:
