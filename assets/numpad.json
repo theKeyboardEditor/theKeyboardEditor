@@ -38,9 +38,9 @@
       "units": "mm",
       "caseColor": "white",
       "keysColor": "white",
-      "font": "sans",
+      "keyboardFont": "sans",
       "labelSizeUnits": "U/100",
-      "labelFontSize": 32,
+      "keyboardFontSize": 32,
       "sublabelFontSize": 18,
       "labelColor": "black",
       "labelPosition": [5.12, 5.12],
@@ -54,155 +54,229 @@
           "keyId": 0,
           "position": [0, 0],
           "shape": "1U",
-          "label": {
-            "glyph": "Num \nLock",
-            "labelFontSize": "28"
-          }
+          "labels": [
+            {
+              "glyph": "Num \nLock",
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 1,
           "position": [1, 0],
           "shape": "1U",
-          "label": {
-            "glyph": "/"
-          }
+          "labels": [
+            {
+              "glyph": "/"
+            }
+          ]
         },
         {
           "keyId": 2,
           "position": [2, 0],
           "shape": "1U",
-          "label": {
-            "glyph": "*"
-          }
+          "labels": [
+            {
+              "glyph": "*"
+            }
+          ]
         },
         {
           "keyId": 3,
           "position": [3, 0],
           "shape": "1U",
-          "label": {
-            "glyph": "-"
-          }
+          "labels": [
+            {
+              "glyph": "-"
+            }
+          ]
         },
         {
           "keyId": 4,
           "position": [0, 1],
           "shape": "1U",
-          "label": {
-            "glyph": "7"
-          },
-          "sublabels": ["", "", "", "", "", "", "Home", "", ""]
+          "labels": [
+            {
+              "glyph": "7"
+            },
+            {
+              "glyph": "Home",
+              "labelPosition": [5.12, 40],
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 5,
           "position": [1, 1],
           "shape": "1U",
-          "label": {
-            "glyph": "8"
-          },
-          "sublabels": ["", "", "", "", "", "", "&uarr;", "", ""]
+          "labels": [
+            {
+              "glyph": "8"
+            },
+            {
+              "glyph": "^",
+              "labelPosition": [5.12, 40],
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 6,
           "position": [2, 1],
           "shape": "1U",
-          "label": {
-            "glyph": "9"
-          },
-          "sublabels": ["", "", "", "", "", "", "PgUp", "", ""]
+          "labels": [
+            {
+              "glyph": "9"
+            },
+            {
+              "glyph": "PgUp",
+              "labelPosition": [5.12, 40],
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 7,
           "position": [3, 1],
           "Stabilizer": "2U",
           "shape": "2U Vertical",
-          "label": {
-            "glyph": "+",
-            "labelPosition": [5.12, 80]
-          }
+          "labels": [
+            {
+              "glyph": "+",
+              "labelPosition": [5.12, 80]
+            }
+          ]
         },
         {
           "keyId": 8,
           "position": [0, 2],
           "shape": "1U",
-          "label": {
+          "labels": [
+          {
             "glyph": "4"
           },
-          "sublabels": ["", "", "", "", "", "", "&larr;", "", ""]
+            {
+              "glyph": "<",
+              "labelPosition": [5.12, 40],
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 9,
           "position": [1, 2],
           "shape": "1U",
           "Features": "Homing",
-          "label": {
-            "glyph": "5"
-          }
+          "labels": [
+            {
+              "glyph": "5"
+            }
+          ]
         },
         {
           "keyId": 10,
           "position": [2, 2],
           "shape": "1U",
-          "label": {
-            "glyph": "6"
-          },
-          "sublabels": ["", "", "", "", "", "", "&rarr;", "", ""]
+          "labels": [
+            {
+              "glyph": "6"
+            },
+            {
+              "glyph": ">",
+              "labelPosition": [5.12, 40],
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 11,
           "position": [0, 3],
           "shape": "1U",
-          "label": {
-            "glyph": "1"
-          },
-          "sublabels": ["", "", "", "", "", "", "End", "", ""]
+          "labels": [
+            {
+              "glyph": "1"
+            },
+            {
+              "glyph": "End",
+              "labelPosition": [5.12, 40],
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 12,
           "position": [1, 3],
           "shape": "1U",
-          "label": {
-            "glyph": "2"
-          },
-          "sublabels": ["", "", "", "", "", "", "&darr;", "", ""]
+          "labels": [
+            {
+              "glyph": "2"
+            },
+            {
+              "glyph": "v",
+              "labelPosition": [5.12, 40],
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 13,
           "position": [2, 3],
           "shape": "1U",
-          "label": {
-            "glyph": "3"
-          },
-          "sublabels": ["", "", "", "", "", "", "PgDn", "", ""]
+          "labels": [
+            {
+              "glyph": "3"
+            },
+            {
+              "glyph": "PgDn",
+              "labelPosition": [5.12, 40],
+              "labelFontSize": 24.0
+            }
+          ]
         },
         {
           "keyId": 14,
           "position": [3, 3],
           "Stabilizer": "2U",
           "shape": "2U Vertical",
-          "label": {
-            "glyph": "Enter",
-            "labelFontSize": "28",
-            "labelPosition": [5.12, 80]
-          }
+          "labels": [
+            {
+              "glyph": "Enter",
+              "labelFontSize": 24.0,
+              "labelPosition": [5.12, 80]
+            }
+          ]
         },
         {
           "keyId": 15,
           "position": [0, 4],
           "Stabilizer": "2U",
           "shape": "2U",
-          "label": {
-            "glyph": "0"
-          },
-          "sublabels": ["", "", "", "", "", "", "Ins", "", ""]
+          "labels": [
+            {
+              "glyph": "0"
+            },
+            {
+              "glyph": "Ins",
+              "labelFontSize": 24.0,
+              "labelPosition": [5.12, 40]
+            }
+          ]
         },
         {
           "keyId": 16,
           "position": [2, 4],
           "shape": "1U",
-          "label": {
-            "glyph": "."
-          },
-          "sublabels": ["", "", "", "", "", "", "Del", "", ""]
+          "labels": [
+            {
+              "glyph": "."
+            },
+            {
+              "glyph": "Del",
+              "labelFontSize": 24.0,
+              "labelPosition": [5.12, 40]
+            }
+          ]
         }
       ]
     }
