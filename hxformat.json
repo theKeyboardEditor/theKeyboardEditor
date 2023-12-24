@@ -10,5 +10,8 @@
         "typeHintColonPolicy": "after",
         "typeCheckColonPolicy": "after",
         "ternaryPolicy": "after"
-    }
+    },
+	"wrapping": {
+		"maxLineLength": 144
+	}
 }

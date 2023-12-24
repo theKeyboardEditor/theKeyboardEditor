@@ -9,7 +9,7 @@ class Viewport extends Scene {
 	var labelOffsetY: Float;
 	var keyLabelOffsetX: Float;
 	var keyLabelOffsetY: Float;
- 
+
 	inline static final unit = 100;
 
 	override public function new(keyboard: Keyboard) {
@@ -20,11 +20,11 @@ class Viewport extends Scene {
 	override function create() {
 		var gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit);
 		var gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
-    var labelUnit = this.keyboard.labelSizeUnits;
-//				if ( labelUnit == "U/100" ) { 
-//					//the only native scale
-//				}// TODO more scales
-    
+		var labelUnit = this.keyboard.labelSizeUnits;
+		//				if ( labelUnit == "U/100" ) {
+		//					//the only native scale
+		//				}// TODO more scales
+
 		for (k in this.keyboard.keys) {
 			var key: KeyRenderer;
 			var keyLabel: LabelRenderer;
@@ -106,27 +106,34 @@ class Viewport extends Scene {
 			keyLabel = new LabelRenderer(k.label.glyph);
 			keyLabel.labelColor = 0xFF00000F;
 			// is the label position set specifically?
-			if (k.label.labelPosition != null ) { // yes we adjust specifically
+			if (k.label.labelPosition != null) { // yes we adjust specifically
 				labelOffsetX = k.label.labelPosition[Axis.X];
 				labelOffsetY = k.label.labelPosition[Axis.Y];
-				//trace ("key >"+k.label.glyph+"<",labelOffsetX,labelOffsetY);
+				// trace ("key >"+k.label.glyph+"<",labelOffsetX,labelOffsetY);
 			} else { // no we use the global coordinates
 				labelOffsetX = this.keyboard.labelPosition[Axis.X];
 				labelOffsetY = this.keyboard.labelPosition[Axis.Y];
-				//trace("global coordinates set.");
+				// trace("global coordinates set.");
 			}
 			// is the fontsize set specifically?
-			if (k.label.labelFontSize != 0 ) { //TODO make this detect per key font change
+			if (k.label.labelFontSize != 0) { // TODO make this detect per key font change
 				keyLabel.labelFontSize = k.label.labelFontSize;
-				trace("custom",k.label.labelFontSize);
+				trace("custom", k.label.labelFontSize);
 			} else {
 				keyLabel.labelFontSize = this.keyboard.labelFontSize;
-				trace("uniform",this.keyboard.labelFontSize);
+				trace("uniform", this.keyboard.labelFontSize);
 			}
 
-			keyLabel.depth =4;
+			keyLabel.depth = 4;
 
-			keyLabel.pos(labelOffsetX + keyLabel.topX + unit * k.position[Axis.X] + 500,labelOffsetY + keyLabel.topY + unit * k.position[Axis.Y] + 100);
+			keyLabel.pos(labelOffsetX
+				+ keyLabel.topX
+				+ unit * k.position[Axis.X]
+				+ 500,
+				labelOffsetY
+				+ keyLabel.topY
+				+ unit * k.position[Axis.Y]
+				+ 100);
 			this.add(keyLabel.create());
 		}
 	}

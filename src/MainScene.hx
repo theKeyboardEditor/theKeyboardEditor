@@ -5,8 +5,6 @@ import ceramic.Scene;
 import haxe.ui.ComponentBuilder;
 import haxe.ui.core.Screen;
 
-
-
 class MainScene extends Scene {
 	public var unitScale: Float = 54 / 100; // herewith we zoom the viewport
 
@@ -30,7 +28,7 @@ class MainScene extends Scene {
 		// Render keys
 		final keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 		final viewport = new Viewport(keyboard.board[0]);
-		viewport.scale(unitScale,unitScale);
+		viewport.scale(unitScale, unitScale);
 		this.add(viewport);
 
 		// Create base container

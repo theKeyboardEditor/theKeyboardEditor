@@ -7,12 +7,11 @@ import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class LShapeKey extends Visual implements KeyRenderer {
-
-//TODO make one of this two values a shade of the other
+	// TODO make one of this two values a shade of the other
 	var topColor: Int = 0xffFCFCFC;
 	var bodyColor: Int = 0xFFCCCCCC;
 	// we are in the 1U = 100 units of scale ratio here:
-	//this is the preset for OEM/Cherry profile keycaps (TODO more presets)
+	// this is the preset for OEM/Cherry profile keycaps (TODO more presets)
 	var topX: Float = 12;
 	var topY: Float = 12 * 0.25;
 	var topOffset: Float = 12 * 2;
@@ -27,21 +26,21 @@ class LShapeKey extends Visual implements KeyRenderer {
 	var arcPosY: Float;
 	var arcPosTopX: Float;
 	var arcPosTopY: Float;
-	var offsetSouthX: Int;  // The closer member's offset 
+	var offsetSouthX: Int; // The closer member's offset
 	var offsetSouthY: Int;
 
 	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int) {
 		super();
-		this.widthNorth   = widthNorth;
-		this.heightNorth  = heightNorth;
-		this.widthSouth   = widthSouth;
-		this.heightSouth  = heightSouth;
+		this.widthNorth = widthNorth;
+		this.heightNorth = heightNorth;
+		this.widthSouth = widthSouth;
+		this.heightSouth = heightSouth;
 		this.offsetSouthX = offsetSouthX;
 		this.offsetSouthY = offsetSouthY;
 
-//here we proccess how the inner radius alone is to be oriented and positioned
+		// here we proccess how the inner radius alone is to be oriented and positioned
 		if (offsetSouthX < 0) { // is the 2nd member Westward from the top member?
-			// Yes, here we assume it's a BAE situation 
+			// Yes, here we assume it's a BAE situation
 			size(widthSouth, heightNorth);
 			if (offsetSouthY < 100) { // is the member northward in the shape?
 				// Yes, inverted BAE
@@ -61,7 +60,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 		} else { // No, the 2nd member is aligned with or Eastward of the member:
 			// we assume it's an ISO situation
 			size(widthNorth, heightSouth);
-			if (offsetSouthY > 100) { //Is the 2nd member Southward in the shape?
+			if (offsetSouthY > 100) { // Is the 2nd member Southward in the shape?
 				// Yes, inverted ISO
 				arcRotation = 180;
 				arcPosX = widthNorth + roundedCorner;
@@ -80,16 +79,15 @@ class LShapeKey extends Visual implements KeyRenderer {
 	}
 
 	public function create(): Visual {
-
 		// first draw the North member of the keyshape
 		final top = new RoundedRect(this.topColor, 0, 0, roundedCorner, widthNorth - this.topOffset, heightNorth - this.topOffset, 0, 0);
-		top.pos(topX,topY);
+		top.pos(topX, topY);
 		top.depth = 2;
 		this.add(top);
 
 		// then draw the South member of the keyshape
 		final top = new RoundedRect(this.topColor, 0, 0, roundedCorner, widthSouth - this.topOffset, heightSouth - this.topOffset, 0, 0);
-		top.pos(topX + offsetSouthX,topY + offsetSouthY);
+		top.pos(topX + offsetSouthX, topY + offsetSouthY);
 		top.depth = 2;
 		this.add(top);
 
