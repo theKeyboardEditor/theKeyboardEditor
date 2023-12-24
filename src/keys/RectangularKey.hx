@@ -13,9 +13,9 @@ class RectangularKey extends Visual implements KeyRenderer {
 	var topX: Float = 12;
 	var topY: Float = 12 * .25; // North top vs E/W ratio
 	var topOffset: Float = 12 * 2; // the top island offset
-	var roundedCorner: Int = 12;
+	var roundedCorner: Float = 12;
 
-	override public function new(width: Int, height: Int) {
+	override public function new(width: Float, height: Float) {
 		super();
 		size(width, height);
 	}

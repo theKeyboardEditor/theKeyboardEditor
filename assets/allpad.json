@@ -1,0 +1,284 @@
+{
+  "name": "Allpad",
+  "author": "cest73",
+  "license": "MIT",
+  "comment": "Each and every possible key at once",
+  "colorTable": {
+    "name": "Kids Crayons 16",
+    "url": "https://some.site.org",
+    "colorMatchingProfile": "generic",
+    "size": 16,
+    "swatches": [
+      { "color": "black", "value": "0xFF000000" },
+      { "color": "white", "value": "0xFFffffff" },
+      { "color": "red", "value": "0xFFff0000" },
+      { "color": "lime", "value": "0xFF00ff00" },
+      { "color": "blue", "value": "0xFF0000ff" },
+      { "color": "yellow", "value": "0xFFffff00" },
+      { "color": "cyan", "value": "0xFF00ffff" },
+      { "color": "magenta", "value": "0xFFff00ff" },
+      { "color": "silver", "value": "0xFF808080" },
+      { "color": "gray", "value": "0xFF404040" },
+      { "color": "maroon", "value": "0xFF800000" },
+      { "color": "olive", "value": "0xFF808000" },
+      { "color": "green", "value": "0xFF008000" },
+      { "color": "purple", "value": "0xFF800080" },
+      { "color": "teal", "value": "0xFF008080" },
+      { "color": "navy", "value": "0xFF000080" }
+    ]
+  },
+  "board": [
+    {
+      "keyboardID": 0,
+      "designator": "Allpad",
+      "keyStep": [19.0, 19.0],
+      "stabilizerType": "Alps",
+      "switchType": "Alps/Matias/APC",
+      "capSize": [18.5, 18.5],
+      "units": "mm",
+      "caseColor": "gray",
+      "keysColor": "silver",
+      "keyboardFont": "sans",
+      "labelSizeUnits": "U/100",
+      "keyboardFontSize": 24,
+      "labelColor": "black",
+      "labelPosition": [5.12, 5.12],
+      "profile": "OEM",
+      "keySculpt": "R3",
+      "amountOfUnits": 1,
+      "size": 21,
+      "keys": [
+        {
+          "keyId": 0,
+          "position": [0, 0],
+          "Stabilizer": "2U",
+          "shape": "2U",
+          "labels": [
+            {
+              "glyph": "2U"
+            }
+          ]
+        },
+        {
+          "keyId": 1,
+          "position": [2, 0],
+          "Stabilizer": "2U",
+          "shape": "XT 2U",
+          "labels": [
+            {
+              "glyph": "XT_2U",
+              "labelPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 2,
+          "position": [3, 0],
+          "Stabilizer": "2U",
+          "shape": "BAE Inverted",
+          "labels": [
+            {
+              "glyph": "BAE Inverted",
+              "labelPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 3,
+          "position": [5.25, 0],
+          "Stabilizer": "2U",
+          "shape": "ISO",
+          "labels": [
+            {
+              "glyph": "ISO",
+              "labelPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 4,
+          "position": [6.75, 0],
+          "Stabilizer": "2U",
+          "shape": "ISO Inverted",
+          "labels": [
+            {
+              "glyph": "ISO Inverted",
+              "labelPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 5,
+          "position": [9, 0],
+          "Stabilizer": "2U",
+          "shape": "BAE",
+          "labels": [
+            {
+              "glyph": "BAE",
+              "labelPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 6,
+          "position": [0, 1],
+          "Stabilizer": "2U",
+          "shape": "3U Vertical",
+          "labels": [
+            {
+              "glyph": "3U Vertical",
+              "labelPosition": [5.12, 120]
+            }
+          ]
+        },
+        {
+          "keyId": 7,
+          "position": [4.5, 1],
+          "shape": "2U Vertical",
+          "labels": [
+            {
+              "glyph": "2U Vertical",
+              "labelPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 8,
+          "position": [8, 0],
+          "shape": "1U",
+          "labels": [
+            {
+              "glyph": "1U"
+            }
+          ]
+        },
+        {
+          "keyId": 9,
+          "position": [1, 2],
+          "shape": "1.25U",
+          "labels": [
+            {
+              "glyph": "1.25U"
+            }
+          ]
+        },
+        {
+          "keyId": 10,
+          "position": [2.25, 2],
+          "shape": "1.5U",
+          "labels": [
+            {
+              "glyph": "1.5U"
+            }
+          ]
+        },
+        {
+          "keyId": 11,
+          "position": [3.75, 2],
+          "shape": "0.75U",
+          "labels": [
+            {
+              "glyph": "0.75U"
+            }
+          ]
+        },
+        {
+          "keyId": 12,
+          "position": [5.5, 2],
+          "shape": "2.25U",
+          "labels": [
+            {
+              "glyph": "2.25U"
+            }
+          ]
+        },
+        {
+          "keyId": 13,
+          "position": [7.75, 2],
+          "shape": "2.75U",
+          "labels": [
+            {
+              "glyph": "2.75U"
+            }
+          ]
+        },
+        {
+          "keyId": 14,
+          "position": [1, 3],
+          "Stabilizer": "2.75U",
+          "shape": "3U",
+          "labels": [
+            {
+              "glyph": "3U"
+            }
+          ]
+        },
+        {
+          "keyId": 15,
+          "position": [4, 3],
+          "Stabilizer": "6.25U",
+          "shape": "6.5U",
+          "labels": [
+            {
+              "glyph": "6.5"
+            }
+          ]
+        },
+        {
+          "keyId": 16,
+          "position": [0, 4],
+          "shape": "1.75U",
+          "labels": [
+            {
+              "glyph": "1.75U"
+            }
+          ]
+        },
+        {
+          "keyId": 17,
+          "position": [1.75, 4],
+          "Stabilizer": "6.25U",
+          "shape": "6.25U",
+          "labels": [
+            {
+              "glyph": "6.25U"
+            }
+          ]
+        },
+        {
+          "keyId": 17,
+          "position": [8, 4],
+          "Stabilizer": "2.25U",
+          "shape": "2.5U",
+          "labels": [
+            {
+              "glyph": "2.5U"
+            }
+          ]
+        },
+        {
+          "keyId": 17,
+          "position": [0, 6],
+          "Stabilizer": "7U",
+          "shape": "7U",
+          "labels": [
+            {
+              "glyph": "7U"
+            }
+          ]
+        },
+        {
+          "keyId": 17,
+          "position": [0, 5],
+          "Stabilizer": "7U",
+          "shape": "10U",
+          "labels": [
+            {
+              "glyph": "10U (Big Ass Space)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
