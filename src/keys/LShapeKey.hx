@@ -33,13 +33,14 @@ class LShapeKey extends Visual implements KeyRenderer {
 
 	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int) {
 		super();
-		this.widthNorth = widthNorth;
-		this.heightNorth = heightNorth;
-		this.widthSouth = widthSouth;
-		this.heightSouth = heightSouth;
+		this.widthNorth   = widthNorth;
+		this.heightNorth  = heightNorth;
+		this.widthSouth   = widthSouth;
+		this.heightSouth  = heightSouth;
 		this.offsetSouthX = offsetSouthX;
 		this.offsetSouthY = offsetSouthY;
 
+//here we proccess how the inner radius is to be oriented only
 		if (offsetSouthX < 0) {
 			// here we assume the BAE situation (negative X offset)
 			size(widthSouth * unitScale, heightNorth * unitScale);
@@ -87,12 +88,10 @@ class LShapeKey extends Visual implements KeyRenderer {
 		this.add(fg);
 
 		// then draw the South portion of the keyshape
-		final fg = new RoundedRect(this.topColor, xInner
-			+ (offsetSouthX / 2 * unitScale), yInner
-			+ offsetSouthY / 2 * unitScale, roundedCorner * unitScale,
-			widthSouth * unitScale
-			- this.offsetInner, heightSouth * unitScale
-			- this.offsetInner, this.borderInner, this.thicknessInner);
+		final fg = new RoundedRect(this.topColor, xInner + (offsetSouthX / 2 * unitScale), yInner + offsetSouthY / 2 * unitScale,
+															roundedCorner * unitScale,
+															 widthSouth * unitScale - this.offsetInner, heightSouth * unitScale - this.offsetInner,
+															  this.borderInner, this.thicknessInner);
 		fg.depth = 2;
 		this.add(fg);
 

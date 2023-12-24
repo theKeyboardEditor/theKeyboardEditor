@@ -113,9 +113,9 @@
         },
         {
           "keyId": 7,
-          "position": [3, 1],
+          "position": [4, 1],
           "Stabilizer": "2U",
-          "shape": "ISO",
+          "shape": "XT 2U",
           "label": {
             "glyph": "+",
             "position": [1.27, 17.78]

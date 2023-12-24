@@ -36,11 +36,11 @@ class Viewport extends Scene {
 					gapY = Std.int((19.05 - 18.5) / 19.05 * unit);
 					final widthNorth = 150 - gapX;
 					final heightNorth = 100 - gapY;
-					final widthNorth = 125 - gapX;
+					final widthSouth = 125 - gapX;
 					final heightSouth = 200 - gapY;
 					final offsetSouthX = 25 + Std.int(gapX / 2);
 					final offsetSouthY = 0 + Std.int(gapY / 2);
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "ISO Inverted":
 					// Inverted ISO
 					// This is an ISO enter but with the top of the keycap reversed
@@ -52,7 +52,7 @@ class Viewport extends Scene {
 					final heightSouth = 100 - gapY;
 					final offsetSouthX = 0 + Std.int(gapX / 2);
 					final offsetSouthY = 100 + Std.int(gapY / 2);
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "BAE":
 					// Normal BAE
 					gapX = Std.int((19.05 - 18.5) / 19.05 * unit);
@@ -63,7 +63,7 @@ class Viewport extends Scene {
 					final heightSouth = 100 - gapY;
 					final offsetSouthX = -75 - Std.int(gapX / 2);
 					final offsetSouthY = 100 + Std.int(gapY / 2);
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "BAE Inverted":
 					// Inverted BAE
 					final widthNorth = 225 - gapX;
@@ -72,7 +72,7 @@ class Viewport extends Scene {
 					final heightSouth = 200 - gapY;
 					final offsetSouthX = 0 - Std.int(gapX / 2);
 					final offsetSouthY = 0 + Std.int(gapY / 2);
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "XT 2U":
 					final widthNorth = 100 - gapX;
 					final heightNorth = 200 - gapY;
@@ -80,7 +80,7 @@ class Viewport extends Scene {
 					final heightSouth = 100 - gapY;
 					final offsetSouthX = -100 - Std.int(gapX / 2);
 					final offsetSouthY = 100 + Std.int(gapY / 2);
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "AEK":
 					final widthNorth = 125 - gapX;
 					final heightNorth = 100 - gapY;
@@ -88,7 +88,7 @@ class Viewport extends Scene {
 					final heightSouth = 200 - gapY;
 					final offsetSouthX = 25 + Std.int(gapX / 2);
 					final offsetSouthY = 0 + Std.int(gapY / 2);
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthNorth, heightSouth, offsetSouthX, offsetSouthY);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				default:
 					// 1U
 					var width = unit - gapX;
