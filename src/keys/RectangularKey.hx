@@ -24,9 +24,7 @@ class RectangularKey extends Visual implements KeyRenderer {
 	}
 
 	public function create(): Visual {
-
 		var top = new RoundedRect(this.topColor, 0, 0, roundedCorner, this.width - this.topOffset, this.height - this.topOffset, 0, 0);
-
 
 		top.pos(topX, topY);
 		this.add(top);
@@ -34,11 +32,10 @@ class RectangularKey extends Visual implements KeyRenderer {
 		final bottom = new RoundedRect(this.bodyColor, 0, 0, roundedCorner, this.width, this.height, 0, 0);
 		this.add(bottom);
 
-		
 		if (this.selected) {
 			final select = new Border();
-			select.pos (0,0);
-			select.size(this.width,this.height);
+			select.pos(0, 0);
+			select.size(this.width, this.height);
 			select.borderColor = Color.RED;
 			select.borderPosition = OUTSIDE;
 			select.borderSize = 2;

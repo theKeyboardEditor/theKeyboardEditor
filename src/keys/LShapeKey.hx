@@ -30,7 +30,8 @@ class LShapeKey extends Visual implements KeyRenderer {
 	var offsetSouthX: Int; // The closer member's offset
 	var offsetSouthY: Int;
 
-	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int, selected: Bool) {
+	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int,
+			selected: Bool) {
 		super();
 		this.widthNorth = widthNorth;
 		this.heightNorth = heightNorth;
@@ -127,21 +128,21 @@ class LShapeKey extends Visual implements KeyRenderer {
 		if (this.selected) {
 			final select = new Border();
 			if (this.offsetSouthX < 0) {
-				select.pos (this.offsetSouthX,0);
+				select.pos(this.offsetSouthX, 0);
 			} else {
-				select.pos (0,0);
+				select.pos(0, 0);
 			}
-			if (this.heightNorth > this.heightSouth ) {
-				if (this.widthNorth > this.widthSouth ) {
-					select.size(this.widthNorth,this.heightNorth);
+			if (this.heightNorth > this.heightSouth) {
+				if (this.widthNorth > this.widthSouth) {
+					select.size(this.widthNorth, this.heightNorth);
 				} else {
-					select.size(this.widthSouth,this.heightNorth);
+					select.size(this.widthSouth, this.heightNorth);
 				}
 			} else {
-				if (this.widthNorth > this.widthSouth ) {
-					select.size(this.widthNorth,this.heightSouth);
+				if (this.widthNorth > this.widthSouth) {
+					select.size(this.widthNorth, this.heightSouth);
 				} else {
-					select.size(this.widthSouth,this.heightSouth);
+					select.size(this.widthSouth, this.heightSouth);
 				}
 			}
 			select.borderColor = Color.RED;
@@ -150,7 +151,6 @@ class LShapeKey extends Visual implements KeyRenderer {
 			select.depth = 4;
 			this.add(select);
 		}
-
 
 		return this;
 	}
