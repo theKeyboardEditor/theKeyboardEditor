@@ -16,11 +16,16 @@ class Viewport extends Scene {
 	inline static var movementSpeed: Int = 500;
 	inline static final unit = 100;
 
+	// Used for zooming
+	var originX: Float = 510;
+	var originY: Float = 60;
+
 	override public function new(keyboard: Keyboard) {
 		super();
 		this.keyboard = keyboard;
 		this.universe = new Visual();
-		this.universe.pos(510, 60);
+		this.universe.pos(originX, originY);
+		this.universe.anchor(0.5, 0.5);
 
 		// Define the inputs
 		bindInput();
@@ -36,6 +41,9 @@ class Viewport extends Scene {
 		inputMap.bindScanCode(DOWN, KEY_S);
 		inputMap.bindScanCode(LEFT, KEY_A);
 		inputMap.bindScanCode(RIGHT, KEY_D);
+		// Zoom Time
+		inputMap.bindScanCode(ZOOM_IN, EQUALS);
+		inputMap.bindScanCode(ZOOM_OUT, MINUS);
 	}
 
 	override function create() {
@@ -177,6 +185,7 @@ class Viewport extends Scene {
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 			this.universe.add(key.create());
 
+			// Key label rendering pass
 			var labelOffsetX: Float;
 			var labelOffsetY: Float;
 			for (l in k.labels) {
@@ -207,6 +216,8 @@ class Viewport extends Scene {
 		this.add(universe);
 	}
 
+	final zoom = 2;
+
 	override function update(delta: Float) {
 		// Handle keyboard input.
 		if (inputMap.pressed(UP)) {
@@ -221,6 +232,22 @@ class Viewport extends Scene {
 		if (inputMap.pressed(RIGHT)) {
 			this.universe.x -= movementSpeed * delta;
 		}
+		// ZOOMING!
+		if (inputMap.pressed(ZOOM_IN)) {
+			this.universe.anchor(0.5, 0.5);
+			this.universe.translateX = screen.pointerX - (originX / 2);
+			this.universe.translateY = screen.pointerY - (originY / 2);
+
+			// this.universe.scaleX += zoom * delta;
+			// this.universe.scaleY += zoom * delta;
+		} else if (inputMap.pressed(ZOOM_OUT)) {
+			this.universe.anchor(0.5, 0.5);
+			this.universe.translateX = screen.pointerX - (originX / 2);
+			this.universe.translateY = screen.pointerY - (originY / 2);
+
+			// this.universe.scaleX -= zoom * delta;
+			// this.universe.scaleY -= zoom * delta;
+		}
 	}
 }
 
@@ -229,6 +256,8 @@ enum abstract ViewportInput(Int) {
 	var DOWN;
 	var LEFT;
 	var RIGHT;
+	var ZOOM_IN;
+	var ZOOM_OUT;
 }
 
 /**
