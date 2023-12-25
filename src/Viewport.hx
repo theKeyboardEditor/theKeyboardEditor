@@ -1,11 +1,14 @@
 package;
 
+import ceramic.InputMap;
 import ceramic.Scene;
 import ceramic.Visual;
 import keyson.Keyson.Keyboard;
 
 class Viewport extends Scene {
 	var keyboard: Keyboard;
+	var inputMap = new InputMap<ViewportInput>();
+
 	// Everything inside the viewport is stored here
 	var universe: Visual = new Visual();
 
@@ -18,6 +21,21 @@ class Viewport extends Scene {
 		this.keyboard = keyboard;
 		this.universe = new Visual();
 		this.universe.pos(510, 60);
+
+		// Define the inputs
+		bindInput();
+	}
+
+	function bindInput() {
+		inputMap.bindKeyCode(UP, UP);
+		inputMap.bindKeyCode(DOWN, DOWN);
+		inputMap.bindKeyCode(LEFT, LEFT);
+		inputMap.bindKeyCode(RIGHT, RIGHT);
+		// We use scan code for these so that it will work with non-qwerty layouts as well
+		inputMap.bindScanCode(UP, KEY_W);
+		inputMap.bindScanCode(DOWN, KEY_S);
+		inputMap.bindScanCode(LEFT, KEY_A);
+		inputMap.bindScanCode(RIGHT, KEY_D);
 	}
 
 	override function create() {
@@ -191,19 +209,26 @@ class Viewport extends Scene {
 
 	override function update(delta: Float) {
 		// Handle keyboard input.
-		if (input.keyPressed(KEY_W)) {
+		if (inputMap.pressed(UP)) {
 			this.universe.y += movementSpeed * delta;
 		}
-		if (input.keyPressed(KEY_A)) {
+		if (inputMap.pressed(LEFT)) {
 			this.universe.x += movementSpeed * delta;
 		}
-		if (input.keyPressed(KEY_S)) {
+		if (inputMap.pressed(DOWN)) {
 			this.universe.y -= movementSpeed * delta;
 		}
-		if (input.keyPressed(KEY_D)) {
+		if (inputMap.pressed(RIGHT)) {
 			this.universe.x -= movementSpeed * delta;
 		}
 	}
+}
+
+enum abstract ViewportInput(Int) {
+	var UP;
+	var DOWN;
+	var LEFT;
+	var RIGHT;
 }
 
 /**
