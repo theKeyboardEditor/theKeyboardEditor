@@ -25,7 +25,6 @@ class Viewport extends Scene {
 		this.keyboard = keyboard;
 		this.universe = new Visual();
 		this.universe.pos(originX, originY);
-		this.universe.anchor(0.5, 0.5);
 
 		// Define the inputs
 		bindInput();
@@ -185,6 +184,16 @@ class Viewport extends Scene {
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 			this.universe.add(key.create());
 
+			// A ceramic visual does not inherit the size of it's children
+			// Hence we must set it ourselves
+			if (key.width + key.x > this.universe.width) {
+				this.universe.width = key.width + gapX + key.x;
+			}
+
+			if (key.height + key.y > this.universe.height) {
+				this.universe.height = key.height + gapY + key.y;
+			}
+
 			// Key label rendering pass
 			var labelOffsetX: Float;
 			var labelOffsetY: Float;
@@ -234,19 +243,16 @@ class Viewport extends Scene {
 		}
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
-			this.universe.anchor(0.5, 0.5);
-			this.universe.translateX = screen.pointerX - (originX / 2);
-			this.universe.translateY = screen.pointerY - (originY / 2);
+			this.universe.anchor(screen.pointerX / this.width, screen.pointerY / this.height);
 
-			// this.universe.scaleX += zoom * delta;
-			// this.universe.scaleY += zoom * delta;
+			this.universe.scaleX += zoom * delta;
+			this.universe.scaleY += zoom * delta;
+			this.universe.anchor(0, 0);
 		} else if (inputMap.pressed(ZOOM_OUT)) {
-			this.universe.anchor(0.5, 0.5);
-			this.universe.translateX = screen.pointerX - (originX / 2);
-			this.universe.translateY = screen.pointerY - (originY / 2);
-
-			// this.universe.scaleX -= zoom * delta;
-			// this.universe.scaleY -= zoom * delta;
+			this.universe.anchor(screen.pointerX / this.universe.width, screen.pointerY / this.universe.height);
+			this.universe.scaleX -= zoom * delta;
+			this.universe.scaleY -= zoom * delta;
+			this.universe.anchor(0, 0);
 		}
 	}
 }

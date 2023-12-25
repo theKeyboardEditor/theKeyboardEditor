@@ -27,7 +27,6 @@ class RectangularKey extends Visual implements KeyRenderer {
 
 		final bottom = new RoundedRect(this.bodyColor, 0, 0, roundedCorner, this.width, this.height, 0, 0);
 		this.add(bottom);
-		trace(this.width);
 
 		return this;
 	}
