@@ -164,7 +164,7 @@ class Key {
 		this.labelFont = "";
 		this.relativeRotationCenter = [0.0, 0.0];
 		this.features = []; // "Stepped","Window","Homing","Spacer","Comment","Shadow","LED","OLED","LCD","Encoder","Trackpoint","Trackpad"
-		this.steppedTop = 0.0; //by it's size we reconstruct the type
+		this.steppedTop = 0.0; // by it's size we reconstruct the type
 		this.homingFeature = ""; // "Bar", "Dot", "Sculpt"
 		this.spacerSize = [0.0, 0.0]; // in units of U (1 x 2 U)
 		this.keysColor = "";

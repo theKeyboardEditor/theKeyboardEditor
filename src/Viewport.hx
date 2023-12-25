@@ -1,26 +1,29 @@
 package;
 
 import ceramic.Scene;
+import ceramic.Visual;
 import keyson.Keyson.Keyboard;
 
 class Viewport extends Scene {
 	var keyboard: Keyboard;
-	var labelOffsetX: Float;
-	var labelOffsetY: Float;
-	var keyLabelOffsetX: Float;
-	var keyLabelOffsetY: Float;
+	// Everything inside the viewport is stored here
+	var universe: Visual = new Visual();
 
+	// Constants
+	inline static var movementSpeed: Int = 500;
 	inline static final unit = 100;
 
 	override public function new(keyboard: Keyboard) {
 		super();
 		this.keyboard = keyboard;
+		this.universe = new Visual();
+		this.universe.pos(510, 60);
 	}
 
 	override function create() {
-		var gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit);
-		var gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
-		var labelUnit = this.keyboard.labelSizeUnits;
+		final gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit);
+		final gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
+		final labelUnit = this.keyboard.labelSizeUnits;
 
 		for (k in this.keyboard.keys) {
 			var key: KeyRenderer;
@@ -153,9 +156,11 @@ class Viewport extends Scene {
 					key = new keys.RectangularKey(width, height);
 			}
 
-			key.pos(unit * k.position[Axis.X] + 500, unit * k.position[Axis.Y] + 100);
-			this.add(key.create());
+			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
+			this.universe.add(key.create());
 
+			var labelOffsetX: Float;
+			var labelOffsetY: Float;
 			for (l in k.labels) {
 				keyLabel = new LabelRenderer(l.glyph);
 				keyLabel.labelColor = 0xFF00000F;
@@ -176,16 +181,27 @@ class Viewport extends Scene {
 
 				keyLabel.depth = 4; // mae sure labels render on top
 
-				keyLabel.pos(labelOffsetX
-					+ keyLabel.topX
-					+ unit * k.position[Axis.X]
-					+ 500,
-					labelOffsetY
-					+ keyLabel.topY
-					+ unit * k.position[Axis.Y]
-					+ 100);
-				this.add(keyLabel.create());
+				keyLabel.pos(labelOffsetX + keyLabel.topX + unit * k.position[Axis.X],
+					labelOffsetY + keyLabel.topY + unit * k.position[Axis.Y]);
+				this.universe.add(keyLabel.create());
 			}
+		}
+		this.add(universe);
+	}
+
+	override function update(delta: Float) {
+		// Handle keyboard input.
+		if (input.keyPressed(KEY_W)) {
+			this.universe.y += movementSpeed * delta;
+		}
+		if (input.keyPressed(KEY_A)) {
+			this.universe.x += movementSpeed * delta;
+		}
+		if (input.keyPressed(KEY_S)) {
+			this.universe.y -= movementSpeed * delta;
+		}
+		if (input.keyPressed(KEY_D)) {
+			this.universe.x -= movementSpeed * delta;
 		}
 	}
 }
