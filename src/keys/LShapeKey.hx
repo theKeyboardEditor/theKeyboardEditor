@@ -1,7 +1,7 @@
 package keys;
 
 import ceramic.Arc;
-import ceramic.Quad;
+import ceramic.Border;
 import ceramic.Color;
 import ceramic.Visual;
 import haxe.ui.backend.ceramic.RoundedRect;
@@ -16,6 +16,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 	var topY: Float = 12 * 0.25;
 	var topOffset: Float = 12 * 2;
 	var roundedCorner: Float = 12;
+	var selected: Bool = false;
 
 	var widthNorth: Int; // North is the further away member of the pair
 	var heightNorth: Int;
@@ -29,7 +30,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 	var offsetSouthX: Int; // The closer member's offset
 	var offsetSouthY: Int;
 
-	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int) {
+	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int, selected: Bool) {
 		super();
 		this.widthNorth = widthNorth;
 		this.heightNorth = heightNorth;
@@ -37,6 +38,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 		this.heightSouth = heightSouth;
 		this.offsetSouthX = offsetSouthX;
 		this.offsetSouthY = offsetSouthY;
+		this.selected = selected;
 
 		// here we proccess how the inner radius alone is to be oriented and positioned
 		if (offsetSouthX < 0) { // is the 2nd member Westward from the top member?
@@ -121,6 +123,34 @@ class LShapeKey extends Visual implements KeyRenderer {
 		bottomArc.rotation = arcRotation;
 		bottomArc.pos(arcPosX, arcPosY);
 		this.add(bottomArc);
+
+		if (this.selected) {
+			final select = new Border();
+			if (this.offsetSouthX < 0) {
+				select.pos (this.offsetSouthX,0);
+			} else {
+				select.pos (0,0);
+			}
+			if (this.heightNorth > this.heightSouth ) {
+				if (this.widthNorth > this.widthSouth ) {
+					select.size(this.widthNorth,this.heightNorth);
+				} else {
+					select.size(this.widthSouth,this.heightNorth);
+				}
+			} else {
+				if (this.widthNorth > this.widthSouth ) {
+					select.size(this.widthNorth,this.heightSouth);
+				} else {
+					select.size(this.widthSouth,this.heightSouth);
+				}
+			}
+			select.borderColor = Color.RED;
+			select.borderPosition = OUTSIDE;
+			select.borderSize = 2;
+			select.depth = 4;
+			this.add(select);
+		}
+
 
 		return this;
 	}
