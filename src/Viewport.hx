@@ -127,8 +127,8 @@ class Viewport extends Scene {
 					final heightNorth = 100 - gapY;
 					final widthSouth = 125 - gapX;
 					final heightSouth = 200 - gapY;
-					final offsetSouthX = 25 + Std.int(gapX / 2);
-					final offsetSouthY = 0 + Std.int(gapY / 2);
+					final offsetSouthX = 25;
+					final offsetSouthY = 0;
 					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "ISO Inverted":
 					// Inverted ISO
@@ -137,8 +137,8 @@ class Viewport extends Scene {
 					final heightNorth = 200 - gapY;
 					final widthSouth = 150 - gapX;
 					final heightSouth = 100 - gapY;
-					final offsetSouthX = 0 + Std.int(gapX / 2);
-					final offsetSouthY = 100 + Std.int(gapY / 2);
+					final offsetSouthX = 0;
+					final offsetSouthY = 101; // the 101 is a desing quirk!
 					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "BAE":
 					// Normal BAE
@@ -146,8 +146,8 @@ class Viewport extends Scene {
 					final heightNorth = 200 - gapY;
 					final widthSouth = 225 - gapX;
 					final heightSouth = 100 - gapY;
-					final offsetSouthX = -75 - Std.int(gapX / 2);
-					final offsetSouthY = 100 + Std.int(gapY / 2);
+					final offsetSouthX = -75;
+					final offsetSouthY = 100;
 					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "BAE Inverted":
 					// Inverted BAE
@@ -155,24 +155,24 @@ class Viewport extends Scene {
 					final heightNorth = 100 - gapY;
 					final widthSouth = 150 - gapX;
 					final heightSouth = 200 - gapY;
-					final offsetSouthX = 0 - Std.int(gapX / 2);
-					final offsetSouthY = 0 + Std.int(gapY / 2);
+					final offsetSouthX = -1; // the -1 is a design quirk!
+					final offsetSouthY = 0;
 					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "XT 2U":
 					final widthNorth = 100 - gapX;
 					final heightNorth = 200 - gapY;
 					final widthSouth = 200 - gapX;
 					final heightSouth = 100 - gapY;
-					final offsetSouthX = -100 - Std.int(gapX / 2);
-					final offsetSouthY = 100 + Std.int(gapY / 2);
+					final offsetSouthX = -100;
+					final offsetSouthY = 100;
 					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "AEK":
 					final widthNorth = 125 - gapX;
 					final heightNorth = 100 - gapY;
 					final widthSouth = 100 - gapX;
 					final heightSouth = 200 - gapY;
-					final offsetSouthX = 25 + Std.int(gapX / 2);
-					final offsetSouthY = 0 + Std.int(gapY / 2);
+					final offsetSouthX = 25;
+					final offsetSouthY = 0;
 					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				default:
 					// 1U
