@@ -117,7 +117,6 @@ class Viewport extends Scene {
 					} // now that the appropriate values are assigned, we apply them:
 					trace(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
-					// why this does not get assigned right is beyond me
 				}
 			}
 			keySize = Std.parseFloat(k.shape); // every valid size will get caught here
@@ -133,15 +132,11 @@ class Viewport extends Scene {
 				}
 				trace(width, height);
 				key = new keys.RectangularKey(width, height);
-			} else {
-				trace("fallthru", k.shape); // for some odd reason the special keys don't get assigned up there?
-				trace(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
-				key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 			}
-
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 			key.onPointerDown(key, (_) -> {
 				key.select();
+				trace k.keyID;
 			});
 			this.universe.add(key.create());
 
