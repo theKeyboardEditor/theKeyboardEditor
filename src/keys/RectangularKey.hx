@@ -3,6 +3,7 @@ package keys;
 import ceramic.Color;
 import ceramic.Visual;
 import ceramic.Border;
+import ceramic.TouchInfo;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class RectangularKey extends Visual implements KeyRenderer {
@@ -15,12 +16,10 @@ class RectangularKey extends Visual implements KeyRenderer {
 	var topY: Float = 12 * .25; // North top vs E/W ratio
 	var topOffset: Float = 12 * 2; // the top island offset
 	var roundedCorner: Float = 12;
-	var selected: Bool = false;
 
-	override public function new(width: Float, height: Float, selected: Bool) {
+	override public function new(width: Float, height: Float) {
 		super();
 		size(width, height);
-		this.selected = selected;
 	}
 
 	public function create(): Visual {
@@ -32,17 +31,18 @@ class RectangularKey extends Visual implements KeyRenderer {
 		final bottom = new RoundedRect(this.bodyColor, 0, 0, roundedCorner, this.width, this.height, 0, 0);
 		this.add(bottom);
 
-		if (this.selected) {
-			final select = new Border();
-			select.pos(0, 0);
-			select.size(this.width, this.height);
-			select.borderColor = Color.RED;
-			select.borderPosition = OUTSIDE;
-			select.borderSize = 2;
-			select.depth = 4;
-			this.add(select);
-		}
-
 		return this;
 	}
+
+
+    public function select(_: TouchInfo) {
+        final border = new Border();
+        border.pos(0, 0);
+        border.size(this.width, this.height);
+        border.borderColor = Color.RED;
+        border.borderPosition = OUTSIDE;
+        border.borderSize = 2;
+        border.depth = 4;
+        this.add(border);
+    }
 }

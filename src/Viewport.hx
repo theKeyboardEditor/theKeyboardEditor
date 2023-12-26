@@ -19,8 +19,6 @@ class Viewport extends Scene {
 	// Used for zooming
 	var originX: Float = 510;
 	var originY: Float = 60;
-	var selectedID: Int = 4; // the selected key
-	var selected: Bool = false;
 
 	override public function new(keyboard: Keyboard) {
 		super();
@@ -53,10 +51,8 @@ class Viewport extends Scene {
 		final labelUnit = this.keyboard.labelSizeUnits;
 
 		for (k in this.keyboard.keys) {
-			var key: KeyRenderer;
+			var key: Dynamic;
 			var keyLabel: LabelRenderer;
-
-			selected = (k.keyId == selectedID);
 
 			// TODO: Create some form of syntax that can define this information without this switch case creature
 			// if nothing is given it defaults to 1U
@@ -64,67 +60,67 @@ class Viewport extends Scene {
 				case "0.75U":
 					final width = unit * 0.75 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "1.25U":
 					final width = unit * 1.25 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "1.5U":
 					final width = unit * 1.5 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "1.75U":
 					final width = unit * 1.75 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "2U":
 					final width = unit * 2 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "2.25U":
 					final width = unit * 2.25 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "2.5U":
 					final width = unit * 2.5 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "2.75U":
 					final width = unit * 2.75 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "3U":
 					final width = unit * 3 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "3U Vertical":
 					final width = unit - gapX;
 					final height = unit * 3 - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "6.25U":
 					final width = unit * 6.25 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "6.5U":
 					final width = unit * 6.5 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "7U":
 					final width = unit * 7 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "9U":
 					final width = unit * 9 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "10U":
 					final width = unit * 10 - gapX;
 					final height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "2U Vertical":
 					final width = unit - gapX;
 					final height = unit * 2 - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 				case "ISO":
 					// Normal ISO
 					final widthNorth = 150 - gapX;
@@ -133,7 +129,7 @@ class Viewport extends Scene {
 					final heightSouth = 200 - gapY;
 					final offsetSouthX = 25;
 					final offsetSouthY = 0;
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, selected);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "ISO Inverted":
 					// Inverted ISO
 					// This is an ISO enter but with the top of the keycap reversed
@@ -143,7 +139,7 @@ class Viewport extends Scene {
 					final heightSouth = 100 - gapY;
 					final offsetSouthX = 0;
 					final offsetSouthY = 101; // the 101 is a desing quirk!
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, selected);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "BAE":
 					// Normal BAE
 					final widthNorth = 150 - gapX;
@@ -152,7 +148,7 @@ class Viewport extends Scene {
 					final heightSouth = 100 - gapY;
 					final offsetSouthX = -75;
 					final offsetSouthY = 100;
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, selected);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "BAE Inverted":
 					// Inverted BAE
 					final widthNorth = 225 - gapX;
@@ -161,7 +157,7 @@ class Viewport extends Scene {
 					final heightSouth = 200 - gapY;
 					final offsetSouthX = -1; // the -1 is a design quirk!
 					final offsetSouthY = 0;
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, selected);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "XT 2U":
 					final widthNorth = 100 - gapX;
 					final heightNorth = 200 - gapY;
@@ -169,7 +165,7 @@ class Viewport extends Scene {
 					final heightSouth = 100 - gapY;
 					final offsetSouthX = -100;
 					final offsetSouthY = 100;
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, selected);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				case "AEK":
 					final widthNorth = 125 - gapX;
 					final heightNorth = 100 - gapY;
@@ -177,15 +173,18 @@ class Viewport extends Scene {
 					final heightSouth = 200 - gapY;
 					final offsetSouthX = 25;
 					final offsetSouthY = 0;
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, selected);
+					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 				default:
 					// 1U
 					var width = unit - gapX;
 					var height = unit - gapY;
-					key = new keys.RectangularKey(width, height, selected);
+					key = new keys.RectangularKey(width, height);
 			}
 
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
+            key.onPointerDown(key, (_) -> {
+                key.select();
+            });
 			this.universe.add(key.create());
 
 			// A ceramic visual does not inherit the size of it's children
