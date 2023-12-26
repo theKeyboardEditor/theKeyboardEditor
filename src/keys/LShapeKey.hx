@@ -127,30 +127,30 @@ class LShapeKey extends Visual implements KeyRenderer {
 		return this;
 	}
 
-    public function select(_: TouchInfo) {
-        final border = new Border();
-        if (this.offsetSouthX < 0) {
-            border.pos(this.offsetSouthX, 0);
-        } else {
-            border.pos(0, 0);
-        }
-        if (this.heightNorth > this.heightSouth) {
-            if (this.widthNorth > this.widthSouth) {
-                border.size(this.widthNorth, this.heightNorth);
-            } else {
-                border.size(this.widthSouth, this.heightNorth);
-            }
-        } else {
-            if (this.widthNorth > this.widthSouth) {
-                border.size(this.widthNorth, this.heightSouth);
-            } else {
-                border.size(this.widthSouth, this.heightSouth);
-            }
-        }
-        border.borderColor = Color.RED;
-        border.borderPosition = OUTSIDE;
-        border.borderSize = 2;
-        border.depth = 4;
-        this.add(border);
-    }
+	public function select(_: TouchInfo) {
+		final border = new Border();
+		if (this.offsetSouthX < 0) {
+			border.pos(this.offsetSouthX, 0);
+		} else {
+			border.pos(0, 0);
+		}
+		if (this.heightNorth > this.heightSouth) {
+			if (this.widthNorth > this.widthSouth) {
+				border.size(this.widthNorth, this.heightNorth);
+			} else {
+				border.size(this.widthSouth, this.heightNorth);
+			}
+		} else {
+			if (this.widthNorth > this.widthSouth) {
+				border.size(this.widthNorth, this.heightSouth);
+			} else {
+				border.size(this.widthSouth, this.heightSouth);
+			}
+		}
+		border.borderColor = Color.RED;
+		border.borderPosition = OUTSIDE;
+		border.borderSize = 2;
+		border.depth = 4;
+		this.add(border);
+	}
 }

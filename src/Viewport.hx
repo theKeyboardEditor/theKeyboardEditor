@@ -158,7 +158,7 @@ class Viewport extends Scene {
 					final offsetSouthX = -1; // the -1 is a design quirk!
 					final offsetSouthY = 0;
 					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
-				case "XT 2U":
+				case "XT_2U":
 					final widthNorth = 100 - gapX;
 					final heightNorth = 200 - gapY;
 					final widthSouth = 200 - gapX;
@@ -182,9 +182,9 @@ class Viewport extends Scene {
 			}
 
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
-            key.onPointerDown(key, (_) -> {
-                key.select();
-            });
+			key.onPointerDown(key, (_) -> {
+				key.select();
+			});
 			this.universe.add(key.create());
 
 			// A ceramic visual does not inherit the size of it's children

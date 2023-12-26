@@ -24,6 +24,7 @@ class LabelRenderer extends Visual {
 		super();
 		size(width, height);
 		this.labelGlyph = glyph;
+		pos(this.labelPositionX, this.labelPositionY);
 	}
 
 	public function create(): Visual {

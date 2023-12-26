@@ -63,10 +63,10 @@
           "keyId": 1,
           "position": [2, 0],
           "Stabilizer": "2U",
-          "shape": "XT 2U",
+          "shape": "XT_2U",
           "labels": [
             {
-              "glyph": "XT_2U",
+              "glyph": "XT 2U",
               "labelPosition": [5.12, 80]
             }
           ]
@@ -78,8 +78,8 @@
           "shape": "BAE Inverted",
           "labels": [
             {
-              "glyph": "BAE Inverted",
-              "labelPosition": [5.12, 80]
+              "glyph": "BAE \nInverted",
+              "labelPosition": [5.12, 70]
             }
           ]
         },
@@ -91,7 +91,7 @@
           "labels": [
             {
               "glyph": "ISO",
-              "labelPosition": [5.12, 80]
+              "labelPosition": [30.75, 80]
             }
           ]
         },
@@ -102,8 +102,8 @@
           "shape": "ISO Inverted",
           "labels": [
             {
-              "glyph": "ISO Inverted",
-              "labelPosition": [5.12, 80]
+              "glyph": "ISO \nInverted",
+              "labelPosition": [5.12, 70]
             }
           ]
         },
