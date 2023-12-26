@@ -34,15 +34,14 @@ class RectangularKey extends Visual implements KeyRenderer {
 		return this;
 	}
 
-
-    public function select(_: TouchInfo) {
-        final border = new Border();
-        border.pos(0, 0);
-        border.size(this.width, this.height);
-        border.borderColor = Color.RED;
-        border.borderPosition = OUTSIDE;
-        border.borderSize = 2;
-        border.depth = 4;
-        this.add(border);
-    }
+	public function select(_: TouchInfo) {
+		final border = new Border();
+		border.pos(0, 0);
+		border.size(this.width, this.height);
+		border.borderColor = Color.RED;
+		border.borderPosition = OUTSIDE;
+		border.borderSize = 2;
+		border.depth = 4;
+		this.add(border);
+	}
 }

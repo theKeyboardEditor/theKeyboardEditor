@@ -8,5 +8,5 @@ interface KeyRenderer {
 
 	public function create(): ceramic.Visual;
 	public function pos(x: Float, y: Float): Void;
-    public function select(_: ceramic.TouchInfo): Void;
+	public function select(_: ceramic.TouchInfo): Void;
 }
