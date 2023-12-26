@@ -136,7 +136,6 @@ class Viewport extends Scene {
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 			key.onPointerDown(key, (_) -> {
 				key.select();
-				trace k.keyID;
 			});
 			this.universe.add(key.create());
 
