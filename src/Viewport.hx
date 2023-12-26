@@ -60,12 +60,12 @@ class Viewport extends Scene {
 		for (k in this.keyboard.keys) {
 			var key: Dynamic;
 			var keyLabel: LabelRenderer;
-			keySize=1; //reset to default
+			keySize = 1; // reset to default
 
 			// TODO: Create some form of syntax that can define this information without this switch case creature
-			for (t in ["BAE","ISO","XT_2U","AEK"] ) { // the special shape cases
-				if ( k.shape.split(' ').indexOf(t) != -1 ) { // if shape found found go here
-					//trace ("in:",k.shape,"found:", t);
+			for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
+				if (k.shape.split(' ').indexOf(t) != -1) { // if shape found found go here
+					// trace ("in:",k.shape,"found:", t);
 					switch k.shape {
 						case "ISO":
 							// Normal ISO
@@ -121,24 +121,23 @@ class Viewport extends Scene {
 				}
 			}
 			keySize = Std.parseFloat(k.shape); // every valid size will get caught here
-			if ( ! Math.isNaN(keySize) ) { 
-				if ( k.shape.split(' ').indexOf("Vertical") != -1 ) { // it's vertical!
+			if (!Math.isNaN(keySize)) {
+				if (k.shape.split(' ').indexOf("Vertical") != -1) { // it's vertical!
 					width = unit - gapX;
 					height = unit * keySize - gapY;
-					trace ("|");
+					trace("|");
 				} else {
 					width = unit * keySize - gapX;
 					height = unit - gapY;
 					trace("-");
 				}
-				trace (width, height);
+				trace(width, height);
 				key = new keys.RectangularKey(width, height);
 			} else {
-				  trace ("fallthru",k.shape); // for some odd reason the special keys don't get assigned up there?
-				  trace(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
-				  key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
+				trace("fallthru", k.shape); // for some odd reason the special keys don't get assigned up there?
+				trace(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
+				key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 			}
-			
 
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 			key.onPointerDown(key, (_) -> {
@@ -159,7 +158,7 @@ class Viewport extends Scene {
 			// Key label rendering pass
 			var labelOffsetX: Float;
 			var labelOffsetY: Float;
-			for (l in k.labels) {// we can have many labels!
+			for (l in k.labels) { // we can have many labels!
 				keyLabel = new LabelRenderer(l.glyph);
 				keyLabel.labelColor = 0xFF00000F;
 				// is the label position set specifically?
