@@ -7,7 +7,7 @@ import ceramic.Visual;
 import ceramic.TouchInfo;
 import haxe.ui.backend.ceramic.RoundedRect;
 
-class LShapeKey extends Visual implements KeyRenderer {
+class LShapeKey extends KeyRenderer {
 	// TODO make one of this two values a shade of the other
 	var topColor: Int = 0xffFCFCFC;
 	var bodyColor: Int = 0xFFCCCCCC;
@@ -80,7 +80,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 		}
 	}
 
-	public function create(): Visual {
+	override public function create(): Visual {
 		// first draw the North member of the keyshape
 		final top = new RoundedRect(this.topColor, 0, 0, roundedCorner, widthNorth - this.topOffset, heightNorth - this.topOffset, 0, 0);
 		top.pos(topX, topY);
@@ -127,7 +127,7 @@ class LShapeKey extends Visual implements KeyRenderer {
 		return this;
 	}
 
-	public function select(_: TouchInfo) {
+	override public function select(_: TouchInfo) {
 		final border = new Border();
 		if (this.offsetSouthX < 0) {
 			border.pos(this.offsetSouthX, 0);

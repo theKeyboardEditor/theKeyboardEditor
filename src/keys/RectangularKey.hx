@@ -6,7 +6,7 @@ import ceramic.Border;
 import ceramic.TouchInfo;
 import haxe.ui.backend.ceramic.RoundedRect;
 
-class RectangularKey extends Visual implements KeyRenderer {
+class RectangularKey extends KeyRenderer {
 	// TODO make one of this two values a shade of the other
 	var topColor: Int = 0xffFCFCFC;
 	var bodyColor: Int = 0xFFCCCCCC;
@@ -22,7 +22,7 @@ class RectangularKey extends Visual implements KeyRenderer {
 		size(width, height);
 	}
 
-	public function create(): Visual {
+	override public function create(): Visual {
 		var top = new RoundedRect(this.topColor, 0, 0, roundedCorner, this.width - this.topOffset, this.height - this.topOffset, 0, 0);
 
 		top.pos(topX, topY);
@@ -34,7 +34,7 @@ class RectangularKey extends Visual implements KeyRenderer {
 		return this;
 	}
 
-	public function select(_: TouchInfo) {
+	override public function select(_: TouchInfo) {
 		final border = new Border();
 		border.pos(0, 0);
 		border.size(this.width, this.height);

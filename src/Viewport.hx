@@ -58,7 +58,7 @@ class Viewport extends Scene {
 		final labelUnit = this.keyboard.labelSizeUnits;
 
 		for (k in this.keyboard.keys) {
-			var key: Dynamic;
+			var key: KeyRenderer;
 			var keyLabel: LabelRenderer;
 			keySize = 1; // reset to default
 
@@ -136,9 +136,7 @@ class Viewport extends Scene {
 			}
 
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
-			key.onPointerDown(key, (_) -> {
-				key.select();
-			});
+			key.onPointerDown(key, key.select);
 
 			this.universe.add(key.create());
 
