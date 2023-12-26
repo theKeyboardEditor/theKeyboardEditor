@@ -114,11 +114,10 @@ class Viewport extends Scene {
 							heightSouth = 200 - gapY;
 							offsetSouthX = 25;
 							offsetSouthY = 0;
-					} // now that the appropriate values are assigned, we apply them:
-					trace(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
-					key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
+					}
 				}
 			}
+
 			keySize = Std.parseFloat(k.shape); // every valid size will get caught here
 			if (!Math.isNaN(keySize)) {
 				if (k.shape.split(' ').indexOf("Vertical") != -1) { // it's vertical!
@@ -132,11 +131,15 @@ class Viewport extends Scene {
 				}
 				trace(width, height);
 				key = new keys.RectangularKey(width, height);
+			} else {
+				key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 			}
+
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 			key.onPointerDown(key, (_) -> {
 				key.select();
 			});
+
 			this.universe.add(key.create());
 
 			// A ceramic visual does not inherit the size of it's children
