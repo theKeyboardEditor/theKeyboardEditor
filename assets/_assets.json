@@ -1,0 +1,103 @@
+{
+    "assets": [
+        {
+            "name": "allpad.json"
+        },
+        {
+            "name": "bloom.frag"
+        },
+        {
+            "name": "bloom.vert"
+        },
+        {
+            "name": "blur.frag"
+        },
+        {
+            "name": "blur.vert"
+        },
+        {
+            "name": "ceramic.png"
+        },
+        {
+            "name": "ceramic@2x.png"
+        },
+        {
+            "name": "fxaa.frag"
+        },
+        {
+            "name": "fxaa.vert"
+        },
+        {
+            "name": "gaussianBlur.frag"
+        },
+        {
+            "name": "glow.frag"
+        },
+        {
+            "name": "glow.vert"
+        },
+        {
+            "name": "icons/color-mode.png"
+        },
+        {
+            "name": "icons/kebab-dropdown.png"
+        },
+        {
+            "name": "icons/keyboard-mode.png"
+        },
+        {
+            "name": "icons/legend-mode.png"
+        },
+        {
+            "name": "icons/place-mode.png"
+        },
+        {
+            "name": "icons/unit-mode.png"
+        },
+        {
+            "name": "innerLight.frag"
+        },
+        {
+            "name": "msdf.frag"
+        },
+        {
+            "name": "msdf.vert"
+        },
+        {
+            "name": "numpad.json"
+        },
+        {
+            "name": "outline.frag"
+        },
+        {
+            "name": "outline.vert"
+        },
+        {
+            "name": "pixelArt.frag"
+        },
+        {
+            "name": "pixelArt.vert"
+        },
+        {
+            "name": "RobotoMedium.fnt"
+        },
+        {
+            "name": "RobotoMedium.png"
+        },
+        {
+            "name": "textured.frag"
+        },
+        {
+            "name": "textured.vert"
+        },
+        {
+            "name": "tintBlack.frag"
+        },
+        {
+            "name": "tintBlack.vert"
+        },
+        {
+            "name": "white.png"
+        }
+    ]
+}

@@ -1,0 +1,284 @@
+{
+  "name": "Allpad",
+  "author": "cest73",
+  "license": "MIT",
+  "comment": "Each and every possible key at once",
+  "colorTable": {
+    "name": "Kids Crayons 16",
+    "url": "https://some.site.org",
+    "colorMatchingProfile": "generic",
+    "size": 16,
+    "swatches": [
+      { "color": "black", "value": "0xFF000000" },
+      { "color": "white", "value": "0xFFffffff" },
+      { "color": "red", "value": "0xFFff0000" },
+      { "color": "lime", "value": "0xFF00ff00" },
+      { "color": "blue", "value": "0xFF0000ff" },
+      { "color": "yellow", "value": "0xFFffff00" },
+      { "color": "cyan", "value": "0xFF00ffff" },
+      { "color": "magenta", "value": "0xFFff00ff" },
+      { "color": "silver", "value": "0xFF808080" },
+      { "color": "gray", "value": "0xFF404040" },
+      { "color": "maroon", "value": "0xFF800000" },
+      { "color": "olive", "value": "0xFF808000" },
+      { "color": "green", "value": "0xFF008000" },
+      { "color": "purple", "value": "0xFF800080" },
+      { "color": "teal", "value": "0xFF008080" },
+      { "color": "navy", "value": "0xFF000080" }
+    ]
+  },
+  "unit": [
+    {
+      "keyboardID": 0,
+      "designator": "Allpad",
+      "keyStep": [19.0, 19.0],
+      "stabilizerType": "Alps",
+      "switchType": "Alps/Matias/APC",
+      "capSize": [18.5, 18.5],
+      "rulerUnits": "mm",
+      "caseColor": "gray",
+      "keysColor": "silver",
+      "keyboardFont": "sans",
+      "legendSizeUnits": "U/100",
+      "keyboardFontSize": 24,
+      "legendColor": "black",
+      "legendPosition": [5.12, 5.12],
+      "profile": "OEM",
+      "keySculpt": "R3",
+      "amountOfUnits": 1,
+      "size": 21,
+      "keys": [
+        {
+          "keyId": 0,
+          "position": [0, 0],
+          "stabilizer": "2U",
+          "shape": "2U",
+          "legends": [
+            {
+              "symbol": "2U"
+            }
+          ]
+        },
+        {
+          "keyId": 1,
+          "position": [2, 0],
+          "stabilizer": "2U",
+          "shape": "XT_2U",
+          "legends": [
+            {
+              "symbol": "XT 2U",
+              "legendPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 2,
+          "position": [3, 0],
+          "stabilizer": "2U",
+          "shape": "BAE Inverted",
+          "legends": [
+            {
+              "symbol": "BAE \nInverted",
+              "legendPosition": [5.12, 70]
+            }
+          ]
+        },
+        {
+          "keyId": 3,
+          "position": [5.25, 0],
+          "stabilizer": "2U",
+          "shape": "ISO",
+          "legends": [
+            {
+              "symbol": "ISO",
+              "legendPosition": [30.75, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 4,
+          "position": [6.75, 0],
+          "stabilizer": "2U",
+          "shape": "ISO Inverted",
+          "legends": [
+            {
+              "symbol": "ISO \nInverted",
+              "legendPosition": [5.12, 70]
+            }
+          ]
+        },
+        {
+          "keyId": 5,
+          "position": [9, 0],
+          "stabilizer": "2U",
+          "shape": "BAE",
+          "legends": [
+            {
+              "symbol": "BAE",
+              "legendPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 6,
+          "position": [0, 1],
+          "stabilizer": "2U",
+          "shape": "3U Vertical",
+          "legends": [
+            {
+              "symbol": "3U Vertical",
+              "legendPosition": [5.12, 120]
+            }
+          ]
+        },
+        {
+          "keyId": 7,
+          "position": [4.5, 1],
+          "shape": "2U Vertical",
+          "legends": [
+            {
+              "symbol": "2U Vertical",
+              "legendPosition": [5.12, 80]
+            }
+          ]
+        },
+        {
+          "keyId": 8,
+          "position": [8, 0],
+          "shape": "1U",
+          "legends": [
+            {
+              "symbol": "1U"
+            }
+          ]
+        },
+        {
+          "keyId": 9,
+          "position": [1, 2],
+          "shape": "1.25U",
+          "legends": [
+            {
+              "symbol": "1.25U"
+            }
+          ]
+        },
+        {
+          "keyId": 10,
+          "position": [2.25, 2],
+          "shape": "1.5U",
+          "legends": [
+            {
+              "symbol": "1.5U"
+            }
+          ]
+        },
+        {
+          "keyId": 11,
+          "position": [3.75, 2],
+          "shape": "0.75U",
+          "legends": [
+            {
+              "symbol": "0.75U"
+            }
+          ]
+        },
+        {
+          "keyId": 12,
+          "position": [5.5, 2],
+          "shape": "2.25U",
+          "legends": [
+            {
+              "symbol": "2.25U"
+            }
+          ]
+        },
+        {
+          "keyId": 13,
+          "position": [7.75, 2],
+          "shape": "2.75U",
+          "legends": [
+            {
+              "symbol": "2.75U"
+            }
+          ]
+        },
+        {
+          "keyId": 14,
+          "position": [1, 3],
+          "stabilizer": "2.75U",
+          "shape": "3U",
+          "legends": [
+            {
+              "symbol": "3U"
+            }
+          ]
+        },
+        {
+          "keyId": 15,
+          "position": [4, 3],
+          "stabilizer": "6.25U",
+          "shape": "6.5U",
+          "legends": [
+            {
+              "symbol": "6.5"
+            }
+          ]
+        },
+        {
+          "keyId": 16,
+          "position": [0, 4],
+          "shape": "1.75U",
+          "legends": [
+            {
+              "symbol": "1.75U"
+            }
+          ]
+        },
+        {
+          "keyId": 17,
+          "position": [1.75, 4],
+          "stabilizer": "6.25U",
+          "shape": "6.25U",
+          "legends": [
+            {
+              "symbol": "6.25U"
+            }
+          ]
+        },
+        {
+          "keyId": 17,
+          "position": [8, 4],
+          "stabilizer": "2.25U",
+          "shape": "2.5U",
+          "legends": [
+            {
+              "symbol": "2.5U"
+            }
+          ]
+        },
+        {
+          "keyId": 17,
+          "position": [0, 6],
+          "stabilizer": "7U",
+          "shape": "7U",
+          "legends": [
+            {
+              "symbol": "7U"
+            }
+          ]
+        },
+        {
+          "keyId": 17,
+          "position": [0, 5],
+          "stabilizer": "7U",
+          "shape": "10U",
+          "legends": [
+            {
+              "symbol": "10U (Big Ass Space)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
