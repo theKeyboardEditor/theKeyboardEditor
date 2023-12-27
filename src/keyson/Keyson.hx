@@ -49,14 +49,14 @@ class Palette {
 	public var url: String;
 	public var colorMatchingProfile: String;
 	public var size: Int;
-	public var squashes: Array<Color>;
+	public var swatches: Array<Color>;
 
 	public function new() {
 		this.name = "unknown";
 		this.url = "unknown";
 		this.colorMatchingProfile = "none";
 		this.size = 1; // amount of colors
-		this.squashes = [new Color("", "0x00000000")];
+		this.swatches = [new Color("", "0x00000000")];
 	}
 }
 
