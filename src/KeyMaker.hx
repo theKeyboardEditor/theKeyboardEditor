@@ -97,9 +97,9 @@ class KeyMaker {
 			var label = new LabelRenderer(l.glyph);
 			label.color = 0xFF00000F;
 			// is the label position set specifically?
-			if (l.labelPosition != null) { // yes we adjust specifically
-				labelOffsetX = l.labelPosition[Axis.X];
-				labelOffsetY = l.labelPosition[Axis.Y];
+			if (l.labelPosition != null) { // yes we account for individual adjustment too!
+				labelOffsetX = l.labelPosition[Axis.X] + keyboard.labelPosition[Axis.X];
+				labelOffsetY = l.labelPosition[Axis.Y] + keyboard.labelPosition[Axis.Y];
 			} else { // no we use the global coordinates
 				labelOffsetX = keyboard.labelPosition[Axis.X];
 				labelOffsetY = keyboard.labelPosition[Axis.Y];
