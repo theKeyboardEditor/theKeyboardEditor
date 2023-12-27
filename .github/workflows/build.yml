@@ -31,10 +31,10 @@ jobs:
         run: |
           node .github/workflows/download-ceramic.js
       - name: Setup Haxe
-        working-directory: .
+        working-directory: .github/workflows/
         run: |
-          export NEKOPATH=$PWD'.github/workflows/ceramic/git/haxe-binary/linux/neko'
-          export HAXEPATH=$PWD'.github/workflows/ceramic/git/haxe-binary/linux/haxe'
+          export NEKOPATH=$PWD'/ceramic/git/haxe-binary/linux/neko'
+          export HAXEPATH=$PWD'/ceramic/git/haxe-binary/linux/haxe'
           echo 'neko path: '$NEKOPATH
           echo 'haxe path: '$HAXEPATH
           sudo mkdir -p /usr/local/bin
@@ -60,7 +60,6 @@ jobs:
       - name: Install Ceramic
         working-directory: .github/workflows/ceramic/tools
         run: |
-          ls
           ./ceramic link
       - name: Build 
         working-directory: .
