@@ -65,7 +65,7 @@ jobs:
         working-directory: .
         run: |
           ceramic clay build web --setup --assets
-          ls *
+          rm project/web/.gitignore
       - name: Add .nojekyll
         working-directory: .
         run: |
