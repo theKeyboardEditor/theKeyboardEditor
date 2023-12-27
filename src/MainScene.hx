@@ -29,7 +29,7 @@ class MainScene extends Scene {
 		// Render keys
 		final keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 		//final keyboard = keyson.Keyson.parse(assets.text(Texts.ALLPAD));
-		final viewport = new Viewport(keyboard.board[0]);
+		final viewport = new Viewport(keyboard.unit[0]);
 		this.add(viewport);
 
 		// Create base container

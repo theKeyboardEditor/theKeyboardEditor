@@ -27,7 +27,7 @@
       { "color": "navy", "value": "0xFF000080" }
     ]
   },
-  "keyboard": [
+  "unit": [
     {
       "keyboardID": 0,
       "designator": "Numpad",
@@ -35,7 +35,7 @@
       "stabilizerType": "Cherry",
       "switchType": "Cherry MX/Gateron/Kailh",
       "capSize": [18.5, 18.5],
-      "units": "mm",
+      "rulerUnits": "mm",
       "caseColor": "white",
       "keysColor": "white",
       "keyboardFont": "sans",

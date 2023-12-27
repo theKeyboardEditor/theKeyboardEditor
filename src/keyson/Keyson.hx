@@ -14,7 +14,7 @@ class Keyson {
 	public var license: String;
 	public var comment: String;
 	public var colorTable: Palette;
-	public var board: Array<Keyboard>;
+	public var unit: Array<Keyboard>;
 
 	@:jignored public static var tabulation: String = "	"; // keyson output indentation
 
@@ -24,7 +24,7 @@ class Keyson {
 		license = "CC";
 		comment = "empty";
 		colorTable = new Palette();
-		board = [new Keyboard()];
+		unit = [new Keyboard()]; // one of keyboard rulerUnits
 	}
 
 	/** The parser and the encoder
@@ -71,7 +71,7 @@ class Color {
 }
 
 /** Keyboard:
-	** Each of a Split keyboard's units with a numpad and a joypad (4 sub units)
+	** Each of a Split keyboard's rulerUnits with a numpad and a joypad (4 sub rulerUnits)
 	** Each of wo halves wirelessly connected to a host via bluetooth
 	** Or just a common single unit keyboard
 **/
@@ -81,8 +81,8 @@ class Keyboard {
 	public var keyStep: Array<Float>;
 	public var stabilizerType: String;
 	public var switchType: String;
-	public var capSize: Array<Float>; // in units of measurement
-	public var units: String; // units of measurement
+	public var capSize: Array<Float>; // in rulerUnits of measurement
+	public var rulerUnits: String; // units of real world measurement
 	public var caseColor: Int; // it is a binary value
 	public var keysColor: Int; // it is a binary value
 	public var labelSizeUnits: String; // "px,pc,mm,thou,U/100"
@@ -104,7 +104,7 @@ class Keyboard {
 		this.stabilizerType = "";
 		this.switchType = "";
 		this.capSize = [18.5, 18.5]; // some usually expected values
-		this.units = "mm";           // important!
+		this.rulerUnits = "mm";           // important!
 		this.caseColor = 0xFFFCFCFC; // shadow of withe
 		this.keysColor = 0xFFFFFFFF; // blinding withe
 		this.labelSizeUnits = "U/100"; // "px,pc,mm,thou,U/100"
@@ -206,7 +206,7 @@ class LEDFeature {
 
 class EncoderFeature {
 	public var diameter: Float; // in unit size
-	public var barrelSize: Float; // height/length in units size
+	public var barrelSize: Float; // height/length in rulerUnits size
 	public var profile: String; // "Round" "Curled" "Ribbed"
 	public var type: String; // axis:"Upright" "Barrel X" "Barrel Y"
 
