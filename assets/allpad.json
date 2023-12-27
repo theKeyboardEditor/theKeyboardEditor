@@ -39,10 +39,10 @@
       "caseColor": "gray",
       "keysColor": "silver",
       "keyboardFont": "sans",
-      "labelSizeUnits": "U/100",
+      "legendSizeUnits": "U/100",
       "keyboardFontSize": 24,
-      "labelColor": "black",
-      "labelPosition": [5.12, 5.12],
+      "legendColor": "black",
+      "legendPosition": [5.12, 5.12],
       "profile": "OEM",
       "keySculpt": "R3",
       "amountOfUnits": 1,
@@ -53,7 +53,7 @@
           "position": [0, 0],
           "stabilizer": "2U",
           "shape": "2U",
-          "labels": [
+          "legends": [
             {
               "symbol": "2U"
             }
@@ -64,10 +64,10 @@
           "position": [2, 0],
           "stabilizer": "2U",
           "shape": "XT_2U",
-          "labels": [
+          "legends": [
             {
               "symbol": "XT 2U",
-              "labelPosition": [5.12, 80]
+              "legendPosition": [5.12, 80]
             }
           ]
         },
@@ -76,10 +76,10 @@
           "position": [3, 0],
           "stabilizer": "2U",
           "shape": "BAE Inverted",
-          "labels": [
+          "legends": [
             {
               "symbol": "BAE \nInverted",
-              "labelPosition": [5.12, 70]
+              "legendPosition": [5.12, 70]
             }
           ]
         },
@@ -88,10 +88,10 @@
           "position": [5.25, 0],
           "stabilizer": "2U",
           "shape": "ISO",
-          "labels": [
+          "legends": [
             {
               "symbol": "ISO",
-              "labelPosition": [30.75, 80]
+              "legendPosition": [30.75, 80]
             }
           ]
         },
@@ -100,10 +100,10 @@
           "position": [6.75, 0],
           "stabilizer": "2U",
           "shape": "ISO Inverted",
-          "labels": [
+          "legends": [
             {
               "symbol": "ISO \nInverted",
-              "labelPosition": [5.12, 70]
+              "legendPosition": [5.12, 70]
             }
           ]
         },
@@ -112,10 +112,10 @@
           "position": [9, 0],
           "stabilizer": "2U",
           "shape": "BAE",
-          "labels": [
+          "legends": [
             {
               "symbol": "BAE",
-              "labelPosition": [5.12, 80]
+              "legendPosition": [5.12, 80]
             }
           ]
         },
@@ -124,10 +124,10 @@
           "position": [0, 1],
           "stabilizer": "2U",
           "shape": "3U Vertical",
-          "labels": [
+          "legends": [
             {
               "symbol": "3U Vertical",
-              "labelPosition": [5.12, 120]
+              "legendPosition": [5.12, 120]
             }
           ]
         },
@@ -135,10 +135,10 @@
           "keyId": 7,
           "position": [4.5, 1],
           "shape": "2U Vertical",
-          "labels": [
+          "legends": [
             {
               "symbol": "2U Vertical",
-              "labelPosition": [5.12, 80]
+              "legendPosition": [5.12, 80]
             }
           ]
         },
@@ -146,7 +146,7 @@
           "keyId": 8,
           "position": [8, 0],
           "shape": "1U",
-          "labels": [
+          "legends": [
             {
               "symbol": "1U"
             }
@@ -156,7 +156,7 @@
           "keyId": 9,
           "position": [1, 2],
           "shape": "1.25U",
-          "labels": [
+          "legends": [
             {
               "symbol": "1.25U"
             }
@@ -166,7 +166,7 @@
           "keyId": 10,
           "position": [2.25, 2],
           "shape": "1.5U",
-          "labels": [
+          "legends": [
             {
               "symbol": "1.5U"
             }
@@ -176,7 +176,7 @@
           "keyId": 11,
           "position": [3.75, 2],
           "shape": "0.75U",
-          "labels": [
+          "legends": [
             {
               "symbol": "0.75U"
             }
@@ -186,7 +186,7 @@
           "keyId": 12,
           "position": [5.5, 2],
           "shape": "2.25U",
-          "labels": [
+          "legends": [
             {
               "symbol": "2.25U"
             }
@@ -196,7 +196,7 @@
           "keyId": 13,
           "position": [7.75, 2],
           "shape": "2.75U",
-          "labels": [
+          "legends": [
             {
               "symbol": "2.75U"
             }
@@ -207,7 +207,7 @@
           "position": [1, 3],
           "stabilizer": "2.75U",
           "shape": "3U",
-          "labels": [
+          "legends": [
             {
               "symbol": "3U"
             }
@@ -218,7 +218,7 @@
           "position": [4, 3],
           "stabilizer": "6.25U",
           "shape": "6.5U",
-          "labels": [
+          "legends": [
             {
               "symbol": "6.5"
             }
@@ -228,7 +228,7 @@
           "keyId": 16,
           "position": [0, 4],
           "shape": "1.75U",
-          "labels": [
+          "legends": [
             {
               "symbol": "1.75U"
             }
@@ -239,7 +239,7 @@
           "position": [1.75, 4],
           "stabilizer": "6.25U",
           "shape": "6.25U",
-          "labels": [
+          "legends": [
             {
               "symbol": "6.25U"
             }
@@ -250,7 +250,7 @@
           "position": [8, 4],
           "stabilizer": "2.25U",
           "shape": "2.5U",
-          "labels": [
+          "legends": [
             {
               "symbol": "2.5U"
             }
@@ -261,7 +261,7 @@
           "position": [0, 6],
           "stabilizer": "7U",
           "shape": "7U",
-          "labels": [
+          "legends": [
             {
               "symbol": "7U"
             }
@@ -272,7 +272,7 @@
           "position": [0, 5],
           "stabilizer": "7U",
           "shape": "10U",
-          "labels": [
+          "legends": [
             {
               "symbol": "10U (Big Ass Space)"
             }

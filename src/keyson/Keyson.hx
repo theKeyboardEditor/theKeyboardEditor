@@ -83,13 +83,13 @@ class Keyboard {
 	public var switchType: String;
 	public var capSize: Array<Float>; // in rulerUnits of measurement
 	public var rulerUnits: String; // units of real world measurement
-	public var caseColor: Int; // it is a binary value
-	public var keysColor: Int; // it is a binary value
+	public var caseColor: String; // it is a binary value
+	public var keysColor: String; // it is a binary value
 	public var labelSizeUnits: String; // "px,pc,mm,thou,U/100"
 	public var keyboardFont: String;
 	public var keyboardFontSize: Float;
-	public var labelColor: Int; // it is a binary value
-	public var labelPosition: Array<Float>;
+	public var legendColor: String; // it is a binary value
+	public var legendPosition: Array<Float>;
 	public var profile: String;
 	public var keySculpt: String;
 	public var position: Array<Float>; // case/element position
@@ -105,13 +105,13 @@ class Keyboard {
 		this.switchType = "";
 		this.capSize = [18.5, 18.5]; // some usually expected values
 		this.rulerUnits = "mm";           // important!
-		this.caseColor = 0xFFFCFCFC; // shadow of withe
-		this.keysColor = 0xFFFFFFFF; // blinding withe
+		this.caseColor = "0xFFFCFCFC"; // shadow of withe
+		this.keysColor = "0xFFFFFFFF"; // blinding withe
 		this.labelSizeUnits = "U/100"; // "px,pc,mm,thou,U/100"
 		this.keyboardFont = '|Empty|'; // placeholder
 		this.keyboardFontSize = 24; // somewhat sane default
-		this.labelColor = 0xFF000000; // we default to black
-		this.labelPosition = [0.0, 0.0];
+		this.legendColor = "0xFF000000"; // we default to black
+		this.legendPosition = [0.0, 0.0];
 		this.profile = "OEM";
 		this.keySculpt = "R3";
 		this.position = [0.0, 0.0]; // placement of the unit
@@ -138,7 +138,7 @@ class Key {
 	public var stabilizer: String;
 	public var angle: Float;
 	public var shape: String;
-	public var labelFont: String;
+	public var legendPosition: String;
 	public var relativeRotationCenter: Array<Float>;
 	public var features: Array<String>;
 	public var steppedTop: Float;
@@ -146,7 +146,7 @@ class Key {
 	public var keysColor: String;
 	public var spacerSize: Array<Float>;
 	public var amountOfLegends: Int;
-	public var labels: Array<KeyLegend>;
+	public var legends: Array<KeyLegend>;
 
 	public function new(keyId: Int, shape: String, position: Array<Float>, legend: KeyLegend) {
 		this.keyId = keyId; // unique key ID
@@ -154,15 +154,15 @@ class Key {
 		this.stabilizer = "None"; // "None","2U","2.25U","2.75U","6.25U","7.25U",(Custom Bar)"125.5"
 		this.angle = 0.0;
 		this.shape = shape; // "1U","2U","2U vertical","1.25U","1.5U","1.75U","2.25U","2.75U","ISO","BAE","6.25U","7.25U","3U","0.75U"
-		this.labelFont = "";
+		this.legendPosition = "";
 		this.relativeRotationCenter = [0.0, 0.0];
 		this.features = []; // "Stepped","Window","Homing","Spacer","Comment","Shadow","LED","OLED","LCD","Encoder","Trackpoint","Trackpad"
 		this.steppedTop = 0.0; // by it's size we reconstruct the type
 		this.homingFeature = ""; // "Bar", "Dot", "Sculpt"
 		this.spacerSize = [0.0, 0.0]; // in units of U (1 x 2 U)
-		this.keysColor = "";
+		this.keysColor = "0xFFFFFFFF";
 		this.amountOfLegends = 1;
-		this.labels = [];
+		this.legends = [];
 	}
 
 	public function addLegend(symbol: String, position: Array<Float>) {
@@ -174,19 +174,17 @@ class Key {
 **/
 class KeyLegend {
 	// the Keyboard options or here define their own
-	public var keysColor: String;
-	public var labelFont: String;
-	public var labelFontSize: Int;
-	public var labelColor: String;
-	public var labelPosition: Array<Float>;
+	public var legend: String;
+	public var legendSize: Int;
+	public var legendColor: String;
+	public var legendPosition: Array<Float>;
 	public var symbol: String;
 
 	public function new(symbol: String) {
-		this.keysColor = "";
-		this.labelFont = "";
-		this.labelFontSize = 24; // sane default
-		this.labelColor = "";
-		this.labelPosition = [5.0, 5.0];
+		this.legend = "";
+		this.legendSize = 24; // sane default
+		this.legendColor = "0xFF00000f";
+		this.legendPosition = [5.0, 5.0];
 		this.symbol = symbol;
 	}
 }

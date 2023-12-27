@@ -7,8 +7,8 @@ import ceramic.Text;
 // import haxe.ui.backend.ceramic.RoundedRect;
 class LegendRenderer extends Visual {
 	// TODO make one of this two values a shade of the other
-	public var color: Int = 0xff0C0C0C;
-	//	public var labelFont: Int;
+	public var color: Int = 0xffFF0000;
+	//	public var legendFont: Int;
 	public var fontSize: Float;
 	public var symbol: String = '|Empty|';
 
@@ -17,19 +17,20 @@ class LegendRenderer extends Visual {
 	public var topY: Float = 12 * .25; // North top vs E/W ratio
 	public var topOffset: Float = 12 * 2; // the top island offset
 
-	override public function new(symbol: String) {
+	override public function new(symbol: String, color: Int) {
 		super();
 		size(width, height);
 		this.symbol = symbol;
+		this.color = color;
 	}
 
 	public function create(): Visual {
-		final label = new Text();
-		label.content = this.symbol;
-		label.align = LEFT;
-		label.color = this.color;
-		label.pointSize = this.fontSize;
-		this.add(label);
+		final legend = new Text();
+		legend.content = this.symbol;
+		legend.align = LEFT;
+		legend.color = this.color;
+		legend.pointSize = this.fontSize;
+		this.add(legend);
 
 		return this;
 	}
