@@ -86,7 +86,7 @@ class KeyMaker {
 			}
 			key = new keys.RectangularKey(width, height, keyColor, keyShadow);
 		} else {
-			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
+			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, keyColor, keyShadow);
 		}
 
 		return key;
