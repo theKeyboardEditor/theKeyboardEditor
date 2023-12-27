@@ -15,7 +15,6 @@ class LegendRenderer extends Visual {
 	// we are in the 1U = 100 units of scale ratio here:
 	public var topX: Float = 12;
 	public var topY: Float = 12 * .25; // North top vs E/W ratio
-	public var topOffset: Float = 12 * 2; // the top island offset
 
 	override public function new(symbol: String, color: Int) {
 		super();

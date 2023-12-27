@@ -104,7 +104,7 @@ class Keyboard {
 		this.stabilizerType = "";
 		this.switchType = "";
 		this.capSize = [18.5, 18.5]; // some usually expected values
-		this.rulerUnits = "mm";           // important!
+		this.rulerUnits = "mm"; // important!
 		this.caseColor = "0xFFFCFCFC"; // shadow of withe
 		this.keysColor = "0xFFFFFFFF"; // blinding withe
 		this.labelSizeUnits = "U/100"; // "px,pc,mm,thou,U/100"
@@ -189,12 +189,11 @@ class KeyLegend {
 	}
 }
 
-
 /*
  * Various key position features/replacements and their
  * respective properties:
 **/
-//TODO do we want actual separate features or will we mimick them with standard keycap features instead?
+// TODO do we want actual separate features or will we mimick them with standard keycap features instead?
 
 /** The Actual Keyboard status led
 **/

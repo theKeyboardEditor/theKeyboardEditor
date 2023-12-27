@@ -22,7 +22,7 @@ class KeyMaker {
 
 		keyColor = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
 		keyShadow = keyColor - 0x00303030; // TODO make a proper shadow
-		 
+
 		// TODO: Create some form of syntax that can define this information without this switch case creature
 		for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
 			if (k.shape.split(' ').indexOf(t) != -1) { // if shape found found go here
@@ -99,12 +99,11 @@ class KeyMaker {
 		var keyLegends: Array<LegendRenderer> = [];
 		var legendOffsetX: Float;
 		var legendOffsetY: Float;
-		var legendColor: Int = Color.RED;
 
 		for (l in k.legends) { // we can have many labels!
 			// default to GRAY if undefined
-			legendColor = Std.parseInt(l.legendColor) ?? Std.parseInt(keyboard.legendColor) ?? Color.GRAY;
-			var legend = new LegendRenderer(l.symbol,legendColor);
+			var legendColor = Std.parseInt(l.legendColor) ?? Std.parseInt(keyboard.legendColor) ?? Color.GRAY;
+			var legend = new LegendRenderer(l.symbol, legendColor);
 			// is the legend position set specifically?
 			if (l.legendPosition != null) { // yes we account for individual adjustment too!
 				legendOffsetX = l.legendPosition[Axis.X] + keyboard.legendPosition[Axis.X];

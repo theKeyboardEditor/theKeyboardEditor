@@ -21,14 +21,14 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
 		// JSON
 		assets.add(Texts.NUMPAD);
-		//assets.add(Texts.ALLPAD);
+		// assets.add(Texts.ALLPAD);
 	}
 
 	// Called when scene has finished preloading
 	override function create() {
 		// Render keys
 		final keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
-		//final keyboard = keyson.Keyson.parse(assets.text(Texts.ALLPAD));
+		// final keyboard = keyson.Keyson.parse(assets.text(Texts.ALLPAD));
 		final viewport = new Viewport(keyboard.unit[0]);
 		this.add(viewport);
 
