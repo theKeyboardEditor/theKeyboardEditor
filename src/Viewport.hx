@@ -52,13 +52,13 @@ class Viewport extends Scene {
 		final gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
 
 		for (k in this.keyboard.keys) {
-	        final key: KeyRenderer = KeyMaker.createKey(k, unit, gapX, gapY);
-            this.universe.add(key.create());
+			final key: KeyRenderer = KeyMaker.createKey(k, unit, gapX, gapY);
+			this.universe.add(key.create());
 
 			final keyLabels: Array<LabelRenderer> = KeyMaker.createLabel(this.keyboard, k, unit);
-            for (l in keyLabels) {
-                this.universe.add(l.create());
-            }
+			for (l in keyLabels) {
+				this.universe.add(l.create());
+			}
 
 			// A ceramic visual does not inherit the size of it's children
 			// Hence we must set it ourselves
@@ -70,8 +70,8 @@ class Viewport extends Scene {
 				this.universe.height = key.height + gapY + key.y;
 			}
 
-            key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
-            key.onPointerDown(key, key.select);
+			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
+			key.onPointerDown(key, key.select);
 		}
 		this.add(universe);
 	}

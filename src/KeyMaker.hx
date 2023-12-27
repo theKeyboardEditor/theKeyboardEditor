@@ -6,15 +6,15 @@ class KeyMaker {
 	public static function createKey(k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int): KeyRenderer {
 		var key: KeyRenderer;
 
-        var width: Float;
-        var height: Float;
+		var width: Float;
+		var height: Float;
 
-        var widthNorth: Int = 0;
-        var heightNorth: Int = 0;
-        var widthSouth: Int = 0;
-        var heightSouth: Int = 0;
-        var offsetSouthX: Int = 0;
-        var offsetSouthY: Int = 0;
+		var widthNorth: Int = 0;
+		var heightNorth: Int = 0;
+		var widthSouth: Int = 0;
+		var heightSouth: Int = 0;
+		var offsetSouthX: Int = 0;
+		var offsetSouthY: Int = 0;
 
 		// TODO: Create some form of syntax that can define this information without this switch case creature
 		for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
@@ -85,12 +85,12 @@ class KeyMaker {
 			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 		}
 
-        return key;
+		return key;
 	}
 
 	public static function createLabel(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int): Array<LabelRenderer> {
 		var keyLabels: Array<LabelRenderer> = [];
-        var labelOffsetX: Float;
+		var labelOffsetX: Float;
 		var labelOffsetY: Float;
 
 		for (l in k.labels) { // we can have many labels!
@@ -114,9 +114,9 @@ class KeyMaker {
 			label.depth = 4; // mae sure labels render on top
 			label.pos(labelOffsetX + label.topX + unit * k.position[Axis.X], labelOffsetY + label.topY + unit * k.position[Axis.Y]);
 
-            keyLabels.push(label);
+			keyLabels.push(label);
 		}
 
-        return keyLabels;
-    }
+		return keyLabels;
+	}
 }
