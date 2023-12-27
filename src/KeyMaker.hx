@@ -1,9 +1,10 @@
 package;
 
 import keyson.Axis;
+import ceramic.Color;
 
 class KeyMaker {
-	public static function createKey(k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int): KeyRenderer {
+	public static function createKey(k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int, color: String): KeyRenderer {
 		var key: KeyRenderer;
 
 		var width: Float;
@@ -16,6 +17,12 @@ class KeyMaker {
 		var offsetSouthX: Int = 0;
 		var offsetSouthY: Int = 0;
 
+		var keyColor: Int;
+		var keyShadow: Int = Color.GRAY; // sane defaults
+
+		keyColor = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
+		keyShadow = keyColor - 0x00303030; // TODO make a proper shadow
+		 
 		// TODO: Create some form of syntax that can define this information without this switch case creature
 		for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
 			if (k.shape.split(' ').indexOf(t) != -1) { // if shape found found go here
@@ -80,7 +87,7 @@ class KeyMaker {
 				width = unit * keySize - gapX;
 				height = unit - gapY;
 			}
-			key = new keys.RectangularKey(width, height);
+			key = new keys.RectangularKey(width, height, keyColor, keyShadow);
 		} else {
 			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 		}
@@ -90,29 +97,31 @@ class KeyMaker {
 
 	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int): Array<LegendRenderer> {
 		var keyLegends: Array<LegendRenderer> = [];
-		var labelOffsetX: Float;
-		var labelOffsetY: Float;
+		var legendOffsetX: Float;
+		var legendOffsetY: Float;
+		var legendColor: Int = Color.RED;
 
-		for (l in k.labels) { // we can have many labels!
-			var legend = new LegendRenderer(l.symbol);
-			legend.color = 0xFF00000F;
+		for (l in k.legends) { // we can have many labels!
+			// default to GRAY if undefined
+			legendColor = Std.parseInt(l.legendColor) ?? Std.parseInt(keyboard.legendColor) ?? Color.GRAY;
+			var legend = new LegendRenderer(l.symbol,legendColor);
 			// is the legend position set specifically?
-			if (l.labelPosition != null) { // yes we account for individual adjustment too!
-				labelOffsetX = l.labelPosition[Axis.X] + keyboard.labelPosition[Axis.X];
-				labelOffsetY = l.labelPosition[Axis.Y] + keyboard.labelPosition[Axis.Y];
+			if (l.legendPosition != null) { // yes we account for individual adjustment too!
+				legendOffsetX = l.legendPosition[Axis.X] + keyboard.legendPosition[Axis.X];
+				legendOffsetY = l.legendPosition[Axis.Y] + keyboard.legendPosition[Axis.Y];
 			} else { // no we use the global coordinates
-				labelOffsetX = keyboard.labelPosition[Axis.X];
-				labelOffsetY = keyboard.labelPosition[Axis.Y];
+				legendOffsetX = keyboard.legendPosition[Axis.X];
+				legendOffsetY = keyboard.legendPosition[Axis.Y];
 			}
 			// is the fontsize set specifically?
-			if (l.labelFontSize != 0) { // TODO make this detect per key font change
-				legend.fontSize = l.labelFontSize;
+			if (l.legendSize != 0) { // TODO make this detect per key font change
+				legend.fontSize = l.legendSize;
 			} else {
 				legend.fontSize = keyboard.keyboardFontSize;
 			}
 
 			legend.depth = 4; // mae sure labels render on top
-			legend.pos(labelOffsetX + legend.topX + unit * k.position[Axis.X], labelOffsetY + legend.topY + unit * k.position[Axis.Y]);
+			legend.pos(legendOffsetX + legend.topX + unit * k.position[Axis.X], legendOffsetY + legend.topY + unit * k.position[Axis.Y]);
 
 			keyLegends.push(legend);
 		}

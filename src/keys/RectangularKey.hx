@@ -17,9 +17,11 @@ class RectangularKey extends KeyRenderer {
 	var topOffset: Float = 12 * 2; // the top island offset
 	var roundedCorner: Float = 12;
 
-	override public function new(width: Float, height: Float) {
+	override public function new(width: Float, height: Float, topColor: Int, bodyColor: Int) {
 		super();
 		size(width, height);
+		this.topColor = topColor;
+		this.bodyColor = bodyColor;
 	}
 
 	override public function create(): Visual {

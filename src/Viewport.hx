@@ -49,7 +49,7 @@ class Viewport extends Scene {
 		final gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
 
 		for (k in this.keyboard.keys) {
-			final key: KeyRenderer = KeyMaker.createKey(k, unit, gapX, gapY);
+			final key: KeyRenderer = KeyMaker.createKey(k, unit, gapX, gapY, this.keyboard.keysColor);
 			this.universe.add(key.create());
 
 			final keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(this.keyboard, k, unit);
