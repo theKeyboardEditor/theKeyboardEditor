@@ -6,7 +6,7 @@ on:
       - actions
 
 jobs:
-  build-samples:
+  build:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
@@ -23,13 +23,13 @@ jobs:
         run: |
           sudo npm install -g npm@10.2.5
       - name: Install packages
-        working-directory: .github/workflows/
+        working-directory: .
         run: |
-          npm install
+          npm --prefix .github/workflows/ install
       - name: Download Ceramic
-        working-directory: .github/workflows
+        working-directory: .
         run: |
-          node download-ceramic.js
+          node .github/workflows/download-ceramic.js
       - name: Setup Haxe
         working-directory: .
         run: |
@@ -68,10 +68,9 @@ jobs:
       - name: Add .nojekyll
         working-directory: .
         run: |
-          touch _export/.nojekyll
+          touch project/web/.nojekyll
       - name: Deploy to Github Pages
-        uses: ceramic-engine/actions-gh-pages@v1.1.0
-        env:
-          PUBLISH_DIR: project/web
-          PUBLISH_BRANCH: gh-pages
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        with:
+          publish_dir: project/web
+          github_token: ${{ secrets.GITHUB_TOKEN }}
