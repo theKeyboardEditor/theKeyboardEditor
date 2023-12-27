@@ -57,9 +57,8 @@ jobs:
           sudo ldconfig /usr/local/lib
           echo 'neko: '$(neko -version)
           echo 'haxe: '$(haxe --version)
-          ls
       - name: Install Ceramic
-        working-directory: ceramic/tools
+        working-directory: .github/workflows/ceramic/tools
         run: |
           ls
           ./ceramic link
