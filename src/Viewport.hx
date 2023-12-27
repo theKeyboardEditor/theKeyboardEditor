@@ -14,7 +14,7 @@ class Viewport extends Scene {
 	var universe: Visual = new Visual();
 
 	// Constants
-	inline static var movementSpeed: Int = 500;
+	inline static var movementSpeed: Int = 1000;
 	inline static final unit = 100;
 
 	// Used for zooming
@@ -81,33 +81,24 @@ class Viewport extends Scene {
 	override function update(delta: Float) {
 		// Handle keyboard input.
 		if (inputMap.pressed(UP)) {
-			// this.universe.y += movementSpeed * delta;
-			this.universe.y += 12.5;
+			this.universe.y += movementSpeed * delta;
 		}
 		if (inputMap.pressed(LEFT)) {
-			// this.universe.x += movementSpeed * delta;
-			this.universe.x += 12.5;
+			this.universe.x += movementSpeed * delta;
 		}
 		if (inputMap.pressed(DOWN)) {
-			// this.universe.y -= movementSpeed * delta;
-			this.universe.y -= 12.5;
+			this.universe.y -= movementSpeed * delta;
 		}
 		if (inputMap.pressed(RIGHT)) {
-			// this.universe.x -= movementSpeed * delta;
-			this.universe.x -= 12.5;
+			this.universe.x -= movementSpeed * delta;
 		}
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
-			//	this.universe.anchor(screen.pointerX / this.width, screen.pointerY / this.height);
-
 			this.universe.scaleX += zoom * delta;
 			this.universe.scaleY += zoom * delta;
-			//	this.universe.anchor(0, 0);
 		} else if (inputMap.pressed(ZOOM_OUT)) {
-			//	this.universe.anchor(screen.pointerX / this.universe.width, screen.pointerY / this.universe.height);
 			this.universe.scaleX -= zoom * delta;
 			this.universe.scaleY -= zoom * delta;
-			//	this.universe.anchor(0, 0);
 		}
 	}
 }
