@@ -14,13 +14,10 @@ class Viewport extends Scene {
 	var universe: Visual = new Visual();
 
 	// Constants
-	inline static var movementSpeed: Int = 1000;
 	inline static final unit = 100;
-
-	// Used for zooming
-	var originX: Float = 510;
-	var originY: Float = 60;
-	var keySize: Float = 0; // size of a key
+	inline static var movementSpeed: Int = 1000;
+	inline static var originX: Float = 510;
+	inline static var originY: Float = 60;
 
 	override public function new(keyboard: Keyboard) {
 		super();
