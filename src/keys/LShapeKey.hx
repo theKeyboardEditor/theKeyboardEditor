@@ -31,7 +31,7 @@ class LShapeKey extends KeyRenderer {
 	var offsetSouthX: Int; // The closer member's offset
 	var offsetSouthY: Int;
 
-	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int) {
+	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int, topColor: Int, bodyColor: Int) {
 		super();
 		this.widthNorth = widthNorth;
 		this.heightNorth = heightNorth;
@@ -39,6 +39,8 @@ class LShapeKey extends KeyRenderer {
 		this.heightSouth = heightSouth;
 		this.offsetSouthX = offsetSouthX;
 		this.offsetSouthY = offsetSouthY;
+		this.topColor = topColor;
+		this.bodyColor = bodyColor;
 
 		// here we proccess how the inner radius alone is to be oriented and positioned
 		if (offsetSouthX < 0) { // is the 2nd member Westward from the top member?
