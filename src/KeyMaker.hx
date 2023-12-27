@@ -17,11 +17,8 @@ class KeyMaker {
 		var offsetSouthX: Int = 0;
 		var offsetSouthY: Int = 0;
 
-		var keyColor: Int;
-		var keyShadow: Int = Color.GRAY; // sane defaults
-
-		keyColor = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
-		keyShadow = keyColor - 0x00303030; // TODO make a proper shadow
+		final keyColor: Color = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
+		final keyShadow: Color = getKeyShadow(keyColor);
 
 		// TODO: Create some form of syntax that can define this information without this switch case creature
 		for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
@@ -126,5 +123,10 @@ class KeyMaker {
 		}
 
 		return keyLegends;
+	}
+
+	static function getKeyShadow(color: Color): Color {
+		color.lightnessHSLuv -= 0.15;
+		return color;
 	}
 }
