@@ -27,7 +27,7 @@
       { "color": "navy", "value": "0xFF000080" }
     ]
   },
-  "board": [
+  "keyboard": [
     {
       "keyboardID": 0,
       "designator": "Allpad",
@@ -51,22 +51,22 @@
         {
           "keyId": 0,
           "position": [0, 0],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "2U",
           "labels": [
             {
-              "glyph": "2U"
+              "symbol": "2U"
             }
           ]
         },
         {
           "keyId": 1,
           "position": [2, 0],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "XT_2U",
           "labels": [
             {
-              "glyph": "XT 2U",
+              "symbol": "XT 2U",
               "labelPosition": [5.12, 80]
             }
           ]
@@ -74,11 +74,11 @@
         {
           "keyId": 2,
           "position": [3, 0],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "BAE Inverted",
           "labels": [
             {
-              "glyph": "BAE \nInverted",
+              "symbol": "BAE \nInverted",
               "labelPosition": [5.12, 70]
             }
           ]
@@ -86,11 +86,11 @@
         {
           "keyId": 3,
           "position": [5.25, 0],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "ISO",
           "labels": [
             {
-              "glyph": "ISO",
+              "symbol": "ISO",
               "labelPosition": [30.75, 80]
             }
           ]
@@ -98,11 +98,11 @@
         {
           "keyId": 4,
           "position": [6.75, 0],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "ISO Inverted",
           "labels": [
             {
-              "glyph": "ISO \nInverted",
+              "symbol": "ISO \nInverted",
               "labelPosition": [5.12, 70]
             }
           ]
@@ -110,11 +110,11 @@
         {
           "keyId": 5,
           "position": [9, 0],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "BAE",
           "labels": [
             {
-              "glyph": "BAE",
+              "symbol": "BAE",
               "labelPosition": [5.12, 80]
             }
           ]
@@ -122,11 +122,11 @@
         {
           "keyId": 6,
           "position": [0, 1],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "3U Vertical",
           "labels": [
             {
-              "glyph": "3U Vertical",
+              "symbol": "3U Vertical",
               "labelPosition": [5.12, 120]
             }
           ]
@@ -137,7 +137,7 @@
           "shape": "2U Vertical",
           "labels": [
             {
-              "glyph": "2U Vertical",
+              "symbol": "2U Vertical",
               "labelPosition": [5.12, 80]
             }
           ]
@@ -148,7 +148,7 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "1U"
+              "symbol": "1U"
             }
           ]
         },
@@ -158,7 +158,7 @@
           "shape": "1.25U",
           "labels": [
             {
-              "glyph": "1.25U"
+              "symbol": "1.25U"
             }
           ]
         },
@@ -168,7 +168,7 @@
           "shape": "1.5U",
           "labels": [
             {
-              "glyph": "1.5U"
+              "symbol": "1.5U"
             }
           ]
         },
@@ -178,7 +178,7 @@
           "shape": "0.75U",
           "labels": [
             {
-              "glyph": "0.75U"
+              "symbol": "0.75U"
             }
           ]
         },
@@ -188,7 +188,7 @@
           "shape": "2.25U",
           "labels": [
             {
-              "glyph": "2.25U"
+              "symbol": "2.25U"
             }
           ]
         },
@@ -198,29 +198,29 @@
           "shape": "2.75U",
           "labels": [
             {
-              "glyph": "2.75U"
+              "symbol": "2.75U"
             }
           ]
         },
         {
           "keyId": 14,
           "position": [1, 3],
-          "Stabilizer": "2.75U",
+          "stabilizer": "2.75U",
           "shape": "3U",
           "labels": [
             {
-              "glyph": "3U"
+              "symbol": "3U"
             }
           ]
         },
         {
           "keyId": 15,
           "position": [4, 3],
-          "Stabilizer": "6.25U",
+          "stabilizer": "6.25U",
           "shape": "6.5U",
           "labels": [
             {
-              "glyph": "6.5"
+              "symbol": "6.5"
             }
           ]
         },
@@ -230,51 +230,51 @@
           "shape": "1.75U",
           "labels": [
             {
-              "glyph": "1.75U"
+              "symbol": "1.75U"
             }
           ]
         },
         {
           "keyId": 17,
           "position": [1.75, 4],
-          "Stabilizer": "6.25U",
+          "stabilizer": "6.25U",
           "shape": "6.25U",
           "labels": [
             {
-              "glyph": "6.25U"
+              "symbol": "6.25U"
             }
           ]
         },
         {
           "keyId": 17,
           "position": [8, 4],
-          "Stabilizer": "2.25U",
+          "stabilizer": "2.25U",
           "shape": "2.5U",
           "labels": [
             {
-              "glyph": "2.5U"
+              "symbol": "2.5U"
             }
           ]
         },
         {
           "keyId": 17,
           "position": [0, 6],
-          "Stabilizer": "7U",
+          "stabilizer": "7U",
           "shape": "7U",
           "labels": [
             {
-              "glyph": "7U"
+              "symbol": "7U"
             }
           ]
         },
         {
           "keyId": 17,
           "position": [0, 5],
-          "Stabilizer": "7U",
+          "stabilizer": "7U",
           "shape": "10U",
           "labels": [
             {
-              "glyph": "10U (Big Ass Space)"
+              "symbol": "10U (Big Ass Space)"
             }
           ]
         }

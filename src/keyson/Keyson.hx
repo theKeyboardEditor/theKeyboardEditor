@@ -71,10 +71,9 @@ class Color {
 }
 
 /** Keyboard:
-	** The entirety of an HID device behind a connecting point on a host:
-	** A Split keyboard with a numpad and a joypad (4 sub units)
-	** all interconnected by a TRRS to each other or
-	** a common single unit keyboard
+	** Each of a Split keyboard's units with a numpad and a joypad (4 sub units)
+	** Each of wo halves wirelessly connected to a host via bluetooth
+	** Or just a common single unit keyboard
 **/
 class Keyboard {
 	public var keyboardID: Int;
@@ -84,54 +83,48 @@ class Keyboard {
 	public var switchType: String;
 	public var capSize: Array<Float>; // in units of measurement
 	public var units: String; // units of measurement
-	public var caseColor: String;
-	public var keysColor: String;
+	public var caseColor: Int; // it is a binary value
+	public var keysColor: Int; // it is a binary value
 	public var labelSizeUnits: String; // "px,pc,mm,thou,U/100"
 	public var keyboardFont: String;
-	public var sublabelFont: String;
 	public var keyboardFontSize: Float;
-	public var sublabelFontSize: Float;
-	public var labelColor: String;
+	public var labelColor: Int; // it is a binary value
 	public var labelPosition: Array<Float>;
-	public var sublabelColor: String;
 	public var profile: String;
 	public var keySculpt: String;
 	public var position: Array<Float>; // case/element position
 	public var angle: Array<Float>; // maybe one day we will be 3D
 	public var relativeRotationCenter: Array<Float>; // case center offset
-	public var size: Int;
+	public var size: Int; // number of keys/elements
 	public var keys: Array<Key>;
 
 	public function new() { // empty default keyboard
 		this.designator = "default"; // "Master", "Slave", "Numpad" ...
-		this.keyStep = [0.0, 0.0];
+		this.keyStep = [19.05, 19.05];
 		this.stabilizerType = "";
 		this.switchType = "";
-		this.capSize = [0.0, 0.0];
-		this.units = "mm";
-		this.caseColor = "";
-		this.keysColor = "";
+		this.capSize = [18.5, 18.5]; // some usually expected values
+		this.units = "mm";           // important!
+		this.caseColor = 0xFFFCFCFC; // shadow of withe
+		this.keysColor = 0xFFFFFFFF; // blinding withe
 		this.labelSizeUnits = "U/100"; // "px,pc,mm,thou,U/100"
-		this.keyboardFont = "unknown";
-		this.sublabelFont = "unknown";
+		this.keyboardFont = '|Empty|'; // placeholder
 		this.keyboardFontSize = 24; // somewhat sane default
-		this.sublabelFontSize = 18; // questionably sane default
-		this.labelColor = "";
+		this.labelColor = 0xFF000000; // we default to black
 		this.labelPosition = [0.0, 0.0];
-		this.sublabelColor = "";
-		this.profile = "Cherry";
+		this.profile = "OEM";
 		this.keySculpt = "R3";
 		this.position = [0.0, 0.0]; // placement of the unit
-		this.angle = [0, 0, 0]; //     rotation around the anchor point
-		this.size = 0; //          number of keys/elements
+		this.angle = [0, 0, 0]; //  rotation around the anchor point
+		this.size = 0; // initial number of keys/elements
 		this.keys = [];
 	}
 
-	public function addKey(shape: String, pos: Array<Float>, lab: String) {
+	public function addKey(shape: String, pos: Array<Float>, leg: String) {
 		// calculate a new ID
 		var uid = this.keys.length;
 		// define a new key:
-		var newKnob = new Key(uid, shape, pos, new Keyson.KeyLabel(lab));
+		var newKnob = new Key(uid, shape, pos, new Keyson.KeyLegend(leg));
 		// append the new key to the end of the array
 		this.keys.push(newKnob);
 	}
@@ -152,10 +145,10 @@ class Key {
 	public var homingFeature: String;
 	public var keysColor: String;
 	public var spacerSize: Array<Float>;
-	public var amountOfLabels: Int;
-	public var labels: Array<KeyLabel>;
+	public var amountOfLegends: Int;
+	public var labels: Array<KeyLegend>;
 
-	public function new(keyId: Int, shape: String, position: Array<Float>, label: KeyLabel) {
+	public function new(keyId: Int, shape: String, position: Array<Float>, legend: KeyLegend) {
 		this.keyId = keyId; // unique key ID
 		this.position = position; // place on the unit
 		this.stabilizer = "None"; // "None","2U","2.25U","2.75U","6.25U","7.25U",(Custom Bar)"125.5"
@@ -168,63 +161,43 @@ class Key {
 		this.homingFeature = ""; // "Bar", "Dot", "Sculpt"
 		this.spacerSize = [0.0, 0.0]; // in units of U (1 x 2 U)
 		this.keysColor = "";
-		this.amountOfLabels = 1;
+		this.amountOfLegends = 1;
 		this.labels = [];
 	}
 
-	public function addLabel(glyph: String, position: Array<Float>) {
-		var newLabel = new KeyLabel(glyph);
+	public function addLegend(symbol: String, position: Array<Float>) {
+		var newLegend = new KeyLegend(symbol);
 	}
 }
 
-/** The sign/glyph on the unit
+/** The sign/symbol on the unit
 **/
-class KeyLabel {
+class KeyLegend {
 	// the Keyboard options or here define their own
 	public var keysColor: String;
 	public var labelFont: String;
 	public var labelFontSize: Int;
 	public var labelColor: String;
 	public var labelPosition: Array<Float>;
-	public var glyph: String;
+	public var symbol: String;
 
-	public function new(glyph: String) {
+	public function new(symbol: String) {
 		this.keysColor = "";
 		this.labelFont = "";
 		this.labelFontSize = 24; // sane default
 		this.labelColor = "";
 		this.labelPosition = [5.0, 5.0];
-		this.glyph = glyph;
+		this.symbol = symbol;
 	}
 }
 
-/** The secondary sign on the unit, usually with different properties
-	** as shape, font, encoding...
-**/
-// TODO do we want actual sublabels or we better be served with
-// peer equal individual glyphs in an array?
 
-/*
-	class Sublabel {
-	// the Keyboard options or here define their own
-	public var sublabelFont: String;
-	public var sublabelFontSize: Int;
-	public var sublabelColor: String;
-
-	public var positions: Array<String>; // the 9 positions on a key
-
-	public function new() {
-		sublabelFont = "";
-		sublabelFontSize = 7; // sane default
-		sublabelColor = "";
-		positions = ["", "", "", "", "", "", "", "", ""];
-	}
-	}
- */
 /*
  * Various key position features/replacements and their
  * respective properties:
 **/
+//TODO do we want actual separate features or will we mimick them with standard keycap features instead?
+
 /** The Actual Keyboard status led
 **/
 class LEDFeature {
