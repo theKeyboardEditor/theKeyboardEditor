@@ -52,8 +52,8 @@ class Viewport extends Scene {
 			final key: KeyRenderer = KeyMaker.createKey(k, unit, gapX, gapY);
 			this.universe.add(key.create());
 
-			final keyLabels: Array<LabelRenderer> = KeyMaker.createLabel(this.keyboard, k, unit);
-			for (l in keyLabels) {
+			final keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(this.keyboard, k, unit);
+			for (l in keyLegends) {
 				this.universe.add(l.create());
 			}
 

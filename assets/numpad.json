@@ -27,7 +27,7 @@
       { "color": "navy", "value": "0xFF000080" }
     ]
   },
-  "board": [
+  "unit": [
     {
       "keyboardID": 0,
       "designator": "Numpad",
@@ -35,7 +35,7 @@
       "stabilizerType": "Cherry",
       "switchType": "Cherry MX/Gateron/Kailh",
       "capSize": [18.5, 18.5],
-      "units": "mm",
+      "rulerUnits": "mm",
       "caseColor": "white",
       "keysColor": "white",
       "keyboardFont": "sans",
@@ -56,7 +56,7 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "Num \nLock",
+              "symbol": "Num \nLock",
               "labelFontSize": 24.0
             }
           ]
@@ -67,7 +67,7 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "/"
+              "symbol": "/"
             }
           ]
         },
@@ -77,7 +77,7 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "*"
+              "symbol": "*"
             }
           ]
         },
@@ -87,7 +87,7 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "-"
+              "symbol": "-"
             }
           ]
         },
@@ -97,10 +97,10 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "7"
+              "symbol": "7"
             },
             {
-              "glyph": "Home",
+              "symbol": "Home",
               "labelPosition": [5.12, 40],
               "labelFontSize": 24.0
             }
@@ -112,10 +112,10 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "8"
+              "symbol": "8"
             },
             {
-              "glyph": "^",
+              "symbol": "^",
               "labelPosition": [5.12, 40],
               "labelFontSize": 24.0
             }
@@ -127,10 +127,10 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "9"
+              "symbol": "9"
             },
             {
-              "glyph": "PgUp",
+              "symbol": "PgUp",
               "labelPosition": [5.12, 40],
               "labelFontSize": 24.0
             }
@@ -139,11 +139,11 @@
         {
           "keyId": 7,
           "position": [3, 1],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "2U Vertical",
           "labels": [
             {
-              "glyph": "+",
+              "symbol": "+",
               "labelPosition": [5.12, 80]
             }
           ]
@@ -154,10 +154,10 @@
           "shape": "1U",
           "labels": [
           {
-            "glyph": "4"
+            "symbol": "4"
           },
             {
-              "glyph": "<",
+              "symbol": "<",
               "labelPosition": [5.12, 40],
               "labelFontSize": 24.0
             }
@@ -170,7 +170,7 @@
           "Features": "Homing",
           "labels": [
             {
-              "glyph": "5"
+              "symbol": "5"
             }
           ]
         },
@@ -180,10 +180,10 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "6"
+              "symbol": "6"
             },
             {
-              "glyph": ">",
+              "symbol": ">",
               "labelPosition": [5.12, 40],
               "labelFontSize": 24.0
             }
@@ -195,10 +195,10 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "1"
+              "symbol": "1"
             },
             {
-              "glyph": "End",
+              "symbol": "End",
               "labelPosition": [5.12, 40],
               "labelFontSize": 24.0
             }
@@ -210,10 +210,10 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "2"
+              "symbol": "2"
             },
             {
-              "glyph": "v",
+              "symbol": "v",
               "labelPosition": [5.12, 40],
               "labelFontSize": 24.0
             }
@@ -225,10 +225,10 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "3"
+              "symbol": "3"
             },
             {
-              "glyph": "PgDn",
+              "symbol": "PgDn",
               "labelPosition": [5.12, 40],
               "labelFontSize": 24.0
             }
@@ -237,11 +237,11 @@
         {
           "keyId": 14,
           "position": [3, 3],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "2U Vertical",
           "labels": [
             {
-              "glyph": "Enter",
+              "symbol": "Enter",
               "labelFontSize": 24.0,
               "labelPosition": [5.12, 80]
             }
@@ -250,14 +250,14 @@
         {
           "keyId": 15,
           "position": [0, 4],
-          "Stabilizer": "2U",
+          "stabilizer": "2U",
           "shape": "2U",
           "labels": [
             {
-              "glyph": "0"
+              "symbol": "0"
             },
             {
-              "glyph": "Ins",
+              "symbol": "Ins",
               "labelFontSize": 24.0,
               "labelPosition": [5.12, 40]
             }
@@ -269,10 +269,10 @@
           "shape": "1U",
           "labels": [
             {
-              "glyph": "."
+              "symbol": "."
             },
             {
-              "glyph": "Del",
+              "symbol": "Del",
               "labelFontSize": 24.0,
               "labelPosition": [5.12, 40]
             }

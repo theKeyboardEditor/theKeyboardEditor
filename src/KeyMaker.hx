@@ -88,35 +88,35 @@ class KeyMaker {
 		return key;
 	}
 
-	public static function createLabel(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int): Array<LabelRenderer> {
-		var keyLabels: Array<LabelRenderer> = [];
+	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int): Array<LegendRenderer> {
+		var keyLegends: Array<LegendRenderer> = [];
 		var labelOffsetX: Float;
 		var labelOffsetY: Float;
 
 		for (l in k.labels) { // we can have many labels!
-			var label = new LabelRenderer(l.glyph);
-			label.color = 0xFF00000F;
-			// is the label position set specifically?
-			if (l.labelPosition != null) { // yes we adjust specifically
-				labelOffsetX = l.labelPosition[Axis.X];
-				labelOffsetY = l.labelPosition[Axis.Y];
+			var legend = new LegendRenderer(l.symbol);
+			legend.color = 0xFF00000F;
+			// is the legend position set specifically?
+			if (l.labelPosition != null) { // yes we account for individual adjustment too!
+				labelOffsetX = l.labelPosition[Axis.X] + keyboard.labelPosition[Axis.X];
+				labelOffsetY = l.labelPosition[Axis.Y] + keyboard.labelPosition[Axis.Y];
 			} else { // no we use the global coordinates
 				labelOffsetX = keyboard.labelPosition[Axis.X];
 				labelOffsetY = keyboard.labelPosition[Axis.Y];
 			}
 			// is the fontsize set specifically?
 			if (l.labelFontSize != 0) { // TODO make this detect per key font change
-				label.fontSize = l.labelFontSize;
+				legend.fontSize = l.labelFontSize;
 			} else {
-				label.fontSize = keyboard.keyboardFontSize;
+				legend.fontSize = keyboard.keyboardFontSize;
 			}
 
-			label.depth = 4; // mae sure labels render on top
-			label.pos(labelOffsetX + label.topX + unit * k.position[Axis.X], labelOffsetY + label.topY + unit * k.position[Axis.Y]);
+			legend.depth = 4; // mae sure labels render on top
+			legend.pos(labelOffsetX + legend.topX + unit * k.position[Axis.X], labelOffsetY + legend.topY + unit * k.position[Axis.Y]);
 
-			keyLabels.push(label);
+			keyLegends.push(legend);
 		}
 
-		return keyLabels;
+		return keyLegends;
 	}
 }
