@@ -70,12 +70,13 @@ class Viewport extends Scene {
 
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 			key.onPointerDown(key, (_) -> {
-				if (key.border.visible) {
+				if (!key.border.visible) {
 					selected.remove(key); // just in case
 					selected.push(key);
 				} else {
 					selected.remove(key);
 				}
+				trace(selected);
 				key.select();
 			});
 		}
