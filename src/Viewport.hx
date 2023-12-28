@@ -13,6 +13,8 @@ class Viewport extends Scene {
 	// Everything inside the viewport is stored here
 	var universe: Visual = new Visual();
 	var selectedIDs: Array<Int> = [];
+	var motionAxis: Int;
+	var motionDistance: Float;
 
 	// Constants
 	inline static final unit = 100;
@@ -88,16 +90,24 @@ class Viewport extends Scene {
 	override function update(delta: Float) {
 		// Handle keyboard input.
 		if (inputMap.pressed(UP)) {
-			this.universe.y += movementSpeed * delta;
+			motionDistance = -25;
+			motionAxis = Axis.Y;
+			//this.universe.y += movementSpeed * delta;
 		}
 		if (inputMap.pressed(LEFT)) {
-			this.universe.x += movementSpeed * delta;
+			motionDistance = -25;
+			motionAxis = Axis.X;
+			//this.universe.x += movementSpeed * delta;
 		}
 		if (inputMap.pressed(DOWN)) {
-			this.universe.y -= movementSpeed * delta;
+			motionDistance = 25;
+			motionAxis = Axis.Y;
+			//this.universe.y -= movementSpeed * delta;
 		}
 		if (inputMap.pressed(RIGHT)) {
-			this.universe.x -= movementSpeed * delta;
+			motionDistance = 25;
+			motionAxis = Axis.X;
+			//this.universe.x -= movementSpeed * delta;
 		}
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
@@ -107,6 +117,14 @@ class Viewport extends Scene {
 			this.universe.scaleX -= zoom * delta;
 			this.universe.scaleY -= zoom * delta;
 		}
+		for (k in this.keyboard.keys) {
+			if ( selectedIDs.indexOf(k.keyId) != -1 ) {
+				k.position[motionAxis]=k.position[motionAxis]+motionDistance;
+//				this.universe.dispose(); // dissapears!
+//				this.create();
+			}
+		}
+		
 	}
 }
 
