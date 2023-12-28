@@ -8,9 +8,9 @@ import ceramic.TouchInfo;
 import haxe.ui.backend.ceramic.RoundedRect;
 
 class LShapeKey extends KeyRenderer {
-	// TODO make one of this two values a shade of the other
 	var topColor: Int = 0xffFCFCFC;
 	var bodyColor: Int = 0xFFCCCCCC;
+
 	// we are in the 1U = 100 units of scale ratio here:
 	// this is the preset for OEM/Cherry profile keycaps (TODO more presets)
 	var topX: Float = 12;
@@ -31,7 +31,8 @@ class LShapeKey extends KeyRenderer {
 	var offsetSouthX: Int; // The closer member's offset
 	var offsetSouthY: Int;
 
-	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int, topColor: Int, bodyColor: Int) {
+	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int,
+			topColor: Int, bodyColor: Int) {
 		super();
 		this.widthNorth = widthNorth;
 		this.heightNorth = heightNorth;
@@ -83,6 +84,32 @@ class LShapeKey extends KeyRenderer {
 	}
 
 	override public function create(): Visual {
+		this.border = new Border();
+		if (this.offsetSouthX < 0) {
+			this.border.pos(this.offsetSouthX, 0);
+		} else {
+			this.border.pos(0, 0);
+		}
+		if (this.heightNorth > this.heightSouth) {
+			if (this.widthNorth > this.widthSouth) {
+				this.border.size(this.widthNorth, this.heightNorth);
+			} else {
+				this.border.size(this.widthSouth, this.heightNorth);
+			}
+		} else {
+			if (this.widthNorth > this.widthSouth) {
+				this.border.size(this.widthNorth, this.heightSouth);
+			} else {
+				this.border.size(this.widthSouth, this.heightSouth);
+			}
+		}
+		this.border.borderColor = Color.RED;
+		this.border.borderPosition = OUTSIDE;
+		this.border.borderSize = 2;
+		this.border.depth = 4;
+		this.border.visible = false;
+		this.add(this.border);
+
 		// first draw the North member of the keyshape
 		final top = new RoundedRect(this.topColor, 0, 0, roundedCorner, widthNorth - this.topOffset, heightNorth - this.topOffset, 0, 0);
 		top.pos(topX, topY);
@@ -127,32 +154,5 @@ class LShapeKey extends KeyRenderer {
 		this.add(bottomArc);
 
 		return this;
-	}
-
-	override public function select(_: TouchInfo) {
-		final border = new Border();
-		if (this.offsetSouthX < 0) {
-			border.pos(this.offsetSouthX, 0);
-		} else {
-			border.pos(0, 0);
-		}
-		if (this.heightNorth > this.heightSouth) {
-			if (this.widthNorth > this.widthSouth) {
-				border.size(this.widthNorth, this.heightNorth);
-			} else {
-				border.size(this.widthSouth, this.heightNorth);
-			}
-		} else {
-			if (this.widthNorth > this.widthSouth) {
-				border.size(this.widthNorth, this.heightSouth);
-			} else {
-				border.size(this.widthSouth, this.heightSouth);
-			}
-		}
-		border.borderColor = Color.RED;
-		border.borderPosition = OUTSIDE;
-		border.borderSize = 2;
-		border.depth = 4;
-		this.add(border);
 	}
 }
