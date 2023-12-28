@@ -12,7 +12,7 @@ class Viewport extends Scene {
 
 	// Everything inside the viewport is stored here
 	var universe: Visual = new Visual();
-	var selected: Array<KeyRenderer> = [];
+	var selectedIDs: Array<Int> = [];
 
 	// Constants
 	inline static final unit = 100;
@@ -71,12 +71,12 @@ class Viewport extends Scene {
 			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 			key.onPointerDown(key, (_) -> {
 				if (!key.border.visible) {
-					selected.remove(key); // just in case
-					selected.push(key);
+					selectedIDs.remove(k.keyId); // just in case
+					selectedIDs.push(k.keyId);
 				} else {
-					selected.remove(key);
+					selectedIDs.remove(k.keyId);
 				}
-				trace(selected);
+				trace(selectedIDs);
 				key.select();
 			});
 		}
