@@ -93,8 +93,8 @@ class Viewport extends Scene {
 
 		if (inputMap.justPressed(PLACE_1U)) {
 			drawKey(this.keyboard.addKey("1U", [
-				Std.int((screen.pointerX - this.universe.x) / this.universe.scaleX / 25) * .25,
-				Std.int((screen.pointerY - this.universe.y) / this.universe.scaleY / 25) * .25
+				(Std.int((screen.pointerX - this.universe.x) / this.universe.scaleX / 25) * .25)-.25,
+				(Std.int((screen.pointerY - this.universe.y) / this.universe.scaleY / 25) * .25)-.25
 			], "1U"));
 			trace("add key");
 		}
