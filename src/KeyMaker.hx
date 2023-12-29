@@ -40,7 +40,7 @@ class KeyMaker {
 						widthSouth = 150 - gapX;
 						heightSouth = 100 - gapY;
 						offsetSouthX = 0;
-						offsetSouthY = 101; // the 101 is a code-desing quirk!
+						offsetSouthY = 100;
 					case "BAE":
 						// Normal BAE
 						widthNorth = 150 - gapX;

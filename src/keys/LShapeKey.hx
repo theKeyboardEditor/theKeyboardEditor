@@ -1,6 +1,7 @@
 package keys;
 
 import ceramic.Arc;
+import ceramic.Quad;
 import ceramic.Border;
 import ceramic.Color;
 import ceramic.Visual;
@@ -23,13 +24,17 @@ class LShapeKey extends KeyRenderer {
 	var widthSouth: Int; // South is the closer member of the piar
 	var heightSouth: Int;
 
-	var arcRotation: Float; // The radius of the inside corner
-	var arcPosX: Float;
-	var arcPosY: Float;
 	var arcPosTopX: Float;
 	var arcPosTopY: Float;
 	var offsetSouthX: Int; // The closer member's offset
 	var offsetSouthY: Int;
+
+	var arcPosX: Array<Float>;
+	var arcPosY: Array<Float>;
+	var arcTopPosX: Array<Float>;
+	var arcTopPosY: Array<Float>;
+	var arcRotation: Array<Int>;
+	var arcBorderPosition: Array<Bool>;
 
 	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int,
 			topColor: Int, bodyColor: Int) {
@@ -47,38 +52,154 @@ class LShapeKey extends KeyRenderer {
 		if (offsetSouthX < 0) { // is the 2nd member Westward from the top member?
 			// Yes, here we assume it's a BAE situation
 			size(widthSouth, heightNorth);
-			if (offsetSouthY < 100) { // is the member northward in the shape?
+			if (offsetSouthY < 99) { // is the member northward in the shape?
 				// Yes, inverted BAE
-				arcRotation = -90;
-				arcPosX = widthSouth + roundedCorner;
-				arcPosY = heightNorth + roundedCorner;
-				arcPosTopX = topX + widthSouth - roundedCorner;
-				arcPosTopY = topY + heightNorth - roundedCorner;
+				this.arcPosX = [
+					offsetSouthX + roundedCorner,
+					widthNorth - roundedCorner,
+					widthNorth - roundedCorner,
+					widthSouth + roundedCorner,
+					widthSouth + offsetSouthX - roundedCorner,
+					offsetSouthX + roundedCorner
+				];
+				this.arcPosY = [
+					roundedCorner,
+					roundedCorner,
+					heightNorth - roundedCorner,
+					heightNorth + roundedCorner,
+					heightSouth - roundedCorner,
+					heightSouth - roundedCorner
+				];
+				this.arcTopPosX = [
+					topX + offsetSouthX + roundedCorner,
+					topX + widthNorth - this.topOffset - roundedCorner,
+					topX + widthNorth - this.topOffset - roundedCorner,
+					topX + widthSouth - this.topOffset + roundedCorner,
+					topX + widthSouth - this.topOffset + offsetSouthX - roundedCorner,
+					topX + offsetSouthX + roundedCorner
+				];
+				this.arcTopPosY = [
+					topY + roundedCorner,
+					topY + roundedCorner,
+					topY + heightNorth - this.topOffset - roundedCorner,
+					topY + heightNorth - this.topOffset + roundedCorner,
+					topY + heightSouth - this.topOffset - roundedCorner,
+					topY + heightSouth - this.topOffset - roundedCorner
+				];
+				this.arcRotation = [-90, 0, 90, -90, 90, 180];
+				this.arcBorderPosition = [true, true, true, false, true, true];
 			} else {
 				// No, upright BAE
-				arcRotation = 90;
-				arcPosX = -1 * roundedCorner;
-				arcPosY = offsetSouthY - roundedCorner;
-				arcPosTopX = topX - roundedCorner;
-				arcPosTopY = topY + offsetSouthY - roundedCorner;
+				this.arcPosX = [
+					roundedCorner,
+					widthNorth - roundedCorner,
+					widthNorth - roundedCorner,
+					offsetSouthX + roundedCorner,
+					offsetSouthX + roundedCorner,
+					-roundedCorner,
+				];
+				this.arcPosY = [
+					roundedCorner,
+					roundedCorner,
+					heightNorth - roundedCorner,
+					heightNorth - roundedCorner,
+					offsetSouthY + roundedCorner,
+					offsetSouthY - roundedCorner
+				];
+				this.arcTopPosX = [
+					topX + roundedCorner,
+					topX + widthNorth - this.topOffset - roundedCorner,
+					topX + widthNorth - this.topOffset - roundedCorner,
+					topX + offsetSouthX + roundedCorner,
+					topX + offsetSouthX + roundedCorner,
+					topX - roundedCorner,
+				];
+				this.arcTopPosY = [
+					topY + roundedCorner,
+					topY + roundedCorner,
+					topY + heightNorth - this.topOffset - roundedCorner,
+					topY + heightNorth - this.topOffset - roundedCorner,
+					topY + offsetSouthY + roundedCorner,
+					topY + offsetSouthY - roundedCorner
+				];
+				this.arcRotation = [-90, 0, 90, 180, -90, 90];
+				this.arcBorderPosition = [true, true, true, true, true, false];
 			}
 		} else { // No, the 2nd member is aligned with or Eastward of the member:
 			// we assume it's an ISO situation
 			size(widthNorth, heightSouth);
-			if (offsetSouthY > 100) { // Is the 2nd member Southward in the shape?
+			if (offsetSouthY > 99) { // Is the 2nd member Southward in the shape?
 				// Yes, inverted ISO
-				arcRotation = 180;
-				arcPosX = widthNorth + roundedCorner;
-				arcPosY = offsetSouthY - roundedCorner;
-				arcPosTopX = topX + roundedCorner + (widthNorth - topOffset);
-				arcPosTopY = topY + offsetSouthY - roundedCorner;
+				this.arcPosX = [
+					roundedCorner,
+					widthNorth - roundedCorner,
+					widthNorth + roundedCorner,
+					widthSouth - roundedCorner,
+					roundedCorner,
+					widthSouth - roundedCorner,
+				];
+				this.arcPosY = [
+					roundedCorner,
+					roundedCorner,
+					offsetSouthY - roundedCorner,
+					offsetSouthY + roundedCorner,
+					heightNorth - roundedCorner,
+					heightNorth - roundedCorner
+				];
+				this.arcTopPosX = [
+					topX + roundedCorner,
+					topX + widthNorth - this.topOffset - roundedCorner,
+					topX + widthNorth - this.topOffset + roundedCorner,
+					topX + widthSouth - this.topOffset - roundedCorner,
+					topX + roundedCorner,
+					topX + widthSouth - this.topOffset - roundedCorner,
+				];
+				this.arcTopPosY = [
+					topY + roundedCorner,
+					topY + roundedCorner,
+					topY + offsetSouthY - roundedCorner,
+					topY + offsetSouthY + roundedCorner,
+					topY + heightNorth - this.topOffset - roundedCorner,
+					topY + heightNorth - this.topOffset - roundedCorner
+				];
+				this.arcRotation = [-90, 0, 180, 0, 180, 90];
+				this.arcBorderPosition = [true, true, false, true, true, true];
 			} else {
 				// No, upright ISO
-				arcRotation = 0;
-				arcPosX = offsetSouthX - roundedCorner;
-				arcPosY = heightNorth + roundedCorner;
-				arcPosTopX = topX + offsetSouthX - roundedCorner;
-				arcPosTopY = topY + heightNorth - roundedCorner;
+				this.arcPosX = [
+					roundedCorner,
+					width - roundedCorner,
+					roundedCorner,
+					roundedCorner,
+					roundedCorner + offsetSouthX,
+					width - roundedCorner
+				];
+				this.arcPosY = [
+					roundedCorner,
+					roundedCorner,
+					heightNorth - roundedCorner,
+					heightNorth + roundedCorner,
+					heightSouth - roundedCorner,
+					heightSouth - roundedCorner
+				];
+				this.arcTopPosX = [
+					topX + roundedCorner,
+					topX + widthNorth - this.topOffset - roundedCorner,
+					topX + roundedCorner,
+					topX + roundedCorner,
+					topX + roundedCorner + offsetSouthX,
+					topX + widthNorth - this.topOffset - roundedCorner
+				];
+				this.arcTopPosY = [
+					topY + roundedCorner,
+					topY + roundedCorner,
+					topY + heightNorth - this.topOffset - roundedCorner,
+					topY + heightNorth - this.topOffset + roundedCorner,
+					topY + heightSouth - this.topOffset - roundedCorner,
+					topY + heightSouth - this.topOffset - roundedCorner
+				];
+				this.arcRotation = [-90, 0, 180, 0, 180, 90];
+				this.arcBorderPosition = [true, true, true, false, true, true];
 			}
 		}
 	}
@@ -104,54 +225,118 @@ class LShapeKey extends KeyRenderer {
 			}
 		}
 		this.border.borderColor = Color.RED;
-		this.border.borderPosition = OUTSIDE;
+		this.border.borderPosition = MIDDLE;
 		this.border.borderSize = 2;
 		this.border.depth = 4;
 		this.border.visible = false;
 		this.add(this.border);
+		/*
 
-		// first draw the North member of the keyshape
-		final top = new RoundedRect(this.topColor, 0, 0, roundedCorner, widthNorth - this.topOffset, heightNorth - this.topOffset, 0, 0);
-		top.pos(topX, topY);
-		top.depth = 2;
+			final topArc = new Arc();
+			topArc.color = topColor;
+			topArc.radius = roundedCorner;
+			topArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+			topArc.angle = 90;
+			topArc.depth = 3; // this is in the sense of layers
+			topArc.thickness = roundedCorner; // with this thickness we cover the underlying sharp corner
+			topArc.rotation = arcRotation;
+			topArc.pos(arcPosTopX, arcPosTopY);
+			this.add(topArc);
+		 */
+
+		final top = new Quad();
+		top.color = topColor;
+		top.depth = 1; // this is in the sense of layers
+		top.pos(topX + roundedCorner, topY);
+		top.size(widthNorth - this.topOffset - roundedCorner * 2, heightNorth - this.topOffset);
 		this.add(top);
 
-		// then draw the South member of the keyshape
-		final top = new RoundedRect(this.topColor, 0, 0, roundedCorner, widthSouth - this.topOffset, heightSouth - this.topOffset, 0, 0);
-		top.pos(topX + offsetSouthX, topY + offsetSouthY);
-		top.depth = 2;
+		final top = new Quad();
+		top.color = topColor;
+		top.depth = 1; // this is in the sense of layers
+		top.pos(topX, topY + roundedCorner);
+		top.size(widthNorth - this.topOffset, heightNorth - this.topOffset - roundedCorner * 2);
 		this.add(top);
 
-		final topArc = new Arc();
-		topArc.color = topColor;
-		topArc.radius = roundedCorner;
-		topArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
-		topArc.angle = 90;
-		topArc.depth = 3; // this is in the sense of layers
-		topArc.thickness = roundedCorner; // with this thickness we cover the underlying sharp corner
-		topArc.rotation = arcRotation;
-		topArc.pos(arcPosTopX, arcPosTopY);
-		this.add(topArc);
+		final top = new Quad();
+		top.color = topColor;
+		top.depth = 1; // this is in the sense of layers
+		top.pos(topX + roundedCorner + offsetSouthX, topY + offsetSouthY);
+		top.size(widthSouth - this.topOffset - roundedCorner * 2, heightSouth - this.topOffset);
+		this.add(top);
 
-		final bottom = new RoundedRect(this.bodyColor, 0, 0, roundedCorner, widthNorth, heightNorth, 0, 0);
-		bottom.depth = 1;
+		final top = new Quad();
+		top.color = topColor;
+		top.depth = 1; // this is in the sense of layers
+		top.pos(topX + offsetSouthX, topY + offsetSouthY + roundedCorner);
+		top.size(widthSouth - this.topOffset, heightSouth - this.topOffset - roundedCorner * 2);
+		this.add(top);
+
+		for (i in 0...arcRotation.length) {
+			final bottomArc = new Arc();
+			bottomArc.color = topColor;
+			bottomArc.radius = roundedCorner;
+			// bottomArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+
+			if (arcBorderPosition[i])
+				bottomArc.borderPosition = INSIDE
+			else
+				bottomArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+
+			bottomArc.angle = 90;
+			bottomArc.depth = 2; // this is in the sense of layers
+			bottomArc.thickness = roundedCorner;
+			bottomArc.rotation = arcRotation[i];
+			bottomArc.pos(arcTopPosX[i], arcTopPosY[i]);
+			this.add(bottomArc);
+		}
+
+		for (i in 0...arcRotation.length) {
+			final bottomArc = new Arc();
+			bottomArc.color = bodyColor;
+			bottomArc.radius = roundedCorner;
+			// bottomArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+
+			if (arcBorderPosition[i])
+				bottomArc.borderPosition = INSIDE
+			else
+				bottomArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+
+			bottomArc.angle = 90;
+			bottomArc.depth = 1; // this is in the sense of layers
+			bottomArc.thickness = roundedCorner;
+			bottomArc.rotation = arcRotation[i];
+			bottomArc.pos(arcPosX[i], arcPosY[i]);
+			this.add(bottomArc);
+		}
+
+		final bottom = new Quad();
+		bottom.color = bodyColor;
+		bottom.depth = 0; // this is in the sense of layers
+		bottom.pos(roundedCorner, 0);
+		bottom.size(widthNorth - roundedCorner * 2, heightNorth);
 		this.add(bottom);
 
-		final bottom = new RoundedRect(this.bodyColor, 0, 0, roundedCorner, widthSouth, heightSouth, 0, 0);
-		bottom.pos(offsetSouthX, offsetSouthY);
-		bottom.depth = 1;
+		final bottom = new Quad();
+		bottom.color = bodyColor;
+		bottom.depth = 0; // this is in the sense of layers
+		bottom.pos(0, roundedCorner);
+		bottom.size(widthNorth, heightNorth - roundedCorner * 2);
 		this.add(bottom);
 
-		final bottomArc = new Arc();
-		bottomArc.color = bodyColor;
-		bottomArc.radius = roundedCorner;
-		bottomArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
-		bottomArc.angle = 90;
-		bottomArc.depth = 2; // this is in the sense of layers
-		bottomArc.thickness = roundedCorner;
-		bottomArc.rotation = arcRotation;
-		bottomArc.pos(arcPosX, arcPosY);
-		this.add(bottomArc);
+		final bottom = new Quad();
+		bottom.color = bodyColor;
+		bottom.depth = 0; // this is in the sense of layers
+		bottom.pos(roundedCorner + offsetSouthX, offsetSouthY);
+		bottom.size(widthSouth - roundedCorner * 2, heightSouth);
+		this.add(bottom);
+
+		final bottom = new Quad();
+		bottom.color = bodyColor;
+		bottom.depth = 0; // this is in the sense of layers
+		bottom.pos(offsetSouthX, offsetSouthY + roundedCorner);
+		bottom.size(widthSouth, heightSouth - roundedCorner * 2);
+		this.add(bottom);
 
 		return this;
 	}
