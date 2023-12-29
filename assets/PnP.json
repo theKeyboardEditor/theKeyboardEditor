@@ -1,0 +1,149 @@
+{
+  "name": "PnP",
+  "author": "cest73",
+  "license": "MIT",
+  "comment": "Pick and Place working set",
+  "colorTable": {
+    "name": "Monotone",
+    "url": "https://some.site.org",
+    "colorMatchingProfile": "generic",
+    "size": 2,
+    "swatches": [
+      { "color": "black", "value": "0xFF000000" },
+      { "color": "white", "value": "0xFFffffff" }
+    ]
+  },
+  "unit": [
+    {
+      "keyboardID": 0,
+      "designator": "PnP",
+      "keyStep": [19.0, 19.0],
+      "stabilizerType": "dna",
+      "switchType": "Unknown",
+      "capSize": [18.5, 18.5],
+      "rulerUnits": "mm",
+      "caseColor": "0xFFFFFFFF",
+      "keysColor": "0xFFFFFFFF",
+      "keyboardFont": "sans",
+      "legendSizeUnits": "U/100",
+      "keyboardFontSize": 24,
+      "legendColor": "0xFF000000",
+      "legendPosition": [5.12, 5.12],
+      "profile": "OEM",
+      "keySculpt": "R3",
+      "amountOfUnits": 1,
+      "size": 10,
+      "keys": [
+        {
+          "keyId": 0,
+          "position": [0, 0],
+          "stabilizer": "3U",
+          "shape": "3U",
+          "legends": [
+            {
+              "symbol": "3U"
+            }
+          ]
+        },
+        {
+          "keyId": 1,
+          "position": [0, 1.25],
+          "stabilizer": "1U",
+          "shape": "1U",
+          "legends": [
+            {
+              "symbol": "1U"
+            }
+          ]
+        },
+        {
+          "keyId": 2,
+          "position": [1.25, 1.25],
+          "shape": "1.75 U",
+          "legends": [
+            {
+              "symbol": "1.75U"
+            }
+          ]
+        },
+        {
+          "keyId": 3,
+          "position": [0, 2.5],
+          "shape": "1.25U",
+          "legends": [
+            {
+              "symbol": "1.25U"
+            }
+          ]
+        },
+        {
+          "keyId": 4,
+          "position": [1.5, 2.5],
+          "shape": "1.5U",
+          "legends": [
+            {
+              "symbol": "1.5U"
+            }
+          ]
+        },
+        {
+          "keyId": 5,
+          "position": [0, 3.75],
+          "shape": "2.25U",
+          "legends": [
+            {
+              "symbol": "2.25U"
+            }
+          ]
+        },
+        {
+          "keyId": 6,
+          "position": [0.25, 5],
+          "shape": "2.75U",
+          "legends": [
+            {
+              "symbol": "2.75U"
+            }
+          ]
+        },
+        {
+          "keyId": 7,
+          "position": [0, 6.25],
+          "shape": "3U Vertical",
+          "legends": [
+            {
+              "symbol": "3U",
+              "legendPosition": [-5.12, 120]
+            },
+            {
+              "symbol": "Vertical",
+              "legendPosition": [-5.12, 140],
+              "legendSize": 18.0
+            }
+          ]
+        },
+        {
+          "keyId": 8,
+          "position": [1.5, 6.25],
+          "shape": "ISO",
+          "legends": [
+            {
+              "symbol": "ISO",
+              "legendPosition": [25.6, 70]
+            }
+          ]
+        },
+        {
+          "keyId": 9,
+          "position": [1.5, 8.5],
+          "shape": "BAE",
+          "legends": [
+            {
+              "symbol": "BAE"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
