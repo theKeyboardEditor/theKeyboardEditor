@@ -120,13 +120,14 @@ class Keyboard {
 		this.keys = [];
 	}
 
-	public function addKey(shape: String, pos: Array<Float>, leg: String) {
+	public function addKey(shape: String, pos: Array<Float>, leg: String): Key {
 		// calculate a new ID
 		var uid = this.keys.length;
 		// define a new key:
-		var newKnob = new Key(uid, shape, pos, new Keyson.KeyLegend(leg));
+		var key = new Key(uid, shape, pos, new Keyson.KeyLegend(leg));
 		// append the new key to the end of the array
-		this.keys.push(newKnob);
+		this.keys.push(key);
+		return key;
 	}
 }
 

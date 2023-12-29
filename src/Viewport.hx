@@ -16,9 +16,12 @@ class Viewport extends Scene {
 
 	// Constants
 	inline static final unit = 100;
-	inline static var movementSpeed: Int = 1000;
-	inline static var originX: Float = 510;
-	inline static var originY: Float = 60;
+	inline static final movementSpeed: Int = 1000;
+	inline static final zoom = 2;
+	inline static final originX: Float = 510;
+	inline static final originY: Float = 60;
+	final gapX: Int;
+	final gapY: Int;
 
 	override public function new(keyboard: Keyboard) {
 		super();
@@ -26,6 +29,9 @@ class Viewport extends Scene {
 		this.universe = new Visual();
 		this.universe.pos(originX, originY);
 
+		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit);
+		gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
+		
 		// Define the inputs
 		bindInput();
 	}
@@ -43,47 +49,18 @@ class Viewport extends Scene {
 		// Zoom Time
 		inputMap.bindScanCode(ZOOM_IN, EQUALS);
 		inputMap.bindScanCode(ZOOM_OUT, MINUS);
+		// Key Placement (Temporary)
+		inputMap.bindScanCode(PLACE_1U, KEY_P);
 	}
 
 	override function create() {
-		final gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit);
-		final gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
-
-		for (k in this.keyboard.keys) {
-			final key: KeyRenderer = KeyMaker.createKey(k, unit, gapX, gapY, this.keyboard.keysColor);
-			this.universe.add(key.create());
-
-			final keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(this.keyboard, k, unit);
-			for (l in keyLegends) {
-				this.universe.add(l.create());
-			}
-
-			// A ceramic visual does not inherit the size of it's children
-			// Hence we must set it ourselves
-			if (key.width + key.x > this.universe.width) {
-				this.universe.width = key.width + gapX + key.x;
-			} // we end up with the biggest value when the loop is over
-
-			if (key.height + key.y > this.universe.height) {
-				this.universe.height = key.height + gapY + key.y;
-			}
-
-			key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
-			key.onPointerDown(key, (_) -> {
-				if (!key.border.visible) {
-					selectedIDs.remove(k.keyId); // just in case
-					selectedIDs.push(k.keyId);
-				} else {
-					selectedIDs.remove(k.keyId);
-				}
-				trace(selectedIDs);
-				key.select();
-			});
+		for (key in this.keyboard.keys) {
+			drawKey(key);
 		}
+
 		this.add(universe);
 	}
 
-	final zoom = 2;
 
 	override function update(delta: Float) {
 		// Handle keyboard input.
@@ -99,6 +76,7 @@ class Viewport extends Scene {
 		if (inputMap.pressed(RIGHT)) {
 			this.universe.x -= movementSpeed * delta;
 		}
+		
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
 			this.universe.scaleX += zoom * delta;
@@ -107,6 +85,42 @@ class Viewport extends Scene {
 			this.universe.scaleX -= zoom * delta;
 			this.universe.scaleY -= zoom * delta;
 		}
+
+		if (inputMap.justPressed(PLACE_1U)) {
+			drawKey(this.keyboard.addKey("1U", [0, 0], "1U"));
+		}
+	}
+
+	// Draws and adds a key to the universe
+	public function drawKey(k: keyson.Keyson.Key) {
+		final key: KeyRenderer = KeyMaker.createKey(k, unit, this.gapX, this.gapY, this.keyboard.keysColor);
+		this.universe.add(key.create());
+
+		final keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(this.keyboard, k, unit);
+		for (l in keyLegends) {
+			this.universe.add(l.create());
+		}
+
+		// A ceramic visual does not inherit the size of it's children
+		// Hence we must set it ourselves
+		if (key.width + key.x > this.universe.width) {
+			this.universe.width = key.width + this.gapX + key.x;
+		} // we end up with the biggest value when the loop is over
+
+		if (key.height + key.y > this.universe.height) {
+			this.universe.height = key.height + this.gapY + key.y;
+		}
+
+		key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
+		key.onPointerDown(key, (_) -> {
+			if (!key.border.visible) {
+				selectedIDs.remove(k.keyId); // just in case
+				selectedIDs.push(k.keyId);
+			} else {
+				selectedIDs.remove(k.keyId);
+			}
+			key.select();
+		});
 	}
 }
 
@@ -117,4 +131,5 @@ enum abstract ViewportInput(Int) {
 	var RIGHT;
 	var ZOOM_IN;
 	var ZOOM_OUT;
+	var PLACE_1U;
 }
