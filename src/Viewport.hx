@@ -21,6 +21,7 @@ class Viewport extends Scene {
 	inline static final zoom = 2;
 	inline static final originX: Float = 510;
 	inline static final originY: Float = 60;
+
 	final gapX: Int;
 	final gapY: Int;
 
@@ -36,7 +37,7 @@ class Viewport extends Scene {
 
 		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit);
 		gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
-		
+
 		// Define the inputs
 		bindInput();
 	}
@@ -66,7 +67,6 @@ class Viewport extends Scene {
 		this.add(universe);
 	}
 
-
 	override function update(delta: Float) {
 		// Handle keyboard input.
 		if (inputMap.pressed(UP)) {
@@ -81,7 +81,7 @@ class Viewport extends Scene {
 		if (inputMap.pressed(RIGHT)) {
 			this.universe.x -= movementSpeed * delta;
 		}
-		
+
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
 			this.universe.scaleX += zoom * delta;
@@ -92,10 +92,16 @@ class Viewport extends Scene {
 		}
 
 		if (inputMap.justPressed(PLACE_1U)) {
-			drawKey(this.keyboard.addKey("1U", [Std.int(screen.pointerX * this.scaleX) / quarterUnit, 0], "1U"));
+			drawKey(this.keyboard.addKey("1U", [
+				Std.int((screen.pointerX - this.universe.x) / this.universe.scaleX / 25) * .25,
+				Std.int((screen.pointerY - this.universe.y) / this.universe.scaleY / 25) * .25
+			], "1U"));
+			trace("add key");
 		}
 
-		this.statusBar.findComponent("status").text = '${Std.int(screen.pointerX * this.scaleX) / quarterUnit} x ${Std.int(screen.pointerY * this.scaleY) / quarterUnit}';
+		//		this.statusBar.findComponent("status").text = '${Std.int(screen.pointerX * this.scaleX) / quarterUnit} x ${Std.int(screen.pointerY * this.scaleY) / quarterUnit}';
+		this.statusBar.findComponent("status")
+			.text = '${Std.int((screen.pointerX - this.universe.x) / this.universe.scaleX / 25) * .25}U x ${Std.int((screen.pointerY - this.universe.y) / this.universe.scaleY / 25) * .25}U \n(universe offset:${this.universe.x} x ${this.universe.y})';
 	}
 
 	// Draws and adds a key to the universe
