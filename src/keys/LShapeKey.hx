@@ -246,49 +246,49 @@ class LShapeKey extends KeyRenderer {
 
 		final top = new Quad();
 		top.color = topColor;
-		top.depth = 1; // this is in the sense of layers
+		top.depth = 2; // this is in the sense of layers
 		top.pos(topX + roundedCorner, topY);
 		top.size(widthNorth - this.topOffset - roundedCorner * 2, heightNorth - this.topOffset);
 		this.add(top);
 
 		final top = new Quad();
 		top.color = topColor;
-		top.depth = 1; // this is in the sense of layers
+		top.depth = 2; // this is in the sense of layers
 		top.pos(topX, topY + roundedCorner);
 		top.size(widthNorth - this.topOffset, heightNorth - this.topOffset - roundedCorner * 2);
 		this.add(top);
 
 		final top = new Quad();
 		top.color = topColor;
-		top.depth = 1; // this is in the sense of layers
+		top.depth = 2; // this is in the sense of layers
 		top.pos(topX + roundedCorner + offsetSouthX, topY + offsetSouthY);
 		top.size(widthSouth - this.topOffset - roundedCorner * 2, heightSouth - this.topOffset);
 		this.add(top);
 
 		final top = new Quad();
 		top.color = topColor;
-		top.depth = 1; // this is in the sense of layers
+		top.depth = 2; // this is in the sense of layers
 		top.pos(topX + offsetSouthX, topY + offsetSouthY + roundedCorner);
 		top.size(widthSouth - this.topOffset, heightSouth - this.topOffset - roundedCorner * 2);
 		this.add(top);
 
 		for (i in 0...arcRotation.length) {
-			final bottomArc = new Arc();
-			bottomArc.color = topColor;
-			bottomArc.radius = roundedCorner;
-			// bottomArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+			final topArc = new Arc();
+			topArc.color = topColor;
+			topArc.radius = roundedCorner;
+			// topArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
 
 			if (arcBorderPosition[i])
-				bottomArc.borderPosition = INSIDE
+				topArc.borderPosition = INSIDE
 			else
-				bottomArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
+				topArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
 
-			bottomArc.angle = 90;
-			bottomArc.depth = 2; // this is in the sense of layers
-			bottomArc.thickness = roundedCorner;
-			bottomArc.rotation = arcRotation[i];
-			bottomArc.pos(arcTopPosX[i], arcTopPosY[i]);
-			this.add(bottomArc);
+			topArc.angle = 90;
+			topArc.depth = 3; // this is in the sense of layers
+			topArc.thickness = roundedCorner;
+			topArc.rotation = arcRotation[i];
+			topArc.pos(arcTopPosX[i], arcTopPosY[i]);
+			this.add(topArc);
 		}
 
 		for (i in 0...arcRotation.length) {
