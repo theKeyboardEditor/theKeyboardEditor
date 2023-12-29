@@ -11,5 +11,5 @@
             color: white;
         }
     </style>
-    <label text="Status" />
+    <label id="status" width="100%" text="Status" />
 </hbox>

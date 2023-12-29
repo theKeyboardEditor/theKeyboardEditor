@@ -16,6 +16,7 @@ class Viewport extends Scene {
 
 	// Constants
 	inline static final unit = 100;
+	inline static final quarterUnit = unit / 4;
 	inline static final movementSpeed: Int = 1000;
 	inline static final zoom = 2;
 	inline static final originX: Float = 510;
@@ -23,9 +24,13 @@ class Viewport extends Scene {
 	final gapX: Int;
 	final gapY: Int;
 
+	// UI Accessors
+	public var statusBar: haxe.ui.containers.HBox;
+
 	override public function new(keyboard: Keyboard) {
 		super();
 		this.keyboard = keyboard;
+
 		this.universe = new Visual();
 		this.universe.pos(originX, originY);
 
@@ -87,8 +92,10 @@ class Viewport extends Scene {
 		}
 
 		if (inputMap.justPressed(PLACE_1U)) {
-			drawKey(this.keyboard.addKey("1U", [0, 0], "1U"));
+			drawKey(this.keyboard.addKey("1U", [Std.int(screen.pointerX * this.scaleX) / quarterUnit, 0], "1U"));
 		}
+
+		this.statusBar.findComponent("status").text = '${Std.int(screen.pointerX * this.scaleX) / quarterUnit} x ${Std.int(screen.pointerY * this.scaleY) / quarterUnit}';
 	}
 
 	// Draws and adds a key to the universe

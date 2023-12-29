@@ -54,6 +54,7 @@ class MainScene extends Scene {
 		}
 
 		final statusBar = ComponentBuilder.fromFile("ui/status.xml");
+		viewport.statusBar = statusBar;
 		view.addComponent(statusBar);
 	}
 
