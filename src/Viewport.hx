@@ -12,6 +12,7 @@ class Viewport extends Scene {
 
 	// Everything inside the viewport is stored here
 	var universe: Visual = new Visual();
+	var cursor: ViewportCursor = new ViewportCursor(unit, unit);
 	var selectedIDs: Array<Int> = [];
 
 	// Constants
@@ -30,8 +31,8 @@ class Viewport extends Scene {
 
 	override public function new(keyboard: Keyboard) {
 		super();
-		this.keyboard = keyboard;
 
+		this.keyboard = keyboard;
 		this.universe = new Visual();
 		this.universe.pos(originX, originY);
 
@@ -42,28 +43,10 @@ class Viewport extends Scene {
 		bindInput();
 	}
 
-	function bindInput() {
-		inputMap.bindKeyCode(UP, UP);
-		inputMap.bindKeyCode(DOWN, DOWN);
-		inputMap.bindKeyCode(LEFT, LEFT);
-		inputMap.bindKeyCode(RIGHT, RIGHT);
-		// We use scan code for these so that it will work with non-qwerty layouts as well
-		inputMap.bindScanCode(UP, KEY_W);
-		inputMap.bindScanCode(DOWN, KEY_S);
-		inputMap.bindScanCode(LEFT, KEY_A);
-		inputMap.bindScanCode(RIGHT, KEY_D);
-		// Zoom Time
-		inputMap.bindScanCode(ZOOM_IN, EQUALS);
-		inputMap.bindScanCode(ZOOM_OUT, MINUS);
-		// Key Placement (Temporary)
-		inputMap.bindScanCode(PLACE_1U, KEY_P);
-	}
-
 	override function create() {
 		for (key in this.keyboard.keys) {
 			drawKey(key);
 		}
-
 		this.add(universe);
 	}
 
@@ -93,15 +76,19 @@ class Viewport extends Scene {
 
 		if (inputMap.justPressed(PLACE_1U)) {
 			drawKey(this.keyboard.addKey("1U", [
-				(Std.int((screen.pointerX - this.universe.x) / this.universe.scaleX / 25) * .25)-.25,
-				(Std.int((screen.pointerY - this.universe.y) / this.universe.scaleY / 25) * .25)-.25
+				(Std.int((screen.pointerX - this.universe.x) / this.universe.scaleX / 25) * .25) - .25,
+				(Std.int((screen.pointerY - this.universe.y) / this.universe.scaleY / 25) * .25) - .25
 			], "1U"));
-			trace("add key");
 		}
 
-		//		this.statusBar.findComponent("status").text = '${Std.int(screen.pointerX * this.scaleX) / quarterUnit} x ${Std.int(screen.pointerY * this.scaleY) / quarterUnit}';
-		this.statusBar.findComponent("status")
-			.text = '${Std.int((screen.pointerX - this.universe.x) / this.universe.scaleX / 25) * .25}U x ${Std.int((screen.pointerY - this.universe.y) / this.universe.scaleY / 25) * .25}U \n(universe offset:${this.universe.x} x ${this.universe.y})';
+		// Snap the cursor
+		this.cursor.pos((Std.int(screen.pointerX / 25) * 25) + gapX, (Std.int(screen.pointerY / 25) * 25) + gapY);
+
+		// Set status bar
+		var snappedPosX = Std.int(screen.pointerX * this.scaleX) / quarterUnit;
+		var snappedPosY = Std.int(screen.pointerY * this.scaleY) / quarterUnit;
+
+		this.statusBar.findComponent("status").text = '$snappedPosX x $snappedPosY';
 	}
 
 	// Draws and adds a key to the universe
@@ -134,6 +121,27 @@ class Viewport extends Scene {
 			}
 			key.select();
 		});
+	}
+
+	function bindInput() {
+		// We use scan code for these so that it will work with non-qwerty layouts as well
+		// Basic movement
+		inputMap.bindKeyCode(UP, UP);
+		inputMap.bindKeyCode(DOWN, DOWN);
+		inputMap.bindKeyCode(LEFT, LEFT);
+		inputMap.bindKeyCode(RIGHT, RIGHT);
+		// Same as above, but with arrow keys
+		inputMap.bindScanCode(UP, KEY_W);
+		inputMap.bindScanCode(DOWN, KEY_S);
+		inputMap.bindScanCode(LEFT, KEY_A);
+		inputMap.bindScanCode(RIGHT, KEY_D);
+
+		// Zoom Time
+		inputMap.bindScanCode(ZOOM_IN, EQUALS);
+		inputMap.bindScanCode(ZOOM_OUT, MINUS);
+
+		// Key Placement (Temporary)
+		inputMap.bindScanCode(PLACE_1U, KEY_P);
 	}
 }
 
