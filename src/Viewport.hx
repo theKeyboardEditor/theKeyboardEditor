@@ -101,13 +101,8 @@ class Viewport extends Scene {
 
 	// Draws and adds a key to the universe
 	public function drawKey(k: keyson.Keyson.Key) {
-		final key: KeyRenderer = KeyMaker.createKey(k, unit, this.gapX, this.gapY, this.keyboard.keysColor);
+		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit, this.gapX, this.gapY, this.keyboard.keysColor);
 		this.universe.add(key.create());
-
-		final keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(this.keyboard, k, unit);
-		for (l in keyLegends) {
-			this.universe.add(l.create());
-		}
 
 		// A ceramic visual does not inherit the size of it's children
 		// Hence we must set it ourselves

@@ -4,7 +4,7 @@ import keyson.Axis;
 import ceramic.Color;
 
 class KeyMaker {
-	public static function createKey(k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int, color: String): KeyRenderer {
+	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int, color: String): KeyRenderer {
 		var key: KeyRenderer;
 
 		var width: Float;
@@ -89,6 +89,12 @@ class KeyMaker {
 			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, keyColor, keyShadow);
 		}
 
+		// here we populate the legends (see below)
+		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit); // it is another Visual
+		for (l in keyLegends) {
+			key.add(l.create()); // adding ti to the key visual
+		}
+
 		return key;
 	}
 
@@ -116,8 +122,9 @@ class KeyMaker {
 				legend.fontSize = keyboard.keyboardFontSize;
 			}
 
-			legend.depth = 4; // mae sure labels render on top
-			legend.pos(legendOffsetX + legend.topX + unit * k.position[Axis.X], legendOffsetY + legend.topY + unit * k.position[Axis.Y]);
+			legend.depth = 4; // make sure labels render on top
+//			legend.pos(legendOffsetX + legend.topX + unit * k.position[Axis.X], legendOffsetY + legend.topY + unit * k.position[Axis.Y]);
+			legend.pos(legendOffsetX + legend.topX, legendOffsetY + legend.topY); // relative to the key shape
 
 			keyLegends.push(legend);
 		}
