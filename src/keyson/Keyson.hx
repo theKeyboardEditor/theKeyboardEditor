@@ -165,7 +165,7 @@ class Key {
 		this.amountOfLegends = 1;
 		this.legends = [];
 
-		this.legends.push(new KeyLegend (legend));
+		this.legends.push(new KeyLegend(legend));
 	}
 
 	public function addLegend(symbol: String, position: Array<Float>) {

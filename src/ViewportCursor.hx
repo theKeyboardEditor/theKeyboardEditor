@@ -7,118 +7,83 @@ import ceramic.Visual;
 
 
 class ViewportCursor extends Visual {
-	public var corner1: Mesh;
-	public var corner2: Mesh;
-	public var corner3: Mesh;
-	public var corner4: Mesh;
-	public var quad: Quad;
+	// Corners
+	public var topLeft: Mesh;
+	public var bottomLeft: Mesh;
+	public var bottomRight: Mesh;
+	public var topRight: Mesh;
 	public var color: Color;
 
-	override public function new(width: Float, height: Float) {
+	// For corners
+	final vertices: Array<Float>;
+	final indices: Array<Int>;
 
+	override public function new(width: Float, height: Float) {
 		super();
 		size(width, height);
 		this.depth = 2;
 		this.color = 0x003C4BC5; // UI theme accent color!
+
+		// Set the indices and vertices for the corners
+		// @formatter:off	
+		this.vertices = [
+			width * 0.04, 0.0,           //   ____
+			width * 0.20, 0.0,           //  /    |
+			width * 0.20, width * 0.04,  //  |   /
+			width * 0.04, width * 0.20,  //  |  /
+			0.0, width * 0.20,           //  |_/
+			0.0, width * 0.04,
+		]; 
+		this.indices = [
+			0, 1, 2,  // No way I draw this
+			0, 2, 5,  // in ASCII :-)
+			2, 3, 5,
+			3, 4, 5
+		];
+		// @formatter:on
+
 		this.create();
 	}
 
 	public function create(): Visual {
+		// FIRST CORNER
+		this.topLeft = new Mesh();
+		this.topLeft.color = this.color;
+		this.topLeft.vertices = this.vertices;
+		this.topLeft.indices = this.indices;
+		this.topLeft.pos(0, 0);
+		this.topLeft.depth = 4;
+		this.add(this.topLeft);
 
-		this.quad = new Quad();
-		this.quad.pos(0, 0);
-		this.quad.size(this.width,this.height);
-		this.quad.color = this.color;
-		this.quad.depth = 2;
-//		this.add(this.quad);
+		// THIRD CORNER
+		this.bottomRight = new Mesh();
+		this.bottomRight.color = this.color;
+		this.bottomRight.vertices = this.vertices;
+		this.bottomRight.indices = this.indices;
+		this.bottomRight.pos(this.width, this.height);
+		this.bottomRight.depth = 4;
+		this.bottomRight.rotation = 180;
+		this.add(this.bottomRight);
 
-		this.corner1 = new Mesh();
-		this.corner1.color = this.color;
-//		this.corner1.colorMapping = MESH;
-				this.corner1.vertices = [
-			width * 0.04,          0.0,  //   ____
-			width * 0.20,          0.0,  //  /    |
-			width * 0.20, width * 0.04,  //  |   /
-			width * 0.04, width * 0.20,  //  |  /
-			         0.0, width * 0.20,  //  |_/
-			         0.0, width * 0.04,
-			];
-		this.corner1.indices = [
-			0, 1, 2,  // No way I draw this
-			0, 2, 5,  // in ASCII :-)
-			2, 3, 5,
-			3, 4, 5
-			];
-  	this.corner1.pos(0, 0);
-		this.corner1.depth = 4;
-		this.add(this.corner1);
+		// SECOND CORNER
+		this.bottomLeft = new Mesh();
+		this.bottomLeft.color = this.color;
+		this.bottomLeft.vertices = this.vertices;
+		this.bottomLeft.indices = this.indices;
+		this.bottomLeft.pos(this.width,0);
+		this.bottomLeft.depth = 4;
+		this.bottomLeft.rotation = 90;
+		this.add(this.bottomLeft);
 
-		this.corner3 = new Mesh();
-		this.corner3.color = this.color;
-//		this.corner3.colorMapping = MESH;
-		this.corner3.vertices = [
-			width * 0.04,          0.0,  //   ____
-			width * 0.20,          0.0,  //  /    |
-			width * 0.20, width * 0.04,  //  |   /
-			width * 0.04, width * 0.20,  //  |  /
-			         0.0, width * 0.20,  //  |_/
-			         0.0, width * 0.04,
-			];
-		this.corner3.indices = [
-			0, 1, 2,  // No way I draw this
-			0, 2, 5,  // in ASCII :-)
-			2, 3, 5,
-			3, 4, 5
-			];
-		this.corner3.pos(this.width,this.height);
-		this.corner3.depth = 4;
-		this.corner3.rotation = 180;
-		this.add(this.corner3);
-
-		this.corner2 = new Mesh();
-		this.corner2.color = this.color;
-//		this.corner2.colorMapping = MESH;
-		this.corner2.vertices = [
-			width * 0.04,          0.0,  //   ____
-			width * 0.20,          0.0,  //  /    |
-			width * 0.20, width * 0.04,  //  |   /
-			width * 0.04, width * 0.20,  //  |  /
-			         0.0, width * 0.20,  //  |_/
-			         0.0, width * 0.04,
-			];
-		this.corner2.indices = [
-			0, 1, 2,  // No way I draw this
-			0, 2, 5,  // in ASCII :-)
-			2, 3, 5,
-			3, 4, 5
-			];
-  	this.corner2.pos(0, 0);
-		this.corner2.pos(this.width,0);
-		this.corner2.depth = 4;
-		this.corner2.rotation = 90;
-		this.add(this.corner2);
-
-		this.corner4 = new Mesh();
-		this.corner4.color = this.color;
-//		this.corner4.colorMapping = MESH;
-		this.corner4.vertices = [
-			width * 0.04,          0.0,  //   ____
-			width * 0.20,          0.0,  //  /    |
-			width * 0.20, width * 0.04,  //  |   /
-			width * 0.04, width * 0.20,  //  |  /
-			         0.0, width * 0.20,  //  |_/
-			         0.0, width * 0.04,
-			];
-		this.corner4.indices = [
-			0, 1, 2,  // No way I draw this
-			0, 2, 5,  // in ASCII :-)
-			2, 3, 5,
-			3, 4, 5
-			];
-		this.corner4.pos(0,this.height);
-		this.corner4.depth = 4;
-		this.corner4.rotation = -90;
-		this.add(this.corner4);
+		// FOURTH CORNER
+		this.topRight = new Mesh();
+		this.topRight.color = this.color;
+		this.topRight.vertices = this.vertices;
+		this.topRight.indices = this.indices;
+		this.topRight.pos(0, this.height);
+		this.topRight.depth = 4;
+		this.topRight.rotation = -90;
+		this.add(this.topRight);
 
 		return this;
 	}
