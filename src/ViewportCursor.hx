@@ -13,8 +13,6 @@ class ViewportCursor extends Visual {
 	public var corner4: Mesh;
 	public var quad: Quad;
 	public var color: Color;
-	public var gapX: Float;
-	public var gapY: Float;
 
 	override public function new(width: Float, height: Float) {
 
@@ -25,11 +23,6 @@ class ViewportCursor extends Visual {
 		this.create();
 	}
 
-  public function gap(gapX: Float, gapY: Float) {
-		this.gapX = gapX;
-		this.gapY = gapY;
-		
-	}
 	public function create(): Visual {
 
 		this.quad = new Quad();
@@ -38,7 +31,6 @@ class ViewportCursor extends Visual {
 		this.quad.color = this.color;
 		this.quad.depth = 2;
 //		this.add(this.quad);
-		trace(gapX,gapY);
 
 		this.corner1 = new Mesh();
 		this.corner1.color = this.color;

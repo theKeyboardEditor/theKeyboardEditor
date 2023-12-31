@@ -52,6 +52,7 @@ class Viewport extends Scene {
 		this.add(universe);
 	}
 
+
 	override function update(delta: Float) {
 		// Handle keyboard input.
 		if (inputMap.pressed(UP)) {
@@ -67,7 +68,7 @@ class Viewport extends Scene {
 			this.universe.x -= 25; //movementSpeed * delta;
 		}
 
-// Zoming disabled until it works again
+// Zoming disabled until it works as it should again
 /*		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
 			this.universe.scaleX += zoom * delta;
@@ -78,47 +79,17 @@ class Viewport extends Scene {
 		}
 */
 
-		var moduloX= (
-									(
-									          (this.universe.x / 25)
-									- (Std.int(this.universe.x / 25))
-									)
-									* 25
-									);
+// difference between Int and Floar dividsion by 25!
+		var moduloX= (((this.universe.x / 25) - Std.int(this.universe.x / 25)) * 25);
+		var moduloY= (((this.universe.y / 25) - Std.int(this.universe.y / 25)) * 25);
 
-		var moduloY= (
-									(
-									          (this.universe.y / 25)
-									- (Std.int(this.universe.y / 25))
-									)
-									* 25
-									);
+// The real screen coordinates we should draw our placing curor on
+		var screenPosX = (Std.int((screen.pointerX - unit / 2) / 25) * 25 + moduloX );
+		var screenPosY = (Std.int((screen.pointerY - unit / 2) / 25) * 25 + moduloY );
 
-		var screenPosX = (
-											(
-											(Std.int((screen.pointerX / this.universe.scaleX  - unit/2) / 25))
-											+ (			   this.universe.x / 25) 
-											- (Std.int(this.universe.x / 25))
-											)
-											* 25
-											);
-		var screenPosY = (
-											(
-											(Std.int((screen.pointerY / this.universe.scaleY - unit/2) / 25))
-											+         (this.universe.y / 25)
-											- (Std.int(this.universe.y / 25))
-											)
-											* 25
-											);
-
-		var snappedPosX = (
-											Std.int((screenPosX + unit / 2 - moduloX - this.universe.x) / 25) * .25
-											);
-		var snappedPosY = (
-											Std.int((screenPosY + unit / 2 - moduloY - this.universe.y) / 25) * .25
-											);
-
-		var carryX =((((screenPosX + unit * .5 - moduloX - this.universe.x) / 25) * .25) - snappedPosX) * 100;
+// The keyson space (U/100) coordinates we should draw the to_be_placed_key on:
+		var snappedPosX = ((Std.int((screenPosX + unit / 2 - this.universe.x) / 25) * 25 / 100) - 0.5);
+		var snappedPosY = ((Std.int((screenPosY + unit / 2 - this.universe.y) / 25) * 25 / 100) - 0.5);
 
 		if (inputMap.justPressed(PLACE_1U)) {
 			drawKey(this.keyboard.addKey("1U", [
@@ -127,9 +98,8 @@ class Viewport extends Scene {
 			], "1U"));
 		}
 
-		this.cursor.pos(screenPosX,screenPosY);
-		this.cursor.gap(gapX,gapY);
-		this.statusBar.findComponent("status").text = 'Keyson: ${snappedPosX} x ${snappedPosY} \n Screen:${screenPosX} x ${screenPosY}  Carry: ${carryX}';
+		this.cursor.pos(screenPosX-gapX/2,screenPosY-gapY/2); // shif the cursor right on top of the keycaps
+		this.statusBar.findComponent("status").text = 'Key cursor: ${snappedPosX} x ${snappedPosY}';
 	}
 
 	// Draws and adds a key to the universe

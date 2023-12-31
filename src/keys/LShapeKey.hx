@@ -230,19 +230,6 @@ class LShapeKey extends KeyRenderer {
 		this.border.depth = 4;
 		this.border.visible = false;
 		this.add(this.border);
-		/*
-
-			final topArc = new Arc();
-			topArc.color = topColor;
-			topArc.radius = roundedCorner;
-			topArc.borderPosition = OUTSIDE; // how the drawn line rides the arc
-			topArc.angle = 90;
-			topArc.depth = 3; // this is in the sense of layers
-			topArc.thickness = roundedCorner; // with this thickness we cover the underlying sharp corner
-			topArc.rotation = arcRotation;
-			topArc.pos(arcPosTopX, arcPosTopY);
-			this.add(topArc);
-		 */
 
 		final top = new Quad();
 		top.color = topColor;

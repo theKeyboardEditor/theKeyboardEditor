@@ -40,10 +40,6 @@ class RectangularKey extends KeyRenderer {
 		this.border.visible = false;
 		this.add(this.border);
 
-		// var top = new RoundedRect(this.topColor, 0, 0, roundedCorner, this.width - this.topOffset, this.height - this.topOffset, 0, 0);
-		// top.pos(topX, topY);
-		// this.add(top);
-
 		this.arcPosX = [
 			topX + roundedCorner,
 			topX + width - this.topOffset - roundedCorner,
