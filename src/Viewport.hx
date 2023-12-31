@@ -28,7 +28,9 @@ class Viewport extends Scene {
 
 	// UI Accessors
 	public var statusBar: haxe.ui.containers.HBox;
-
+	var snappedPosX: Float = 0;
+	var snappedPosY: Float = 0;
+	
 	override public function new(keyboard: Keyboard) {
 		super();
 
@@ -53,19 +55,20 @@ class Viewport extends Scene {
 	override function update(delta: Float) {
 		// Handle keyboard input.
 		if (inputMap.pressed(UP)) {
-			this.universe.y += movementSpeed * delta;
+			this.universe.y += 25; //movementSpeed * delta;
 		}
 		if (inputMap.pressed(LEFT)) {
-			this.universe.x += movementSpeed * delta;
+			this.universe.x += 25; //movementSpeed * delta;
 		}
 		if (inputMap.pressed(DOWN)) {
-			this.universe.y -= movementSpeed * delta;
+			this.universe.y -= 25; //movementSpeed * delta;
 		}
 		if (inputMap.pressed(RIGHT)) {
-			this.universe.x -= movementSpeed * delta;
+			this.universe.x -= 25; //movementSpeed * delta;
 		}
 
-		// ZOOMING!
+// Zoming disabled until it works again
+/*		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
 			this.universe.scaleX += zoom * delta;
 			this.universe.scaleY += zoom * delta;
@@ -73,22 +76,59 @@ class Viewport extends Scene {
 			this.universe.scaleX -= zoom * delta;
 			this.universe.scaleY -= zoom * delta;
 		}
+*/
+
+		var moduloX= (
+									(
+									          (this.universe.x / 25)
+									- (Std.int(this.universe.x / 25))
+									)
+									* 25
+									);
+
+		var moduloY= (
+									(
+									          (this.universe.y / 25)
+									- (Std.int(this.universe.y / 25))
+									)
+									* 25
+									);
+
+		var screenPosX = (
+											(
+											(Std.int((screen.pointerX / this.universe.scaleX  - unit/2) / 25))
+											+ (			   this.universe.x / 25) 
+											- (Std.int(this.universe.x / 25))
+											)
+											* 25
+											);
+		var screenPosY = (
+											(
+											(Std.int((screen.pointerY / this.universe.scaleY - unit/2) / 25))
+											+         (this.universe.y / 25)
+											- (Std.int(this.universe.y / 25))
+											)
+											* 25
+											);
+
+		var snappedPosX = (
+											Std.int((screenPosX + unit / 2 - moduloX - this.universe.x) / 25) * .25
+											);
+		var snappedPosY = (
+											Std.int((screenPosY + unit / 2 - moduloY - this.universe.y) / 25) * .25
+											);
+
+		var carryX =((((screenPosX + unit * .5 - moduloX - this.universe.x) / 25) * .25) - snappedPosX) * 100;
 
 		if (inputMap.justPressed(PLACE_1U)) {
 			drawKey(this.keyboard.addKey("1U", [
-				(Std.int((screen.pointerX - this.universe.x) / this.universe.scaleX / 25) * .25) - .25,
-				(Std.int((screen.pointerY - this.universe.y) / this.universe.scaleY / 25) * .25) - .25
+				(snappedPosX),
+				(snappedPosY)
 			], "1U"));
 		}
 
-		// Snap the cursor
-		this.cursor.pos((Std.int(screen.pointerX / 25) * 25) + gapX, (Std.int(screen.pointerY / 25) * 25) + gapY);
-
-		// Set status bar
-		var snappedPosX = Std.int(screen.pointerX * this.scaleX) / quarterUnit;
-		var snappedPosY = Std.int(screen.pointerY * this.scaleY) / quarterUnit;
-
-		this.statusBar.findComponent("status").text = '$snappedPosX x $snappedPosY';
+		this.cursor.pos(screenPosX,screenPosY);
+		this.statusBar.findComponent("status").text = 'Keyson: ${snappedPosX} x ${snappedPosY} \n Screen:${screenPosX} x ${screenPosY}  Carry: ${carryX}';
 	}
 
 	// Draws and adds a key to the universe
