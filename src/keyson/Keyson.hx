@@ -124,7 +124,7 @@ class Keyboard {
 		// calculate a new ID
 		var uid = this.keys.length;
 		// define a new key:
-		var key = new Key(uid, shape, pos, new Keyson.KeyLegend(leg));
+		var key = new Key(uid, shape, pos, leg);
 		// append the new key to the end of the array
 		this.keys.push(key);
 		return key;
@@ -149,7 +149,7 @@ class Key {
 	public var amountOfLegends: Int;
 	public var legends: Array<KeyLegend>;
 
-	public function new(keyId: Int, shape: String, position: Array<Float>, legend: KeyLegend) {
+	public function new(keyId: Int, shape: String, position: Array<Float>, legend: String) {
 		this.keyId = keyId; // unique key ID
 		this.position = position; // place on the unit
 		this.stabilizer = "None"; // "None","2U","2.25U","2.75U","6.25U","7.25U",(Custom Bar)"125.5"
@@ -164,6 +164,8 @@ class Key {
 		this.keysColor = "0xFFFFFFFF";
 		this.amountOfLegends = 1;
 		this.legends = [];
+
+		this.legends.push(new KeyLegend (legend));
 	}
 
 	public function addLegend(symbol: String, position: Array<Float>) {

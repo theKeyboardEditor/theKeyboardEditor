@@ -128,6 +128,7 @@ class Viewport extends Scene {
 		}
 
 		this.cursor.pos(screenPosX,screenPosY);
+		this.cursor.gap(gapX,gapY);
 		this.statusBar.findComponent("status").text = 'Keyson: ${snappedPosX} x ${snappedPosY} \n Screen:${screenPosX} x ${screenPosY}  Carry: ${carryX}';
 	}
 
