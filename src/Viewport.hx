@@ -13,7 +13,7 @@ class Viewport extends Scene {
 	// Everything inside the viewport is stored here
 	var universe: Visual = new Visual();
 	var cursor: ViewportCursor = new ViewportCursor(unit, unit);
-	var selectedIDs: Array<Int> = [];
+	var selected: Map<Int, KeyRenderer> = [];
 
 	// Constants
 	inline static final unit = 100;
@@ -23,6 +23,7 @@ class Viewport extends Scene {
 	inline static final originX: Float = 510;
 	inline static final originY: Float = 60;
 
+	// Gap between the different keys
 	final gapX: Int;
 	final gapY: Int;
 
@@ -41,6 +42,9 @@ class Viewport extends Scene {
 
 		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit);
 		gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
+
+		// Create cursor
+		cursor.create();
 
 		// Define the inputs
 		bindInput();
@@ -68,18 +72,7 @@ class Viewport extends Scene {
 			this.universe.x -= movementSpeed * delta;
 		}
 
-		// Zoming disabled until it works as it should again
-		/*// ZOOMING!
-			if (inputMap.pressed(ZOOM_IN)) {
-				this.universe.scaleX += zoom * delta;
-				this.universe.scaleY += zoom * delta;
-			} else if (inputMap.pressed(ZOOM_OUT)) {
-				this.universe.scaleX -= zoom * delta;
-				this.universe.scaleY -= zoom * delta;
-			}
-		 */
-
-		// difference between Int and Floar division by 25!
+		// Difference between Int and Float division by 25!
 		var moduloX = ((this.universe.x / 25) - Std.int(this.universe.x / 25)) * 25;
 		var moduloY = ((this.universe.y / 25) - Std.int(this.universe.y / 25)) * 25;
 
@@ -88,11 +81,18 @@ class Viewport extends Scene {
 		var screenPosY = Std.int((screen.pointerY - unit / 2) / 25) * 25 + moduloY;
 
 		// The keyson space (U/100) coordinates we should draw the to_be_placed_key on:
-		var snappedPosX = (Std.int((screenPosX + unit / 2 - this.universe.x) / 25) * 25 / 100) - 0.5;
-		var snappedPosY = (Std.int((screenPosY + unit / 2 - this.universe.y) / 25) * 25 / 100) - 0.5;
+		snappedPosX = (Std.int((screenPosX + unit / 2 - this.universe.x) / 25) * 25 / 100) - 0.5;
+		snappedPosY = (Std.int((screenPosY + unit / 2 - this.universe.y) / 25) * 25 / 100) - 0.5;
 
 		if (inputMap.justPressed(PLACE_1U)) {
 			drawKey(this.keyboard.addKey("1U", [snappedPosX, snappedPosY], "1U"));
+		} else if (inputMap.justPressed(DELETE_SELECTED)) {
+			// Deselect all keys
+			for (key in this.selected.keys()) {
+				this.selected[key].select();
+				this.selected[key].dispose();
+				this.selected.remove(key);
+			}
 		}
 
 		this.cursor.pos(screenPosX - gapX / 2, screenPosY - gapY / 2); // shift the cursor right on top of the keycaps
@@ -122,10 +122,9 @@ class Viewport extends Scene {
 		key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 		key.onPointerDown(key, (_) -> {
 			if (!key.border.visible) {
-				selectedIDs.remove(k.keyId); // just in case
-				selectedIDs.push(k.keyId);
+				selected[k.keyId] = key;
 			} else {
-				selectedIDs.remove(k.keyId);
+				selected.remove(k.keyId);
 			}
 			key.select();
 		});
@@ -150,6 +149,7 @@ class Viewport extends Scene {
 
 		// Key Placement (Temporary)
 		inputMap.bindScanCode(PLACE_1U, KEY_P);
+		inputMap.bindScanCode(DELETE_SELECTED, BACKSPACE);
 	}
 }
 
@@ -161,4 +161,5 @@ enum abstract ViewportInput(Int) {
 	var ZOOM_IN;
 	var ZOOM_OUT;
 	var PLACE_1U;
+	var DELETE_SELECTED;
 }

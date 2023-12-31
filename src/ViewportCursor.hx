@@ -5,7 +5,6 @@ import ceramic.Quad;
 import ceramic.Color;
 import ceramic.Visual;
 
-
 class ViewportCursor extends Visual {
 	// Corners
 	public var topLeft: Mesh;
@@ -27,12 +26,12 @@ class ViewportCursor extends Visual {
 		// Set the indices and vertices for the corners
 		// @formatter:off	
 		this.vertices = [
-			width * 0.04, 0.0,           //   ____
-			width * 0.20, 0.0,           //  /    |
-			width * 0.20, width * 0.04,  //  |   /
-			width * 0.04, width * 0.20,  //  |  /
-			0.0, width * 0.20,           //  |_/
-			0.0, width * 0.04,
+			width * 0.04, 0.0,            //   ____
+			width * 0.20, 0.0,            //  /    |
+			width * 0.20, height * 0.04,  //  |   /
+			width * 0.04, height * 0.20,  //  |  /
+			0.0, height * 0.20,           //  |_/
+			0.0, height * 0.04,
 		]; 
 		this.indices = [
 			0, 1, 2,  // No way I draw this
@@ -41,8 +40,6 @@ class ViewportCursor extends Visual {
 			3, 4, 5
 		];
 		// @formatter:on
-
-		this.create();
 	}
 
 	public function create(): Visual {
