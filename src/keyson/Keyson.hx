@@ -129,6 +129,16 @@ class Keyboard {
 		this.keys.push(key);
 		return key;
 	}
+
+	public inline function removeKey(id: Int) {
+		var i: Int = 0;
+		this.keys = [
+			for (key in this.keys.filter(key -> key.keyId != id)) {
+				key.keyId = i++;
+				key;
+			}
+		];
+	}
 }
 
 /** The actual tactile unit of interaction

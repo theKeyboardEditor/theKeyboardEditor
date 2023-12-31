@@ -87,10 +87,14 @@ class Viewport extends Scene {
 		if (inputMap.justPressed(PLACE_1U)) {
 			drawKey(this.keyboard.addKey("1U", [snappedPosX, snappedPosY], "1U"));
 		} else if (inputMap.justPressed(DELETE_SELECTED)) {
-			// Deselect all keys
+			// Delete all keys
 			for (key in this.selected.keys()) {
+				// First deselect everything
 				this.selected[key].select();
 				this.selected[key].dispose();
+				// Delete from the keyson
+				this.keyboard.removeKey(key);
+				// Delete from viewport renderer
 				this.selected.remove(key);
 			}
 		}
