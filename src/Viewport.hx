@@ -149,6 +149,7 @@ class Viewport extends Scene {
 		// Key Placement (Temporary)
 		inputMap.bindScanCode(PLACE_1U, KEY_P);
 		inputMap.bindScanCode(DELETE_SELECTED, BACKSPACE);
+		inputMap.bindScanCode(DELETE_SELECTED, DELETE);
 	}
 }
 
