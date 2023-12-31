@@ -19,7 +19,7 @@ class ViewportCursor extends Visual {
 		super();
 		size(width, height);
 		this.depth = 2;
-		this.color = 0x003C4BC5;
+		this.color = 0x003C4BC5; // UI theme accent color!
 		this.create();
 	}
 
@@ -36,12 +36,12 @@ class ViewportCursor extends Visual {
 		this.corner1.color = this.color;
 //		this.corner1.colorMapping = MESH;
 				this.corner1.vertices = [
-			width/25,      0.0,  //   ____
-			 width/5,      0.0,  //  /    |
-			 width/5, width/25,  //  |   /
-			width/25,  width/5,  //  |  /
-			     0.0,  width/5,  //  |_/
-			     0.0, width/25,
+			width * 0.04,          0.0,  //   ____
+			width * 0.20,          0.0,  //  /    |
+			width * 0.20, width * 0.04,  //  |   /
+			width * 0.04, width * 0.20,  //  |  /
+			         0.0, width * 0.20,  //  |_/
+			         0.0, width * 0.04,
 			];
 		this.corner1.indices = [
 			0, 1, 2,  // No way I draw this
@@ -57,12 +57,12 @@ class ViewportCursor extends Visual {
 		this.corner3.color = this.color;
 //		this.corner3.colorMapping = MESH;
 		this.corner3.vertices = [
-			width/25,      0.0,  //   ____
-			 width/5,      0.0,  //  /    |
-			 width/5, width/25,  //  |   /
-			width/25,  width/5,  //  |  /
-			     0.0,  width/5,  //  |_/
-			     0.0, width/25,
+			width * 0.04,          0.0,  //   ____
+			width * 0.20,          0.0,  //  /    |
+			width * 0.20, width * 0.04,  //  |   /
+			width * 0.04, width * 0.20,  //  |  /
+			         0.0, width * 0.20,  //  |_/
+			         0.0, width * 0.04,
 			];
 		this.corner3.indices = [
 			0, 1, 2,  // No way I draw this
@@ -79,12 +79,12 @@ class ViewportCursor extends Visual {
 		this.corner2.color = this.color;
 //		this.corner2.colorMapping = MESH;
 		this.corner2.vertices = [
-			width/25,      0.0,  //   ____
-			 width/5,      0.0,  //  /    |
-			 width/5, width/25,  //  |   /
-			width/25,  width/5,  //  |  /
-			     0.0,  width/5,  //  |_/
-			     0.0, width/25,
+			width * 0.04,          0.0,  //   ____
+			width * 0.20,          0.0,  //  /    |
+			width * 0.20, width * 0.04,  //  |   /
+			width * 0.04, width * 0.20,  //  |  /
+			         0.0, width * 0.20,  //  |_/
+			         0.0, width * 0.04,
 			];
 		this.corner2.indices = [
 			0, 1, 2,  // No way I draw this
@@ -102,12 +102,12 @@ class ViewportCursor extends Visual {
 		this.corner4.color = this.color;
 //		this.corner4.colorMapping = MESH;
 		this.corner4.vertices = [
-			width/25,      0.0,  //   ____
-			 width/5,      0.0,  //  /    |
-			 width/5, width/25,  //  |   /
-			width/25,  width/5,  //  |  /
-			     0.0,  width/5,  //  |_/
-			     0.0, width/25,
+			width * 0.04,          0.0,  //   ____
+			width * 0.20,          0.0,  //  /    |
+			width * 0.20, width * 0.04,  //  |   /
+			width * 0.04, width * 0.20,  //  |  /
+			         0.0, width * 0.20,  //  |_/
+			         0.0, width * 0.04,
 			];
 		this.corner4.indices = [
 			0, 1, 2,  // No way I draw this

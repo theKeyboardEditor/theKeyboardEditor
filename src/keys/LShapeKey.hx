@@ -224,7 +224,7 @@ class LShapeKey extends KeyRenderer {
 				this.border.size(this.widthSouth, this.heightSouth);
 			}
 		}
-		this.border.borderColor = Color.RED;
+		this.border.borderColor = Color.RED; // UI theme 2ndary accent color!
 		this.border.borderPosition = MIDDLE;
 		this.border.borderSize = 2;
 		this.border.depth = 4;
