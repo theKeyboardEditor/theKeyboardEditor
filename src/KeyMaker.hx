@@ -4,40 +4,6 @@ import keyson.Axis;
 import ceramic.Color;
 
 class KeyMaker {
-	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int): Array<LegendRenderer> {
-		var keyLegends: Array<LegendRenderer> = [];
-		var legendOffsetX: Float;
-		var legendOffsetY: Float;
-
-		for (l in k.legends) { // we can have many labels!
-			// default to GRAY if undefined
-			var legendColor = Std.parseInt(l.legendColor) ?? Std.parseInt(keyboard.legendColor) ?? Color.GRAY;
-			var legend = new LegendRenderer(l.symbol, legendColor);
-			// is the legend position set specifically?
-			if (l.legendPosition != null) { // yes we account for individual adjustment too!
-				legendOffsetX = l.legendPosition[Axis.X] + keyboard.legendPosition[Axis.X];
-				legendOffsetY = l.legendPosition[Axis.Y] + keyboard.legendPosition[Axis.Y];
-			} else { // no we use the global coordinates
-				legendOffsetX = keyboard.legendPosition[Axis.X];
-				legendOffsetY = keyboard.legendPosition[Axis.Y];
-			}
-			// is the fontsize set specifically?
-			if (l.legendSize != 0) { // TODO make this detect per key font change
-				legend.fontSize = l.legendSize;
-			} else {
-				legend.fontSize = keyboard.keyboardFontSize;
-			}
-
-			legend.depth = 4; // make sure labels render on top
-//			legend.pos(legendOffsetX + legend.topX + unit * k.position[Axis.X], legendOffsetY + legend.topY + unit * k.position[Axis.Y]);
-			legend.pos(legendOffsetX + legend.topX, legendOffsetY + legend.topY); // relative to the key shape
-
-			keyLegends.push(legend);
-		}
-
-		return keyLegends;
-	}
-
 	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int, color: String): KeyRenderer {
 		var key: KeyRenderer;
 
@@ -123,12 +89,47 @@ class KeyMaker {
 			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, keyColor, keyShadow);
 		}
 
-		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit);
+		// here we populate the legends (see below)
+		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit); // it is another Visual
 		for (l in keyLegends) {
-			key.add(l.create());
+			key.add(l.create()); // adding ti to the key visual
 		}
 
 		return key;
+	}
+
+	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int): Array<LegendRenderer> {
+		var keyLegends: Array<LegendRenderer> = [];
+		var legendOffsetX: Float;
+		var legendOffsetY: Float;
+
+		for (l in k.legends) { // we can have many labels!
+			// default to GRAY if undefined
+			var legendColor = Std.parseInt(l.legendColor) ?? Std.parseInt(keyboard.legendColor) ?? Color.GRAY;
+			var legend = new LegendRenderer(l.symbol, legendColor);
+			// is the legend position set specifically?
+			if (l.legendPosition != null) { // yes we account for individual adjustment too!
+				legendOffsetX = l.legendPosition[Axis.X] + keyboard.legendPosition[Axis.X];
+				legendOffsetY = l.legendPosition[Axis.Y] + keyboard.legendPosition[Axis.Y];
+			} else { // no we use the global coordinates
+				legendOffsetX = keyboard.legendPosition[Axis.X];
+				legendOffsetY = keyboard.legendPosition[Axis.Y];
+			}
+			// is the fontsize set specifically?
+			if (l.legendSize != 0) { // TODO make this detect per key font change
+				legend.fontSize = l.legendSize;
+			} else {
+				legend.fontSize = keyboard.keyboardFontSize;
+			}
+
+			legend.depth = 4; // make sure labels render on top
+//			legend.pos(legendOffsetX + legend.topX + unit * k.position[Axis.X], legendOffsetY + legend.topY + unit * k.position[Axis.Y]);
+			legend.pos(legendOffsetX + legend.topX, legendOffsetY + legend.topY); // relative to the key shape
+
+			keyLegends.push(legend);
+		}
+
+		return keyLegends;
 	}
 
 	static function getKeyShadow(color: Color): Color {
