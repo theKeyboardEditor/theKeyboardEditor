@@ -130,10 +130,10 @@ class Viewport extends Scene {
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
 		key.onPointerDown(key, (_) -> {
-			if (!key.border.visible) {
-				selected[k.keyId] = key;
-			} else {
+			if (key.border.visible) {
 				selected.remove(k.keyId);
+			} else {
+				selected[k.keyId] = key;
 			}
 			key.select();
 		});

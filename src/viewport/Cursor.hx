@@ -42,7 +42,7 @@ class Cursor extends Visual {
 	}
 
 	public function create(): Visual {
-		// FIRST CORNER
+		// TOP LEFT
 		this.topLeft = new Mesh();
 		this.topLeft.color = this.color;
 		this.topLeft.vertices = this.vertices;
@@ -51,17 +51,7 @@ class Cursor extends Visual {
 		this.topLeft.depth = 4;
 		this.add(this.topLeft);
 
-		// THIRD CORNER
-		this.bottomRight = new Mesh();
-		this.bottomRight.color = this.color;
-		this.bottomRight.vertices = this.vertices;
-		this.bottomRight.indices = this.indices;
-		this.bottomRight.pos(this.width, this.height);
-		this.bottomRight.depth = 4;
-		this.bottomRight.rotation = 180;
-		this.add(this.bottomRight);
-
-		// SECOND CORNER
+		// BOTTOM LEFT
 		this.bottomLeft = new Mesh();
 		this.bottomLeft.color = this.color;
 		this.bottomLeft.vertices = this.vertices;
@@ -71,7 +61,7 @@ class Cursor extends Visual {
 		this.bottomLeft.rotation = 90;
 		this.add(this.bottomLeft);
 
-		// FOURTH CORNER
+		// TOP RIGHT
 		this.topRight = new Mesh();
 		this.topRight.color = this.color;
 		this.topRight.vertices = this.vertices;
@@ -80,6 +70,16 @@ class Cursor extends Visual {
 		this.topRight.depth = 4;
 		this.topRight.rotation = -90;
 		this.add(this.topRight);
+
+		// BOTTOM RIGHT
+		this.bottomRight = new Mesh();
+		this.bottomRight.color = this.color;
+		this.bottomRight.vertices = this.vertices;
+		this.bottomRight.indices = this.indices;
+		this.bottomRight.pos(this.width, this.height);
+		this.bottomRight.depth = 4;
+		this.bottomRight.rotation = 180;
+		this.add(this.bottomRight);
 
 		return this;
 	}
