@@ -56,16 +56,16 @@ class Palette {
 		this.url = "unknown";
 		this.colorMatchingProfile = "none";
 		this.size = 1; // amount of colors
-		this.swatches = [new Color("", "0x00000000")];
+		this.swatches = [new Color("BLACK", "0x00000000")]; // the names are for humans only
 	}
 }
 
 class Color {
-	public var color: String;
+	public var colorName: String;
 	public var value: String;
 
-	public function new(color: String, value: String) {
-		this.color = color;
+	public function new(colorName: String, value: String) {
+		this.colorName = colorName;
 		this.value = value;
 	}
 }

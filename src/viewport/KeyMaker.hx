@@ -22,6 +22,7 @@ class KeyMaker {
 		var offsetSouthX: Int = 0;
 		var offsetSouthY: Int = 0;
 
+		// we convert the values into actual ceramic color
 		final keyColor: Color = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
 		final keyShadow: Color = getKeyShadow(keyColor);
 
