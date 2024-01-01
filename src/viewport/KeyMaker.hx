@@ -1,4 +1,4 @@
-package;
+package viewport;
 
 import keyson.Axis;
 import ceramic.Color;

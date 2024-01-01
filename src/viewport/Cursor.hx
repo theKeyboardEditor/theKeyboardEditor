@@ -1,11 +1,11 @@
-package;
+package viewport;
 
 import ceramic.Mesh;
 import ceramic.Quad;
 import ceramic.Color;
 import ceramic.Visual;
 
-class ViewportCursor extends Visual {
+class Cursor extends Visual {
 	// Corners
 	public var topLeft: Mesh;
 	public var bottomLeft: Mesh;
@@ -23,7 +23,6 @@ class ViewportCursor extends Visual {
 		this.depth = 2;
 		this.color = 0x003C4BC5; // UI theme accent color!
 
-		// Set the indices and vertices for the corners
 		// @formatter:off	
 		this.vertices = [
 			width * 0.04, 0.0,            //   ____

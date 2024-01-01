@@ -10,7 +10,6 @@ class MainScene extends Scene {
 
 	// Add any asset you want to load here
 	override function preload() {
-		assets.add(Images.CERAMIC);
 		// MODES
 		assets.add(Images.ICONS__PLACE_MODE);
 		assets.add(Images.ICONS__UNIT_MODE);
@@ -29,7 +28,7 @@ class MainScene extends Scene {
 		// Render keys
 		// final keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 		final keyboard = keyson.Keyson.parse(assets.text(Texts.ALLPAD));
-		final viewport = new Viewport(keyboard.unit[0]);
+		final viewport = new viewport.Viewport(keyboard.unit[0]);
 		this.add(viewport);
 
 		// Create base container
