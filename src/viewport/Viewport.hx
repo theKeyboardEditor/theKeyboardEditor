@@ -136,9 +136,9 @@ class Viewport extends Scene {
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerDown(key, (_) -> {
 			if (key.border.visible) {
-				selected.remove(k.keyId);
+				selected.remove(k.id);
 			} else {
-				selected[k.keyId] = key;
+				selected[k.id] = key;
 			}
 			key.select();
 		});

@@ -49,7 +49,7 @@
       "size": 21,
       "keys": [
         {
-          "keyId": 0,
+          "id": 0,
           "position": [0, 0],
           "stabilizer": "2U",
           "shape": "2U",
@@ -60,7 +60,7 @@
           ]
         },
         {
-          "keyId": 1,
+          "id": 1,
           "position": [2, 0],
           "stabilizer": "2U",
           "shape": "XT_2U",
@@ -72,7 +72,7 @@
           ]
         },
         {
-          "keyId": 2,
+          "id": 2,
           "position": [3, 0],
           "stabilizer": "2U",
           "shape": "BAE Inverted",
@@ -84,7 +84,7 @@
           ]
         },
         {
-          "keyId": 3,
+          "id": 3,
           "position": [5.25, 0],
           "stabilizer": "2U",
           "shape": "ISO",
@@ -96,7 +96,7 @@
           ]
         },
         {
-          "keyId": 4,
+          "id": 4,
           "position": [6.75, 0],
           "stabilizer": "2U",
           "shape": "ISO Inverted",
@@ -108,7 +108,7 @@
           ]
         },
         {
-          "keyId": 5,
+          "id": 5,
           "position": [9, 0],
           "stabilizer": "2U",
           "shape": "BAE",
@@ -120,7 +120,7 @@
           ]
         },
         {
-          "keyId": 6,
+          "id": 6,
           "position": [0, 1],
           "stabilizer": "2U",
           "shape": "3U Vertical",
@@ -132,7 +132,7 @@
           ]
         },
         {
-          "keyId": 7,
+          "id": 7,
           "position": [4.5, 1],
           "shape": "2U Vertical",
           "legends": [
@@ -143,7 +143,7 @@
           ]
         },
         {
-          "keyId": 8,
+          "id": 8,
           "position": [8, 0],
           "shape": "1U",
           "legends": [
@@ -153,7 +153,7 @@
           ]
         },
         {
-          "keyId": 9,
+          "id": 9,
           "position": [1, 2],
           "shape": "1.25U",
           "legends": [
@@ -163,7 +163,7 @@
           ]
         },
         {
-          "keyId": 10,
+          "id": 10,
           "position": [2.25, 2],
           "shape": "1.5U",
           "legends": [
@@ -173,7 +173,7 @@
           ]
         },
         {
-          "keyId": 11,
+          "id": 11,
           "position": [3.75, 2],
           "shape": "0.75U",
           "legends": [
@@ -183,7 +183,7 @@
           ]
         },
         {
-          "keyId": 12,
+          "id": 12,
           "position": [5.5, 2],
           "shape": "2.25U",
           "legends": [
@@ -193,7 +193,7 @@
           ]
         },
         {
-          "keyId": 13,
+          "id": 13,
           "position": [7.75, 2],
           "shape": "2.75U",
           "legends": [
@@ -203,7 +203,7 @@
           ]
         },
         {
-          "keyId": 14,
+          "id": 14,
           "position": [1, 3],
           "stabilizer": "2.75U",
           "shape": "3U",
@@ -214,7 +214,7 @@
           ]
         },
         {
-          "keyId": 15,
+          "id": 15,
           "position": [4, 3],
           "stabilizer": "6.25U",
           "shape": "6.5U",
@@ -225,7 +225,7 @@
           ]
         },
         {
-          "keyId": 16,
+          "id": 16,
           "position": [0, 4],
           "shape": "1.75U",
           "legends": [
@@ -235,7 +235,7 @@
           ]
         },
         {
-          "keyId": 17,
+          "id": 17,
           "position": [1.75, 4],
           "stabilizer": "6.25U",
           "shape": "6.25U",
@@ -246,7 +246,7 @@
           ]
         },
         {
-          "keyId": 17,
+          "id": 17,
           "position": [8, 4],
           "stabilizer": "2.25U",
           "shape": "2.5U",
@@ -257,7 +257,7 @@
           ]
         },
         {
-          "keyId": 17,
+          "id": 17,
           "position": [0, 6],
           "stabilizer": "7U",
           "shape": "7U",
@@ -268,7 +268,7 @@
           ]
         },
         {
-          "keyId": 17,
+          "id": 17,
           "position": [0, 5],
           "stabilizer": "7U",
           "shape": "10U",
