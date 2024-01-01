@@ -6,7 +6,7 @@ class PlaceKey extends Action {
 	var x: Float;
 	var y: Float;
 
-	override public function new(viewport: Viewport, x: Float, y: Float, shape:String) {
+	override public function new(viewport: Viewport, x: Float, y: Float, shape: String) {
 		super();
 		this.viewport = viewport;
 		this.x = x;
