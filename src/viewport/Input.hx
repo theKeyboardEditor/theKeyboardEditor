@@ -10,6 +10,9 @@ enum abstract ViewportInput(Int) {
 	final ZOOM_IN;
 	final ZOOM_OUT;
 	final PLACE_1U;
+	final PLACE_ISO;
+	final UNDO;
+	final REDO;
 	final DELETE_SELECTED;
 }
 
@@ -35,7 +38,12 @@ class Input extends InputMap<ViewportInput> {
 
 		// Key Placement (Temporary)
 		this.bindScanCode(PLACE_1U, KEY_P);
+		this.bindScanCode(PLACE_ISO, KEY_I);
 		this.bindScanCode(DELETE_SELECTED, BACKSPACE);
 		this.bindScanCode(DELETE_SELECTED, DELETE);
+
+		// TODO undo/redo action(s)
+		this.bindScanCode(UNDO, KEY_Z); // TODO find Ctrl+Z keycode
+		this.bindScanCode(REDO, KEY_Y);
 	}
 }

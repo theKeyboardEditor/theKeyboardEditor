@@ -1,6 +1,5 @@
 package;
 
-import ceramic.Quad;
 import ceramic.Scene;
 import haxe.ui.ComponentBuilder;
 import haxe.ui.core.Screen;

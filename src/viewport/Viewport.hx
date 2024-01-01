@@ -116,9 +116,11 @@ class Viewport extends Scene {
 
 		// TODO make cursor size dynamic
 		// Check for key presses and queue appropriate action
-		if (inputMap.justPressed(PLACE_1U)) {
-			actionQueue.add(new PlaceKey(this, snappedPosX, snappedPosY));
-		} else if (inputMap.justPressed(DELETE_SELECTED)) {
+		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
+			actionQueue.add(new PlaceKey(this, snappedPosX, snappedPosY, "1U"));
+		} else if (inputMap.justPressed(PLACE_ISO)) { // key [i] for ISO?
+			actionQueue.add(new PlaceKey(this, snappedPosX, snappedPosY, "ISO"));
+		} else if (inputMap.justPressed(DELETE_SELECTED)) { // key [del] for delete?
 			actionQueue.add(new DeleteKeys(this));
 		}
 
