@@ -76,7 +76,7 @@ class Color {
 	** Or just a common single unit keyboard
 **/
 class Keyboard {
-	public var keyboardID: Int;
+	public var id: Int;
 	public var designator: String;
 	public var keyStep: Array<Float>;
 	public var stabilizerType: String;
@@ -133,8 +133,8 @@ class Keyboard {
 	public inline function removeKey(id: Int) {
 		var i: Int = 0;
 		this.keys = [
-			for (key in this.keys.filter(key -> key.keyId != id)) {
-				key.keyId = i++;
+			for (key in this.keys.filter(key -> key.id != id)) {
+				key.id = i++;
 				key;
 			}
 		];
@@ -144,7 +144,7 @@ class Keyboard {
 /** The actual tactile unit of interaction
 **/
 class Key {
-	public var keyId: Int;
+	public var id: Int;
 	public var position: Array<Float>;
 	public var stabilizer: String;
 	public var angle: Float;
@@ -159,8 +159,8 @@ class Key {
 	public var amountOfLegends: Int;
 	public var legends: Array<KeyLegend>;
 
-	public function new(keyId: Int, shape: String, position: Array<Float>, legend: String) {
-		this.keyId = keyId; // unique key ID
+	public function new(id: Int, shape: String, position: Array<Float>, legend: String) {
+		this.id = id; // unique key ID
 		this.position = position; // place on the unit
 		this.stabilizer = "None"; // "None","2U","2.25U","2.75U","6.25U","7.25U",(Custom Bar)"125.5"
 		this.angle = 0.0;
