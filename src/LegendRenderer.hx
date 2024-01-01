@@ -26,7 +26,7 @@ class LegendRenderer extends Visual {
 	public function create(): Visual {
 		final legend = new Text();
 		legend.content = this.symbol;
-		//TODO use font
+		// TODO use font
 		legend.align = LEFT;
 		legend.color = this.color;
 		legend.pointSize = this.fontSize;

@@ -8,7 +8,7 @@ class DeleteKeys extends Action {
 	override public function new(viewport: Viewport) {
 		super();
 		this.viewport = viewport;
-	}; 
+	};
 
 	override public function act() {
 		for (key in viewport.selected.keys()) {

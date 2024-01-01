@@ -4,6 +4,7 @@ import ceramic.Mesh;
 import ceramic.Quad;
 import ceramic.Color;
 import ceramic.Visual;
+
 /*
  * The cursor is the shape that points where the next object will be placed
  *
@@ -26,7 +27,7 @@ class Cursor extends Visual {
 		this.depth = 2;
 		this.color = 0x003C4BC5; // UI theme accent color!
 
-		// @formatter:off	
+		// @formatter:off
 		this.vertices = [
 			width * 0.04, 0.0,            //  0____ 1
 			width * 0.20, 0.0,            //  /    |
@@ -44,7 +45,7 @@ class Cursor extends Visual {
 		// @formatter:on
 	}
 
-	public function create(): Visual { //TODO make cursor's size dynamic
+	public function create(): Visual { // TODO make cursor's size dynamic
 		// TOP LEFT
 		this.topLeft = new Mesh();
 		this.topLeft.color = this.color;
@@ -59,7 +60,7 @@ class Cursor extends Visual {
 		this.bottomLeft.color = this.color;
 		this.bottomLeft.vertices = this.vertices;
 		this.bottomLeft.indices = this.indices;
-		this.bottomLeft.pos(this.width,0);
+		this.bottomLeft.pos(this.width, 0);
 		this.bottomLeft.depth = 4;
 		this.bottomLeft.rotation = 90;
 		this.add(this.bottomLeft);

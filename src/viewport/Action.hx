@@ -8,9 +8,11 @@ import ceramic.Entity;
  */
 class Action extends Entity {
 	@event function actionCompleted();
+
 	public function new() {
 		super();
 	}
+
 	public function act(): Void {
 		emitActionCompleted();
 	}

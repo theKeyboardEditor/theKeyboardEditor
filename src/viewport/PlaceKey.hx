@@ -10,7 +10,7 @@ class PlaceKey extends Action {
 		this.viewport = viewport;
 		this.x = x;
 		this.y = y;
-	}; 
+	};
 
 	override public function act() {
 		viewport.drawKey(viewport.keyboard.addKey("1U", [x, y], "1U"));

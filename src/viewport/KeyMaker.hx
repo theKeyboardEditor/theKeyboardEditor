@@ -2,12 +2,14 @@ package viewport;
 
 import keyson.Axis;
 import ceramic.Color;
+
 /*
  * Here we convert the shape-string into an actual key shape and bestow the legend(s) upon it :^]
  * 
  */
 class KeyMaker {
-	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int, color: String): KeyRenderer {
+	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int,
+			color: String): KeyRenderer {
 		var key: KeyRenderer;
 
 		var width: Float;
@@ -88,7 +90,7 @@ class KeyMaker {
 				height = unit - gapY;
 			}
 			key = new keys.RectangularKey(width, height, keyColor, keyShadow);
-		} else {// non '<number>U' cases:
+		} else { // non '<number>U' cases:
 			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, keyColor, keyShadow);
 		}
 
@@ -126,7 +128,7 @@ class KeyMaker {
 			}
 
 			legend.depth = 4; // make sure labels render on top
-//			legend.pos(legendOffsetX + legend.topX + unit * k.position[Axis.X], legendOffsetY + legend.topY + unit * k.position[Axis.Y]);
+			//			legend.pos(legendOffsetX + legend.topX + unit * k.position[Axis.X], legendOffsetY + legend.topY + unit * k.position[Axis.Y]);
 			legend.pos(legendOffsetX + legend.topX, legendOffsetY + legend.topY); // relative to the key shape
 
 			keyLegends.push(legend);

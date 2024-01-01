@@ -52,7 +52,7 @@ class Viewport extends Scene {
 		// Define the inputs
 		this.inputMap = new Input();
 	}
-	
+
 	/**
 	 * Called when scene has finished preloading
 	 */
@@ -96,7 +96,7 @@ class Viewport extends Scene {
 	/**
 	 * Handles the position of the cursor and key placing, removing, and other manipulations
 	 */
-	public function cursorUpdate() { 
+	public function cursorUpdate() {
 		// Difference between Int and Float division by unit025U!
 		final moduloX = ((this.universe.x / unit025U) - Std.int(this.universe.x / unit025U)) * unit025U;
 		final moduloY = ((this.universe.y / unit025U) - Std.int(this.universe.y / unit025U)) * unit025U; // this is in pixels
@@ -106,20 +106,22 @@ class Viewport extends Scene {
 		final screenPosY = Std.int((screen.pointerY - unit1U / 2) / unit025U) * unit025U + moduloY;
 
 		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
-		final snappedPosX = (Std.int((screenPosX + unit1U / 2 - this.universe.x) / unit025U) * unit025U / unit1U) - 0.5; // 0.5U is the offset from
-		final snappedPosY = (Std.int((screenPosY + unit1U / 2 - this.universe.y) / unit025U) * unit025U / unit1U) - 0.5; // mouse to snapped cursor
+		final snappedPosX = (Std.int((screenPosX + unit1U / 2 - this.universe.x) / unit025U) * unit025U / unit1U)
+			- 0.5; // 0.5U is the offset from
+		final snappedPosY = (Std.int((screenPosY + unit1U / 2 - this.universe.y) / unit025U) * unit025U / unit1U)
+			- 0.5; // mouse to snapped cursor
 
 		// Position the cursor right on top of the keycaps
-		this.cursor.pos(screenPosX - gapX / 2, screenPosY - gapY / 2); 
+		this.cursor.pos(screenPosX - gapX / 2, screenPosY - gapY / 2);
 
-		//TODO make cursor size dynamic
+		// TODO make cursor size dynamic
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) {
 			actionQueue.add(new PlaceKey(this, snappedPosX, snappedPosY));
 		} else if (inputMap.justPressed(DELETE_SELECTED)) {
 			actionQueue.add(new DeleteKeys(this));
 		}
-		
+
 		// Adjust the status bar with the position of the cursor
 		this.statusBar.findComponent("status").text = 'cursor pos: $snappedPosX x $snappedPosY';
 	}
@@ -147,7 +149,7 @@ class Viewport extends Scene {
 		 */
 		if (key.width + key.x > this.universe.width) {
 			this.universe.width = key.width + this.gapX + key.x;
-		} 
+		}
 
 		if (key.height + key.y > this.universe.height) {
 			this.universe.height = key.height + this.gapY + key.y;
