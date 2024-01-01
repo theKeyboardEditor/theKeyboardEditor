@@ -17,11 +17,11 @@ class Viewport extends Scene {
 	// Eventually we can use this to "rewind" and undo
 	var actionQueue: GenericStack<Action> = new GenericStack<Action>();
 	// The square that shows where the placed key is going to be located
-	var cursor: Cursor = new Cursor(unit, unit);
+	var cursor: Cursor = new Cursor(unit1U, unit1U);
 
 	// Constants
-	inline static final unit = 100;
-	inline static final quarterUnit = unit / 4;
+	inline static final unit1U = 100; // TODO unit1U is 1U for keyson key size
+	inline static final unit025U = unit1U / 4; // This is the keyson placement step size
 	inline static final movementSpeed: Int = 1000;
 	inline static final zoom = 2;
 	inline static final originX: Float = 510;
@@ -43,8 +43,8 @@ class Viewport extends Scene {
 		this.universe.pos(originX, originY);
 
 		// Set the gap between the keys based on the keyson file
-		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit);
-		gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit);
+		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit1U);
+		gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit1U);
 
 		// Create cursor object
 		this.cursor.create();
@@ -96,22 +96,23 @@ class Viewport extends Scene {
 	/**
 	 * Handles the position of the cursor and key placing, removing, and other manipulations
 	 */
-	public function cursorUpdate() {
-		// Difference between Int and Float division by 25!
-		final moduloX = ((this.universe.x / 25) - Std.int(this.universe.x / 25)) * 25;
-		final moduloY = ((this.universe.y / 25) - Std.int(this.universe.y / 25)) * 25;
+	public function cursorUpdate() { 
+		// Difference between Int and Float division by unit025U!
+		final moduloX = ((this.universe.x / unit025U) - Std.int(this.universe.x / unit025U)) * unit025U;
+		final moduloY = ((this.universe.y / unit025U) - Std.int(this.universe.y / unit025U)) * unit025U; // this is in pixels
 
 		// The real screen coordinates we should draw our placing curor on
-		final screenPosX = Std.int((screen.pointerX - unit / 2) / 25) * 25 + moduloX;
-		final screenPosY = Std.int((screen.pointerY - unit / 2) / 25) * 25 + moduloY;
+		final screenPosX = Std.int((screen.pointerX - unit1U / 2) / unit025U) * unit025U + moduloX; // this is in pixels
+		final screenPosY = Std.int((screen.pointerY - unit1U / 2) / unit025U) * unit025U + moduloY;
 
-		// The keyson space (U/100) coordinates we should draw the to_be_placed_key on:
-		final snappedPosX = (Std.int((screenPosX + unit / 2 - this.universe.x) / 25) * 25 / 100) - 0.5;
-		final snappedPosY = (Std.int((screenPosY + unit / 2 - this.universe.y) / 25) * 25 / 100) - 0.5;
+		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
+		final snappedPosX = (Std.int((screenPosX + unit1U / 2 - this.universe.x) / unit025U) * unit025U / unit1U) - 0.5; // 0.5U is the offset from
+		final snappedPosY = (Std.int((screenPosY + unit1U / 2 - this.universe.y) / unit025U) * unit025U / unit1U) - 0.5; // mouse to snapped cursor
 
 		// Position the cursor right on top of the keycaps
 		this.cursor.pos(screenPosX - gapX / 2, screenPosY - gapY / 2); 
 
+		//TODO make cursor size dynamic
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) {
 			actionQueue.add(new PlaceKey(this, snappedPosX, snappedPosY));
@@ -127,8 +128,8 @@ class Viewport extends Scene {
 	 * Draws and adds a key to the universe
 	 */
 	public function drawKey(k: keyson.Keyson.Key) {
-		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit, this.gapX, this.gapY, this.keyboard.keysColor);
-		key.pos(unit * k.position[Axis.X], unit * k.position[Axis.Y]);
+		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
+		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerDown(key, (_) -> {
 			if (key.border.visible) {
 				selected.remove(k.keyId);

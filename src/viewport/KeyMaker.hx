@@ -2,7 +2,10 @@ package viewport;
 
 import keyson.Axis;
 import ceramic.Color;
-
+/*
+ * Here we convert the shape-string into an actual key shape and bestow the legend(s) upon it :^]
+ * 
+ */
 class KeyMaker {
 	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int, color: String): KeyRenderer {
 		var key: KeyRenderer;
@@ -77,7 +80,7 @@ class KeyMaker {
 
 		final keySize = Std.parseFloat(k.shape); // every valid size will get caught here
 		if (Math.isNaN(keySize) == false) { // aka it is a number
-			if (k.shape.split(' ').indexOf("Vertical") != -1) { // it's vertical!
+			if (k.shape.split(' ').indexOf("Vertical") != -1) { // it's vertical! '<Number>U Vertical'
 				width = unit - gapX;
 				height = unit * keySize - gapY;
 			} else {
@@ -85,11 +88,11 @@ class KeyMaker {
 				height = unit - gapY;
 			}
 			key = new keys.RectangularKey(width, height, keyColor, keyShadow);
-		} else {
+		} else {// non '<number>U' cases:
 			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, keyColor, keyShadow);
 		}
 
-		// here we populate the legends (see below)
+		// here we populate the legends (see function below)
 		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit); // it is another Visual
 		for (l in keyLegends) {
 			key.add(l.create()); // adding ti to the key visual

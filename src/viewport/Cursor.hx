@@ -4,7 +4,10 @@ import ceramic.Mesh;
 import ceramic.Quad;
 import ceramic.Color;
 import ceramic.Visual;
-
+/*
+ * The cursor is the shape that points where the next object will be placed
+ *
+ */
 class Cursor extends Visual {
 	// Corners
 	public var topLeft: Mesh;
@@ -25,12 +28,12 @@ class Cursor extends Visual {
 
 		// @formatter:off	
 		this.vertices = [
-			width * 0.04, 0.0,            //   ____
+			width * 0.04, 0.0,            //  0____ 1
 			width * 0.20, 0.0,            //  /    |
-			width * 0.20, height * 0.04,  //  |   /
+			width * 0.20, height * 0.04,  // 5|   / 2
 			width * 0.04, height * 0.20,  //  |  /
 			0.0, height * 0.20,           //  |_/
-			0.0, height * 0.04,
+			0.0, height * 0.04,           // 4  3
 		]; 
 		this.indices = [
 			0, 1, 2,  // No way I draw this
@@ -41,7 +44,7 @@ class Cursor extends Visual {
 		// @formatter:on
 	}
 
-	public function create(): Visual {
+	public function create(): Visual { //TODO make cursor's size dynamic
 		// TOP LEFT
 		this.topLeft = new Mesh();
 		this.topLeft.color = this.color;
