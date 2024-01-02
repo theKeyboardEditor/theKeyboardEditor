@@ -13,22 +13,69 @@ class Grid extends Visual {
 	public var color1: Color;
 	public var color2: Color;
 	public var mainStepX: Float;
-	public var mainStepy: Float;
+	public var mainStepY: Float;
 	public var subStepX: Float;
-	public var subStepy: Float;
+	public var subStepY: Float;
+	public var offsetX: Float;
+	public var offsetY: Float;
+	public var maxStepsX: Int = 48;
+	public var maxStepsY: Int = 12;
+	var long:Float = 15;
+	var thick:Float = 3;
+	
 
-	override public function new(mainStepX: Float, mainStepY: Float, subStepX: Float, subStepX: Float) {
+	override public function new(mainStepX: Float, mainStepY: Float) {
 		super();
-		size(mainStepX*256,mainStepY*128);
-		this.depth = 0;
-		this.color1 = 0xFF282828; // UI theme background color!
-		this.color2 = 0xFF1d2021; // UI theme 2nd background color!
+		size(mainStepX * maxStepsX, mainStepY * maxStepsY);
+		this.color1 = 0xff282828; // UI theme background color!
+		this.color2 = 0xff1d2021; // UI theme 2nd background color!
+		this.color2 = Color.WHITE; // UI theme 2nd background color!
+		this.pos(0,0);
+		this.mainStepX = mainStepX;
+		this.mainStepY = mainStepY;
+		
 	}
 
 	public function create(): Visual { // TODO make cursor's size dynamic
+		trace ("this:",this.offsetX,this.offsetY,this.subStepX, this.subStepY);
+		// TODO create the grid
+		for (xPos in 0...maxStepsX) {
+			for (yPos in 0...maxStepsY) {
+				final q1 = new Quad();
+				q1.pos(offsetX + xPos * mainStepX - thick / 2, offsetY + yPos * mainStepY - long / 2);
+				q1.size(thick,long);
+				q1.depth = 1;
+				q1.color = 0xff282828;
+				q1.color.lightnessHSLuv += 0.15;
+				this.add(q1);
+				for (subX in 0...Std.int(this.mainStepX/this.subStepX)) {
+					final q3 = new Quad();
+					q3.pos(offsetX + xPos * mainStepX - thick / 2 + subX * subStepX, offsetY + yPos * mainStepY - thick / 2);
+					q3.size(thick,thick);
+					q3.depth = 1;
+					q3.color = 0xff282828;
+					q3.color.lightnessHSLuv += 0.15;
+					this.add(q3);
+				}
 
-		// TODO kreate the grid
-
+				final q2 = new Quad();
+				q2.pos(offsetX + xPos * mainStepX - long / 2, offsetY + yPos * mainStepY - thick / 2);
+				q2.size(long,thick);
+				q2.depth = 1;
+				q2.color = 0xff282828;
+				q2.color.lightnessHSLuv += 0.15;
+				this.add(q2);
+				for (subY in 0...Std.int(this.mainStepY/this.subStepY)) {
+					final q4 = new Quad();
+					q4.pos(offsetX + xPos * mainStepX - thick / 2, offsetY + yPos * mainStepY - thick / 2 + subY * subStepY);
+					q4.size(thick,thick);
+					q4.depth = 1;
+					q4.color = 0xff282828;
+					q4.color.lightnessHSLuv += 0.15;
+					this.add(q4);
+				}
+			}
+		}
 		return this;
 	}
 }
