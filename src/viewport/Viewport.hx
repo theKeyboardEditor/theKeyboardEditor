@@ -1,6 +1,5 @@
 package viewport;
 
-import haxe.ds.GenericStack;
 import ceramic.Scene;
 import ceramic.Visual;
 import keyson.Axis;
@@ -12,10 +11,10 @@ class Viewport extends Scene {
 	public var selected: Map<Int, KeyRenderer> = [];
 
 	// Everything inside the viewport is stored here
-	var universe: Visual = new Visual();
+	public var universe: Visual = new Visual();
 	// This queue goes through all of the actions every frame
 	// Eventually we can use this to "rewind" and undo
-	var actionQueue: GenericStack<Action> = new GenericStack<Action>();
+	var actionQueue: ActionQueue = new ActionQueue();
 	// The square that shows where the placed key is going to be located
 	var cursor: Cursor = new Cursor(unit1U, unit1U);
 
@@ -39,7 +38,6 @@ class Viewport extends Scene {
 
 		// Initialize variables
 		this.keyboard = keyboard;
-		this.universe = new Visual();
 		this.universe.pos(originX, originY);
 
 		// Set the gap between the keys based on the keyson file
@@ -69,10 +67,7 @@ class Viewport extends Scene {
 	override function update(delta: Float) {
 		moveViewportCamera(delta);
 		cursorUpdate();
-		if (this.actionQueue.isEmpty() == false) {
-			final action = this.actionQueue.pop();
-			action.act();
-		}
+		this.actionQueue.act();
 	}
 
 	/**
@@ -117,11 +112,15 @@ class Viewport extends Scene {
 		// TODO make cursor size dynamic
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
-			actionQueue.add(new PlaceKey(this, snappedPosX, snappedPosY, "1U"));
+			this.actionQueue.push(new PlaceKey(this, snappedPosX, snappedPosY, "1U"));
 		} else if (inputMap.justPressed(PLACE_ISO)) { // key [i] for ISO?
-			actionQueue.add(new PlaceKey(this, snappedPosX, snappedPosY, "ISO"));
+			this.actionQueue.push(new PlaceKey(this, snappedPosX, snappedPosY, "ISO"));
 		} else if (inputMap.justPressed(DELETE_SELECTED)) { // key [del] for delete?
-			actionQueue.add(new DeleteKeys(this));
+			this.actionQueue.push(new DeleteKeys(this));
+		}
+
+		if (inputMap.justPressed(UNDO)) {
+			this.actionQueue.undo();
 		}
 
 		// Adjust the status bar with the position of the cursor
@@ -131,7 +130,7 @@ class Viewport extends Scene {
 	/**
 	 * Draws and adds a key to the universe
 	 */
-	public function drawKey(k: keyson.Keyson.Key) {
+	public function drawKey(k: keyson.Keyson.Key): KeyRenderer {
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerDown(key, (_) -> {
@@ -156,5 +155,7 @@ class Viewport extends Scene {
 		if (key.height + key.y > this.universe.height) {
 			this.universe.height = key.height + this.gapY + key.y;
 		}
+		
+		return key;
 	}
 }
