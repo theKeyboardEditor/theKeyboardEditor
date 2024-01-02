@@ -18,6 +18,7 @@ class Viewport extends Scene {
 	var actionQueue: GenericStack<Action> = new GenericStack<Action>();
 	// The square that shows where the placed key is going to be located
 	var cursor: Cursor = new Cursor(unit1U, unit1U);
+	var grid: Grid = new Grid(unit1U, unit1U, unit025U, unit025U);
 
 	// Constants
 	inline static final unit1U = 100; // TODO unit1U is 1U for keyson key size
