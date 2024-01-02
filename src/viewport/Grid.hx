@@ -36,11 +36,9 @@ class Grid extends Visual {
 		
 	}
 
-	public function create(): Visual { // TODO make cursor's size dynamic
-		trace ("this:",this.offsetX,this.offsetY,this.subStepX, this.subStepY);
-		// TODO create the grid
-		for (xPos in 0...maxStepsX) {
-			for (yPos in 0...maxStepsY) {
+	public function create(): Visual {
+		for (xPos in -4...maxStepsX) {
+			for (yPos in -2...maxStepsY) {
 				final q1 = new Quad();
 				q1.pos(offsetX + xPos * mainStepX - thick / 2, offsetY + yPos * mainStepY - long / 2);
 				q1.size(thick,long);
