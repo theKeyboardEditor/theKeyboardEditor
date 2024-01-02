@@ -10,6 +10,7 @@ import keyson.Keyson.Keyboard;
  */
 class Action extends Entity {
 	@event function actionCompleted();
+
 	@event function actionReverted();
 
 	public function new() {

@@ -23,7 +23,8 @@ class ActionQueue {
 	}
 
 	public inline function undo() {
-		if (previous == null) return;
+		if (previous == null)
+			return;
 		this.previous.pop().undo();
 	}
 

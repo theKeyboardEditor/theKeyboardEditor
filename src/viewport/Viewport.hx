@@ -12,6 +12,7 @@ class Viewport extends Scene {
 
 	// Everything inside the viewport is stored here
 	public var universe: Visual = new Visual();
+
 	// This queue goes through all of the actions every frame
 	// Eventually we can use this to "rewind" and undo
 	var actionQueue: ActionQueue = new ActionQueue();
@@ -20,8 +21,8 @@ class Viewport extends Scene {
 	var grid: Grid = new Grid(unit1U, unit1U);
 
 	// Constants
-	inline static final unit1U:Int = 100; // TODO unit1U is 1U for keyson key size
-	inline static final unit025U:Int  = Std.int(unit1U / 4); // This is the keyson placement step size
+	inline static final unit1U: Int = 100; // TODO unit1U is 1U for keyson key size
+	inline static final unit025U: Int = Std.int(unit1U / 4); // This is the keyson placement step size
 	inline static final movementSpeed: Int = 1000;
 	inline static final zoom = 2;
 	inline static final originX: Float = 510;
@@ -48,8 +49,8 @@ class Viewport extends Scene {
 		// Create cursor object
 		this.cursor.create();
 
-		this.grid.offsetX = originX-gapX/2;
-		this.grid.offsetY = originY-gapY/2;
+		this.grid.offsetX = originX - gapX / 2;
+		this.grid.offsetY = originY - gapY / 2;
 		this.grid.subStepX = unit025U;
 		this.grid.subStepY = unit025U;
 		this.grid.create();
@@ -162,7 +163,7 @@ class Viewport extends Scene {
 		if (key.height + key.y > this.universe.height) {
 			this.universe.height = key.height + this.gapY + key.y;
 		}
-		
+
 		return key;
 	}
 }

@@ -3,7 +3,7 @@ package viewport;
 class DeleteKeys extends Action {
 	final viewport: Viewport;
 	var deleted: Array<keyson.Keyson.Key> = [];
-	
+
 	override public function new(viewport: Viewport) {
 		super();
 		this.viewport = viewport;
