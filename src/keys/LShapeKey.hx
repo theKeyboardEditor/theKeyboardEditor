@@ -10,7 +10,7 @@ import haxe.ui.backend.ceramic.RoundedRect;
 
 class LShapeKey extends KeyRenderer {
 	var topColor: Int = 0xffFCFCFC;
-	var bodyColor: Int = 0xFFCCCCCC; //defaults
+	var bodyColor: Int = 0xFFCCCCCC; // defaults
 
 	// we are in the 1U = 100 units of scale ratio here:
 	// this is the preset for OEM/Cherry profile keycaps (TODO more presets)
@@ -36,8 +36,8 @@ class LShapeKey extends KeyRenderer {
 	var arcRotation: Array<Int>;
 	var arcBorderPosition: Array<Bool>;
 
-	override public function new(widthNorth: Float, heightNorth: Float, topColor: Int, bodyColor: Int,
-			widthSouth: Float, heightSouth: Float, offsetSouthX: Float, offsetSouthY: Float) {
+	override public function new(widthNorth: Float, heightNorth: Float, topColor: Int, bodyColor: Int, widthSouth: Float, heightSouth: Float,
+			offsetSouthX: Float, offsetSouthY: Float) {
 		super();
 		this.widthNorth = widthNorth;
 		this.heightNorth = heightNorth;
