@@ -8,6 +8,7 @@ class Project extends Entity {
 	function new(settings: InitSettings) {
 		super();
 
+		settings.title = "insert editor name here";
 		settings.antialiasing = 2;
 		settings.background = 0xFF282828;
 		settings.targetWidth = 1920;
