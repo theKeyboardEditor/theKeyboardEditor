@@ -8,6 +8,7 @@ import ceramic.Color;
  * 
  */
 class KeyMaker {
+	// create a complete key with all its belonging features
 	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Float, gapX: Int, gapY: Int,
 			color: String): KeyRenderer {
 		var key: KeyRenderer;
@@ -106,6 +107,7 @@ class KeyMaker {
 		return key;
 	}
 
+	// create all legends on a key
 	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Float): Array<LegendRenderer> {
 		var keyLegends: Array<LegendRenderer> = [];
 		var legendOffsetX: Float;

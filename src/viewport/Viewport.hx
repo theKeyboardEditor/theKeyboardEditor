@@ -122,7 +122,7 @@ class Viewport extends Scene {
 		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
 			this.actionQueue.push(new PlaceKey(this, snappedPosX, snappedPosY, "1U"));
 		} else if (inputMap.justPressed(PLACE_ISO)) { // key [i] for ISO?
-			this.actionQueue.push(new PlaceKey(this, snappedPosX, snappedPosY, "ISO"));
+			this.actionQueue.push(new PlaceKey(this, snappedPosX, snappedPosY, "2U"));
 		} else if (inputMap.justPressed(DELETE_SELECTED)) { // key [del] for delete?
 			this.actionQueue.push(new DeleteKeys(this));
 		}
