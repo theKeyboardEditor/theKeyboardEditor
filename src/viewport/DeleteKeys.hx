@@ -18,6 +18,7 @@ class DeleteKeys extends Action {
 			// Delete from viewport renderer
 			viewport.selected.remove(key);
 			// and finally delete from the keyson
+			// TODO sample key settings and store them somehow somewhere
 			viewport.keyboard.removeKey(key);
 			// We delete as last so the previous actions have a target to act upon!
 		}
@@ -27,6 +28,7 @@ class DeleteKeys extends Action {
 	override public function undo() {
 		for (key in deleted) {
 			this.viewport.drawKey(viewport.keyboard.addKey(key.shape, key.position, key.shape));
+			// TODO apply deleted key settings stored somehow somewhere
 		}
 	}
 }
