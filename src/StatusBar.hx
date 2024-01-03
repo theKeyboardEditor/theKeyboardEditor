@@ -6,8 +6,13 @@ class StatusBar {
 	/**
 	 * Displays text in the left column
 	 */
-	public static function inform(to: String) {
-		element.findComponent("action").text = to;
+	public static function inform(with: String) {
+		element.findComponent("action").text = with;
+	}
+
+	public static function error(with: String) {
+		element.findComponent("action").text = with;
+		haxe.ui.animation.AnimationTools.flash(element.findComponent("action"), 0xFFb13e53);
 	}
 
 	/**

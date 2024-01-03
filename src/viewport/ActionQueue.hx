@@ -27,7 +27,7 @@ class ActionQueue {
 			this.applied.pop().undo();
 			StatusBar.inform("Reverted previous action");
 		} else {
-			StatusBar.inform("No action to undo");
+			StatusBar.error("No action to undo");
 		}
 	}
 
