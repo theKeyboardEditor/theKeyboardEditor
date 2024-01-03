@@ -19,6 +19,7 @@ class PlaceKey extends Action {
 	override public function act() {
 		// place the ordered key
 		this.key = this.viewport.drawKey(viewport.keyboard.addKey(shape, [x, y], shape));
+		// TODO apply settings
 		super.act();
 	}
 

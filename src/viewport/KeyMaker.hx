@@ -8,19 +8,19 @@ import ceramic.Color;
  * 
  */
 class KeyMaker {
-	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int, gapX: Int, gapY: Int,
+	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Float, gapX: Int, gapY: Int,
 			color: String): KeyRenderer {
 		var key: KeyRenderer;
 
 		var width: Float;
 		var height: Float;
 
-		var widthNorth: Int = 0;
-		var heightNorth: Int = 0;
-		var widthSouth: Int = 0;
-		var heightSouth: Int = 0;
-		var offsetSouthX: Int = 0;
-		var offsetSouthY: Int = 0;
+		var widthNorth: Float = 0;
+		var heightNorth: Float = 0;
+		var widthSouth: Float = 0;
+		var heightSouth: Float = 0;
+		var offsetSouthX: Float = 0;
+		var offsetSouthY: Float = 0;
 
 		// we convert the values into actual ceramic color
 		final keyColor: Color = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
@@ -32,50 +32,50 @@ class KeyMaker {
 				switch k.shape {
 					case "ISO":
 						// Normal ISO
-						widthNorth = 150 - gapX;
-						heightNorth = 100 - gapY;
-						widthSouth = 125 - gapX;
-						heightSouth = 200 - gapY;
-						offsetSouthX = 25;
+						widthNorth = 1.50 * unit - gapX;
+						heightNorth = 1.00 * unit - gapY;
+						widthSouth = 1.25 * unit - gapX;
+						heightSouth = 2.00 * unit - gapY;
+						offsetSouthX = 0.25 * unit;
 						offsetSouthY = 0;
 					case "ISO Inverted":
 						// Inverted ISO
 						// This is an ISO enter but with the top of the keycap reversed
-						widthNorth = 125 - gapX;
-						heightNorth = 200 - gapY;
-						widthSouth = 150 - gapX;
-						heightSouth = 100 - gapY;
+						widthNorth = 1.25 * unit - gapX;
+						heightNorth = 2.00 * unit - gapY;
+						widthSouth = 1.50 * unit - gapX;
+						heightSouth = 1.00 * unit - gapY;
 						offsetSouthX = 0;
-						offsetSouthY = 100;
+						offsetSouthY = 100 * unit;
 					case "BAE":
 						// Normal BAE
-						widthNorth = 150 - gapX;
-						heightNorth = 200 - gapY;
-						widthSouth = 225 - gapX;
-						heightSouth = 100 - gapY;
-						offsetSouthX = -75;
-						offsetSouthY = 100;
+						widthNorth = 1.50 * unit - gapX;
+						heightNorth = 2.00 * unit - gapY;
+						widthSouth = 2.25 * unit - gapX;
+						heightSouth = 1.00 * unit - gapY;
+						offsetSouthX = -0.75 * unit;
+						offsetSouthY = 1.00 * unit;
 					case "BAE Inverted":
 						// Inverted BAE
-						widthNorth = 225 - gapX;
-						heightNorth = 100 - gapY;
-						widthSouth = 150 - gapX;
-						heightSouth = 200 - gapY;
+						widthNorth = 2.25 * unit - gapX;
+						heightNorth = 1.00 * unit - gapY;
+						widthSouth = 1.50 * unit - gapX;
+						heightSouth = 2.00 * unit - gapY;
 						offsetSouthX = -1; // the -1 is a code-design quirk!
 						offsetSouthY = 0;
 					case "XT_2U":
-						widthNorth = 100 - gapX;
-						heightNorth = 200 - gapY;
-						widthSouth = 200 - gapX;
-						heightSouth = 100 - gapY;
-						offsetSouthX = -100;
-						offsetSouthY = 100;
+						widthNorth = 1.00 * unit - gapX;
+						heightNorth = 2.00 * unit - gapY;
+						widthSouth = 2.00 * unit - gapX;
+						heightSouth = 1.00 * unit - gapY;
+						offsetSouthX = -1.00 * unit;
+						offsetSouthY = 1.00 * unit;
 					case "AEK":
-						widthNorth = 125 - gapX;
-						heightNorth = 100 - gapY;
-						widthSouth = 100 - gapX;
-						heightSouth = 200 - gapY;
-						offsetSouthX = 25;
+						widthNorth = 1.25 * unit - gapX;
+						heightNorth = 1.00 * unit - gapY;
+						widthSouth = 1.00 * unit - gapX;
+						heightSouth = 2.00 * unit - gapY;
+						offsetSouthX = 0.25 * unit;
 						offsetSouthY = 0;
 				}
 			}
@@ -92,7 +92,7 @@ class KeyMaker {
 			}
 			key = new keys.RectangularKey(width, height, keyColor, keyShadow);
 		} else { // non '<number>U' cases:
-			key = new keys.LShapeKey(widthNorth, heightNorth, widthSouth, heightSouth, offsetSouthX, offsetSouthY, keyColor, keyShadow);
+			key = new keys.LShapeKey(widthNorth, heightNorth, keyColor, keyShadow, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
 		}
 
 		// here we populate the legends (see function below)
@@ -106,7 +106,7 @@ class KeyMaker {
 		return key;
 	}
 
-	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Int): Array<LegendRenderer> {
+	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Float): Array<LegendRenderer> {
 		var keyLegends: Array<LegendRenderer> = [];
 		var legendOffsetX: Float;
 		var legendOffsetY: Float;

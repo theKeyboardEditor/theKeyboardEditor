@@ -14,10 +14,10 @@ class RectangularKey extends KeyRenderer {
 
 	// we are in the 1U = 100 units of scale ratio here:
 	// this is the preset for OEM/Cherry profile keycaps (TODO more presets)
-	var topX: Float = 12;
-	var topY: Float = 12 * .25; // North top vs E/W ratio
-	var topOffset: Float = 12 * 2; // the top island offset
-	var roundedCorner: Float = 12;
+	var topX: Float = 100 / 8;
+	var topY: Float = (100 / 8) * 0.25;
+	var topOffset: Float = (100 / 8) * 2;
+	var roundedCorner: Float = (100 / 8);
 	var arcPosX: Array<Float>;
 	var arcPosY: Array<Float>;
 	var arcRotation: Array<Int>;

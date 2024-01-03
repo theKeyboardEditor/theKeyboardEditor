@@ -21,8 +21,8 @@ class Viewport extends Scene {
 	var grid: Grid = new Grid(unit1U, unit1U);
 
 	// Constants
-	inline static final unit1U: Int = 100; // TODO unit1U is 1U for keyson key size
-	inline static final unit025U: Int = Std.int(unit1U / 4); // This is the keyson placement step size
+	inline static final unit1U: Float = 100; // TODO unit1U is 1U for keyson key size
+	inline static final unit025U: Float = Std.int(unit1U / 4); // This is the keyson placement step size
 	inline static final movementSpeed: Int = 1000;
 	inline static final zoom = 2;
 	inline static final originX: Float = 510;

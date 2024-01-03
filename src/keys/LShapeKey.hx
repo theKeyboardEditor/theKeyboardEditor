@@ -10,24 +10,24 @@ import haxe.ui.backend.ceramic.RoundedRect;
 
 class LShapeKey extends KeyRenderer {
 	var topColor: Int = 0xffFCFCFC;
-	var bodyColor: Int = 0xFFCCCCCC;
+	var bodyColor: Int = 0xFFCCCCCC; //defaults
 
 	// we are in the 1U = 100 units of scale ratio here:
 	// this is the preset for OEM/Cherry profile keycaps (TODO more presets)
-	var topX: Float = 12;
-	var topY: Float = 12 * 0.25;
-	var topOffset: Float = 12 * 2;
-	var roundedCorner: Float = 12;
+	var topX: Float = 100 / 8;
+	var topY: Float = (100 / 8) * 0.25;
+	var topOffset: Float = (100 / 8) * 2;
+	var roundedCorner: Float = (100 / 8);
 
-	var widthNorth: Int; // North is the further away member of the pair
-	var heightNorth: Int;
-	var widthSouth: Int; // South is the closer member of the piar
-	var heightSouth: Int;
+	var widthNorth: Float; // North is the further away member of the pair
+	var heightNorth: Float;
+	var widthSouth: Float; // South is the closer member of the piar
+	var heightSouth: Float;
 
 	var arcPosTopX: Float;
 	var arcPosTopY: Float;
-	var offsetSouthX: Int; // The closer member's offset
-	var offsetSouthY: Int;
+	var offsetSouthX: Float; // The closer member's offset
+	var offsetSouthY: Float;
 
 	var arcPosX: Array<Float>;
 	var arcPosY: Array<Float>;
@@ -36,8 +36,8 @@ class LShapeKey extends KeyRenderer {
 	var arcRotation: Array<Int>;
 	var arcBorderPosition: Array<Bool>;
 
-	override public function new(widthNorth: Int, heightNorth: Int, widthSouth: Int, heightSouth: Int, offsetSouthX: Int, offsetSouthY: Int,
-			topColor: Int, bodyColor: Int) {
+	override public function new(widthNorth: Float, heightNorth: Float, topColor: Int, bodyColor: Int,
+			widthSouth: Float, heightSouth: Float, offsetSouthX: Float, offsetSouthY: Float) {
 		super();
 		this.widthNorth = widthNorth;
 		this.heightNorth = heightNorth;
