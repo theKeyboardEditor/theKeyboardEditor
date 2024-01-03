@@ -1,17 +1,17 @@
 {
-    "lineEnds": {
-        "leftCurly": "after",
-        "emptyCurly": "noBreak"
-    },
-    "whitespace": {
-        "colonPolicy": "after",
-        "caseColonPolicy": "after",
-        "objectFieldColonPolicy": "after",
-        "typeHintColonPolicy": "after",
-        "typeCheckColonPolicy": "after",
-        "ternaryPolicy": "after"
-    },
-	"wrapping": {
-		"maxLineLength": 144
-	}
+  "lineEnds": {
+    "leftCurly": "after",
+    "emptyCurly": "noBreak"
+  },
+  "whitespace": {
+    "colonPolicy": "after",
+    "caseColonPolicy": "after",
+    "objectFieldColonPolicy": "after",
+    "typeHintColonPolicy": "after",
+    "typeCheckColonPolicy": "after",
+    "ternaryPolicy": "after"
+  },
+  "wrapping": {
+    "maxLineLength": 144
+  }
 }
