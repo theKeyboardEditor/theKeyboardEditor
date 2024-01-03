@@ -51,9 +51,8 @@ class MainScene extends Scene {
 			left.addComponent(sidebar);
 		}
 
-		final statusBar = ComponentBuilder.fromFile("ui/status.xml");
-		viewport.statusBar = statusBar;
-		view.addComponent(statusBar);
+		StatusBar.element = ComponentBuilder.fromFile("ui/status.xml");
+		view.addComponent(StatusBar.element);
 	}
 
 	// Here, you can add code that will be executed at every frame

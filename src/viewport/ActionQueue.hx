@@ -10,7 +10,7 @@ import haxe.ds.GenericStack;
 class ActionQueue {
 	// The original class that we start the reconstruction from
 	var queue: GenericStack<Action> = new GenericStack<Action>();
-	var previous: GenericStack<Action> = new GenericStack<Action>();
+	var applied: GenericStack<Action> = new GenericStack<Action>();
 
 	public function new() {}
 
@@ -18,14 +18,17 @@ class ActionQueue {
 		if (queue.isEmpty() == false) {
 			final action = this.queue.pop();
 			action.act();
-			this.previous.add(action);
+			this.applied.add(action);
 		}
 	}
 
 	public inline function undo() {
-		if (previous == null)
-			return;
-		this.previous.pop().undo();
+		if (applied.isEmpty() == false) {
+			this.applied.pop().undo();
+			StatusBar.inform("Reverted previous action");
+		} else {
+			StatusBar.inform("No action to undo");
+		}
 	}
 
 	public function push(a: Action) {

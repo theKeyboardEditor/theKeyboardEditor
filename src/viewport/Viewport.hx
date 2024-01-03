@@ -32,9 +32,6 @@ class Viewport extends Scene {
 	final gapX: Int;
 	final gapY: Int;
 
-	// UI Accessors
-	public var statusBar: haxe.ui.containers.HBox;
-
 	override public function new(keyboard: Keyboard) {
 		super();
 
@@ -132,7 +129,7 @@ class Viewport extends Scene {
 		}
 
 		// Adjust the status bar with the position of the cursor
-		this.statusBar.findComponent("status").text = 'cursor pos: $snappedPosX x $snappedPosY';
+		StatusBar.pos(snappedPosX, snappedPosY);
 	}
 
 	/**

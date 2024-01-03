@@ -4,6 +4,7 @@
             padding-top: 6px;
             padding-bottom: 6px;
             padding-left: 12px;
+            padding-right: 12px;
             background-color: $accent-color;
         }
 
@@ -11,5 +12,10 @@
             color: white;
         }
     </style>
-    <label id="status" width="100%" text="Status" />
+	<box id="leftBox" width="100%">
+    	<label id="action" width="100%" text="Hello :3" />
+	</box>
+	<box id="rightBox" width="100%">
+    	<label id="pos" horizontalAlign="right" width="25%" text="cursor pos: 0 x 0" />
+	</box>
 </hbox>
