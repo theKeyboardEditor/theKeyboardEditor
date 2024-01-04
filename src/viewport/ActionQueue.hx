@@ -19,14 +19,15 @@ class ActionQueue {
 			final action = this.queue.pop();
 			action.act();
 			this.applied.push(action);
-			StatusBar.inform('Applied action ${action}');
+			StatusBar.inform('Applied action: $action');
 		}
 	}
 
 	public inline function undo() {
 		if (applied.length > 0) {
-			this.applied.pop().undo();
-			StatusBar.inform("Reverted previous action");
+			var action = this.applied.pop();
+			action.undo();
+			StatusBar.inform('Reverted previous action: $action');
 		} else {
 			StatusBar.error("No action to undo");
 		}

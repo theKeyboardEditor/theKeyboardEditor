@@ -14,6 +14,7 @@ class DeleteKeys extends Action {
 			// Delete from viewport renderer
 			viewport.keyboard.keys.remove(key);
 			viewport.selected[key].destroy();
+			viewport.selected.remove(key);
 
 			this.deleted.push(key);
 		}
