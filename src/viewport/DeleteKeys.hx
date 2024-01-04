@@ -16,7 +16,7 @@ class DeleteKeys extends Action {
 			viewport.selected[key].select();
 			// Delete from viewport renderer
 			viewport.universe.remove(viewport.selected[key]);
-			viewport.selected.remove(key);
+			viewport.selected[key].destroy();
 			// and finally delete from the keyson
 			viewport.keyboard.keys.remove(key);
 		}
