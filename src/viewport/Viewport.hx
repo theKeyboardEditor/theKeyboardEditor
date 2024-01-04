@@ -136,10 +136,11 @@ class Viewport extends Scene {
 	/**
 	 * Draws and adds a key to the universe
 	 */
-	public function drawKey(k: Key): KeyRenderer {
+	public function drawKey(k: Key): Visual {
 		if (this.keyboard.keys.contains(k) == false) {
 			throw "Key does not exist inside the Keyson keyboard";
 		}
+
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerDown(key, (_) -> {
@@ -150,7 +151,9 @@ class Viewport extends Scene {
 			}
 			key.select();
 		});
-		this.universe.add(key.create());
+
+		final createdKey = key.create();
+		this.universe.add(createdKey);
 
 		/**
 		 * A ceramic visual does not inherit the size of it's children
@@ -165,6 +168,6 @@ class Viewport extends Scene {
 			this.universe.height = key.height + this.gapY + key.y;
 		}
 
-		return key;
+		return createdKey;
 	}
 }

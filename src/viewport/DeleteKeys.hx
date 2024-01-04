@@ -11,14 +11,11 @@ class DeleteKeys extends Action {
 
 	override public function act() {
 		for (key in viewport.selected.keys()) {
-			this.deleted.push(key);
-			// First deselect everything
-			viewport.selected[key].select();
 			// Delete from viewport renderer
-			viewport.universe.remove(viewport.selected[key]);
-			viewport.selected[key].destroy();
-			// and finally delete from the keyson
 			viewport.keyboard.keys.remove(key);
+			viewport.selected[key].destroy();
+
+			this.deleted.push(key);
 		}
 		super.act();
 	}

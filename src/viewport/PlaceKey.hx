@@ -3,7 +3,7 @@ package viewport;
 class PlaceKey extends Action {
 	var viewport: Viewport;
 	var key: keyson.Keyson.Key;
-	var keyRenderer: KeyRenderer;
+	var renderedKey: ceramic.Visual;
 	final shape: String;
 	final x: Float;
 	final y: Float;
@@ -21,15 +21,12 @@ class PlaceKey extends Action {
 		// Create a keyson key
 		this.key = viewport.keyboard.addKey(shape, [x, y], shape);
 		// Draw that key
-		this.keyRenderer = this.viewport.drawKey(this.key);
-		trace(this.viewport.universe.children);
+		this.renderedKey = this.viewport.drawKey(this.key);
 		super.act();
 	}
 
 	override public function undo() {
-		this.viewport.universe.remove(this.keyRenderer);
 		this.viewport.keyboard.keys.remove(this.key);
-		trace(this.viewport.universe.children);
-		this.keyRenderer.dispose();
+		this.renderedKey.dispose();
 	}
 }
