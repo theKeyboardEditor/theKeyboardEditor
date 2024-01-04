@@ -2,7 +2,8 @@ package viewport;
 
 class PlaceKey extends Action {
 	var viewport: Viewport;
-	var key: KeyRenderer;
+	var key: keyson.Keyson.Key;
+	var keyRenderer: KeyRenderer;
 	final shape: String;
 	final x: Float;
 	final y: Float;
@@ -17,15 +18,17 @@ class PlaceKey extends Action {
 	};
 
 	override public function act() {
+		// Create a keyson key
+		this.key = viewport.keyboard.addKey(shape, [x, y], shape);
 		// place the ordered key
-		this.key = this.viewport.drawKey(viewport.keyboard.addKey(shape, [x, y], shape));
+		this.keyRenderer = this.viewport.drawKey(this.key);
 		// TODO apply settings
 		super.act();
 	}
 
 	override public function undo() {
-		this.viewport.universe.remove(this.key);
-		this.viewport.keyboard.remove(this.key);
-		this.key.dispose();
+		this.viewport.universe.remove(this.keyRenderer);
+		this.viewport.keyboard.keys.remove(this.key);
+		this.keyRenderer.dispose();
 	}
 }
