@@ -4,11 +4,12 @@ import ceramic.Scene;
 import ceramic.Visual;
 import keyson.Axis;
 import keyson.Keyson.Keyboard;
+import keyson.Keyson.Key;
 
 class Viewport extends Scene {
 	public var keyboard: Keyboard;
 	public var inputMap: Input;
-	public var selected: Map<Int, KeyRenderer> = [];
+	public var selected: Map<Key, KeyRenderer> = [];
 
 	// Everything inside the viewport is stored here
 	public var universe: Visual = new Visual();
@@ -135,7 +136,7 @@ class Viewport extends Scene {
 	/**
 	 * Draws and adds a key to the universe
 	 */
-	public function drawKey(k: keyson.Keyson.Key): KeyRenderer {
+	public function drawKey(k: Key): KeyRenderer {
 		if (this.keyboard.keys.contains(k) == false) {
 			throw "Key does not exist inside the Keyson keyboard";
 		}
@@ -143,9 +144,9 @@ class Viewport extends Scene {
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerDown(key, (_) -> {
 			if (key.border.visible) {
-				selected.remove(k.id);
+				selected.remove(k);
 			} else {
-				selected[k.id] = key;
+				selected[k] = key;
 			}
 			key.select();
 		});

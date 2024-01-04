@@ -102,8 +102,6 @@ class KeyMaker {
 			key.add(l.create()); // adding ti to the key visual
 		}
 
-		key.represents = k;
-
 		return key;
 	}
 
