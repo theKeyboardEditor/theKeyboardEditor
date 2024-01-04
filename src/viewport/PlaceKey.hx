@@ -20,15 +20,16 @@ class PlaceKey extends Action {
 	override public function act() {
 		// Create a keyson key
 		this.key = viewport.keyboard.addKey(shape, [x, y], shape);
-		// place the ordered key
+		// Draw that key
 		this.keyRenderer = this.viewport.drawKey(this.key);
-		// TODO apply settings
+		trace(this.viewport.universe.children);
 		super.act();
 	}
 
 	override public function undo() {
 		this.viewport.universe.remove(this.keyRenderer);
 		this.viewport.keyboard.keys.remove(this.key);
+		trace(this.viewport.universe.children);
 		this.keyRenderer.dispose();
 	}
 }

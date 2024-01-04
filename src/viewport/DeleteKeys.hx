@@ -14,13 +14,11 @@ class DeleteKeys extends Action {
 			this.deleted.push(viewport.selected[key].represents);
 			// First deselect everything
 			viewport.selected[key].select();
-			viewport.selected[key].dispose();
 			// Delete from viewport renderer
+			viewport.universe.remove(viewport.selected[key]);
 			viewport.selected.remove(key);
 			// and finally delete from the keyson
-			// TODO sample key settings and store them somehow somewhere
 			viewport.keyboard.removeKey(key);
-			// We delete as last so the previous actions have a target to act upon!
 		}
 		super.act();
 	}
