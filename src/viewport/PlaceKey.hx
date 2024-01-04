@@ -24,9 +24,8 @@ class PlaceKey extends Action {
 	}
 
 	override public function undo() {
-		// Delete from viewport renderer
 		this.viewport.universe.remove(this.key);
-		// and finally delete from the keyson
+		this.viewport.keyboard.remove(this.key);
 		this.key.dispose();
 	}
 }

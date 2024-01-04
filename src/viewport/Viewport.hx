@@ -136,6 +136,9 @@ class Viewport extends Scene {
 	 * Draws and adds a key to the universe
 	 */
 	public function drawKey(k: keyson.Keyson.Key): KeyRenderer {
+		if (this.keyboard.keys.contains(k) == false) {
+			throw "Key does not exist inside the Keyson keyboard";
+		}
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerDown(key, (_) -> {

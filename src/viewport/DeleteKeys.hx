@@ -27,6 +27,7 @@ class DeleteKeys extends Action {
 
 	override public function undo() {
 		for (key in deleted) {
+			this.viewport.keyboard.keys.push(key);
 			this.viewport.drawKey(key);
 		}
 	}
