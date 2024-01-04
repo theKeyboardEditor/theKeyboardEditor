@@ -24,14 +24,20 @@ class ActionQueue {
 
 	public inline function undo() {
 		if (applied.isEmpty() == false) {
+			trace("before applied head",this.applied.head);
 			this.applied.pop().undo();
+			trace("after applied head",this.applied.head);
+
 			StatusBar.inform("Reverted previous action");
 		} else {
+			trace("applied head",this.applied.head);
 			StatusBar.error("No action to undo");
 		}
 	}
 
 	public function push(a: Action) {
 		this.queue.add(a);
+		StatusBar.inform('Applied action ${a}.');
+		trace("queue head",this.queue.head);
 	}
 }
