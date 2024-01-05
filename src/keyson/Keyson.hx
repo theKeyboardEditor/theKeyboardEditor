@@ -127,6 +127,20 @@ class Keyboard {
 		var key = new Key(uid, shape, pos, leg);
 		// append the new key to the end of the array
 		this.keys.push(key);
+		// now sort for Y and X coordinates:
+		// to get Y placement take precedence we will premultiply Y by 128
+		// naively (assuming no keyboard will ever have more than 128 keys in one row)
+		// the difference resolution is 25/100 (a hundredth of a quarter)
+		this.keys.sort(function (a , b) return ( Std.int((a.position[0] + 128 * a.position[1]) * 25) - Std.int((b.position[0] + 128 * b.position[1]) * 25) ) );
+		var i: Int = 0;
+		//sort out ids
+		this.keys = [
+			for (k in this.keys) {
+				k.id = i++;
+				k;
+			}
+		];
+		// trace(keys);
 		return key;
 	}
 
