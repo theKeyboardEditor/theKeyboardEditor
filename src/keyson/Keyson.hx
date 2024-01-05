@@ -176,15 +176,14 @@ class Key {
 	public function new(id: Int, shape: String, position: Array<Float>, legend: String) {
 		this.id = id; // unique key ID
 		this.position = position; // place on the unit
-		this.stabilizer = "None"; // "None","2U","2.25U","2.75U","6.25U","7.25U",(Custom Bar)"125.5"
-		this.angle = 0.0;
+//		this.stabilizer = "None"; // "None","2U","2.25U","2.75U","6.25U","7.25U",(Custom Bar)"125.5"
+//		this.angle = 0.0;
 		this.shape = shape; // "1U","2U","2U vertical","1.25U","1.5U","1.75U","2.25U","2.75U","ISO","BAE","6.25U","7.25U","3U","0.75U"
-		this.legendPosition = "";
-		this.relativeRotationCenter = [0.0, 0.0];
-		this.features = []; // "Stepped","Window","Homing","Spacer","Comment","Shadow","LED","OLED","LCD","Encoder","Trackpoint","Trackpad"
-		this.steppedTop = 0.0; // by it's size we reconstruct the type
-		this.homingFeature = ""; // "Bar", "Dot", "Sculpt"
-		this.spacerSize = [0.0, 0.0]; // in units of U (1 x 2 U)
+//		this.relativeRotationCenter = [0.0, 0.0];
+//		this.features = []; // "Stepped","Window","Homing","Spacer","Comment","Shadow","LED","OLED","LCD","Encoder","Trackpoint","Trackpad"
+//		this.steppedTop = 0.0; // by it's size we reconstruct the type
+//		this.homingFeature = ""; // "Bar", "Dot", "Sculpt"
+//		this.spacerSize = [0.0, 0.0]; // in units of U (1 x 2 U)
 		this.keysColor = "0xFFFFFFFF";
 		this.amountOfLegends = 1;
 		this.legends = [];

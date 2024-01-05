@@ -22,11 +22,14 @@ class PlaceKey extends Action {
 		this.key = viewport.keyboard.addKey(shape, [x, y], shape);
 		// Draw that key
 		this.renderedKey = this.viewport.drawKey(this.key);
+		trace("ADDING",this.viewport.keyboard.keys);
 		super.act();
 	}
 
 	override public function undo() {
+		trace("UNADDING BEFORE:",this.viewport.keyboard.keys);
 		this.viewport.keyboard.keys.remove(this.key);
+		trace("UNADDED:",this.viewport.keyboard.keys);
 		this.renderedKey.dispose();
 	}
 }
