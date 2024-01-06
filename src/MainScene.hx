@@ -93,8 +93,8 @@ class MainScene extends Scene {
 						r[0];
 						//trace ("KLE row:",y," content:",r[0]);
 						x =0;
-						if ( r[0].y != null ) y = y + r[0].y;
 						for ( c in r ) {
+							if ( c.y != null ) y = y + c.y;
 							if ( c.x != null ) xNext += c.x;
 							if ( Std.isOfType(c, String) ) {
 								var legend:String = Std.string(c);

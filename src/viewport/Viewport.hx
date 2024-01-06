@@ -27,7 +27,7 @@ class Viewport extends Scene {
 	inline static final unit025U: Float = Std.int(unit1U / 4); // This is the keyson placement step size
 	inline static final movementSpeed: Int = 1000;
 	inline static final zoom = 2;
-	inline static final originX: Float = 510;
+	inline static final originX: Float = 310;
 	inline static final originY: Float = 60;
 
 	// Gap between the different keys
