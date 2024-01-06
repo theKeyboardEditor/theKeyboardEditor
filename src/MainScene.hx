@@ -59,7 +59,7 @@ class MainScene extends Scene {
 			switch (e.relatedComponent.id) {
 				case "open":
 					final dialog = new FileDialog();
-					dialog.openKeyson();
+					dialog.openJson("Keyson File");
 					dialog.onFileLoaded(this, (body: String) -> {
 						keyboard = keyson.Keyson.parse(body);
 						trace("Read in keyboard:", keyboard.unit[0]);
@@ -73,8 +73,7 @@ class MainScene extends Scene {
 					});
 				case "import":
 					final dialog = new FileDialog();
-
-					dialog.openKeyson();
+					dialog.openJson("KLE File");
 					dialog.onFileLoaded(this, (body: String) -> {
 						var y: Float = 0; // coordinates
 						var x: Float = 0;
