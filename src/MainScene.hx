@@ -24,7 +24,6 @@ class MainScene extends Scene {
 
 	// Called when scene has finished preloading
 	override function create() {
-
 		// Render keys
 		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 		// final keyboard = keyson.Keyson.parse(assets.text(Texts.ALLPAD));
@@ -56,75 +55,73 @@ class MainScene extends Scene {
 		view.addComponent(StatusBar.element);
 
 		tabbar.findComponent("picker").onChange = (e) -> {
-			trace("File operation selected: ",e.relatedComponent.id);
-			if (e.relatedComponent.id == "open") {
-				final dialog = new FileDialog();
-				dialog.openKeyson();
-				// trace("Opened the file");
-				dialog.onFileLoaded(this, (body: String) -> {
-					keyboard = keyson.Keyson.parse(body);
-					// trace("Parsed body:", body);
-					trace("Read in keyboard:", keyboard.unit[0]);
-					viewport.cursor.destroy();
-					viewport.grid.destroy();
-					viewport.destroy();
+			trace("File operation selected: ", e.relatedComponent.id);
+			switch (e.relatedComponent.id) {
+				case "open":
+					final dialog = new FileDialog();
+					dialog.openKeyson();
+					dialog.onFileLoaded(this, (body: String) -> {
+						keyboard = keyson.Keyson.parse(body);
+						trace("Read in keyboard:", keyboard.unit[0]);
+						viewport.cursor.destroy();
+						viewport.grid.destroy();
+						viewport.destroy();
 
-					trace("Cleaned viewport.");
-					viewport = new viewport.Viewport(keyboard.unit[0]);
-					this.add(viewport);
-				});
-			} else if (e.relatedComponent.id == "import") {
-				final dialog = new FileDialog();
+						trace("Cleaned viewport.");
+						viewport = new viewport.Viewport(keyboard.unit[0]);
+						this.add(viewport);
+					});
+				case "import":
+					final dialog = new FileDialog();
 
-				dialog.openKeyson();
-				dialog.onFileLoaded(this, (body: String) -> {
-					var y:Float = 0; // coordinates
-					var x:Float =0;
-					var xNext:Float =1;
-					var shape:String= "1U";
-					var w:Float = 1;
-					// do parse the KLE json here
-					var kle = haxe.Json.parse(body);
-					keyboard = new keyson.Keyson();
-					kle[0];
-					//trace ("KLE:",kle[0]);
-					y = 0;
-					for ( r in kle ) {
-						r[0];
-						//trace ("KLE row:",y," content:",r[0]);
-						x =0;
-						for ( c in r ) {
-							if ( c.y != null ) y = y + c.y;
-							if ( c.x != null ) xNext += c.x;
-							if ( Std.isOfType(c, String) ) {
-								var legend:String = Std.string(c);
-								trace ("Key:", c, "at:", x, y, "w:", w, "Type:", Std.isOfType(c, String) );
-								keyboard.unit[0].addKey(shape, [x, y], legend);
-								w = 1;
-								shape = "1U";
-							} else {
-								//trace ("KLE column",x," type:",Type.typeof(c), "content", c);
-								w = if ( c.w != null ) c.w else if ( c.h != null ) c.h else 1;
-								shape = if ( c.w != null ) Std.string(w)+"U" else if ( c.h != null ) Std.string(w)+"U Vertical" else "1U";
-								trace ("Shape:",shape,Std.isOfType(c, String));
-								x--;
+					dialog.openKeyson();
+					dialog.onFileLoaded(this, (body: String) -> {
+						var y: Float = 0; // coordinates
+						var x: Float = 0;
+						var xNext: Float = 1;
+						var shape: String = "1U";
+						var w: Float = 1;
+						// do parse the KLE json here
+						var kle = haxe.Json.parse(body);
+						keyboard = new keyson.Keyson();
+						kle[0];
+						y = 0;
+						for (r in kle) {
+							r[0];
+							x = 0;
+							for (c in r) {
+								if (c.y != null)
+									y = y + c.y;
+								if (c.x != null)
+									xNext += c.x;
+								if (c is String) {
+									var legend: String = Std.string(c);
+									trace("Key:", c, "at:", x, y, "w:", w, "Type:", c is String);
+									keyboard.unit[0].addKey(shape, [x, y], legend);
+									w = 1;
+									shape = "1U";
+								} else {
+									w = if (c.w != null) c.w else if (c.h != null) c.h else 1;
+									shape = if (c.w != null) Std.string(w) + "U" else if (c.h != null) Std.string(w) + "U Vertical" else "1U";
+									x--;
+								}
+								x = x + xNext;
+								if (c.w != null) {
+									xNext = c.w;
+								} else {
+									xNext = 1;
+								}
 							}
-							x = x + xNext;
-							if ( c.w != null ) xNext = c.w else xNext = 1;
+							y++;
 						}
-						y++;
-					}
-					
-					//trace("Read in keyboard:", keyboard.unit[0]);
 
-					viewport.cursor.destroy();
-					viewport.grid.destroy();
-					viewport.destroy();
-					viewport = new viewport.Viewport(keyboard.unit[0]);
-					this.add(viewport);
-				});
+						viewport.cursor.destroy();
+						viewport.grid.destroy();
+						viewport.destroy();
+						viewport = new viewport.Viewport(keyboard.unit[0]);
+						this.add(viewport);
+					});
 			}
 		}
-
 	}
 }

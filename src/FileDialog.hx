@@ -49,5 +49,4 @@ class FileDialog extends Entity {
 		});
 		#end
 	}
-
 }
