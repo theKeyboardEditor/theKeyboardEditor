@@ -62,7 +62,7 @@ class MainScene extends Scene {
 				dialog.onFileLoaded(this, (body: String) -> {
 					keyboard = keyson.Keyson.parse(body);
 					// trace("Parsed body:", body);
-					trace ("Read in keyboard:",keyboard.unit[0]);
+					trace("Read in keyboard:", keyboard.unit[0]);
 					viewport.cursor.destroy();
 					viewport.grid.destroy();
 					viewport.destroy();
@@ -73,6 +73,5 @@ class MainScene extends Scene {
 				});
 			}
 		}
-
 	}
 }
