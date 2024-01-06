@@ -18,8 +18,8 @@ class Viewport extends Scene {
 	// Eventually we can use this to "rewind" and undo
 	var actionQueue: ActionQueue = new ActionQueue();
 	// The square that shows where the placed key is going to be located
-	var cursor: Cursor = new Cursor(unit1U, unit1U);
-	var grid: Grid = new Grid(unit1U, unit1U);
+	public var cursor: Cursor = new Cursor(unit1U, unit1U);
+	public var grid: Grid = new Grid(unit1U, unit1U);
 
 	// Constants
 	inline static final unit1U: Float = 100; // TODO unit1U is 1U for keyson key size

@@ -58,12 +58,21 @@ class MainScene extends Scene {
 			if (e.relatedComponent.id == "open") {
 				final dialog = new FileDialog();
 				dialog.openKeyson();
+				// trace("Opened the file");
 				dialog.onFileLoaded(this, (body: String) -> {
 					keyboard = keyson.Keyson.parse(body);
+					// trace("Parsed body:", body);
+					trace ("Read in keyboard:",keyboard.unit[0]);
+					viewport.cursor.destroy();
+					viewport.grid.destroy();
 					viewport.destroy();
+
+					trace("Cleaned viewport.");
 					viewport = new viewport.Viewport(keyboard.unit[0]);
+					this.add(viewport);
 				});
 			}
 		}
+
 	}
 }
