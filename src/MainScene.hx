@@ -75,45 +75,7 @@ class MainScene extends Scene {
 					final dialog = new FileDialog();
 					dialog.openJson("KLE File");
 					dialog.onFileLoaded(this, (body: String) -> {
-						var y: Float = 0; // coordinates
-						var x: Float = 0;
-						var xNext: Float = 1;
-						var shape: String = "1U";
-						var w: Float = 1;
-						// do parse the KLE json here
-						var kle = haxe.Json.parse(body);
-						keyboard = new keyson.Keyson();
-						kle[0];
-						y = 0;
-						for (r in kle) {
-							r[0];
-							x = 0;
-							for (c in r) {
-								if (c.y != null)
-									y = y + c.y;
-								if (c.x != null)
-									xNext += c.x;
-								if (c is String) {
-									var legend: String = Std.string(c);
-									trace("Key:", c, "at:", x, y, "w:", w, "Type:", c is String);
-									keyboard.unit[0].addKey(shape, [x, y], legend);
-									w = 1;
-									shape = "1U";
-								} else {
-									w = if (c.w != null) c.w else if (c.h != null) c.h else 1;
-									shape = if (c.w != null) Std.string(w) + "U" else if (c.h != null) Std.string(w) + "U Vertical" else "1U";
-									x--;
-								}
-								x = x + xNext;
-								if (c.w != null) {
-									xNext = c.w;
-								} else {
-									xNext = 1;
-								}
-							}
-							y++;
-						}
-
+						keyboard = keyson.KLE.toKeyson(body);
 						viewport.cursor.destroy();
 						viewport.grid.destroy();
 						viewport.destroy();
