@@ -145,7 +145,7 @@ class Keyboard {
 		return key;
 	}
 
-	public inline function removeKey(id: Int) {
+	public function removeKey(id: Int) {
 		var i: Int = 0;
 		this.keys = [
 			for (key in this.keys.filter(key -> key.id != id)) {
@@ -155,7 +155,7 @@ class Keyboard {
 		];
 	}
 
-	public function sortKeys(): Key {
+	public inline function sortKeys() {
 		// sort for Y and X coordinates:
 		// to get Y placement take precedence we will premultiply Y by 128
 		// naively (assuming no keyboard will ever have more than 128 keys in one row)
@@ -171,8 +171,6 @@ class Keyboard {
 		];
 		// trace(keys);
 	}
-
-
 }
 
 /** The actual tactile unit of interaction

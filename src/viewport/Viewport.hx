@@ -146,8 +146,10 @@ class Viewport extends Scene {
 		key.onPointerDown(key, (_) -> {
 			if (key.border.visible) {
 				selected.remove(k);
+				StatusBar.inform('Deselected key: "${k.legends[0].symbol}" at: ${k.position}');
 			} else {
 				selected[k] = key;
+				StatusBar.inform('Selected key: "${k.legends[0].symbol}" at: ${k.position}');
 			}
 			key.select();
 		});
