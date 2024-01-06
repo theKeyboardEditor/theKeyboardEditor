@@ -25,9 +25,9 @@ class MainScene extends Scene {
 	// Called when scene has finished preloading
 	override function create() {
 		// Render keys
-		final keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
+		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
 		// final keyboard = keyson.Keyson.parse(assets.text(Texts.ALLPAD));
-		final viewport = new viewport.Viewport(keyboard.unit[0]);
+		var viewport = new viewport.Viewport(keyboard.unit[0]);
 		this.add(viewport);
 
 		// Create base container
@@ -37,7 +37,7 @@ class MainScene extends Scene {
 		Screen.instance.addComponent(view);
 
 		// Render elements
-		final tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");
+		var tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");
 		view.addComponent(tabbar);
 
 		var left = new haxe.ui.containers.HBox();
@@ -53,16 +53,17 @@ class MainScene extends Scene {
 
 		StatusBar.element = ComponentBuilder.fromFile("ui/status.xml");
 		view.addComponent(StatusBar.element);
-	}
 
-	// Here, you can add code that will be executed at every frame
-	override function update(delta: Float) {}
-
-	// Called everytime the scene size has changed
-	override function resize(width: Float, height: Float) {}
-
-	// Perform any cleanup before final destroy
-	override function destroy() {
-		super.destroy();
+		tabbar.findComponent("picker").onChange = (e) -> {
+			if (e.relatedComponent.id == "open") {
+				final dialog = new FileDialog();
+				dialog.openKeyson();
+				dialog.onFileLoaded(this, (body: String) -> {
+					keyboard = keyson.Keyson.parse(body);
+					viewport.destroy();
+					viewport = new viewport.Viewport(keyboard.unit[0]);
+				});
+			}
+		}
 	}
 }

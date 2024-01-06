@@ -1,7 +1,5 @@
 package viewport;
 
-import haxe.ds.GenericStack;
-
 /**
  * This is a data structure that is used for saving and executing different "actions"
  * These actions can range anything from placing a key to changing the color
@@ -24,6 +22,7 @@ class ActionQueue {
 	}
 
 	public inline function undo() {
+		trace(applied);
 		if (applied.length > 0) {
 			var action = this.applied.pop();
 			action.undo();

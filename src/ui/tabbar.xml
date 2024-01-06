@@ -13,13 +13,13 @@
             border: none;
         }
     </style>
-    <menu-item-picker showText="false" showIcon="false" width="64px" panelWidth="200" animatable="false" verticalAlign="center">
+    <menu-item-picker id="picker" showText="false" showIcon="false" width="64px" panelWidth="200" animatable="false" verticalAlign="center">
         <item-renderer id="itemPickerRenderer">
             <image resource="icons/kebab-dropdown" horizontalAlign="center" />
         </item-renderer>
         <data>
             <item text="New" />
-            <item text="Open" />
+            <item id="open" text="Open" />
             <item text="Save" />
             <item text="Import" />
             <item text="Export" />
