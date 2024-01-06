@@ -18,11 +18,11 @@
             <image resource="icons/kebab-dropdown" horizontalAlign="center" />
         </item-renderer>
         <data>
-            <item text="New" />
+            <item id="new" text="New" />
             <item id="open" text="Open" />
-            <item text="Save" />
-            <item text="Import" />
-            <item text="Export" />
+            <item id="save" text="Save" />
+            <item id="import" text="Import" />
+            <item id="export" text="Export" />
         </data>
     </menu-item-picker>
 
