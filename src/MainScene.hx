@@ -55,7 +55,7 @@ class MainScene extends Scene {
 		view.addComponent(StatusBar.element);
 
 		tabbar.findComponent("picker").onChange = (e) -> {
-			trace("File operation selected: ", e.relatedComponent.id);
+			trace('File operation selected: ${e.relatedComponent.id}');
 			switch (e.relatedComponent.id) {
 				case "open":
 					final dialog = new FileDialog();
@@ -71,6 +71,11 @@ class MainScene extends Scene {
 						viewport = new viewport.Viewport(keyboard.unit[0]);
 						this.add(viewport);
 					});
+				case "save":
+					// TODO: Compress using hxPako or similar
+					var save = new ceramic.PersistentData("keyboard");
+					save.set(Std.string(keyboard.unit[0].id), keyboard);
+					save.save();
 				case "import":
 					final dialog = new FileDialog();
 					dialog.openJson("KLE File");
