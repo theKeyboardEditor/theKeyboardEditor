@@ -74,7 +74,7 @@ class MainScene extends Scene {
 				case "save":
 					// TODO: Compress using hxPako or similar
 					// (if we compress the files we gain little but lose some of the simplicity when parsing our files)
-					//((modern OSes have transparent compression options that makes even those small gains mooth))
+					// ((modern OSes have transparent compression options that makes even those small gains mooth))
 					// TODO: where we save (dialog) to lacal or remote storage?
 					var save = new ceramic.PersistentData("keyboard");
 					save.set(Std.string(keyboard.unit[0].id), keyboard);
