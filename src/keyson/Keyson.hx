@@ -109,7 +109,7 @@ class Keyboard {
 		this.keysColor = "0xFFFFFFFF"; // blinding withe
 		this.labelSizeUnits = "U/100"; // "px,pc,mm,thou,U/100"
 		this.keyboardFont = '|Empty|'; // placeholder
-		this.keyboardFontSize = 24; // somewhat sane default
+		this.keyboardFontSize = 24.0; // somewhat sane default
 		this.legendColor = "0xFF000000"; // we default to black
 		this.legendPosition = [0.0, 0.0];
 		this.profile = "OEM";
@@ -221,14 +221,14 @@ class Key {
 class KeyLegend {
 	// the Keyboard options or here define their own
 	public var legend: String;
-	public var legendSize: Int;
+	public var legendSize: Float;
 	public var legendColor: String;
 	public var legendPosition: Array<Float>;
 	public var symbol: String;
 
 	public function new(symbol: String) {
 		this.legend = "";
-		this.legendSize = 24; // sane default
+		this.legendSize = 24.0; // sane default
 		this.legendColor = "0xFF00000f";
 		this.legendPosition = [5.0, 5.0];
 		this.symbol = symbol;
