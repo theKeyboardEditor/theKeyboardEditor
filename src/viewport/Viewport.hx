@@ -81,6 +81,20 @@ class Viewport extends Scene {
 	 * Handles the movement of the viewport camera/universe
 	 */
 	public inline function moveViewportCamera(delta: Float) {
+		// the 1/4 unit aligned fixed stepping for good grid alignment:
+		if (inputMap.pressed(UP)) {
+			this.universe.y += unit025U;
+		}
+		if (inputMap.pressed(LEFT)) {
+			this.universe.x += unit025U;
+		}
+		if (inputMap.pressed(DOWN)) {
+			this.universe.y -= unit025U;
+		}
+		if (inputMap.pressed(RIGHT)) {
+			this.universe.x -= unit025U;
+		}
+		/* once somebody fixes rounding errors for the gryd alignment please uncomment this and erase the above TIA
 		if (inputMap.pressed(UP)) {
 			this.universe.y += movementSpeed * delta;
 		}
@@ -93,6 +107,7 @@ class Viewport extends Scene {
 		if (inputMap.pressed(RIGHT)) {
 			this.universe.x -= movementSpeed * delta;
 		}
+		*/
 	}
 
 	/**
