@@ -1,5 +1,8 @@
 package keyson;
 
+using StringTools;
+using haxe.io.Bytes;
+
 class KLE {
 	// Converts a json string from Keyboard Layout Editor to Keyson's object format
 	public static function toKeyson(string: String): Keyson {
@@ -34,6 +37,16 @@ class KLE {
 				if (column is String) { // we check if there is a "legend" in this columanr element
 					var legend: String = Std.string(column); // yes, we take it in
 					//trace("legend:", legend);
+					legend = legend.replace("<BR>","\n");
+					legend = legend.replace("<br>","\n");
+					legend = legend.replace("<b>","");
+					legend = legend.replace("</b>","");
+					var s:String = "";
+					if (legend.contains("&#")) {
+						s = String.fromCharCode(Std.parseInt( ""+legend.substring(2 + legend.indexOf("&#"),6)));
+						legend = legend.substr(0, legend.indexOf("&#")) + s + legend.substr(7 + legend.indexOf("&#"));
+					}
+					trace(s,"/", legend);
 					// @formatter:off
 					if (shape == "ISO") // special case - for one reason or the other it renders 0.25U off to the right
 						key = keyson.unit[0].addKey(shape, [x - 0.25, y], legend)

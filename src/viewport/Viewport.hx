@@ -81,7 +81,7 @@ class Viewport extends Scene {
 	 * Handles the movement of the viewport camera/universe
 	 */
 	public inline function moveViewportCamera(delta: Float) {
-		// the 1/4 unit aligned fixed stepping for good grid alignment:
+		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
 		if (inputMap.pressed(UP)) {
 			this.universe.y += unit025U;
 		}
