@@ -22,9 +22,9 @@ class KLE {
 		var key: Keyson.Key;
 		var legendSize: Float = 20; // see below the default is [3]
 		// HANDY RULER:                0  1  2  3  4  5  6  7  8  9
-		var fontSizes: Array<Float> = [20,14,16,20,22,24,28,30,32,36];
+		var fontSizes: Array<Float> = [20, 14, 16, 20, 22, 24, 28, 30, 32, 36];
 
-		keyson.unit[0].legendPosition = [6.0,6.0]; // a default nice looking collective offset
+		keyson.unit[0].legendPosition = [6.0, 6.0]; // a default nice looking collective offset
 		// KLE's keyson has really odd fileds and relations?
 		for (row in kle) { // iterate thru rows
 			row[0]; // with calling this we force haxe alow iteration of row
@@ -36,17 +36,17 @@ class KLE {
 					xNext += column.x; // effective sfter placing the current element
 				if (column is String) { // we check if there is a "legend" in this columanr element
 					var legend: String = Std.string(column); // yes, we take it in
-					//trace("legend:", legend);
-					legend = legend.replace("<BR>","\n");
-					legend = legend.replace("<br>","\n");
-					legend = legend.replace("<b>","");
-					legend = legend.replace("</b>","");
-					var s:String = "";
+					// trace("legend:", legend);
+					legend = legend.replace("<BR>", "\n");
+					legend = legend.replace("<br>", "\n");
+					legend = legend.replace("<b>", "");
+					legend = legend.replace("</b>", "");
+					var s: String = "";
 					if (legend.contains("&#")) {
-						s = String.fromCharCode(Std.parseInt( ""+legend.substring(2 + legend.indexOf("&#"),6)));
+						s = String.fromCharCode(Std.parseInt("" + legend.substring(2 + legend.indexOf("&#"), 6)));
 						legend = legend.substr(0, legend.indexOf("&#")) + s + legend.substr(7 + legend.indexOf("&#"));
 					}
-					trace(s,"/", legend);
+					trace(s, "/", legend);
 					// @formatter:off
 					if (shape == "ISO") // special case - for one reason or the other it renders 0.25U off to the right
 						key = keyson.unit[0].addKey(shape, [x - 0.25, y], legend)
