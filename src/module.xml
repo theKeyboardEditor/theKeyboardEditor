@@ -4,10 +4,14 @@
             <style resource="haxeui-core/styles/global.css" priority="-4" />
         </global>
         <keyboard-editor-theme parent="dark">
+			<var name="normal-text-color" value="#fcfcfc" />
+			<var name="hover-text-color" value="#fcfcfc" />
+			<var name="down-text-color" value="#fcfcfc" />
+			<var name="selection-text-color" value="#fcfcfc" />
             <!-- accent -->
             <var name="accent-color" value="#3c4bc5" />
-            <var name="accent-color-darker" value="#407dbf" />
-            <var name="accent-color-lighter" value="#323e52" />
+            <var name="accent-color-darker" value="#323e52" />
+            <var name="accent-color-lighter" value="#407dbf" />
             <var name="accent-gradient-start" value="#334666" />
             <var name="accent-gradient-end" value="#2f3746" />
         </keyboard-editor-theme>
