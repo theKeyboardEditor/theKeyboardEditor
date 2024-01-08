@@ -22,6 +22,12 @@
             "name": "ceramic@2x.png"
         },
         {
+            "name": "fonts/Roboto-Regular.fnt"
+        },
+        {
+            "name": "fonts/Roboto-Regular.png"
+        },
+        {
             "name": "fxaa.frag"
         },
         {
