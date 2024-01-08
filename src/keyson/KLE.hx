@@ -21,7 +21,7 @@ class KLE {
 		var legendColor: String = "0xFF000000";
 		var key: Keyson.Key;
 		var legendSize: Float = 20; // see below the default is [3]
-		// HANDY RULER:                0  1  2  3  4  5  6  7  8  9
+		// HANDY RULER:                 0   1   2   3   4   5   6   7   8   9
 		var fontSizes: Array<Float> = [20, 14, 16, 20, 22, 24, 28, 30, 32, 36];
 
 		keyson.unit[0].legendPosition = [6.0, 6.0]; // a default nice looking collective offset
