@@ -10,6 +10,7 @@ class MainScene extends Scene {
 
 	// Add any asset you want to load here
 	override function preload() {
+		assets.add(Fonts.FONTS__ROBOTO_REGULAR);
 		// MODES
 		assets.add(Images.ICONS__PLACE_MODE);
 		assets.add(Images.ICONS__UNIT_MODE);
