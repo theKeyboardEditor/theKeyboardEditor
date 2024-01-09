@@ -70,6 +70,7 @@ class MainScene extends Scene {
         }
 		full.addComponent(welcome);
 
+		//TODO can we make picking "New" uncover the welcome screen eveon on a running session
 		// HIDING FOR NOW!
 		// Screen.instance.addComponent(full);
 

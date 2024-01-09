@@ -36,8 +36,8 @@ class Grid extends Visual {
 
 	public function create(): Visual {
 		final q5 = new Quad();
-		q5.pos(offsetX - 5, offsetY - 5);
-		q5.size(15, 15);
+		q5.pos(offsetX - 3.5, offsetY - 3.5);
+		q5.size(7, 7);
 		q5.depth = 0;
 		q5.color = 0xFF282828;
 		q5.color.lightnessHSLuv += 0.15;
