@@ -24,9 +24,12 @@ class Viewport extends Scene {
 
 	// Constants
 	inline static final unit1U: Float = 100; // TODO unit1U is 1U for keyson key size
-	inline static final unit025U: Float = Std.int(unit1U / 4); // This is the keyson placement step size
+	inline static final unitFractionU: Float = Std.int(unit1U / 4); // This is the keyson placement step size
+	// for some reason that eludes me setting this to anything lower than 1/5 breaks placing cursor fine alignment?
 	inline static final movementSpeed: Int = 1000;
 	inline static final zoom = 2;
+	inline static final maxZoom = 2.0;
+	inline static final minZoom = 0.25;
 	inline static final zoomUnit = 1 / 32; // 1/32 is accurate enough for most zooming cases
 	inline static final originX: Float = 310;
 	inline static final originY: Float = 60;
@@ -53,8 +56,8 @@ class Viewport extends Scene {
 		//		this.grid.offsetY = originY - gapY / 2;
 		this.grid.offsetX = -gapX / 2;
 		this.grid.offsetY = -gapY / 2;
-		this.grid.subStepX = unit025U;
-		this.grid.subStepY = unit025U;
+		this.grid.subStepX = unitFractionU;
+		this.grid.subStepY = unitFractionU;
 		this.grid.create();
 		this.grid.x = originX;
 		this.grid.y = originY;
@@ -90,20 +93,20 @@ class Viewport extends Scene {
 	public inline function moveViewportCamera(delta: Float) {
 		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
 		if (inputMap.pressed(UP)) {
-			this.universe.y += unit025U;
-			this.grid.y += unit025U;
+			this.universe.y += unitFractionU * this.universe.scaleY;
+			this.grid.y += unitFractionU * this.universe.scaleY;
 		}
 		if (inputMap.pressed(LEFT)) {
-			this.universe.x += unit025U;
-			this.grid.x += unit025U;
+			this.universe.x += unitFractionU * this.universe.scaleX;
+			this.grid.x += unitFractionU * this.universe.scaleX;
 		}
 		if (inputMap.pressed(DOWN)) {
-			this.universe.y -= unit025U;
-			this.grid.y -= unit025U;
+			this.universe.y -= unitFractionU * this.universe.scaleY;
+			this.grid.y -= unitFractionU * this.universe.scaleY;
 		}
 		if (inputMap.pressed(RIGHT)) {
-			this.universe.x -= unit025U;
-			this.grid.x -= unit025U;
+			this.universe.x -= unitFractionU * this.universe.scaleX;
+			this.grid.x -= unitFractionU * this.universe.scaleX;
 		}
 		/* once somebody fixes rounding errors for the gryd alignment please uncomment this and erase the above TIA
 			if (inputMap.pressed(UP)) {
@@ -121,8 +124,8 @@ class Viewport extends Scene {
 		 */
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
-			this.universe.scaleX += zoomUnit; // nothing like nice predictable results
-			this.universe.scaleY += zoomUnit;
+			this.universe.scaleX = if (this.universe.scaleX < maxZoom) this.universe.scaleX + zoomUnit else maxZoom; // nothing like nice predictable results
+			this.universe.scaleY = if (this.universe.scaleY < maxZoom) this.universe.scaleY + zoomUnit else maxZoom;
 			this.cursor.scaleX = this.universe.scaleX;
 			this.cursor.scaleY = this.universe.scaleY;
 			this.grid.scaleX = this.universe.scaleX;
@@ -131,8 +134,8 @@ class Viewport extends Scene {
 			//			this.grid.offsetY = originY - gapY / 2 * this.universe.scaleY;
 			StatusBar.inform('Zoom at: ${this.universe.scaleX}');
 		} else if (inputMap.pressed(ZOOM_OUT)) {
-			this.universe.scaleX -= zoomUnit;
-			this.universe.scaleY -= zoomUnit;
+			this.universe.scaleX = if (this.universe.scaleX > minZoom) this.universe.scaleX - zoomUnit else minZoom;
+			this.universe.scaleY = if (this.universe.scaleY > minZoom) this.universe.scaleY - zoomUnit else minZoom;
 			this.cursor.scaleX = this.universe.scaleX;
 			this.cursor.scaleY = this.universe.scaleY;
 			this.grid.scaleX = this.universe.scaleX;
@@ -147,25 +150,26 @@ class Viewport extends Scene {
 	 * Handles the position of the cursor and key placing, removing, and other manipulations
 	 */
 	public function cursorUpdate() {
+		// presuming both our axes are scaled uniformly and in accord:
 		final scale = this.universe.scaleX;
-		// Difference between Int and Float division by unit025U!
-		final moduloX = (((this.universe.x / unit025U) - Std.int(this.universe.x / unit025U)) * unit025U) * scale;
-		final moduloY = (((this.universe.y / unit025U) - Std.int(this.universe.y / unit025U)) * unit025U) * scale; // this is in pixels
+		final ScaledUnitFractionU = unitFractionU * scale;
+		final scaledUnit1U = unit1U * scale;
+		
+		// Difference between Int and Float division by unitFractionU!
+		final moduloX = (((this.universe.x / ScaledUnitFractionU) - Std.int(this.universe.x / ScaledUnitFractionU)) * ScaledUnitFractionU); // we scale the step only here!
+		final moduloY = (((this.universe.y / ScaledUnitFractionU) - Std.int(this.universe.y / ScaledUnitFractionU)) * ScaledUnitFractionU); // this is in pixels
 
 		// The real screen coordinates we should draw our placing curor on
-		final screenPosX = (Std.int((screen.pointerX - unit1U / 2) / unit025U) * unit025U * scale + moduloX); // this is in pixels
-		final screenPosY = (Std.int((screen.pointerY - unit1U / 2) / unit025U) * unit025U * scale + moduloY); // why does it work at 1:1 scale?
+		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloX); // this is in pixels
+		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloY); // why does it work at 1:1 scale?
 
 		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
-		// final snappedPosX = (Std.int((screenPosX + unit1U / 2 - this.universe.x) / scale / unit025U) * unit025U / unit1U) -0.5; // 0.5U is the offset from
-		// final snappedPosY = (Std.int((screenPosY + unit1U / 2 - this.universe.y) / scale / unit025U) * unit025U / unit1U) -0.5; // mouse to snapped cursor
-		final snappedPosX = (Std.int((screenPosX - this.universe.x) / scale / unit025U) * unit025U / unit1U); // 0.5U is the offset from
-		final snappedPosY = (Std.int((screenPosY - this.universe.y) / scale / unit025U) * unit025U / unit1U); // mouse to snapped cursor
+		final snappedPosX = (Std.int((screenPosX - this.universe.x) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
+		final snappedPosY = (Std.int((screenPosY - this.universe.y) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
 
 		// Position the cursor right on top of the keycaps
 		this.cursor.pos(screenPosX - gapX / 2 * scale, screenPosY - gapY / 2 * scale);
 
-		// TODO make cursor size dynamic
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
 			this.actionQueue.push(new PlaceKey(this, snappedPosX, snappedPosY, "1U"));
@@ -180,7 +184,7 @@ class Viewport extends Scene {
 		}
 
 		// Adjust the status bar with the position of the cursor
-		StatusBar.pos(snappedPosX, snappedPosY);
+		StatusBar.pos(snappedPosX, snappedPosY); // can only have 2 args
 	}
 
 	/**
