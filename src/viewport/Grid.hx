@@ -35,12 +35,19 @@ class Grid extends Visual {
 	}
 
 	public function create(): Visual {
-		for (xPos in -4...maxStepsX) {
-			for (yPos in -2...maxStepsY) {
+		final q5 = new Quad();
+		q5.pos(offsetX - 5, offsetY - 5);
+		q5.size(15, 15);
+		q5.depth = 0;
+		q5.color = 0xFF282828;
+		q5.color.lightnessHSLuv += 0.15;
+		this.add(q5);
+		for (xPos in 0...maxStepsX) {
+			for (yPos in 0...maxStepsY) {
 				final q1 = new Quad();
 				q1.pos(offsetX + xPos * mainStepX - thick / 2, offsetY + yPos * mainStepY - long / 2);
 				q1.size(thick, long);
-				q1.depth = 1;
+				q1.depth = 0;
 				q1.color = 0xff282828;
 				q1.color.lightnessHSLuv += 0.15;
 				this.add(q1);
@@ -48,7 +55,7 @@ class Grid extends Visual {
 					final q3 = new Quad();
 					q3.pos(offsetX + xPos * mainStepX - thick / 2 + subX * subStepX, offsetY + yPos * mainStepY - thick / 2);
 					q3.size(thick, thick);
-					q3.depth = 1;
+					q3.depth = 0;
 					q3.color = 0xff282828;
 					q3.color.lightnessHSLuv += 0.15;
 					this.add(q3);
@@ -57,7 +64,7 @@ class Grid extends Visual {
 				final q2 = new Quad();
 				q2.pos(offsetX + xPos * mainStepX - long / 2, offsetY + yPos * mainStepY - thick / 2);
 				q2.size(long, thick);
-				q2.depth = 1;
+				q2.depth = 0;
 				q2.color = 0xff282828;
 				q2.color.lightnessHSLuv += 0.15;
 				this.add(q2);
@@ -65,13 +72,15 @@ class Grid extends Visual {
 					final q4 = new Quad();
 					q4.pos(offsetX + xPos * mainStepX - thick / 2, offsetY + yPos * mainStepY - thick / 2 + subY * subStepY);
 					q4.size(thick, thick);
-					q4.depth = 1;
+					q4.depth = 0;
 					q4.color = 0xff282828;
 					q4.color.lightnessHSLuv += 0.15;
 					this.add(q4);
 				}
 			}
 		}
+		this.anchorX = 0;
+		this.anchorY = 0;
 		return this;
 	}
 }

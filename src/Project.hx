@@ -15,7 +15,7 @@ class Project extends Entity {
 		settings.targetHeight = 1080;
 		settings.scaling = RESIZE;
 		settings.resizable = true;
-        settings.defaultFont = Fonts.FONTS__ROBOTO_REGULAR;
+		settings.defaultFont = Fonts.FONTS__ROBOTO_REGULAR;
 
 		app.onceReady(this, ready);
 	}

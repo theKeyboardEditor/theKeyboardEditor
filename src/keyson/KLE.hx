@@ -22,9 +22,9 @@ class KLE {
 		var key: Keyson.Key;
 		var legendSize: Float = 20; // see below the default is [3]
 		// HANDY RULER:                 0   1   2   3   4   5   6   7   8   9
-		var fontSizes: Array<Float> = [20, 14, 16, 20, 22, 24, 28, 30, 32, 36];
+		var fontSizes: Array<Float> = [20, 11, 14, 20, 24, 26, 27, 28, 30, 32];
 
-		keyson.unit[0].legendPosition = [6.0, 6.0]; // a default nice looking collective offset
+		keyson.unit[0].legendPosition = [6.0, 0.0]; // a default nice looking collective offset
 		// KLE's keyson has really odd fileds and relations?
 		for (row in kle) { // iterate thru rows
 			row[0]; // with calling this we force haxe alow iteration of row
@@ -37,10 +37,31 @@ class KLE {
 				if (column is String) { // we check if there is a "legend" in this columanr element
 					var legend: String = Std.string(column); // yes, we take it in
 					// trace("legend:", legend);
+					if (legend.contains("</i>")) {
+						var reg: EReg = ~/<i class='.*'><\/i>/;
+						legend = reg.replace(legend, '#');
+					}
 					legend = legend.replace("<BR>", "\n");
 					legend = legend.replace("<br>", "\n");
+					legend = legend.replace("\n\n\n\n", "\n");
+					legend = legend.replace("\n\n\n", "\n");
+					legend = legend.replace("\n\n", "\n");
 					legend = legend.replace("<b>", "");
 					legend = legend.replace("</b>", "");
+					legend = legend.replace("<u>", "");
+					legend = legend.replace("</u>", "");
+					legend = legend.replace("&ndash;", "-");
+					legend = legend.replace("&mdash;", "_");
+					legend = legend.replace("&nbsp;", " ");
+					legend = legend.replace("&#x021d1;", "⇑");
+					legend = legend.replace("&#x021d3;", "⇓");
+					legend = legend.replace("&#x021d0;", "⇐");
+					legend = legend.replace("&#x021d2;", "⇒");
+					legend = legend.replace("&uarr;", "↑");
+					legend = legend.replace("&darr;", "↓");
+					legend = legend.replace("&larr;", "←");
+					legend = legend.replace("&rarr;", "→");
+					legend = legend.replace("&crarr;", "↵");
 					var s: String = "";
 					if (legend.contains("&#")) {
 						s = String.fromCharCode(Std.parseInt("" + legend.substring(2 + legend.indexOf("&#"), 6)));
@@ -76,7 +97,6 @@ class KLE {
 					// trace("shape:",shape);
 					// COLOR
 					if (column.c != null)
-						trace("column: ", "0xFF" + column.c.split("#")[1]); // extract the hex from "#hhhhhh" and add 0xFF in front
 					keysColor = if (column.c != null)
 						"0xFF" + column.c.split("#")[1] else keysColor;
 					legendColor = if (column.t != null)
@@ -87,9 +107,9 @@ class KLE {
 					// LEGEND POSITIONS:
 					// bitmask 1 << 0 (0x01) seems to be for X offset to the middle
 					// TODO this should actually be the middle but we don't have centered text just yet
-						posX = if ((column.a & 1 << 0) == 1 << 0) 22 else 0; // so far 22 seems a good middle point (that's 28 actually see above)
+						posX = if ((column.a & 1 << 0) == 1 << 0) 18 else posX; // so far 22 seems a good middle point (that's 28 actually see above)
 						// bitmask 1 << 1 (0x02) seems to be for X offset to the middle
-						posY = if ((column.a & 1 << 1) == 1 << 1) 22 else 0;
+						posY = if ((column.a & 1 << 1) == 1 << 1) legendSize * 0.8 else 0;
 					}
 					// @formatter:on
 					x--; // we compensate default automatic horizontal stepping for this non key producing element
