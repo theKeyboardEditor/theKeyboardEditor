@@ -130,8 +130,6 @@ class Viewport extends Scene {
 			this.cursor.scaleY = this.universe.scaleY;
 			this.grid.scaleX = this.universe.scaleX;
 			this.grid.scaleY = this.universe.scaleY;
-			//			this.grid.offsetX = originX - gapX / 2 * this.universe.scaleX;
-			//			this.grid.offsetY = originY - gapY / 2 * this.universe.scaleY;
 			StatusBar.inform('Zoom at: ${this.universe.scaleX}');
 		} else if (inputMap.pressed(ZOOM_OUT)) {
 			this.universe.scaleX = if (this.universe.scaleX > minZoom) this.universe.scaleX - zoomUnit else minZoom;
@@ -140,8 +138,6 @@ class Viewport extends Scene {
 			this.cursor.scaleY = this.universe.scaleY;
 			this.grid.scaleX = this.universe.scaleX;
 			this.grid.scaleY = this.universe.scaleY;
-			//			this.grid.offsetX = originX - gapX / 2 * this.universe.scaleX;
-			//			this.grid.offsetY = originY - gapY / 2 * this.universe.scaleY;
 			StatusBar.inform('Zoom at: ${this.universe.scaleX}');
 		}
 	}
