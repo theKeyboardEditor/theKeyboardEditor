@@ -38,8 +38,8 @@ class KLE {
 					var legend: String = Std.string(column); // yes, we take it in
 					// trace("legend:", legend);
 					if (legend.contains("</i>")) {
-						var reg:EReg = ~/<i class='.*'><\/i>/;
-						legend = reg.replace(legend,'#');
+						var reg: EReg = ~/<i class='.*'><\/i>/;
+						legend = reg.replace(legend, '#');
 					}
 					legend = legend.replace("<BR>", "\n");
 					legend = legend.replace("<br>", "\n");
