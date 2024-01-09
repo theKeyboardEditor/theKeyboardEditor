@@ -61,9 +61,13 @@ class MainScene extends Scene {
 		full.percentWidth = 100;
 		full.percentHeight = 100;
 
-		var welcome = ComponentBuilder.fromFile("ui/welcome.xml");
+		var save = new ceramic.PersistentData("keyboard");
+        var welcome = ComponentBuilder.fromFile("ui/welcome.xml");
 		welcome.horizontalAlign = "center";
 		welcome.verticalAlign = "center";
+        for (key in save.keys()) {
+            welcome.findComponent("project-list").addComponent(new ui.Project(key));
+        }
 		full.addComponent(welcome);
 
 		// HIDING FOR NOW!
@@ -91,8 +95,7 @@ class MainScene extends Scene {
 					// (if we compress the files we gain little but lose some of the simplicity when parsing our files)
 					// ((modern OSes have transparent compression options that makes even those small gains mooth))
 					// TODO: where we save (dialog) to lacal or remote storage?
-					var save = new ceramic.PersistentData("keyboard");
-					save.set(Std.string(keyboard.unit[0].id), keyboard);
+					save.set(Std.string(keyboard.name), keyboard);
 					save.save();
 				case "import":
 					final dialog = new FileDialog();

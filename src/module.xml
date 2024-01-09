@@ -1,4 +1,7 @@
 <module id="haxeui-core" priority="-2">
+    <components>
+         <class package="ui" />
+    </components>
     <themes>
         <global>
             <style resource="haxeui-core/styles/global.css" priority="-4" />
