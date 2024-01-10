@@ -99,19 +99,19 @@ class Viewport extends Scene {
 		}
 
 		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
-		if (inputMap.pressed(KEY_W)) {
+		if (inputMap.pressed(PAN_UP)) {
 			this.workSurface.y += unitFractionU * this.workSurface.scaleY;
 			this.grid.y += unitFractionU * this.workSurface.scaleY;
 		}
-		if (inputMap.pressed(KEY_A)) {
+		if (inputMap.pressed(PAN_LEFT)) {
 			this.workSurface.x += unitFractionU * this.workSurface.scaleX;
 			this.grid.x += unitFractionU * this.workSurface.scaleX;
 		}
-		if (inputMap.pressed(KEY_S)) {
+		if (inputMap.pressed(PAN_DOWN)) {
 			this.workSurface.y -= unitFractionU * this.workSurface.scaleY;
 			this.grid.y -= unitFractionU * this.workSurface.scaleY;
 		}
-		if (inputMap.pressed(KEY_D)) {
+		if (inputMap.pressed(PAN_RIGHT)) {
 			this.workSurface.x -= unitFractionU * this.workSurface.scaleX;
 			this.grid.x -= unitFractionU * this.workSurface.scaleX;
 		}
