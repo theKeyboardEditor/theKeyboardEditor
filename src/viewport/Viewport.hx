@@ -20,6 +20,8 @@ class Viewport extends Scene {
 	// Eventually we can use this to "rewind" and undo
 	var actionQueue: ActionQueue = new ActionQueue();
 	var actionEvent: String = "";
+	var oldX: Float;
+	var oldY: Float;
 
 	// The square that shows where the placed key is going to be located
 	public var cursor: Cursor = new Cursor(unit1U, unit1U);
@@ -188,11 +190,18 @@ class Viewport extends Scene {
 			this.actionQueue.undo();
 		}
 		if (inputMap.pressed(PAN)) {
-			// TODO
-			// record the old workSurface position
-			StatusBar.inform('start action: "PAN" at: $snappedPosX, $snappedPosY');
-			// TODO
-			// add the difference of (old position to current position) to the workSurface and grid
+			final diffX = snappedPosX - oldX;
+			final diffY = snappedPosY - oldY;
+			oldY = snappedPosY;
+			oldX = snappedPosX;
+			StatusBar.inform('pan action: $diffX, $diffY');
+			this.workSurface.y += diffY * unitFractionU * this.workSurface.scaleY;
+			this.grid.y += diffY * unitFractionU * this.workSurface.scaleY;
+			this.workSurface.x += diffX * unitFractionU * this.workSurface.scaleX;
+			this.grid.x += diffX * unitFractionU * this.workSurface.scaleX;
+		} else {
+			oldY = snappedPosY;
+			oldX = snappedPosX;
 		}
 
 		// Adjust the status bar with the position of the cursor
@@ -212,20 +221,8 @@ class Viewport extends Scene {
 		key.onPointerOver(key, (_) -> {
 			StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
-		if (inputMap.pressed(PAN)) {
-			final diffX = snappedPosX - oldX;
-			final diffY = snappedPosY - oldY;
-			oldY = snappedPosY;
-			oldX = snappedPosX;
-			StatusBar.inform('pan action: $diffX, $diffY');
-			this.workSurface.y += diffY * unitFractionU * this.workSurface.scaleY;
-			this.grid.y += diffY * unitFractionU * this.workSurface.scaleY;
-			this.workSurface.x += diffX * unitFractionU * this.workSurface.scaleX;
-			this.grid.x += diffX * unitFractionU * this.workSurface.scaleX;
-		} else {
-			oldY = snappedPosY;
-			oldX = snappedPosX;
-		}
+		// Wheel Zooming:
+		screen.onMouseWheel(screen, mouseWheel);
 
 		key.onPointerDown(key, (info) -> {
 			if (info.buttonId == 1)
