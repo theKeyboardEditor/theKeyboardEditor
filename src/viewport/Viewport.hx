@@ -91,6 +91,10 @@ class Viewport extends Scene {
 	 * Handles the movement of the viewport camera/work surface
 	 */
 	public inline function moveViewportCamera(delta: Float) {
+		if (input.keyPressed(LCTRL) || input.keyPressed(RCTRL) || input.keyPressed(LMETA) || input.keyPressed(RMETA)) {
+			return;
+		}
+
 		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
 		if (inputMap.pressed(UP)) {
 			this.workSurface.y += unitFractionU * this.workSurface.scaleY;
