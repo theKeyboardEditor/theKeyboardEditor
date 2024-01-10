@@ -44,11 +44,15 @@ class MainScene extends Scene {
 		// TODO can we make picking "New" uncover the welcome screen eveon on a running session
 		// HIDING FOR NOW!
 		Screen.instance.addComponent(gui);
+		Screen.instance.addComponent(gui.overlay);
 
 		var keyBindings = new KeyBindings();
-		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], function() {
-			trace("boo");
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
 			save(keyboard, store);
+		});
+
+		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
+			gui.overlay.hidden = !gui.overlay.hidden;
 		});
 
 		gui.tabbar.findComponent("picker").onChange = (e) -> {

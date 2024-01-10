@@ -1,12 +1,16 @@
 package;
 
 import haxe.ui.ComponentBuilder;
+import haxe.ui.containers.Box;
+import haxe.ui.containers.HBox;
+import haxe.ui.containers.VBox;
 
 class UI extends haxe.ui.containers.VBox {
-	public var tabbar: haxe.ui.containers.HBox;
-	public var modeSelector: haxe.ui.containers.VBox;
-	public var sidebar: haxe.ui.containers.Box;
-	public var welcome: haxe.ui.containers.VBox;
+	public var overlay: Box;
+	public var tabbar: HBox;
+	public var modeSelector: VBox;
+	public var sidebar: Box;
+	public var welcome: VBox;
 
 	public function new() {
 		super();
@@ -15,31 +19,36 @@ class UI extends haxe.ui.containers.VBox {
 		this.percentWidth = this.percentHeight = 100;
 
 		// Render elements
-		tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");
-		this.addComponent(tabbar);
+		this.tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");
+		this.addComponent(this.tabbar);
 
-		var left = new haxe.ui.containers.HBox();
+		var left = new HBox();
 		left.styleString = "spacing: 0; height: 100%;";
 		this.addComponent(left);
 		{
-			modeSelector = ComponentBuilder.fromFile("ui/modeselector.xml");
-			left.addComponent(modeSelector);
+			this.modeSelector = ComponentBuilder.fromFile("ui/modeselector.xml");
+			left.addComponent(this.modeSelector);
 
-			sidebar = ComponentBuilder.fromFile("ui/sidebar.xml");
-			left.addComponent(sidebar);
+			this.sidebar = ComponentBuilder.fromFile("ui/sidebar.xml");
+			left.addComponent(this.sidebar);
 		}
 
 		StatusBar.element = ComponentBuilder.fromFile("ui/status.xml");
 		this.addComponent(StatusBar.element);
 
-		var full = new haxe.ui.containers.Box();
-		full.percentWidth = 100;
-		full.percentHeight = 100;
+		this.overlay = createWelcome();
+	}
+
+	public function createWelcome(): Box {
+		var overlay = new Box();
+		overlay.percentWidth = 100;
+		overlay.percentHeight = 100;
 
 		welcome = ComponentBuilder.fromFile("ui/welcome.xml");
 		welcome.horizontalAlign = "center";
 		welcome.verticalAlign = "center";
+		overlay.addComponent(welcome);
 
-		full.addComponent(welcome);
+		return overlay;
 	}
 }
