@@ -5,8 +5,6 @@ import ceramic.Visual;
 import ceramic.Border;
 import ceramic.Arc;
 import ceramic.Quad;
-import ceramic.TouchInfo;
-import haxe.ui.backend.ceramic.RoundedRect;
 
 class RectangularKey extends KeyRenderer {
 	var topColor: Int = 0xffFCFCFC;

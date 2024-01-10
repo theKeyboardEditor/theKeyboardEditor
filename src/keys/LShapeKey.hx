@@ -5,8 +5,6 @@ import ceramic.Quad;
 import ceramic.Border;
 import ceramic.Color;
 import ceramic.Visual;
-import ceramic.TouchInfo;
-import haxe.ui.backend.ceramic.RoundedRect;
 
 class LShapeKey extends KeyRenderer {
 	var topColor: Int = 0xffFCFCFC;
@@ -228,7 +226,7 @@ class LShapeKey extends KeyRenderer {
 		this.border.borderPosition = MIDDLE;
 		this.border.borderSize = 2;
 		this.border.depth = 4;
-		this.border.visible = false;
+		this.border.visible = false; // per default created invisible
 		this.add(this.border);
 
 		final top = new Quad();

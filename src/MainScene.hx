@@ -10,7 +10,7 @@ class MainScene extends Scene {
 	public var openProjects: Array<viewport.Viewport> = [];
 	public var currentProject: Int = 0;
 	public var gui: UI;
-	public var unitScale: Float = 54 / 100; // herewith we zoom the viewport
+//	public var unitScale: Float = 54 / 100; // herewith we zoom the viewport
 
 	// Add any asset you want to load here
 	override function preload() {
@@ -47,12 +47,13 @@ class MainScene extends Scene {
 		// HIDING FOR NOW!
 		Screen.instance.addComponent(gui);
 		Screen.instance.addComponent(gui.overlay);
+		// TODO inhibit all worksurface actions for the while GUI is displayed
 
 		var keyBindings = new KeyBindings();
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
 			save(keyboard, store);
 		});
-
+		// toggle GUI
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});

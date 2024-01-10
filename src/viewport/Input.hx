@@ -1,12 +1,17 @@
 package viewport;
 
 import ceramic.InputMap;
+import ceramic.MouseButton;
 
 enum abstract ViewportInput(Int) {
 	final UP;
 	final DOWN;
 	final LEFT;
 	final RIGHT;
+	final KEY_W;
+	final KEY_A;
+	final KEY_S;
+	final KEY_D;
 	final ZOOM_IN;
 	final ZOOM_OUT;
 	final PLACE_1U;
@@ -27,12 +32,14 @@ class Input extends InputMap<ViewportInput> {
 		this.bindKeyCode(RIGHT, RIGHT);
 
 		// Same as above, but with arrow keys
-		this.bindScanCode(UP, KEY_W);
-		this.bindScanCode(DOWN, KEY_S);
-		this.bindScanCode(LEFT, KEY_A);
-		this.bindScanCode(RIGHT, KEY_D);
+		this.bindScanCode(KEY_W, KEY_W);
+		this.bindScanCode(KEY_S, KEY_S);
+		this.bindScanCode(KEY_A, KEY_A);
+		this.bindScanCode(KEY_D, KEY_D);
 
 		// Zoom Time
+		this.bindScanCode(ZOOM_IN, EQUALS);
+		this.bindScanCode(ZOOM_OUT, MINUS);
 		this.bindScanCode(ZOOM_IN, EQUALS);
 		this.bindScanCode(ZOOM_OUT, MINUS);
 
@@ -45,5 +52,9 @@ class Input extends InputMap<ViewportInput> {
 		// TODO undo/redo action(s)
 		this.bindScanCode(UNDO, KEY_Z); // TODO find Ctrl+Z keycode
 		this.bindScanCode(REDO, KEY_Y);
+
+		// Mouse buttons
+		//this.bindMouseButton(ZOOM_IN, EXTRA1);
+		//this.bindMouseButton(ZOOM_OUT, EXTRA2); those are the next page & gang!
 	}
 }

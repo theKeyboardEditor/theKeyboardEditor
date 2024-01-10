@@ -9,6 +9,7 @@ import keyson.Keyson.Key;
 class Viewport extends Scene {
 	public var keyboard: Keyboard;
 	public var inputMap: Input;
+	public var wheelFactor = 1.0;
 	public var selected: Map<Key, KeyRenderer> = [];
 
 	// Everything inside the viewport is stored here
@@ -96,19 +97,19 @@ class Viewport extends Scene {
 		}
 
 		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
-		if (inputMap.pressed(UP)) {
+		if (inputMap.pressed(KEY_W)) {
 			this.workSurface.y += unitFractionU * this.workSurface.scaleY;
 			this.grid.y += unitFractionU * this.workSurface.scaleY;
 		}
-		if (inputMap.pressed(LEFT)) {
+		if (inputMap.pressed(KEY_A)) {
 			this.workSurface.x += unitFractionU * this.workSurface.scaleX;
 			this.grid.x += unitFractionU * this.workSurface.scaleX;
 		}
-		if (inputMap.pressed(DOWN)) {
+		if (inputMap.pressed(KEY_S)) {
 			this.workSurface.y -= unitFractionU * this.workSurface.scaleY;
 			this.grid.y -= unitFractionU * this.workSurface.scaleY;
 		}
-		if (inputMap.pressed(RIGHT)) {
+		if (inputMap.pressed(KEY_D)) {
 			this.workSurface.x -= unitFractionU * this.workSurface.scaleX;
 			this.grid.x -= unitFractionU * this.workSurface.scaleX;
 		}
@@ -157,14 +158,12 @@ class Viewport extends Scene {
 		final scaledUnit1U = unit1U * scale;
 
 		// Difference between Int and Float division by unitFractionU!
-		final moduloX = (((this.workSurface.x / ScaledUnitFractionU) - Std.int(this.workSurface.x / ScaledUnitFractionU)) * ScaledUnitFractionU); // we scale the step only here!
+		final moduloX = (((this.workSurface.x / ScaledUnitFractionU) - Std.int(this.workSurface.x / ScaledUnitFractionU)) * ScaledUnitFractionU);
 		final moduloY = (((this.workSurface.y / ScaledUnitFractionU) - Std.int(this.workSurface.y / ScaledUnitFractionU)) * ScaledUnitFractionU); // this is in pixels
 
 		// The real screen coordinates we should draw our placing curor on
-		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU
-			+ moduloX); // this is in pixels
-		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU
-			+ moduloY); // why does it work at 1:1 scale?
+		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloX);
+		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloY);
 
 		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
 		final snappedPosX = (Std.int((screenPosX - this.workSurface.x) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
@@ -200,7 +199,15 @@ class Viewport extends Scene {
 
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
+		key.onPointerOver(key, (_) -> {
+			StatusBar.inform('Mouse hovering at: ${k.position}');
+		});
+		screen.onMouseWheel(screen,mouseWheel);
+		// here we process mouse key press
+		//key.onPointerDown(key, (_) -> {
+		// TODO discriminate what key is pressed and take different actions accordingly
 		key.onPointerDown(key, (_) -> {
+			StatusBar.inform('mouse action: "unknown" at: ${k.position}');
 			if (key.border.visible) {
 				selected.remove(k);
 				StatusBar.inform('Deselected key: "${k.legends[0].symbol}" at: ${k.position}');
@@ -229,4 +236,29 @@ class Viewport extends Scene {
 
 		return createdKey;
 	}
+	function mouseWheel(x:Float, y:Float):Void { // porcess scrolling with vertical mouse wheel
+		StatusBar.inform('Mouse scrolling: ${x} / ${y}');
+		x *= wheelFactor #if mac * -1.0 #end;
+		y *= wheelFactor;
+		// now do the zooming!
+		if (y < 0) { // zoom in seems to be when negative values
+			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom; 
+			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit / 4 else maxZoom;
+			this.cursor.scaleX = this.workSurface.scaleX;
+			this.cursor.scaleY = this.workSurface.scaleY;
+			this.grid.scaleX = this.workSurface.scaleX;
+			this.grid.scaleY = this.workSurface.scaleY;
+			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX}');
+		} else if (y > 0) { // zoom out is when positive values are present
+			this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit / 4 else minZoom;
+			this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit / 4 else minZoom;
+			this.cursor.scaleX = this.workSurface.scaleX;
+			this.cursor.scaleY = this.workSurface.scaleY;
+			this.grid.scaleX = this.workSurface.scaleX;
+			this.grid.scaleY = this.workSurface.scaleY;
+			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX}');
+		}
+
+	}
+
 }
