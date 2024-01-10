@@ -12,7 +12,7 @@ class Viewport extends Scene {
 	public var selected: Map<Key, KeyRenderer> = [];
 
 	// Everything inside the viewport is stored here
-	public var universe: Visual = new Visual();
+	public var workSurface: Visual = new Visual();
 
 	// This queue goes through all of the actions every frame
 	// Eventually we can use this to "rewind" and undo
@@ -43,7 +43,7 @@ class Viewport extends Scene {
 
 		// Initialize variables
 		this.keyboard = keyboard;
-		this.universe.pos(originX, originY);
+		this.workSurface.pos(originX, originY);
 
 		// Set the gap between the keys based on the keyson file
 		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit1U);
@@ -75,7 +75,7 @@ class Viewport extends Scene {
 		for (key in this.keyboard.keys) {
 			drawKey(key);
 		}
-		this.add(universe);
+		this.add(workSurface);
 	}
 
 	/**
@@ -88,57 +88,57 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Handles the movement of the viewport camera/universe
+	 * Handles the movement of the viewport camera/work surface
 	 */
 	public inline function moveViewportCamera(delta: Float) {
 		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
 		if (inputMap.pressed(UP)) {
-			this.universe.y += unitFractionU * this.universe.scaleY;
-			this.grid.y += unitFractionU * this.universe.scaleY;
+			this.workSurface.y += unitFractionU * this.workSurface.scaleY;
+			this.grid.y += unitFractionU * this.workSurface.scaleY;
 		}
 		if (inputMap.pressed(LEFT)) {
-			this.universe.x += unitFractionU * this.universe.scaleX;
-			this.grid.x += unitFractionU * this.universe.scaleX;
+			this.workSurface.x += unitFractionU * this.workSurface.scaleX;
+			this.grid.x += unitFractionU * this.workSurface.scaleX;
 		}
 		if (inputMap.pressed(DOWN)) {
-			this.universe.y -= unitFractionU * this.universe.scaleY;
-			this.grid.y -= unitFractionU * this.universe.scaleY;
+			this.workSurface.y -= unitFractionU * this.workSurface.scaleY;
+			this.grid.y -= unitFractionU * this.workSurface.scaleY;
 		}
 		if (inputMap.pressed(RIGHT)) {
-			this.universe.x -= unitFractionU * this.universe.scaleX;
-			this.grid.x -= unitFractionU * this.universe.scaleX;
+			this.workSurface.x -= unitFractionU * this.workSurface.scaleX;
+			this.grid.x -= unitFractionU * this.workSurface.scaleX;
 		}
 		/* once somebody fixes rounding errors for the gryd alignment please uncomment this and erase the above TIA
 			if (inputMap.pressed(UP)) {
-				this.universe.y += movementSpeed * delta;
+				this.workSurface.y += movementSpeed * delta;
 			}
 			if (inputMap.pressed(LEFT)) {
-				this.universe.x += movementSpeed * delta;
+				this.workSurface.x += movementSpeed * delta;
 			}
 			if (inputMap.pressed(DOWN)) {
-				this.universe.y -= movementSpeed * delta;
+				this.workSurface.y -= movementSpeed * delta;
 			}
 			if (inputMap.pressed(RIGHT)) {
-				this.universe.x -= movementSpeed * delta;
+				this.workSurface.x -= movementSpeed * delta;
 			}
 		 */
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
-			this.universe.scaleX = if (this.universe.scaleX < maxZoom) this.universe.scaleX + zoomUnit else maxZoom; // nothing like nice predictable results
-			this.universe.scaleY = if (this.universe.scaleY < maxZoom) this.universe.scaleY + zoomUnit else maxZoom;
-			this.cursor.scaleX = this.universe.scaleX;
-			this.cursor.scaleY = this.universe.scaleY;
-			this.grid.scaleX = this.universe.scaleX;
-			this.grid.scaleY = this.universe.scaleY;
-			StatusBar.inform('Zoom at: ${this.universe.scaleX}');
+			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit else maxZoom; // nothing like nice predictable results
+			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit else maxZoom;
+			this.cursor.scaleX = this.workSurface.scaleX;
+			this.cursor.scaleY = this.workSurface.scaleY;
+			this.grid.scaleX = this.workSurface.scaleX;
+			this.grid.scaleY = this.workSurface.scaleY;
+			StatusBar.inform('Zoom at: ${this.workSurface.scaleX}');
 		} else if (inputMap.pressed(ZOOM_OUT)) {
-			this.universe.scaleX = if (this.universe.scaleX > minZoom) this.universe.scaleX - zoomUnit else minZoom;
-			this.universe.scaleY = if (this.universe.scaleY > minZoom) this.universe.scaleY - zoomUnit else minZoom;
-			this.cursor.scaleX = this.universe.scaleX;
-			this.cursor.scaleY = this.universe.scaleY;
-			this.grid.scaleX = this.universe.scaleX;
-			this.grid.scaleY = this.universe.scaleY;
-			StatusBar.inform('Zoom at: ${this.universe.scaleX}');
+			this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit else minZoom;
+			this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit else minZoom;
+			this.cursor.scaleX = this.workSurface.scaleX;
+			this.cursor.scaleY = this.workSurface.scaleY;
+			this.grid.scaleX = this.workSurface.scaleX;
+			this.grid.scaleY = this.workSurface.scaleY;
+			StatusBar.inform('Zoom at: ${this.workSurface.scaleX}');
 		}
 	}
 
@@ -147,21 +147,21 @@ class Viewport extends Scene {
 	 */
 	public function cursorUpdate() {
 		// presuming both our axes are scaled uniformly and in accord:
-		final scale = this.universe.scaleX;
+		final scale = this.workSurface.scaleX;
 		final ScaledUnitFractionU = unitFractionU * scale;
 		final scaledUnit1U = unit1U * scale;
 		
 		// Difference between Int and Float division by unitFractionU!
-		final moduloX = (((this.universe.x / ScaledUnitFractionU) - Std.int(this.universe.x / ScaledUnitFractionU)) * ScaledUnitFractionU); // we scale the step only here!
-		final moduloY = (((this.universe.y / ScaledUnitFractionU) - Std.int(this.universe.y / ScaledUnitFractionU)) * ScaledUnitFractionU); // this is in pixels
+		final moduloX = (((this.workSurface.x / ScaledUnitFractionU) - Std.int(this.workSurface.x / ScaledUnitFractionU)) * ScaledUnitFractionU); // we scale the step only here!
+		final moduloY = (((this.workSurface.y / ScaledUnitFractionU) - Std.int(this.workSurface.y / ScaledUnitFractionU)) * ScaledUnitFractionU); // this is in pixels
 
 		// The real screen coordinates we should draw our placing curor on
 		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloX); // this is in pixels
 		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloY); // why does it work at 1:1 scale?
 
 		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
-		final snappedPosX = (Std.int((screenPosX - this.universe.x) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
-		final snappedPosY = (Std.int((screenPosY - this.universe.y) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
+		final snappedPosX = (Std.int((screenPosX - this.workSurface.x) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
+		final snappedPosY = (Std.int((screenPosY - this.workSurface.y) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
 
 		// Position the cursor right on top of the keycaps
 		this.cursor.pos(screenPosX - gapX / 2 * scale, screenPosY - gapY / 2 * scale);
@@ -184,7 +184,7 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Draws and adds a key to the universe
+	 * Draws and adds a key to the work surface
 	 */
 	public function drawKey(k: Key): Visual {
 		if (this.keyboard.keys.contains(k) == false) {
@@ -205,19 +205,19 @@ class Viewport extends Scene {
 		});
 
 		final createdKey = key.create();
-		this.universe.add(createdKey);
+		this.workSurface.add(createdKey);
 
 		/**
 		 * A ceramic visual does not inherit the size of it's children
 		 * Hence we must set it ourselves
 		 * We will end up with the biggest value once the loop is over
 		 */
-		if (key.width + key.x > this.universe.width) {
-			this.universe.width = key.width + this.gapX + key.x;
+		if (key.width + key.x > this.workSurface.width) {
+			this.workSurface.width = key.width + this.gapX + key.x;
 		}
 
-		if (key.height + key.y > this.universe.height) {
-			this.universe.height = key.height + this.gapY + key.y;
+		if (key.height + key.y > this.workSurface.height) {
+			this.workSurface.height = key.height + this.gapY + key.y;
 		}
 
 		return createdKey;
