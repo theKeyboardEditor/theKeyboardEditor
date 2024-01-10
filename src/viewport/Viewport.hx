@@ -124,7 +124,8 @@ class Viewport extends Scene {
 		 */
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
-			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit else maxZoom; // nothing like nice predictable results
+			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX
+				+ zoomUnit else maxZoom; // nothing like nice predictable results
 			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit else maxZoom;
 			this.cursor.scaleX = this.workSurface.scaleX;
 			this.cursor.scaleY = this.workSurface.scaleY;
@@ -150,14 +151,16 @@ class Viewport extends Scene {
 		final scale = this.workSurface.scaleX;
 		final ScaledUnitFractionU = unitFractionU * scale;
 		final scaledUnit1U = unit1U * scale;
-		
+
 		// Difference between Int and Float division by unitFractionU!
 		final moduloX = (((this.workSurface.x / ScaledUnitFractionU) - Std.int(this.workSurface.x / ScaledUnitFractionU)) * ScaledUnitFractionU); // we scale the step only here!
 		final moduloY = (((this.workSurface.y / ScaledUnitFractionU) - Std.int(this.workSurface.y / ScaledUnitFractionU)) * ScaledUnitFractionU); // this is in pixels
 
 		// The real screen coordinates we should draw our placing curor on
-		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloX); // this is in pixels
-		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloY); // why does it work at 1:1 scale?
+		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU
+			+ moduloX); // this is in pixels
+		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU
+			+ moduloY); // why does it work at 1:1 scale?
 
 		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
 		final snappedPosX = (Std.int((screenPosX - this.workSurface.x) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
