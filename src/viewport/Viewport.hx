@@ -212,11 +212,24 @@ class Viewport extends Scene {
 		key.onPointerOver(key, (_) -> {
 			StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
-		screen.onMouseWheel(screen, mouseWheel);
-		// here we process mouse key press
-		// key.onPointerDown(key, (_) -> {
-		// TODO discriminate what key is pressed and take different actions accordingly
-		key.onPointerDown(key, (_) -> {
+		if (inputMap.pressed(PAN)) {
+			final diffX = snappedPosX - oldX;
+			final diffY = snappedPosY - oldY;
+			oldY = snappedPosY;
+			oldX = snappedPosX;
+			StatusBar.inform('pan action: $diffX, $diffY');
+			this.workSurface.y += diffY * unitFractionU * this.workSurface.scaleY;
+			this.grid.y += diffY * unitFractionU * this.workSurface.scaleY;
+			this.workSurface.x += diffX * unitFractionU * this.workSurface.scaleX;
+			this.grid.x += diffX * unitFractionU * this.workSurface.scaleX;
+		} else {
+			oldY = snappedPosY;
+			oldX = snappedPosX;
+		}
+
+		key.onPointerDown(key, (info) -> {
+			if (info.buttonId == 1)
+				return;
 			if (key.border.visible) {
 				selected.remove(k);
 				StatusBar.inform('Deselected key: "${k.legends[0].symbol}" at: ${k.position}');
