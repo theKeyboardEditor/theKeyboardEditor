@@ -2,6 +2,7 @@ package viewport;
 
 import ceramic.Scene;
 import ceramic.Visual;
+import ceramic.TouchInfo;
 import keyson.Axis;
 import keyson.Keyson.Keyboard;
 import keyson.Keyson.Key;
@@ -18,6 +19,7 @@ class Viewport extends Scene {
 	// This queue goes through all of the actions every frame
 	// Eventually we can use this to "rewind" and undo
 	var actionQueue: ActionQueue = new ActionQueue();
+	var actionEvent: String = "";
 
 	// The square that shows where the placed key is going to be located
 	public var cursor: Cursor = new Cursor(unit1U, unit1U);
@@ -185,6 +187,13 @@ class Viewport extends Scene {
 		if (inputMap.justPressed(UNDO)) {
 			this.actionQueue.undo();
 		}
+		if (inputMap.pressed(PAN)) {
+			// TODO
+			// record the old workSurface position
+			StatusBar.inform('start action: "PAN" at: $snappedPosX, $snappedPosY');
+			// TODO
+			// add the difference of (old position to current position) to the workSurface and grid
+		}
 
 		// Adjust the status bar with the position of the cursor
 		StatusBar.pos(snappedPosX, snappedPosY); // can only have 2 args
@@ -208,7 +217,6 @@ class Viewport extends Scene {
 		// key.onPointerDown(key, (_) -> {
 		// TODO discriminate what key is pressed and take different actions accordingly
 		key.onPointerDown(key, (_) -> {
-			StatusBar.inform('mouse action: "unknown" at: ${k.position}');
 			if (key.border.visible) {
 				selected.remove(k);
 				StatusBar.inform('Deselected key: "${k.legends[0].symbol}" at: ${k.position}');

@@ -12,6 +12,12 @@ enum abstract ViewportInput(Int) {
 	final KEY_A;
 	final KEY_S;
 	final KEY_D;
+	final PAN_UP;
+	final PAN_DOWN;
+	final PAN_LEFT;
+	final PAN_RIGHT;
+	final PAN;
+	final SELECT;
 	final ZOOM_IN;
 	final ZOOM_OUT;
 	final PLACE_1U;
@@ -32,14 +38,12 @@ class Input extends InputMap<ViewportInput> {
 		this.bindKeyCode(RIGHT, RIGHT);
 
 		// Same as above, but with arrow keys
-		this.bindScanCode(KEY_W, KEY_W);
-		this.bindScanCode(KEY_S, KEY_S);
-		this.bindScanCode(KEY_A, KEY_A);
-		this.bindScanCode(KEY_D, KEY_D);
+		this.bindScanCode(PAN_UP, KEY_W);
+		this.bindScanCode(PAN_DOWN, KEY_S);
+		this.bindScanCode(PAN_LEFT, KEY_A);
+		this.bindScanCode(PAN_RIGHT, KEY_D);
 
 		// Zoom Time
-		this.bindScanCode(ZOOM_IN, EQUALS);
-		this.bindScanCode(ZOOM_OUT, MINUS);
 		this.bindScanCode(ZOOM_IN, EQUALS);
 		this.bindScanCode(ZOOM_OUT, MINUS);
 
@@ -54,7 +58,7 @@ class Input extends InputMap<ViewportInput> {
 		this.bindScanCode(REDO, KEY_Y);
 
 		// Mouse buttons
-		// this.bindMouseButton(ZOOM_IN, EXTRA1);
-		// this.bindMouseButton(ZOOM_OUT, EXTRA2); those are the next page & gang!
+		this.bindMouseButton(SELECT, 0); // LEFT
+		this.bindMouseButton(PAN, 1); // MIDDLE
 	}
 }
