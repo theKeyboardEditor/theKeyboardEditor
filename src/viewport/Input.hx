@@ -8,10 +8,6 @@ enum abstract ViewportInput(Int) {
 	final DOWN;
 	final LEFT;
 	final RIGHT;
-	final KEY_W;
-	final KEY_A;
-	final KEY_S;
-	final KEY_D;
 	final PAN_UP;
 	final PAN_DOWN;
 	final PAN_LEFT;
