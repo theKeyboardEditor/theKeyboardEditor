@@ -7,6 +7,8 @@ import ceramic.KeyCode;
 import haxe.ui.core.Screen;
 
 class MainScene extends Scene {
+	public var openProjects: Array<viewport.Viewport> = [];
+	public var currentProject: Int = 0;
 	public var gui: UI;
 	public var unitScale: Float = 54 / 100; // herewith we zoom the viewport
 
@@ -31,8 +33,8 @@ class MainScene extends Scene {
 	override function create() {
 		// Render keys
 		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
-		var viewport = new viewport.Viewport(keyboard.unit[0]);
-		this.add(viewport);
+		openProjects.push(new viewport.Viewport(keyboard.unit[0]));
+		this.add(openProjects[0]);
 
 		var store = new ceramic.PersistentData("keyboard");
 		gui = new UI();
@@ -63,14 +65,12 @@ class MainScene extends Scene {
 					dialog.openJson("Keyson File");
 					dialog.onFileLoaded(this, (body: String) -> {
 						keyboard = keyson.Keyson.parse(body);
-						trace("Read in keyboard:", keyboard.unit[0]);
-						viewport.cursor.destroy();
-						viewport.grid.destroy();
-						viewport.destroy();
+						openProjects[currentProject].cursor.destroy();
+						openProjects[currentProject].grid.destroy();
+						openProjects[currentProject].destroy();
 
-						trace("Cleaned viewport.");
-						viewport = new viewport.Viewport(keyboard.unit[0]);
-						this.add(viewport);
+						openProjects[currentProject] = new viewport.Viewport(keyboard.unit[0]);
+						this.add(openProjects[currentProject]);
 					});
 				case "save":
 					save(keyboard, store);
@@ -79,11 +79,11 @@ class MainScene extends Scene {
 					dialog.openJson("KLE Json File");
 					dialog.onFileLoaded(this, (body: String) -> {
 						keyboard = keyson.KLE.toKeyson(body);
-						viewport.cursor.destroy();
-						viewport.grid.destroy();
-						viewport.destroy();
-						viewport = new viewport.Viewport(keyboard.unit[0]);
-						this.add(viewport);
+						openProjects[currentProject].cursor.destroy();
+						openProjects[currentProject].grid.destroy();
+						openProjects[currentProject].destroy();
+						openProjects[currentProject] = new viewport.Viewport(keyboard.unit[0]);
+						this.add(openProjects[currentProject]);
 					});
 			}
 		}
