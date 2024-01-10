@@ -54,7 +54,7 @@ class Input extends InputMap<ViewportInput> {
 		this.bindScanCode(REDO, KEY_Y);
 
 		// Mouse buttons
-		//this.bindMouseButton(ZOOM_IN, EXTRA1);
-		//this.bindMouseButton(ZOOM_OUT, EXTRA2); those are the next page & gang!
+		// this.bindMouseButton(ZOOM_IN, EXTRA1);
+		// this.bindMouseButton(ZOOM_OUT, EXTRA2); those are the next page & gang!
 	}
 }

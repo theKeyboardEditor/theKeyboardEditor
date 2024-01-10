@@ -10,8 +10,8 @@ class MainScene extends Scene {
 	public var openProjects: Array<viewport.Viewport> = [];
 	public var currentProject: Int = 0;
 	public var gui: UI;
-//	public var unitScale: Float = 54 / 100; // herewith we zoom the viewport
 
+	//	public var unitScale: Float = 54 / 100; // herewith we zoom the viewport
 	// Add any asset you want to load here
 	override function preload() {
 		assets.add(Fonts.FONTS__ROBOTO_REGULAR);

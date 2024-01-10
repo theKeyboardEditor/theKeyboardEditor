@@ -158,7 +158,8 @@ class Viewport extends Scene {
 		final scaledUnit1U = unit1U * scale;
 
 		// Difference between Int and Float division by unitFractionU!
-		final moduloX = (((this.workSurface.x / ScaledUnitFractionU) - Std.int(this.workSurface.x / ScaledUnitFractionU)) * ScaledUnitFractionU);
+		final moduloX = (((this.workSurface.x / ScaledUnitFractionU)
+			- Std.int(this.workSurface.x / ScaledUnitFractionU)) * ScaledUnitFractionU);
 		final moduloY = (((this.workSurface.y / ScaledUnitFractionU) - Std.int(this.workSurface.y / ScaledUnitFractionU)) * ScaledUnitFractionU); // this is in pixels
 
 		// The real screen coordinates we should draw our placing curor on
@@ -202,9 +203,9 @@ class Viewport extends Scene {
 		key.onPointerOver(key, (_) -> {
 			StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
-		screen.onMouseWheel(screen,mouseWheel);
+		screen.onMouseWheel(screen, mouseWheel);
 		// here we process mouse key press
-		//key.onPointerDown(key, (_) -> {
+		// key.onPointerDown(key, (_) -> {
 		// TODO discriminate what key is pressed and take different actions accordingly
 		key.onPointerDown(key, (_) -> {
 			StatusBar.inform('mouse action: "unknown" at: ${k.position}');
@@ -236,13 +237,14 @@ class Viewport extends Scene {
 
 		return createdKey;
 	}
-	function mouseWheel(x:Float, y:Float):Void { // porcess scrolling with vertical mouse wheel
+
+	function mouseWheel(x: Float, y: Float): Void { // porcess scrolling with vertical mouse wheel
 		StatusBar.inform('Mouse scrolling: ${x} / ${y}');
 		x *= wheelFactor #if mac * -1.0 #end;
 		y *= wheelFactor;
 		// now do the zooming!
 		if (y < 0) { // zoom in seems to be when negative values
-			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom; 
+			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom;
 			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit / 4 else maxZoom;
 			this.cursor.scaleX = this.workSurface.scaleX;
 			this.cursor.scaleY = this.workSurface.scaleY;
@@ -258,7 +260,5 @@ class Viewport extends Scene {
 			this.grid.scaleY = this.workSurface.scaleY;
 			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX}');
 		}
-
 	}
-
 }
