@@ -91,6 +91,7 @@ class MainScene extends Scene {
 		this.openProjects.push(viewport);
 		currentProject = viewport;
 		viewport.create();
+		this.add(viewport);
 	}
 
 	function closeViewport(at: Int) {

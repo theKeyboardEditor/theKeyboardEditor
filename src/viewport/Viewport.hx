@@ -63,17 +63,14 @@ class Viewport extends Scene {
 		// Create cursor object
 		this.cursor.create();
 
-		//		this.grid.offsetX = originX - gapX / 2;
-		//		this.grid.offsetY = originY - gapY / 2;
+		// Define grid
 		this.grid.offsetX = -gapX / 2;
 		this.grid.offsetY = -gapY / 2;
 		this.grid.subStepX = unitFractionU;
 		this.grid.subStepY = unitFractionU;
-		this.grid.create();
 		this.grid.x = originX;
 		this.grid.y = originY;
-		//		this.grid.anchorX = originX - gapX / 2;
-		//		this.grid.anchorY = originY - gapY / 2;
+		this.grid.create();
 
 		// Define the inputs
 		this.inputMap = new Input();
