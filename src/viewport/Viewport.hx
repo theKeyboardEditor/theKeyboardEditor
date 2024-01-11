@@ -74,6 +74,14 @@ class Viewport extends Scene {
 
 		// Define the inputs
 		this.inputMap = new Input();
+
+		var gimbal = new Gimbal(100, 100);
+		gimbal.create();
+		gimbal.x = 1550;
+		gimbal.y = 800;
+		// TODO change alpha on mouseover
+		// TODO make gimbal higher than blue placing cursor
+		this.add(gimbal);
 	}
 
 	/**
