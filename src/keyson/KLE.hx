@@ -57,6 +57,10 @@ class KLE {
 					legend = legend.replace("&#x021d3;", "⇓");
 					legend = legend.replace("&#x021d0;", "⇐");
 					legend = legend.replace("&#x021d2;", "⇒");
+					legend = legend.replace("&uArr;", "⇑");
+					legend = legend.replace("&dArr;", "⇓");
+					legend = legend.replace("&lArr;", "⇐");
+					legend = legend.replace("&rArr;", "⇒");
 					legend = legend.replace("&uarr;", "↑");
 					legend = legend.replace("&darr;", "↓");
 					legend = legend.replace("&larr;", "←");

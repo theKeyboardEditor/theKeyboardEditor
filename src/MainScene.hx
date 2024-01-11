@@ -48,6 +48,7 @@ class MainScene extends Scene {
 		// TODO can we make picking "New" uncover the welcome screen eveon on a running session
 		Screen.instance.addComponent(gui);
 		Screen.instance.addComponent(gui.overlay);
+		// TODO inhibit all worksurface actions for the while GUI is displayed
 
 		var keyBindings = new KeyBindings();
 	
@@ -55,9 +56,8 @@ class MainScene extends Scene {
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
 			save(currentProject.keyson, store);
 		});
-
-		// Toggle GUI
-		// TODO: inhibit all worksurface actions for the while GUI is displayed
+		
+    // Toggle GUI
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});
