@@ -4,11 +4,15 @@ import ceramic.Scene;
 import ceramic.Visual;
 import ceramic.TouchInfo;
 import keyson.Axis;
+import keyson.Keyson;
 import keyson.Keyson.Keyboard;
 import keyson.Keyson.Key;
 
 class Viewport extends Scene {
+	// TODO: Replace instances of keyboard with just keyson
+	public var keyson: Keyson;
 	public var keyboard: Keyboard;
+
 	public var inputMap: Input;
 	public var wheelFactor = 1.0;
 	public var selected: Map<Key, KeyRenderer> = [];
@@ -20,6 +24,7 @@ class Viewport extends Scene {
 	// Eventually we can use this to "rewind" and undo
 	var actionQueue: ActionQueue = new ActionQueue();
 	var actionEvent: String = "";
+
 	var oldX: Float;
 	var oldY: Float;
 
@@ -43,11 +48,12 @@ class Viewport extends Scene {
 	final gapX: Int;
 	final gapY: Int;
 
-	override public function new(keyboard: Keyboard) {
+	override public function new(keyson: Keyson) {
 		super();
 
 		// Initialize variables
-		this.keyboard = keyboard;
+		this.keyson = keyson;
+		this.keyboard = keyson.unit[0];
 		this.workSurface.pos(originX, originY);
 
 		// Set the gap between the keys based on the keyson file
@@ -190,6 +196,10 @@ class Viewport extends Scene {
 			this.actionQueue.undo();
 		}
 		if (inputMap.pressed(PAN)) {
+			// TODO: record the old workSurface position
+			StatusBar.inform('start action: "PAN" at: $snappedPosX, $snappedPosY');
+			// TODO
+			// add the difference of (old position to current position) to the workSurface and grid
 			final diffX = snappedPosX - oldX;
 			final diffY = snappedPosY - oldY;
 			oldY = snappedPosY;
@@ -221,6 +231,13 @@ class Viewport extends Scene {
 		key.onPointerOver(key, (_) -> {
 			StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
+		
+    screen.onMouseWheel(screen, mouseWheel);
+		// here we process mouse key press
+		// key.onPointerDown(key, (_) -> {
+		// TODO discriminate what key is pressed and take different actions accordingly
+		key.onPointerDown(key, (_) -> {
+      
 		// Wheel Zooming:
 		screen.onMouseWheel(screen, mouseWheel);
 

@@ -8,7 +8,7 @@ import haxe.ui.core.Screen;
 
 class MainScene extends Scene {
 	public var openProjects: Array<viewport.Viewport> = [];
-	public var currentProject: Int = 0;
+	public var currentProject: viewport.Viewport;
 	public var gui: UI;
 
 	//	public var unitScale: Float = 54 / 100; // herewith we zoom the viewport
@@ -31,29 +31,33 @@ class MainScene extends Scene {
 
 	// Called when scene has finished preloading
 	override function create() {
-		// Render keys
-		var keyboard = keyson.Keyson.parse(assets.text(Texts.NUMPAD));
-		openProjects.push(new viewport.Viewport(keyboard.unit[0]));
-		this.add(openProjects[0]);
-
-		var store = new ceramic.PersistentData("keyboard");
+		// Render GUI
 		gui = new UI();
 
+		// Render keys
+		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
+
+		// Grab the stored keyboards
+		var store = new ceramic.PersistentData("keyboard");
+
+		// Add stored projects to list
 		for (key in store.keys()) {
 			gui.welcome.findComponent("project-list").addComponent(new ui.Project(key));
 		}
 
 		// TODO can we make picking "New" uncover the welcome screen eveon on a running session
-		// HIDING FOR NOW!
 		Screen.instance.addComponent(gui);
 		Screen.instance.addComponent(gui.overlay);
 		// TODO inhibit all worksurface actions for the while GUI is displayed
 
 		var keyBindings = new KeyBindings();
+	
+		// Savind
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
-			save(keyboard, store);
+			save(currentProject.keyson, store);
 		});
-		// toggle GUI
+		
+    // Toggle GUI
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});
@@ -65,29 +69,35 @@ class MainScene extends Scene {
 					final dialog = new FileDialog();
 					dialog.openJson("Keyson File");
 					dialog.onFileLoaded(this, (body: String) -> {
-						keyboard = keyson.Keyson.parse(body);
-						openProjects[currentProject].cursor.destroy();
-						openProjects[currentProject].grid.destroy();
-						openProjects[currentProject].destroy();
-
-						openProjects[currentProject] = new viewport.Viewport(keyboard.unit[0]);
-						this.add(openProjects[currentProject]);
+						openViewport(keyson.Keyson.parse(body));
 					});
 				case "save":
-					save(keyboard, store);
+					save(currentProject.keyson, store);
 				case "import":
 					final dialog = new FileDialog();
 					dialog.openJson("KLE Json File");
 					dialog.onFileLoaded(this, (body: String) -> {
-						keyboard = keyson.KLE.toKeyson(body);
-						openProjects[currentProject].cursor.destroy();
-						openProjects[currentProject].grid.destroy();
-						openProjects[currentProject].destroy();
-						openProjects[currentProject] = new viewport.Viewport(keyboard.unit[0]);
-						this.add(openProjects[currentProject]);
+						openViewport(keyson.KLE.toKeyson(body));
 					});
 			}
 		}
+	}
+
+	function openViewport(keyboard: keyson.Keyson) {
+		var tab = new haxe.ui.components.Button();
+		tab.text = keyboard.name;
+		final viewport = new viewport.Viewport(keyboard);
+		this.gui.tabbar.findComponent("projects").addComponent(tab);
+		this.openProjects.push(viewport);
+		currentProject = viewport;
+		viewport.create();
+	}
+
+	function closeViewport(at: Int) {
+		currentProject.cursor.destroy();
+		currentProject.grid.destroy();
+		currentProject.destroy();
+		this.gui.tabbar.findComponent("projects").disposeComponent();
 	}
 
 	function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {

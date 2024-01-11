@@ -21,15 +21,10 @@
             <item id="new" text="New" />
             <item id="open" text="Open" />
             <item id="save" text="Save" />
-            <item id="import" text="Import" />
-            <item id="export" text="Export" />
+            <item id="import" text="Import KLE" />
+            <item id="export" disabled="true" text="Export" />
         </data>
     </menu-item-picker>
 
-    <tabbar>
-        <button text="Project 1"/>
-        <button text="Project 2"/>
-        <button text="Project 3"/>
-        <button text="Project 4"/>
-    </tabbar>
+    <tabbar id="projects"></tabbar>
 </hbox>
