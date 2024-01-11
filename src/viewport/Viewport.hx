@@ -72,14 +72,13 @@ class Viewport extends Scene {
 		// Define the inputs
 		this.inputMap = new Input();
 
-		var gimbal = new Gimbal(100,100);
-		gimbal.create();
-		gimbal.x = 1550;
-		gimbal.y = 800;
-		this.add(gimbal);
-
-
-
+		var gimball = new Gimball(100, 100);
+		gimball.create();
+		gimball.x = 1550;
+		gimball.y = 800;
+		// TODO change alpha on mouseover
+		// TODO make gimbal higher than blue placing cursor
+		this.add(gimball);
 	}
 
 	/**
@@ -90,7 +89,6 @@ class Viewport extends Scene {
 			drawKey(key);
 		}
 		this.add(workSurface);
-
 	}
 
 	/**
