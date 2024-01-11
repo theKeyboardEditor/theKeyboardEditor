@@ -51,13 +51,13 @@ class MainScene extends Scene {
 		// TODO inhibit all worksurface actions for the while GUI is displayed
 
 		var keyBindings = new KeyBindings();
-	
+
 		// Savind
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
 			save(currentProject.keyson, store);
 		});
-		
-    // Toggle GUI
+
+		// Toggle GUI
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});

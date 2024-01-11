@@ -231,13 +231,11 @@ class Viewport extends Scene {
 		key.onPointerOver(key, (_) -> {
 			StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
-		
-    screen.onMouseWheel(screen, mouseWheel);
+
+		screen.onMouseWheel(screen, mouseWheel);
 		// here we process mouse key press
 		// key.onPointerDown(key, (_) -> {
 		// TODO discriminate what key is pressed and take different actions accordingly
-		key.onPointerDown(key, (_) -> {
-      
 		// Wheel Zooming:
 		screen.onMouseWheel(screen, mouseWheel);
 
