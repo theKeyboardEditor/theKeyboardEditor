@@ -4,11 +4,15 @@ import ceramic.Scene;
 import ceramic.Visual;
 import ceramic.TouchInfo;
 import keyson.Axis;
+import keyson.Keyson;
 import keyson.Keyson.Keyboard;
 import keyson.Keyson.Key;
 
 class Viewport extends Scene {
+	// TODO: Replace instances of keyboard with just keyson
+	public var keyson: Keyson;
 	public var keyboard: Keyboard;
+
 	public var inputMap: Input;
 	public var wheelFactor = 1.0;
 	public var selected: Map<Key, KeyRenderer> = [];
@@ -41,11 +45,12 @@ class Viewport extends Scene {
 	final gapX: Int;
 	final gapY: Int;
 
-	override public function new(keyboard: Keyboard) {
+	override public function new(keyson: Keyson) {
 		super();
 
 		// Initialize variables
-		this.keyboard = keyboard;
+		this.keyson = keyson;
+		this.keyboard = keyson.unit[0];
 		this.workSurface.pos(originX, originY);
 
 		// Set the gap between the keys based on the keyson file
