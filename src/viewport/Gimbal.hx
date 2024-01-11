@@ -10,7 +10,7 @@ import ceramic.Visual;
  * The gimbal is the shape that when dragged transfers actions to other objects
  *
  */
-class Gimball extends Visual {
+class Gimbal extends Visual {
 	// Elements
 	public var squareUp: Quad;
 	public var squareDown: Quad;
@@ -41,37 +41,37 @@ class Gimball extends Visual {
 	}
 
 	public function create(): Visual {
-		final gimball1 = new Quad();
-		gimball1.size(100, 100);
-		gimball1.color = color1;
-		gimball1.alpha = 0.5 * this.subAlpha;
-		gimball1.rotation = 45;
-		gimball1.pos(offSet, 0);
-		this.add(gimball1);
+		final gimbal1 = new Quad();
+		gimbal1.size(100, 100);
+		gimbal1.color = color1;
+		gimbal1.alpha = 0.5 * this.subAlpha;
+		gimbal1.rotation = 45;
+		gimbal1.pos(offSet, 0);
+		this.add(gimbal1);
 
-		final gimball2 = new Quad();
-		gimball2.size(100, 100);
-		gimball2.color = color1;
-		gimball2.alpha = 0.5 * this.subAlpha;
-		gimball2.rotation = 45;
-		gimball2.pos(0, offSet);
-		this.add(gimball2);
+		final gimbal2 = new Quad();
+		gimbal2.size(100, 100);
+		gimbal2.color = color1;
+		gimbal2.alpha = 0.5 * this.subAlpha;
+		gimbal2.rotation = 45;
+		gimbal2.pos(0, offSet);
+		this.add(gimbal2);
 
-		final gimball3 = new Quad();
-		gimball3.size(100, 100);
-		gimball3.color = color1;
-		gimball3.alpha = 0.5 * this.subAlpha;
-		gimball3.rotation = 45;
-		gimball3.pos(-offSet, 0);
-		this.add(gimball3);
+		final gimbal3 = new Quad();
+		gimbal3.size(100, 100);
+		gimbal3.color = color1;
+		gimbal3.alpha = 0.5 * this.subAlpha;
+		gimbal3.rotation = 45;
+		gimbal3.pos(-offSet, 0);
+		this.add(gimbal3);
 
-		final gimball4 = new Quad();
-		gimball4.size(100, 100);
-		gimball4.color = color1;
-		gimball4.alpha = 0.5 * this.subAlpha;
-		gimball4.rotation = 45;
-		gimball4.pos(0, -offSet);
-		this.add(gimball4);
+		final gimbal4 = new Quad();
+		gimbal4.size(100, 100);
+		gimbal4.color = color1;
+		gimbal4.alpha = 0.5 * this.subAlpha;
+		gimbal4.rotation = 45;
+		gimbal4.pos(0, -offSet);
+		this.add(gimbal4);
 
 		final circle = new Arc();
 		circle.radius = radius;
@@ -84,10 +84,10 @@ class Gimball extends Visual {
 		circle.alpha = 0.01 * this.subAlpha;
 		this.add(circle);
 
-		gimball1.clip = circle;
-		gimball2.clip = circle;
-		gimball3.clip = circle;
-		gimball4.clip = circle;
+		gimbal1.clip = circle;
+		gimbal2.clip = circle;
+		gimbal3.clip = circle;
+		gimbal4.clip = circle;
 
 		final top = new RoundedQuad(100, 100, 12);
 		top.pos(-50, 21);
