@@ -71,6 +71,15 @@ class Viewport extends Scene {
 
 		// Define the inputs
 		this.inputMap = new Input();
+
+		var gimbal = new Gimbal(100,100);
+		gimbal.create();
+		gimbal.x = 1550;
+		gimbal.y = 800;
+		this.add(gimbal);
+
+
+
 	}
 
 	/**
@@ -81,6 +90,7 @@ class Viewport extends Scene {
 			drawKey(key);
 		}
 		this.add(workSurface);
+
 	}
 
 	/**
