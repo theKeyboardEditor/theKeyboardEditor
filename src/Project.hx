@@ -2,6 +2,7 @@ package;
 
 import ceramic.Entity;
 import ceramic.InitSettings;
+import ceramic.Preloader;
 import haxe.ui.Toolkit;
 
 class Project extends Entity {
@@ -23,7 +24,7 @@ class Project extends Entity {
 	function ready() {
 		Toolkit.init();
 		// Set MainScene as the current scene (see MainScene.hx)
-		app.scenes.main = new MainScene();
+		app.scenes.main = new Preloader(() -> new MainScene());
 		Toolkit.theme = 'keyboard-editor-theme';
 	}
 }
