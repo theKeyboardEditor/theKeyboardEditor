@@ -47,7 +47,7 @@ class KeyMaker {
 						widthSouth = 1.50 * unit - gapX;
 						heightSouth = 1.00 * unit - gapY;
 						offsetSouthX = 0;
-						offsetSouthY = 100 * unit;
+						offsetSouthY = 1.00 * unit;
 					case "BAE":
 						// Normal BAE
 						widthNorth = 1.50 * unit - gapX;
