@@ -1,6 +1,8 @@
 package;
 
+import ceramic.PersistentData;
 import haxe.ui.ComponentBuilder;
+import haxe.ui.events.MouseEvent;
 import haxe.ui.containers.Box;
 import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
@@ -12,14 +14,21 @@ class UI extends haxe.ui.containers.VBox {
 	public var sidebar: Box;
 	public var welcome: VBox;
 
-	public function new() {
+	var scene: MainScene;
+	var store: PersistentData;
+
+	public function new(scene: MainScene, store: PersistentData) {
 		super();
+		this.scene = scene;
+		this.store = store;
+
 		// Create base container
 		this.styleString = "spacing: 0;";
 		this.percentWidth = this.percentHeight = 100;
 
 		// Render elements
 		this.tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");
+		tabbarEvents();
 		this.addComponent(this.tabbar);
 
 		var left = new HBox();
@@ -50,5 +59,33 @@ class UI extends haxe.ui.containers.VBox {
 		overlay.addComponent(welcome);
 
 		return overlay;
+	}
+
+	public function tabbarEvents() {
+		this.tabbar.findComponent("picker").onChange = (e) -> {
+			trace('File operation selected: ${e.relatedComponent.id}');
+			switch (e.relatedComponent.id) {
+				case "open":
+					final dialog = new FileDialog();
+					dialog.openJson("Keyson File");
+					dialog.onFileLoaded(scene, (body: String) -> {
+						this.scene.openViewport(keyson.Keyson.parse(body));
+					});
+				case "save":
+					this.scene.save(scene.currentProject.keyson, store);
+				case "import":
+					final dialog = new FileDialog();
+					dialog.openJson("KLE Json File");
+					dialog.onFileLoaded(scene, (body: String) -> {
+						this.scene.openViewport(keyson.KLE.toKeyson(body));
+					});
+			}
+		};
+	}
+
+	@:bind(welcome.findComponent("new-project"), MouseEvent.CLICK)
+	public function welcomeEvents(event: MouseEvent) {
+		this.overlay.visible = false;
+		this.scene.openViewport(new keyson.Keyson());
 	}
 }

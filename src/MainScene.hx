@@ -34,26 +34,27 @@ class MainScene extends Scene {
 	 * Called when scene has finished preloading
 	 */
 	override function create() {
+		// Grab the stored keyboards
+		var store = new ceramic.PersistentData("keyboard");
+
 		// Render GUI
-		gui = new UI();
+		gui = new UI(this, store);
 
 		// Render keys
 		openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
 		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
-
-		// Grab the stored keyboards
-		var store = new ceramic.PersistentData("keyboard");
 
 		// Add stored projects to list
 		for (key in store.keys()) {
 			gui.welcome.findComponent("project-list").addComponent(new ui.Project(key));
 		}
 
-		// TODO can we make picking "New" uncover the welcome screen eveon on a running session
+		// TODO: can we make picking "New" uncover the welcome screen eveon on a running session
+		// TODO: inhibit all worksurface actions for the while GUI is displayed
 		Screen.instance.addComponent(gui);
 		Screen.instance.addComponent(gui.overlay);
-		// TODO inhibit all worksurface actions for the while GUI is displayed
 
+		// KEYBINDINGS!
 		var keyBindings = new KeyBindings();
 
 		// Savind
@@ -66,26 +67,6 @@ class MainScene extends Scene {
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});
 
-		gui.tabbar.findComponent("picker").onChange = (e) -> {
-			trace('File operation selected: ${e.relatedComponent.id}');
-			switch (e.relatedComponent.id) {
-				case "open":
-					final dialog = new FileDialog();
-					dialog.openJson("Keyson File");
-					dialog.onFileLoaded(this, (body: String) -> {
-						openViewport(keyson.Keyson.parse(body));
-					});
-				case "save":
-					save(currentProject.keyson, store);
-				case "import":
-					final dialog = new FileDialog();
-					dialog.openJson("KLE Json File");
-					dialog.onFileLoaded(this, (body: String) -> {
-						openViewport(keyson.KLE.toKeyson(body));
-					});
-			}
-		};
-
 		final project: haxe.ui.components.TabBar = cast gui.tabbar.findComponent("projects");
 		project.onChange = (e) -> {
 			var view = openProjects.filter((f) -> f.keyson.name == project.selectedTab.value)[0];
@@ -93,7 +74,7 @@ class MainScene extends Scene {
 		};
 	}
 
-	function openViewport(keyboard: keyson.Keyson) {
+	public function openViewport(keyboard: keyson.Keyson) {
 		var tab = new haxe.ui.components.Button();
 		tab.text = keyboard.name;
 		this.gui.tabbar.findComponent("projects").addComponent(tab);
@@ -103,15 +84,15 @@ class MainScene extends Scene {
 		switchViewport(viewport);
 	}
 
-	function closeViewport() {
+	public function closeViewport() {
 		this.currentProject?.cursor.destroy();
 		this.currentProject?.grid.destroy();
 		this.currentProject?.destroy();
 		// TODO: Find correct tab to delete - logo
-		//this.gui.tabbar.findComponent("projects").disposeComponent();
+		// this.gui.tabbar.findComponent("projects").disposeComponent();
 	}
 
-	function switchViewport(viewport: viewport.Viewport) {
+	public function switchViewport(viewport: viewport.Viewport) {
 		this.currentProject?.set_visible(false);
 		this.currentProject = viewport;
 		this.currentProject.create();
@@ -119,7 +100,7 @@ class MainScene extends Scene {
 		this.currentProject.visible = true;
 	}
 
-	function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
+	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
 		/*
 		 * TODO: Compress using hxPako or similar - logo
 		 * fire-h0und section:
