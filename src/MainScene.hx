@@ -100,20 +100,23 @@ class MainScene extends Scene {
 
 		final viewport = new viewport.Viewport(keyboard);
 		this.openProjects.push(viewport);
+		switchViewport(viewport);
 	}
 
 	function closeViewport() {
 		this.currentProject?.cursor.destroy();
 		this.currentProject?.grid.destroy();
 		this.currentProject?.destroy();
+		// TODO: Find correct tab to delete - logo
 		//this.gui.tabbar.findComponent("projects").disposeComponent();
 	}
 
 	function switchViewport(viewport: viewport.Viewport) {
-		this.currentProject?.destroy();
+		this.currentProject?.set_visible(false);
 		this.currentProject = viewport;
 		this.currentProject.create();
 		this.add(currentProject);
+		this.currentProject.visible = true;
 	}
 
 	function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {

@@ -71,6 +71,7 @@ class Viewport extends Scene {
 		this.grid.x = originX;
 		this.grid.y = originY;
 		this.grid.create();
+		this.add(grid);
 
 		// Define the inputs
 		this.inputMap = new Input();
