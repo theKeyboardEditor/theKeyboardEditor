@@ -31,7 +31,8 @@ class Viewport extends Scene {
 	// The square that shows where the placed key is going to be located
 	public var cursor: Cursor = new Cursor(unit1U, unit1U);
 	public var grid: Grid = new Grid(unit1U, unit1U);
-
+	public var distance: Float;
+	
 	// Constants
 	inline static final unit1U: Float = 100; // TODO unit1U is 1U for keyson key size
 	inline static final unitFractionU: Float = Std.int(unit1U / 4); // This is the keyson placement step size
@@ -100,6 +101,7 @@ class Viewport extends Scene {
 	 */
 	override function update(delta: Float) {
 		moveViewportCamera(delta);
+		distance = delta;
 		cursorUpdate();
 		this.actionQueue.act();
 	}
@@ -238,10 +240,6 @@ class Viewport extends Scene {
 			StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
 
-		screen.onMouseWheel(screen, mouseWheel);
-		// here we process mouse key press
-		// key.onPointerDown(key, (_) -> {
-		// TODO discriminate what key is pressed and take different actions accordingly
 		// Wheel Zooming:
 		screen.onMouseWheel(screen, mouseWheel);
 
@@ -278,7 +276,6 @@ class Viewport extends Scene {
 	}
 
 	function mouseWheel(x: Float, y: Float): Void { // porcess scrolling with vertical mouse wheel
-		StatusBar.inform('Mouse scrolling: ${x} / ${y}');
 		x *= wheelFactor #if mac * -1.0 #end;
 		y *= wheelFactor;
 		// now do the zooming!
@@ -289,7 +286,7 @@ class Viewport extends Scene {
 			this.cursor.scaleY = this.workSurface.scaleY;
 			this.grid.scaleX = this.workSurface.scaleX;
 			this.grid.scaleY = this.workSurface.scaleY;
-			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX}');
+			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
 		} else if (y > 0) { // zoom out is when positive values are present
 			this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit / 4 else minZoom;
 			this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit / 4 else minZoom;
@@ -297,7 +294,7 @@ class Viewport extends Scene {
 			this.cursor.scaleY = this.workSurface.scaleY;
 			this.grid.scaleX = this.workSurface.scaleX;
 			this.grid.scaleY = this.workSurface.scaleY;
-			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX}');
+			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
 		}
 	}
 }
