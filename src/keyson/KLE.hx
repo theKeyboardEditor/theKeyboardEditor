@@ -127,6 +127,7 @@ class KLE {
 			}
 			y++; // make vertical stepping after the row is processed
 		}
+		//TODO generate the name somehow and put it inot keyson
 		// return what was converted
 		return keyson;
 	}
