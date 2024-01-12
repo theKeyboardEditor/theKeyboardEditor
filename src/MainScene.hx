@@ -11,8 +11,9 @@ class MainScene extends Scene {
 	public var currentProject: viewport.Viewport;
 	public var gui: UI;
 
-	//	public var unitScale: Float = 54 / 100; // herewith we zoom the viewport
-	// Add any asset you want to load here
+	/*
+	 * Add any assets you want to load here
+	 */
 	override function preload() {
 		assets.add(Fonts.FONTS__ROBOTO_REGULAR);
 		// MODES
@@ -29,12 +30,15 @@ class MainScene extends Scene {
 		assets.add(Texts.ALLPAD);
 	}
 
-	// Called when scene has finished preloading
+	/*
+	 * Called when scene has finished preloading
+	 */
 	override function create() {
 		// Render GUI
 		gui = new UI();
 
 		// Render keys
+		openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
 		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
 
 		// Grab the stored keyboards
@@ -80,25 +84,39 @@ class MainScene extends Scene {
 						openViewport(keyson.KLE.toKeyson(body));
 					});
 			}
-		}
+		};
+
+		final project: haxe.ui.components.TabBar = cast gui.tabbar.findComponent("projects");
+		project.onChange = (e) -> {
+			var view = openProjects.filter((f) -> f.keyson.name == project.selectedTab.value)[0];
+			switchViewport(view);
+		};
 	}
 
 	function openViewport(keyboard: keyson.Keyson) {
 		var tab = new haxe.ui.components.Button();
 		tab.text = keyboard.name;
-		final viewport = new viewport.Viewport(keyboard);
 		this.gui.tabbar.findComponent("projects").addComponent(tab);
+
+		final viewport = new viewport.Viewport(keyboard);
 		this.openProjects.push(viewport);
-		currentProject = viewport;
-		viewport.create();
-		this.add(viewport);
+		switchViewport(viewport);
 	}
 
-	function closeViewport(at: Int) {
-		currentProject.cursor.destroy();
-		currentProject.grid.destroy();
-		currentProject.destroy();
-		this.gui.tabbar.findComponent("projects").disposeComponent();
+	function closeViewport() {
+		this.currentProject?.cursor.destroy();
+		this.currentProject?.grid.destroy();
+		this.currentProject?.destroy();
+		// TODO: Find correct tab to delete - logo
+		//this.gui.tabbar.findComponent("projects").disposeComponent();
+	}
+
+	function switchViewport(viewport: viewport.Viewport) {
+		this.currentProject?.set_visible(false);
+		this.currentProject = viewport;
+		this.currentProject.create();
+		this.add(currentProject);
+		this.currentProject.visible = true;
 	}
 
 	function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
