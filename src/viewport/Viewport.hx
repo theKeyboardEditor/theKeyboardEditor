@@ -27,6 +27,8 @@ class Viewport extends Scene {
 
 	var oldX: Float;
 	var oldY: Float;
+	var olderX: Float;
+	var olderY: Float;
 
 	// The square that shows where the placed key is going to be located
 	public var cursor: Cursor = new Cursor(unit1U, unit1U);
@@ -41,7 +43,7 @@ class Viewport extends Scene {
 	inline static final zoom = 2;
 	inline static final maxZoom = 2.0;
 	inline static final minZoom = 0.25;
-	inline static final zoomUnit = 1 / 32; // 1/32 is accurate enough for most zooming cases
+	inline static final zoomUnit = 1 / 16; // 1/32 is accurate enough for most zooming cases
 	inline static final originX: Float = 310;
 	inline static final originY: Float = 60;
 
@@ -101,7 +103,7 @@ class Viewport extends Scene {
 	 */
 	override function update(delta: Float) {
 		moveViewportCamera(delta);
-		distance = delta;
+		distance = Std.int(delta*100); // results in 2-5 values
 		cursorUpdate();
 		this.actionQueue.act();
 	}
@@ -131,7 +133,7 @@ class Viewport extends Scene {
 			this.workSurface.x -= unitFractionU * this.workSurface.scaleX;
 			this.grid.x -= unitFractionU * this.workSurface.scaleX;
 		}
-		/* once somebody fixes rounding errors for the gryd alignment please uncomment this and erase the above TIA
+		/* once somebody fixes rounding errors for the grid alignment please uncomment this and erase the above TIA
 			if (inputMap.pressed(UP)) {
 				this.workSurface.y += movementSpeed * delta;
 			}
@@ -147,8 +149,8 @@ class Viewport extends Scene {
 		 */
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
-			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX
-				+ zoomUnit else maxZoom; // nothing like nice predictable results
+			 // nothing like nice predictable results
+			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit else maxZoom;
 			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit else maxZoom;
 			this.cursor.scaleX = this.workSurface.scaleX;
 			this.cursor.scaleY = this.workSurface.scaleY;
@@ -204,20 +206,25 @@ class Viewport extends Scene {
 			this.actionQueue.undo();
 		}
 		if (inputMap.pressed(PAN)) {
-			// TODO: record the old workSurface position
-			StatusBar.inform('start action: "PAN" at: $snappedPosX, $snappedPosY');
-			// TODO
+			// at this point we have last position (oldX) and the position before that (olderX)
+			// beside the new position (snappedPosX)
+			if ( olderX == snappedPosX && oldX != olderX) oldX = olderX;
+			if ( olderY == snappedPosY && oldY != olderY) oldY = olderY;
 			// add the difference of (old position to current position) to the workSurface and grid
 			final diffX = snappedPosX - oldX;
 			final diffY = snappedPosY - oldY;
-			oldY = snappedPosY;
+			olderX = oldX;
+			olderY = oldY;
 			oldX = snappedPosX;
-			StatusBar.inform('pan action: $diffX, $diffY');
+			oldY = snappedPosY;
+			//StatusBar.inform('pan action: $diffX, $diffY');
 			this.workSurface.y += diffY * unitFractionU * this.workSurface.scaleY;
 			this.grid.y += diffY * unitFractionU * this.workSurface.scaleY;
 			this.workSurface.x += diffX * unitFractionU * this.workSurface.scaleX;
 			this.grid.x += diffX * unitFractionU * this.workSurface.scaleX;
 		} else {
+			olderX = oldX;
+			olderY = oldY;
 			oldY = snappedPosY;
 			oldX = snappedPosX;
 		}
@@ -237,7 +244,7 @@ class Viewport extends Scene {
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerOver(key, (_) -> {
-			StatusBar.inform('Mouse hovering at: ${k.position}');
+			//StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
 
 		// Wheel Zooming:
