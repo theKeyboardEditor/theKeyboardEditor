@@ -82,6 +82,7 @@ class MainScene extends Scene {
 		final viewport = new viewport.Viewport(keyboard);
 		this.openProjects.push(viewport);
 		switchViewport(viewport);
+		trace('KEYSON:${keyboard}');
 	}
 
 	public function closeViewport() {

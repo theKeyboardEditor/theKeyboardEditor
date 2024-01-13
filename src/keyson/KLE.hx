@@ -61,6 +61,10 @@ class KLE {
 					legend = legend.replace("&dArr;", "⇓");
 					legend = legend.replace("&lArr;", "⇐");
 					legend = legend.replace("&rArr;", "⇒");
+					legend = legend.replace("&Uarr;", "⇑");
+					legend = legend.replace("&Darr;", "⇓");
+					legend = legend.replace("&Larr;", "⇐");
+					legend = legend.replace("&Rarr;", "⇒");
 					legend = legend.replace("&uarr;", "↑");
 					legend = legend.replace("&darr;", "↓");
 					legend = legend.replace("&larr;", "←");
@@ -71,7 +75,7 @@ class KLE {
 						s = String.fromCharCode(Std.parseInt("" + legend.substring(2 + legend.indexOf("&#"), 6)));
 						legend = legend.substr(0, legend.indexOf("&#")) + s + legend.substr(7 + legend.indexOf("&#"));
 					}
-					trace(s, "/", legend);
+					// trace(s, "/", legend);
 					// @formatter:off
 					if (shape == "ISO") // special case - for one reason or the other it renders 0.25U off to the right
 						key = keyson.unit[0].addKey(shape, [x - 0.25, y], legend)
@@ -127,7 +131,10 @@ class KLE {
 			}
 			y++; // make vertical stepping after the row is processed
 		}
-		//TODO generate the name somehow and put it inot keyson
+		//TODO generate the name somehow and put it into keyson
+		final name:String = 'Unknown [${x}] by [${y}] unit';
+		keyson.name = name;
+		keyson.comment = 'Imported by Keyson.KLE';
 		// return what was converted
 		return keyson;
 	}
