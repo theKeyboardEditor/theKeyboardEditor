@@ -5,11 +5,13 @@ import ceramic.Quad;
 import ceramic.KeyBindings;
 import ceramic.KeyCode;
 import haxe.ui.core.Screen;
+import uuid.FlakeId;
 
 class MainScene extends Scene {
-	public var openProjects: Array<viewport.Viewport> = [];
+	public var openProjects: Map<String, viewport.Viewport> = []; // The Int64 is an random identifier for the specific viewport
 	public var currentProject: viewport.Viewport;
 	public var gui: UI;
+	public var flakeGen: FlakeId; // Used for generating the previously stated identifiers
 
 	/*
 	 * Add any assets you want to load here
@@ -34,11 +36,12 @@ class MainScene extends Scene {
 	 * Called when scene has finished preloading
 	 */
 	override function create() {
-		// Grab the stored keyboards
+		// Grab the stored projects
 		var store = new ceramic.PersistentData("keyboard");
 
-		// Render GUI
-		gui = new UI(this, store);
+		// Initialize global variables
+		this.gui = new UI(this, store);
+		this.flakeGen = new FlakeId();
 
 		// Render keys
 		openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
@@ -69,25 +72,30 @@ class MainScene extends Scene {
 
 		final project: haxe.ui.components.TabBar = cast gui.tabbar.findComponent("projects");
 		project.onChange = (e) -> {
-			var view = openProjects.filter((f) -> f.keyson.name == project.selectedTab.value)[0];
+			var view = openProjects[project.selectedTab.id];
 			switchViewport(view);
 		};
 	}
 
 	public function openViewport(keyboard: keyson.Keyson) {
+		// Generate an identifier
+		final flake = Std.string(this.flakeGen.nextId());
+		// Create a tab on the top
 		var tab = new haxe.ui.components.Button();
+		tab.id = flake;
 		tab.text = keyboard.name;
 		this.gui.tabbar.findComponent("projects").addComponent(tab);
-
+		// Create a new viewport
 		final viewport = new viewport.Viewport(keyboard);
-		this.openProjects.push(viewport);
+		this.openProjects[flake] = viewport;
+		trace(flake);
 		switchViewport(viewport);
 	}
 
-	public function closeViewport() {
-		this.currentProject?.cursor.destroy();
-		this.currentProject?.grid.destroy();
-		this.currentProject?.destroy();
+	public function closeViewport(viewport: viewport.Viewport) {
+		viewport?.cursor.destroy();
+		viewport?.grid.destroy();
+		viewport?.destroy();
 		// TODO: Find correct tab to delete - logo
 		// this.gui.tabbar.findComponent("projects").disposeComponent();
 	}

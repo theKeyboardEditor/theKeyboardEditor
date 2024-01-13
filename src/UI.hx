@@ -3,6 +3,7 @@ package;
 import ceramic.PersistentData;
 import haxe.ui.ComponentBuilder;
 import haxe.ui.events.MouseEvent;
+import haxe.ui.events.UIEvent;
 import haxe.ui.containers.Box;
 import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
@@ -82,6 +83,11 @@ class UI extends haxe.ui.containers.VBox {
 					});
 			}
 		};
+	}
+
+	@:bind(tabbar.findComponent("projects"), UIEvent.CLOSE)
+	public function closeProject(event: UIEvent) {
+		this.scene.closeViewport(this.scene.openProjects[event.target.id]);
 	}
 
 	@:bind(welcome.findComponent("new-project"), MouseEvent.CLICK)

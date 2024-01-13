@@ -26,5 +26,5 @@
         </data>
     </menu-item-picker>
 
-    <tabbar id="projects"></tabbar>
+    <tabbar id="projects" closable="true"></tabbar>
 </hbox>
