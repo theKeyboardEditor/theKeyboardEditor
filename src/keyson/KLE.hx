@@ -132,7 +132,7 @@ class KLE {
 			y++; // make vertical stepping after the row is processed
 		}
 		//TODO generate the name somehow and put it into keyson
-		final name:String = 'Unknown [${x}] by [${y}] unit';
+		final name:String = 'Unknown [${x+1}] by [${y-1}] unit';
 		keyson.name = name;
 		keyson.comment = 'Imported by Keyson.KLE';
 		// return what was converted
