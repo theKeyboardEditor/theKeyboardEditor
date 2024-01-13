@@ -90,6 +90,7 @@ class MainScene extends Scene {
 		this.openProjects[flake] = viewport;
 		trace(flake);
 		switchViewport(viewport);
+		trace('KEYSON:${keyboard}');
 	}
 
 	public function closeViewport(viewport: viewport.Viewport) {
