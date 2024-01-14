@@ -5,6 +5,7 @@ import ceramic.Visual;
 import ceramic.Border;
 import ceramic.Arc;
 import ceramic.Quad;
+import RoundedQuad;
 
 class RectangularKey extends KeyRenderer {
 	var topColor: Int = 0xffFCFCFC;
@@ -38,88 +39,16 @@ class RectangularKey extends KeyRenderer {
 		this.border.visible = false;
 		this.add(this.border);
 
-		this.arcPosX = [
-			topX + roundedCorner,
-			topX + width - this.topOffset - roundedCorner,
-			topX + roundedCorner,
-			topX + width - this.topOffset - roundedCorner
-		];
-		this.arcPosY = [
-			topY + roundedCorner,
-			topY + roundedCorner,
-			topY + height - this.topOffset - roundedCorner,
-			topY + height - this.topOffset - roundedCorner
-		];
-		this.arcRotation = [-90, 0, 180, 90];
 
-		for (i in 0...4) {
-			final topArc = new Arc();
-			topArc.color = topColor;
-			topArc.radius = roundedCorner;
-			topArc.borderPosition = INSIDE; // how the drawn line rides the arc
-			topArc.angle = 90;
-			topArc.depth = 2; // this is in the sense of layers
-			topArc.thickness = roundedCorner;
-			topArc.rotation = arcRotation[i];
-			topArc.pos(arcPosX[i], arcPosY[i]);
-			this.add(topArc);
-		}
-
-		final top = new Quad();
-		top.color = topColor;
-		top.depth = 1; // this is in the sense of layers
-		top.pos(topX + roundedCorner, topY);
-		top.size(width - this.topOffset - roundedCorner * 2, height - this.topOffset);
+		final top = new RoundedQuad(width - this.topOffset,height - this.topOffset,roundedCorner,topColor);
+		top.depth = 0; // this is in the sense of layers
+		top.pos(topX, topY);
 		this.add(top);
 
-		final top = new Quad();
-		top.color = topColor;
-		top.depth = 1; // this is in the sense of layers
-		top.pos(topX, topY + roundedCorner);
-		top.size(width - this.topOffset, height - this.topOffset - roundedCorner * 2);
-		this.add(top);
-
-		this.arcPosX = [
-			0 + roundedCorner,
-			width - roundedCorner,
-			0 + roundedCorner,
-			width - roundedCorner
-		];
-		this.arcPosY = [
-			0 + roundedCorner,
-			0 + roundedCorner,
-			height - roundedCorner,
-			height - roundedCorner
-		];
-		this.arcRotation = [-90, 0, 180, 90];
-
-		for (i in 0...arcRotation.length) {
-			final bottomArc = new Arc();
-			bottomArc.color = bodyColor;
-			bottomArc.radius = roundedCorner;
-			bottomArc.borderPosition = INSIDE; // how the drawn line rides the arc
-			bottomArc.angle = 90;
-			bottomArc.depth = 1; // this is in the sense of layers
-			bottomArc.thickness = roundedCorner;
-			bottomArc.rotation = arcRotation[i];
-			bottomArc.pos(arcPosX[i], arcPosY[i]);
-			this.add(bottomArc);
-		}
-
-		final bottom = new Quad();
-		bottom.color = bodyColor;
+		final bottom = new RoundedQuad(width,height,roundedCorner,bodyColor);
 		bottom.depth = 0; // this is in the sense of layers
-		bottom.pos(roundedCorner, 0);
-		bottom.size(width - roundedCorner * 2, height);
+		bottom.pos(0,0);
 		this.add(bottom);
-
-		final bottom = new Quad();
-		bottom.color = bodyColor;
-		bottom.depth = 0; // this is in the sense of layers
-		bottom.pos(0, roundedCorner);
-		bottom.size(width, height - roundedCorner * 2);
-		this.add(bottom);
-
 		return this;
 	}
 }
