@@ -11,5 +11,4 @@ import ceramic.Visual;
  * (a hollow circle with what would be a croos if it extended thru it's center)
  *
  */
-class Pivot extends Visual {
-}
+class Pivot extends Visual {}

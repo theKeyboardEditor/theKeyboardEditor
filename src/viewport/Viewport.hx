@@ -34,7 +34,7 @@ class Viewport extends Scene {
 	public var cursor: Cursor = new Cursor(unit1U, unit1U);
 	public var grid: Grid = new Grid(unit1U, unit1U);
 	public var distance: Float;
-	
+
 	// Constants
 	inline static final unit1U: Float = 100; // TODO unit1U is 1U for keyson key size
 	inline static final unitFractionU: Float = Std.int(unit1U / 4); // This is the keyson placement step size
@@ -103,7 +103,7 @@ class Viewport extends Scene {
 	 */
 	override function update(delta: Float) {
 		moveViewportCamera(delta);
-		distance = Std.int(delta*100); // results in 2-5 values
+		distance = Std.int(delta * 100); // results in 2-5 values
 		cursorUpdate();
 		this.actionQueue.act();
 	}
@@ -149,7 +149,7 @@ class Viewport extends Scene {
 		 */
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
-			 // nothing like nice predictable results
+			// nothing like nice predictable results
 			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit else maxZoom;
 			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit else maxZoom;
 			this.cursor.scaleX = this.workSurface.scaleX;
@@ -208,8 +208,10 @@ class Viewport extends Scene {
 		if (inputMap.pressed(PAN)) {
 			// at this point we have last position (oldX) and the position before that (olderX)
 			// beside the new position (snappedPosX)
-			if ( olderX == snappedPosX && oldX != olderX) oldX = olderX;
-			if ( olderY == snappedPosY && oldY != olderY) oldY = olderY;
+			if (olderX == snappedPosX && oldX != olderX)
+				oldX = olderX;
+			if (olderY == snappedPosY && oldY != olderY)
+				oldY = olderY;
 			// add the difference of (old position to current position) to the workSurface and grid
 			final diffX = snappedPosX - oldX;
 			final diffY = snappedPosY - oldY;
@@ -217,7 +219,7 @@ class Viewport extends Scene {
 			olderY = oldY;
 			oldX = snappedPosX;
 			oldY = snappedPosY;
-			//StatusBar.inform('pan action: $diffX, $diffY');
+			// StatusBar.inform('pan action: $diffX, $diffY');
 			this.workSurface.y += diffY * unitFractionU * this.workSurface.scaleY;
 			this.grid.y += diffY * unitFractionU * this.workSurface.scaleY;
 			this.workSurface.x += diffX * unitFractionU * this.workSurface.scaleX;
@@ -244,7 +246,7 @@ class Viewport extends Scene {
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerOver(key, (_) -> {
-			//StatusBar.inform('Mouse hovering at: ${k.position}');
+			// StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
 
 		// Wheel Zooming:
