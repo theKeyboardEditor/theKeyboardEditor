@@ -104,10 +104,12 @@ class MainScene extends Scene {
 	public function switchViewport(viewport: viewport.Viewport) {
 		// TODO update the tabs to refect the active project
 		this.currentProject?.set_visible(false);
+		this.currentProject?.cursor?.set_visible(false);
 		this.currentProject = viewport;
 		this.currentProject.create();
 		this.add(currentProject);
 		this.currentProject.visible = true;
+		this.currentProject.cursor.visible = true;
 	}
 
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
