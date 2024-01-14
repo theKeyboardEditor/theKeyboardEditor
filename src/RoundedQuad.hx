@@ -22,7 +22,7 @@ class RoundedQuad extends Visual {
 	var cosine: Array<Float>;
 	var points: Array<Float>;
 
-	override public function new(width: Float, height: Float, roundedCorner: Float, color:Int) {
+	override public function new(width: Float, height: Float, roundedCorner: Float, color: Int) {
 		super();
 
 		size(width, height);

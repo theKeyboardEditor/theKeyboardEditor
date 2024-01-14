@@ -39,15 +39,14 @@ class RectangularKey extends KeyRenderer {
 		this.border.visible = false;
 		this.add(this.border);
 
-
-		final top = new RoundedQuad(width - this.topOffset,height - this.topOffset,roundedCorner,topColor);
+		final top = new RoundedQuad(width - this.topOffset, height - this.topOffset, roundedCorner, topColor);
 		top.depth = 0; // this is in the sense of layers
 		top.pos(topX, topY);
 		this.add(top);
 
-		final bottom = new RoundedQuad(width,height,roundedCorner,bodyColor);
+		final bottom = new RoundedQuad(width, height, roundedCorner, bodyColor);
 		bottom.depth = 0; // this is in the sense of layers
-		bottom.pos(0,0);
+		bottom.pos(0, 0);
 		this.add(bottom);
 		return this;
 	}
