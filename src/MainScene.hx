@@ -102,7 +102,7 @@ class MainScene extends Scene {
 	}
 
 	public function switchViewport(viewport: viewport.Viewport) {
-		//TODO update the tabs to refect the active project
+		// TODO update the tabs to refect the active project
 		this.currentProject?.set_visible(false);
 		this.currentProject = viewport;
 		this.currentProject.create();

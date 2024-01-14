@@ -79,7 +79,7 @@ class UI extends haxe.ui.containers.VBox {
 					dialog.openJson("KLE Json File");
 					dialog.onFileLoaded(scene, (body: String) -> {
 						this.scene.openViewport(keyson.KLE.toKeyson(body));
-						//TODO while at it add a name to the newly created keyson
+						// TODO while at it add a name to the newly created keyson
 					});
 			}
 		};
