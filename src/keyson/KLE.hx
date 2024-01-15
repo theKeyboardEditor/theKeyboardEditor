@@ -5,7 +5,7 @@ using haxe.io.Bytes;
 
 class KLE {
 	// Converts a json string from Keyboard Layout Editor to Keyson's object format
-	public static function toKeyson(string: String): Keyson {
+	public static function toKeyson(name: String, string: String): Keyson {
 		var keyson = new keyson.Keyson();
 		var kle = haxe.Json.parse(string);
 		kle[0];
@@ -131,8 +131,6 @@ class KLE {
 			}
 			y++; // make vertical stepping after the row is processed
 		}
-		// TODO generate the name somehow and put it into keyson
-		final name: String = 'Unknown [${x + 1}] by [${y - 1}] unit';
 		keyson.name = name;
 		keyson.comment = 'Imported by Keyson.KLE';
 		// return what was converted

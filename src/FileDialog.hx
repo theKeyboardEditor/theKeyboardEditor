@@ -23,7 +23,7 @@ class FileDialog extends Entity {
 		input.click();
 		#else
 		Dialogs.openFile(title, [{name: title, extensions: ["json"]}], (file) -> {
-			emitFileLoaded(reader.result);
+			emitFileLoaded(file);
 		});
 		#end
 	}

@@ -7,6 +7,7 @@ import haxe.ui.events.UIEvent;
 import haxe.ui.containers.Box;
 import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
+import haxe.ui.containers.dialogs.Dialog;
 
 class UI extends haxe.ui.containers.VBox {
 	public var overlay: Box;
@@ -78,8 +79,11 @@ class UI extends haxe.ui.containers.VBox {
 					final dialog = new FileDialog();
 					dialog.openJson("KLE Json File");
 					dialog.onFileLoaded(scene, (body: String) -> {
-						this.scene.openViewport(keyson.KLE.toKeyson(body));
-						// TODO while at it add a name to the newly created keyson
+						var dialog = new ImportNameDialog();
+						dialog.onDialogClosed = function(e: DialogEvent) {
+							this.scene.openViewport(keyson.KLE.toKeyson(dialog.name.value, body));
+						}
+						dialog.showDialog();
 					});
 			}
 		};
@@ -94,5 +98,21 @@ class UI extends haxe.ui.containers.VBox {
 	public function welcomeEvents(event: MouseEvent) {
 		this.overlay.visible = false;
 		this.scene.openViewport(new keyson.Keyson());
+	}
+}
+
+class ImportNameDialog extends Dialog {
+	public var name: haxe.ui.components.TextField;
+
+	public function new() {
+		super();
+		this.title = "Name the imported keyboard";
+		this.buttons = "Import";
+		this.defaultButton = "Import";
+		this.percentWidth = 15;
+		name = new haxe.ui.components.TextField();
+		name.percentWidth = 100;
+		name.placeholder = "Keyboard Name";
+		this.addComponent(name);
 	}
 }
