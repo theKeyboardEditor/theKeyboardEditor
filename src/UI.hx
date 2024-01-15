@@ -9,6 +9,8 @@ import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
 import haxe.ui.containers.dialogs.Dialog;
 
+using StringTools;
+
 class UI extends haxe.ui.containers.VBox {
 	public var overlay: Box;
 	public var tabbar: HBox;
@@ -80,8 +82,12 @@ class UI extends haxe.ui.containers.VBox {
 					dialog.openJson("KLE Json File");
 					dialog.onFileLoaded(scene, (body: String) -> {
 						var dialog = new ImportNameDialog();
+						this.scene.currentProject.paused = true;
 						dialog.onDialogClosed = function(e: DialogEvent) {
-							this.scene.openViewport(keyson.KLE.toKeyson(dialog.name.value, body));
+							this.scene.currentProject.paused = false;
+							final name = dialog.name.value;
+							if (StringTools.trim(name) == "") return;
+							this.scene.openViewport(keyson.KLE.toKeyson(name, body));
 						}
 						dialog.showDialog();
 					});

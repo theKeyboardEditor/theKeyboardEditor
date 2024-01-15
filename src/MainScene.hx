@@ -65,16 +65,19 @@ class MainScene extends Scene {
 			save(currentProject.keyson, store);
 		});
 
-		// Toggle GUI
-		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
-			gui.overlay.hidden = !gui.overlay.hidden;
-		});
-
 		final project: haxe.ui.components.TabBar = cast gui.tabbar.findComponent("projects");
+		project.selectedIndex = project.tabCount - 1;
 		project.onChange = (e) -> {
 			var view = openProjects[project.selectedTab.id];
 			switchViewport(view);
 		};
+
+		// Toggle overlay (i.e welcome screen)
+		this.currentProject.paused = true;
+		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
+			this.currentProject.paused = !currentProject.paused;
+			gui.overlay.hidden = !gui.overlay.hidden;
+		});
 	}
 
 	public function openViewport(keyboard: keyson.Keyson) {
@@ -88,9 +91,7 @@ class MainScene extends Scene {
 		// Create a new viewport
 		final viewport = new viewport.Viewport(keyboard);
 		this.openProjects[flake] = viewport;
-		trace(flake);
 		switchViewport(viewport);
-		trace('KEYSON:${keyboard}');
 	}
 
 	public function closeViewport(viewport: viewport.Viewport) {
@@ -105,9 +106,11 @@ class MainScene extends Scene {
 		// TODO update the tabs to refect the active project
 		this.currentProject?.set_visible(false);
 		this.currentProject?.cursor?.set_visible(false);
+
 		this.currentProject = viewport;
 		this.currentProject.create();
 		this.add(currentProject);
+
 		this.currentProject.visible = true;
 		this.currentProject.cursor.visible = true;
 	}

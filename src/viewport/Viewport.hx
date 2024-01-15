@@ -253,6 +253,7 @@ class Viewport extends Scene {
 		screen.onMouseWheel(screen, mouseWheel);
 
 		key.onPointerDown(key, (info) -> {
+			if (this.paused) return;
 			if (info.buttonId == 1)
 				return;
 			if (key.border.visible) {
