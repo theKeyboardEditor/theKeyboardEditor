@@ -86,7 +86,8 @@ class UI extends haxe.ui.containers.VBox {
 						dialog.onDialogClosed = function(e: DialogEvent) {
 							this.scene.currentProject.paused = false;
 							final name = dialog.name.value;
-							if (StringTools.trim(name) == "") return;
+							if (StringTools.trim(name) == "")
+								return;
 							this.scene.openViewport(keyson.KLE.toKeyson(name, body));
 						}
 						dialog.showDialog();

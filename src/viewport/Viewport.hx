@@ -174,21 +174,21 @@ class Viewport extends Scene {
 	public function cursorUpdate() {
 		// presuming both our axes are scaled uniformly and in accord:
 		final scale = this.workSurface.scaleX;
-		final ScaledUnitFractionU = unitFractionU * scale;
+		final scaledUnitFractionU = unitFractionU * scale;
 		final scaledUnit1U = unit1U * scale;
 
 		// Difference between Int and Float division by unitFractionU!
-		final moduloX = (((this.workSurface.x / ScaledUnitFractionU)
-			- Std.int(this.workSurface.x / ScaledUnitFractionU)) * ScaledUnitFractionU);
-		final moduloY = (((this.workSurface.y / ScaledUnitFractionU) - Std.int(this.workSurface.y / ScaledUnitFractionU)) * ScaledUnitFractionU); // this is in pixels
+		final moduloX = (((this.workSurface.x / scaledUnitFractionU)
+			- Std.int(this.workSurface.x / scaledUnitFractionU)) * scaledUnitFractionU);
+		final moduloY = (((this.workSurface.y / scaledUnitFractionU) - Std.int(this.workSurface.y / scaledUnitFractionU)) * scaledUnitFractionU); // this is in pixels
 
 		// The real screen coordinates we should draw our placing curor on
-		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloX);
-		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / ScaledUnitFractionU) * ScaledUnitFractionU + moduloY);
+		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / scaledUnitFractionU) * scaledUnitFractionU + moduloX);
+		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / scaledUnitFractionU) * scaledUnitFractionU + moduloY);
 
 		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
-		final snappedPosX = (Std.int((screenPosX - this.workSurface.x) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
-		final snappedPosY = (Std.int((screenPosY - this.workSurface.y) / ScaledUnitFractionU) * ScaledUnitFractionU / scaledUnit1U);
+		final snappedPosX = (Std.int((screenPosX - this.workSurface.x) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
+		final snappedPosY = (Std.int((screenPosY - this.workSurface.y) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
 
 		// Position the cursor right on top of the keycaps
 		this.cursor.pos(screenPosX - gapX / 2 * scale, screenPosY - gapY / 2 * scale);
