@@ -19,9 +19,9 @@ class EnterShapedKey extends KeyRenderer {
 	var topOffset: Float = (100 / 8) * 2;
 	var roundedCorner: Float = (100 / 1 / 8);
 	var widthNorth: Float; // North is the further away member of the pair
-	var heightNorth: Float;
+	var heigthNorth: Float;
 	var widthSouth: Float; // South is the closer member of the piar
-	var heightSouth: Float;
+	var heigthSouth: Float;
 	var gapX: Float; // The closer member's offset
 	var gapY: Float;
 	var shape: String;
@@ -45,13 +45,13 @@ class EnterShapedKey extends KeyRenderer {
 
 	public var segments: Int = 10; // 1...many (sane only up to 10)
 
-	override public function new(widthNorth: Float, heightNorth: Float, topColor: Int, bodyColor: Int, widthSouth: Float, heightSouth: Float,
+	override public function new(widthNorth: Float, heigthNorth: Float, topColor: Int, bodyColor: Int, widthSouth: Float, heigthSouth: Float,
 			shape: String, gapX: Float, gapY: Float) {
 		super();
 		this.widthNorth = widthNorth;
-		this.heightNorth = heightNorth;
+		this.heigthNorth = heigthNorth;
 		this.widthSouth = widthSouth;
-		this.heightSouth = heightSouth;
+		this.heigthSouth = heigthSouth;
 		this.gapX = gapX;
 		this.gapY = gapY;
 		this.topColor = topColor;
@@ -60,7 +60,7 @@ class EnterShapedKey extends KeyRenderer {
 	}
 
 	override public function create(): Visual {
-		offsetB = heightSouth - heightNorth;
+		offsetB = heigthSouth - heigthNorth;
 		offsetL = widthSouth - widthNorth;
 		// TODO  There is still some oddity to fix with BEA and XT_2U
 		this.border = new Border();
@@ -70,17 +70,17 @@ class EnterShapedKey extends KeyRenderer {
 		} else {
 			this.border.pos(0, 0);
 		}
-		if (this.heightNorth > this.heightSouth) { // north element is the narrow one?
+		if (this.heigthNorth > this.heigthSouth) { // north element is the narrow one?
 			if (this.widthNorth > this.widthSouth) {
-				this.border.size(this.widthNorth, this.heightNorth);
+				this.border.size(this.widthNorth, this.heigthNorth);
 			} else {
-				this.border.size(this.widthSouth, this.heightNorth);
+				this.border.size(this.widthSouth, this.heigthNorth);
 			}
 		} else {
 			if (this.widthNorth > this.widthSouth) {
-				this.border.size(this.widthNorth, this.heightSouth);
+				this.border.size(this.widthNorth, this.heigthSouth);
 			} else {
-				this.border.size(this.widthSouth, this.heightSouth);
+				this.border.size(this.widthSouth, this.heigthSouth);
 			}
 		}
 		this.border.borderColor = Color.RED; // UI theme 2ndary accent color!
@@ -90,14 +90,14 @@ class EnterShapedKey extends KeyRenderer {
 		this.border.visible = false; // per default created invisible
 		this.add(this.border);
 
-		this.add(EnterShape(widthNorth - this.topOffset, heightNorth - this.topOffset, widthSouth - this.topOffset,
-			heightSouth - this.topOffset, topColor, topX, topY));
-		this.add(EnterShape(widthNorth, heightNorth, widthSouth, heightSouth, bodyColor, 0.0, 0.0));
+		this.add(enterShape(widthNorth - this.topOffset, heigthNorth - this.topOffset, widthSouth - this.topOffset,
+			heigthSouth - this.topOffset, topColor, topX, topY));
+		this.add(enterShape(widthNorth, heigthNorth, widthSouth, heigthSouth, bodyColor, 0.0, 0.0));
 
 		return this;
 	}
 
-	function EnterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float, posY: Float) {
+	function enterShape(widthNorth: Float, heigthNorth: Float, widthSouth: Float, heigthSouth: Float, color: Int, posX: Float, posY: Float) {
 		var sine = [for (angle in 0...segments + 1) Math.sin(Math.PI / 2 * angle / segments)];
 		var cosine = [for (angle in 0...segments + 1) Math.cos(Math.PI / 2 * angle / segments)];
 		// @formatter:off
@@ -120,7 +120,7 @@ class EnterShapedKey extends KeyRenderer {
 		switch shape {
 			case 'BAE Inverted':
 			localWidth = widthNorth;
-			localHeigth = heightSouth;
+			localHeigth = heigthSouth;
 			recipe = "7FLNLJ";
 			//        012345 
 			// 7 #### F
@@ -132,7 +132,7 @@ class EnterShapedKey extends KeyRenderer {
 			signumB= [ 0, 0,-1,-1, 0, 0];
 			case 'BAE' | 'XT_2U':
 			localWidth = widthSouth;
-			localHeigth = heightNorth;
+			localHeigth = heigthNorth;
 			recipe = "7FLJZV";
 			//    7   F
 			// ZV  ##
@@ -143,7 +143,7 @@ class EnterShapedKey extends KeyRenderer {
 			signumB= [ 0, 0, 0, 0,-1,-1];
 			case'ISO Inverted':
 			localWidth = widthSouth;
-			localHeigth = heightNorth;
+			localHeigth = heigthNorth;
 			recipe = "7FDYLJ";
 			// 7 ### F
 			//   ####DF
@@ -154,7 +154,7 @@ class EnterShapedKey extends KeyRenderer {
 			signumB= [ 0, 0,-1,-1, 0, 0];
 			case 'AEK' | 'ISO':
 			localWidth = widthNorth;
-			localHeigth = heightSouth;
+			localHeigth = heigthSouth;
 			recipe = "7FLJIJ";
 			// 7 #### F
 			// J I###  
@@ -171,11 +171,11 @@ class EnterShapedKey extends KeyRenderer {
 		for (turn in 0...6) {
 			switch shape {
 				case 'AEK' | 'ISO' | 'BAE Inverted':
-					offsetT = Math.abs(heightNorth - heightSouth) * signumT[turn]; // TODO account for gapX and gapY
-					offsetB = Math.abs(heightNorth - heightSouth) * signumB[turn];
-				case 'ISO Inverted' | 'BAE' | 'XT_2U': // to draw proper lower member height:
-					offsetT = Math.abs(heightSouth) * signumT[turn]; // TODO account for gapX and gapY
-					offsetB = Math.abs(heightSouth) * signumB[turn];
+					offsetT = Math.abs(heigthNorth - heigthSouth) * signumT[turn]; // TODO account for gapX and gapY
+					offsetB = Math.abs(heigthNorth - heigthSouth) * signumB[turn];
+				case 'ISO Inverted' | 'BAE' | 'XT_2U': // to draw proper lower member heigth:
+					offsetT = Math.abs(heigthSouth) * signumT[turn]; // TODO account for gapX and gapY
+					offsetB = Math.abs(heigthSouth) * signumB[turn];
 			}
 			offsetL = Math.abs(widthNorth - widthSouth) * signumL[turn];
 			offsetR = Math.abs(widthNorth - widthSouth) * signumR[turn];
