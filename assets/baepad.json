@@ -1,0 +1,65 @@
+{
+  "name": "BAEpad",
+  "author": "cest73",
+  "license": "MIT",
+  "comment": "Each and every possible key at once",
+  "colorTable": {
+    "name": "Kids Crayons 16",
+    "url": "https://some.site.org",
+    "colorMatchingProfile": "generic",
+    "size": 16,
+    "swatches": [
+      { "name": "black", "value": "0xFF000000" },
+      { "name": "white", "value": "0xFFffffff" },
+      { "name": "red", "value": "0xFFff0000" },
+      { "name": "lime", "value": "0xFF00ff00" },
+      { "name": "blue", "value": "0xFF0000ff" },
+      { "name": "yellow", "value": "0xFFffff00" },
+      { "name": "cyan", "value": "0xFF00ffff" },
+      { "name": "magenta", "value": "0xFFff00ff" },
+      { "name": "silver", "value": "0xFF808080" },
+      { "name": "gray", "value": "0xFF404040" },
+      { "name": "maroon", "value": "0xFF800000" },
+      { "name": "olive", "value": "0xFF808000" },
+      { "name": "green", "value": "0xFF008000" },
+      { "name": "purple", "value": "0xFF800080" },
+      { "name": "teal", "value": "0xFF008080" },
+      { "name": "navy", "value": "0xFF000080" }
+    ]
+  },
+  "unit": [
+    {
+      "id": 0,
+      "designator": "BAEpad",
+      "keyStep": [19.0, 19.0],
+      "stabilizerType": "Alps",
+      "switchType": "Alps/Matias/APC",
+      "capSize": [18.5, 18.5],
+      "rulerUnits": "mm",
+      "caseColor": "gray",
+      "keysColor": "0xFF808080",
+      "keyboardFont": "sans",
+      "legendSizeUnits": "U/100",
+      "keyboardFontSize": 24,
+      "legendColor": "0xFF800080",
+      "legendPosition": [5.12, 5.12],
+      "profile": "OEM",
+      "keySculpt": "R3",
+      "amountOfUnits": 1,
+      "size": 1,
+      "keys": [
+        {
+          "id": 0,
+          "position": [2, 0],
+          "stabilizer": "2U",
+          "shape": "BAE",
+          "legends": [
+            {
+              "symbol": "BAE"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
