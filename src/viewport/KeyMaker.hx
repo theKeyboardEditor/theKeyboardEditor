@@ -27,7 +27,6 @@ class KeyMaker {
 		final keyColor: Color = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
 		final keyShadow: Color = getKeyShadow(keyColor);
 
-		// TODO: Create some form of syntax that can define this information without this switch case creature
 		for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
 			if (k.shape.split(' ').indexOf(t) != -1) { // if shape found found go here
 				switch k.shape {
@@ -37,8 +36,6 @@ class KeyMaker {
 						heightNorth = 1.00 * unit - gapY;
 						widthSouth = 1.25 * unit - gapX;
 						heightSouth = 2.00 * unit - gapY;
-						offsetSouthX = 0.25 * unit;
-						offsetSouthY = 0;
 					case "ISO Inverted":
 						// Inverted ISO
 						// This is an ISO enter but with the top of the keycap reversed
@@ -46,38 +43,28 @@ class KeyMaker {
 						heightNorth = 2.00 * unit - gapY;
 						widthSouth = 1.50 * unit - gapX;
 						heightSouth = 1.00 * unit - gapY;
-						offsetSouthX = 0;
-						offsetSouthY = 1.00 * unit;
 					case "BAE":
 						// Normal BAE
 						widthNorth = 1.50 * unit - gapX;
 						heightNorth = 2.00 * unit - gapY;
 						widthSouth = 2.25 * unit - gapX;
 						heightSouth = 1.00 * unit - gapY;
-						offsetSouthX = -0.75 * unit;
-						offsetSouthY = 1.00 * unit;
 					case "BAE Inverted":
 						// Inverted BAE
 						widthNorth = 2.25 * unit - gapX;
 						heightNorth = 1.00 * unit - gapY;
 						widthSouth = 1.50 * unit - gapX;
 						heightSouth = 2.00 * unit - gapY;
-						offsetSouthX = -1; // the -1 is a code-design quirk!
-						offsetSouthY = 0;
 					case "XT_2U":
 						widthNorth = 1.00 * unit - gapX;
 						heightNorth = 2.00 * unit - gapY;
 						widthSouth = 2.00 * unit - gapX;
 						heightSouth = 1.00 * unit - gapY;
-						offsetSouthX = -1.00 * unit;
-						offsetSouthY = 1.00 * unit;
 					case "AEK":
 						widthNorth = 1.25 * unit - gapX;
 						heightNorth = 1.00 * unit - gapY;
 						widthSouth = 1.00 * unit - gapX;
 						heightSouth = 2.00 * unit - gapY;
-						offsetSouthX = 0.25 * unit;
-						offsetSouthY = 0;
 				}
 			}
 		}
@@ -93,7 +80,7 @@ class KeyMaker {
 			}
 			key = new keys.RectangularKey(width, height, keyColor, keyShadow);
 		} else { // non '<number>U' cases:
-			key = new keys.LShapeKey(widthNorth, heightNorth, keyColor, keyShadow, widthSouth, heightSouth, offsetSouthX, offsetSouthY);
+			key = new keys.EnterShapedKey(widthNorth, heightNorth, keyColor, keyShadow, widthSouth, heightSouth, k.shape, gapX, gapY);
 		}
 
 		// here we populate the legends (see function below)
@@ -131,7 +118,6 @@ class KeyMaker {
 			}
 
 			legend.depth = 4; // make sure labels render on top
-			//			legend.pos(legendOffsetX + legend.topX + unit * k.position[Axis.X], legendOffsetY + legend.topY + unit * k.position[Axis.Y]);
 			legend.pos(legendOffsetX + legend.topX, legendOffsetY + legend.topY); // relative to the key shape
 
 			keyLegends.push(legend);
