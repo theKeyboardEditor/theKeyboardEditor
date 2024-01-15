@@ -27,7 +27,6 @@ class KeyMaker {
 		final keyColor: Color = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
 		final keyShadow: Color = getKeyShadow(keyColor);
 
-		// TODO: Create some form of syntax that can define this information without this switch case creature
 		for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
 			if (k.shape.split(' ').indexOf(t) != -1) { // if shape found found go here
 				switch k.shape {
@@ -81,7 +80,7 @@ class KeyMaker {
 			}
 			key = new keys.RectangularKey(width, height, keyColor, keyShadow);
 		} else { // non '<number>U' cases:
-			key = new keys.EnterShapedKey(widthNorth, heightNorth, keyColor, keyShadow, widthSouth, heightSouth, k.shape, gapX ,gapY);
+			key = new keys.EnterShapedKey(widthNorth, heightNorth, keyColor, keyShadow, widthSouth, heightSouth, k.shape, gapX, gapY);
 		}
 
 		// here we populate the legends (see function below)

@@ -12,52 +12,41 @@ import ceramic.Visual;
 class EnterShapedKey extends KeyRenderer {
 	var topColor: Int = 0xffFCFCFC;
 	var bodyColor: Int = 0xFFCCCCCC; // defaults
-
 	// we are in the 1U = 100 units of scale ratio here:
 	// this is the preset for OEM/Cherry profile keycaps (TODO more presets)
 	var topX: Float = 100 / 8;
 	var topY: Float = (100 / 8) * 0.25;
 	var topOffset: Float = (100 / 8) * 2;
-	var roundedCorner: Float = (100 / 1/8);
-
+	var roundedCorner: Float = (100 / 1 / 8);
 	var widthNorth: Float; // North is the further away member of the pair
 	var heightNorth: Float;
 	var widthSouth: Float; // South is the closer member of the piar
 	var heightSouth: Float;
-
 	var gapX: Float; // The closer member's offset
 	var gapY: Float;
 	var shape: String;
-
-	var arcPosX: Array<Float>;
-	var arcPosY: Array<Float>;
-	var arcTopPosX: Array<Float>;
-	var arcTopPosY: Array<Float>;
-	var arcRotation: Array<Int>;
-	var arcBorderPosition: Array<Bool>;
-
-	public var segments: Int = 10; // 1...many (sane only up to 10)
-
-	var recipe:String;
-	var insets:Array<Int>;
-	var signumL:Array<Int>;
-	var signumR:Array<Int>;
-	var signumT:Array<Int>;
-	var signumB:Array<Int>;
-	var offsetL:Float;
-	var offsetR:Float;
-	var offsetT:Float;
-	var offsetB:Float;
+	var recipe: String;
+	var insets: Array<Int>;
+	var signumL: Array<Int>;
+	var signumR: Array<Int>;
+	var signumT: Array<Int>;
+	var signumB: Array<Int>;
+	var offsetL: Float;
+	var offsetR: Float;
+	var offsetT: Float;
+	var offsetB: Float;
 	var localRadius: Float;
 	var localWidth: Float;
 	var localHeigth: Float;
 	var sine: Array<Float>;
 	var cosine: Array<Float>;
 	var points: Array<Float>;
-	var turn:Int;
+	var turn: Int;
+
+	public var segments: Int = 10; // 1...many (sane only up to 10)
 
 	override public function new(widthNorth: Float, heightNorth: Float, topColor: Int, bodyColor: Int, widthSouth: Float, heightSouth: Float,
-			shape:String, gapX: Float, gapY: Float) {
+			shape: String, gapX: Float, gapY: Float) {
 		super();
 		this.widthNorth = widthNorth;
 		this.heightNorth = heightNorth;
@@ -73,9 +62,9 @@ class EnterShapedKey extends KeyRenderer {
 	override public function create(): Visual {
 		offsetB = heightSouth - heightNorth;
 		offsetL = widthSouth - widthNorth;
-		//TODO  There is still some oddity to fix with BEA and XT_2U
+		// TODO  There is still some oddity to fix with BEA and XT_2U
 		this.border = new Border();
-		if (this.shape == 'BAE' || this.shape == 'XT_2U' ) {
+		if (this.shape == 'BAE' || this.shape == 'XT_2U') {
 			this.border.pos(-this.offsetL, 0); // negative for BAE and XT_2U
 			this.width = widthSouth;
 		} else {
@@ -101,17 +90,17 @@ class EnterShapedKey extends KeyRenderer {
 		this.border.visible = false; // per default created invisible
 		this.add(this.border);
 
-
-		this.add(EnterShape(widthNorth - this.topOffset, heightNorth - this.topOffset, widthSouth - this.topOffset, heightSouth - this.topOffset,
-			topColor, topX, topY));
+		this.add(EnterShape(widthNorth - this.topOffset, heightNorth - this.topOffset, widthSouth - this.topOffset,
+			heightSouth - this.topOffset, topColor, topX, topY));
 		this.add(EnterShape(widthNorth, heightNorth, widthSouth, heightSouth, bodyColor, 0.0, 0.0));
 
 		return this;
 	}
-	function EnterShape (widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color:Int, posX:Float, posY:Float) {
+
+	function EnterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float, posY: Float) {
 		var sine = [for (angle in 0...segments + 1) Math.sin(Math.PI / 2 * angle / segments)];
 		var cosine = [for (angle in 0...segments + 1) Math.cos(Math.PI / 2 * angle / segments)];
-
+		// @formatter:off
 		points = []; // re-clear the array since we are pushing only
 		// the shape has 4 corner types:
 		// +--------+
@@ -133,11 +122,10 @@ class EnterShapedKey extends KeyRenderer {
 			localWidth = widthNorth;
 			localHeigth = heightSouth;
 			recipe = "7FLNLJ";
-			// .......012345 
-			// ..........^^
+			//        012345 
 			// 7 #### F
-			//   ###  NL
-			// J      L
+			//   ### NL
+			// J     L
 			signumL= [ 0, 0, 0, 0, 0, 0];
 			signumR= [ 0, 0, 0,-1,-1, 0];
 			signumT= [ 0, 0, 0, 0, 0, 0];
@@ -146,8 +134,7 @@ class EnterShapedKey extends KeyRenderer {
 			localWidth = widthSouth;
 			localHeigth = heightNorth;
 			recipe = "7FLJZV";
-			// .......^....^
-			// ....7 F
+			//    7   F
 			// ZV  ##
 			// J #### L
 			signumL= [ 0,-1,-1,-1,-1, 0];
@@ -158,10 +145,9 @@ class EnterShapedKey extends KeyRenderer {
 			localWidth = widthSouth;
 			localHeigth = heightNorth;
 			recipe = "7FDYLJ";
-			// ........^^
-			// 7 ###  F
-			//   #### DF
-			//  J    L
+			// 7 ### F
+			//   ####DF
+			// J     L
 			signumL= [ 0, 0, 0, 0, 0, 0];
 			signumR= [ 0,-1,-1, 0, 0, 0];
 			signumT= [ 0, 0, 0, 0, 0, 0];
@@ -170,98 +156,97 @@ class EnterShapedKey extends KeyRenderer {
 			localWidth = widthNorth;
 			localHeigth = heightSouth;
 			recipe = "7FLJIJ";
-			// ..........^^
 			// 7 #### F
-			//  JI###  
+			// J I###  
 			//   J   L
 			signumL= [ 0, 0, 0, 1, 1, 0];
 			signumR= [ 0, 0, 0, 0, 0, 0];
 			signumT= [ 0, 0, 0, 0, 0, 0];
 			signumB= [ 0, 0, 0, 0,-1,-1];
 		}
+		// @formatter:on
 		this.localRadius = roundedCorner;
-		size(localWidth,localHeigth);
-
-		//recipe must always be 6 long
-		for ( turn in 0...6) {
+		size(localWidth, localHeigth);
+		// recipe must always be 6 long
+		for (turn in 0...6) {
 			switch shape {
 				case 'AEK' | 'ISO' | 'BAE Inverted':
-				offsetT = Math.abs(heightNorth - heightSouth) * signumT[turn]; // TODO account for gapX and gapY
-				offsetB = Math.abs(heightNorth - heightSouth) * signumB[turn];
+					offsetT = Math.abs(heightNorth - heightSouth) * signumT[turn]; // TODO account for gapX and gapY
+					offsetB = Math.abs(heightNorth - heightSouth) * signumB[turn];
 				case 'ISO Inverted' | 'BAE' | 'XT_2U': // to draw proper lower member height:
-				offsetT = Math.abs(heightSouth) * signumT[turn]; // TODO account for gapX and gapY
-				offsetB = Math.abs(heightSouth) * signumB[turn];
+					offsetT = Math.abs(heightSouth) * signumT[turn]; // TODO account for gapX and gapY
+					offsetB = Math.abs(heightSouth) * signumB[turn];
 			}
-			offsetL = Math.abs(widthNorth-widthSouth) * signumL[turn];
-			offsetR = Math.abs(widthNorth-widthSouth) * signumR[turn];
+			offsetL = Math.abs(widthNorth - widthSouth) * signumL[turn];
+			offsetR = Math.abs(widthNorth - widthSouth) * signumR[turn];
 			switch (recipe.charAt(turn)) {
 				case "7":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[pointPairIndex]));
-					points.push(posY + offsetT + offsetB + localRadius * (1 - sine[pointPairIndex]));
-					//trace ('7');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[pointPairIndex]));
+						points.push(posY + offsetT + offsetB + localRadius * (1 - sine[pointPairIndex]));
+						// trace ('7');
+					}
 				case "N":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localWidth + localRadius * (1 - cosine[segments - pointPairIndex]));
-					points.push(posY + offsetT + offsetB + localHeigth + localRadius * (1 - sine[segments - pointPairIndex]));
-					//trace ('N');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localWidth + localRadius * (1 - cosine[segments - pointPairIndex]));
+						points.push(posY + offsetT + offsetB + localHeigth + localRadius * (1 - sine[segments - pointPairIndex]));
+						// trace ('N');
+					}
 				case "Z":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[pointPairIndex]));
-					points.push(posY + offsetT + offsetB + localHeigth + localRadius * (1 - sine[pointPairIndex]));
-					//trace ('Z');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[pointPairIndex]));
+						points.push(posY + offsetT + offsetB + localHeigth + localRadius * (1 - sine[pointPairIndex]));
+						// trace ('Z');
+					}
 				case "F":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[segments - pointPairIndex] - 1));
-					points.push(posY + offsetT + offsetB + localRadius * (1 - sine[segments - pointPairIndex]));
-					//trace ('F');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[segments - pointPairIndex] - 1));
+						points.push(posY + offsetT + offsetB + localRadius * (1 - sine[segments - pointPairIndex]));
+						// trace ('F');
+					}
 				case "Y":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[segments - pointPairIndex] - 1));
-					points.push(posY + offsetT + offsetB + localHeigth + localRadius * (1 - sine[segments - pointPairIndex]));
-					//trace ('Y');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[segments - pointPairIndex] - 1));
+						points.push(posY + offsetT + offsetB + localHeigth + localRadius * (1 - sine[segments - pointPairIndex]));
+						// trace ('Y');
+					}
 				case "I":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localRadius * (cosine[pointPairIndex] - 1));
-					points.push(posY + offsetT + offsetB + localHeigth + localRadius * (1 - sine[pointPairIndex]));
-					//trace ('I');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localRadius * (cosine[pointPairIndex] - 1));
+						points.push(posY + offsetT + offsetB + localHeigth + localRadius * (1 - sine[pointPairIndex]));
+						// trace ('I');
+					}
 				case "L":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[pointPairIndex] - 1));
-					points.push(posY + offsetT + offsetB + localHeigth + localRadius * (sine[pointPairIndex] - 1));
-					//trace ('L');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[pointPairIndex] - 1));
+						points.push(posY + offsetT + offsetB + localHeigth + localRadius * (sine[pointPairIndex] - 1));
+						// trace ('L');
+					}
 				case "V":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localRadius * (cosine[segments - pointPairIndex] - 1));
-					points.push(posY + offsetT + offsetB + localHeigth + localRadius * (sine[segments - pointPairIndex] - 1));
-					//trace ('V');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localRadius * (cosine[segments - pointPairIndex] - 1));
+						points.push(posY + offsetT + offsetB + localHeigth + localRadius * (sine[segments - pointPairIndex] - 1));
+						// trace ('V');
+					}
 				case "J":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[segments - pointPairIndex]));
-					points.push(posY + offsetT + offsetB + localHeigth + localRadius * (sine[segments - pointPairIndex] - 1));
-					//trace ('J');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[segments - pointPairIndex]));
+						points.push(posY + offsetT + offsetB + localHeigth + localRadius * (sine[segments - pointPairIndex] - 1));
+						// trace ('J');
+					}
 				case "D":
-				for (pointPairIndex in 0...segments) {
-					points.push(posX + offsetL + offsetR + localWidth +localRadius * (1 - cosine[pointPairIndex]));
-					points.push(posY + offsetT + offsetB + localHeigth + localRadius * (sine[pointPairIndex] - 1));
-					//trace ('D');
-				}
+					for (pointPairIndex in 0...segments) {
+						points.push(posX + offsetL + offsetR + localWidth + localRadius * (1 - cosine[pointPairIndex]));
+						points.push(posY + offsetT + offsetB + localHeigth + localRadius * (sine[pointPairIndex] - 1));
+						// trace ('D');
+					}
 			}
 		}
 		final shape = new Shape();
 		shape.color = color;
 		shape.points = points;
 		// shape.triangulation = POLY2TRI;
-//		shape.alpha = 0.95 * this.subAlpha; // we draw slightly opaque
+		//		shape.alpha = 0.95 * this.subAlpha; // we draw slightly opaque
 		return shape;
 	}
 }
