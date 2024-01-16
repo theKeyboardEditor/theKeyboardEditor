@@ -81,7 +81,7 @@ class Gimbal extends Visual {
 		circle.angle = 360;
 		circle.color = color2;
 		circle.pos(0, offSet * .94);
-		circle.alpha = 0.01 * this.subAlpha;
+		circle.alpha = 0.01 * this.subAlpha; // practically invisible
 		this.add(circle);
 
 		gimbal1.clip = circle;
