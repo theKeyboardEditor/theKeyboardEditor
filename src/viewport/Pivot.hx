@@ -19,11 +19,13 @@ class Pivot extends Visual {
 	var dimension:Float = 32.0;
 	var posX:Float;
 	var posY:Float;
-	
+//	var visible:Bool = false; // we are created invisible
+
 	public function new(posX:Float, posY:Float) {
 		super();
 		this.pos(posX,posY);
-//		this.create();
+		this.visible = false; // we are created invisible per default
+		this.create();
 	}
 	
 	public function create() {

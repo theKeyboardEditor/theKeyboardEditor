@@ -6,6 +6,7 @@ import ceramic.Border;
 import ceramic.Arc;
 import ceramic.Quad;
 import RoundedQuad;
+import viewport.Pivot;
 
 class RectangularKey extends KeyRenderer {
 	var topColor: Int = 0xffFCFCFC;
@@ -38,6 +39,13 @@ class RectangularKey extends KeyRenderer {
 		this.border.depth = 4;
 		this.border.visible = false;
 		this.add(this.border);
+		
+		this.pivot = new Pivot(0,0);
+		//TODO account for key.relativeRotationCenter
+		//this.pivot.create();
+		this.pivot.depth = 999; // ueber alles o/
+		this.pivot.visible = false;
+		this.add(this.pivot);
 
 		final top = new RoundedQuad(width - this.topOffset, height - this.topOffset, roundedCorner, topColor);
 		top.depth = 0; // this is in the sense of layers

@@ -91,7 +91,6 @@ class Viewport extends Scene {
 		var pivot = new Pivot(originX - gapX / 2, originY - gapY / 2);
 		pivot.create();
 		this.add(pivot);
-		trace (pivot);
 	}
 
 	/**
