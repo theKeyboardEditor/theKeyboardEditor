@@ -61,8 +61,8 @@ class RoundedQuad extends Visual {
 		shape.points = points;
 		// shape.triangulation = EARCUT;
 		// shape.triangulation = POLY2TRI;
-		shape.alpha = 0.95 * this.subAlpha; // we draw slightly opaque
 		this.add(shape);
+		this.alpha = 0.95 * subAlpha; // we draw slightly opaque
 
 		return this;
 	}

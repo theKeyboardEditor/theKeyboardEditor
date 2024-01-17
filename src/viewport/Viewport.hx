@@ -83,14 +83,11 @@ class Viewport extends Scene {
 		gimbal.create();
 		gimbal.x = 1550;
 		gimbal.y = 800;
-		// TODO change alpha on mouseover
-		// TODO make gimbal higher than blue placing cursor
 		this.add(gimbal);
 
-		// TODO delete this, it's only an example of construction:
-		var pivot = new Pivot(originX - gapX / 2, originY - gapY / 2);
-		pivot.create();
-		this.add(pivot);
+		gimbal.onPointerOver(gimbal, (_) -> {
+			StatusBar.inform('Gimbal under mouse! ${screen.pointerX} ${screen.pointerY}');
+		});
 	}
 
 	/**
@@ -251,7 +248,7 @@ class Viewport extends Scene {
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerOver(key, (_) -> {
-			// StatusBar.inform('Mouse hovering at: ${k.position}');
+			StatusBar.inform('Mouse hovering at: ${k.position}');
 		});
 
 		// Wheel Zooming:

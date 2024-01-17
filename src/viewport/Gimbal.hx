@@ -34,8 +34,8 @@ class Gimbal extends Visual {
 		this.w = w;
 		this.h = h;
 		this.size(h, w);
-		this.depth = 1000; // always soar high above everything
-		this.subAlpha = 1; // we start in the middle
+		this.depth = 900; // always soar high above everything except the pivot
+		this.subAlpha = .5; // we start in the middle
 		this.color1 = 0x40CCCCCC;
 		this.color2 = 0x40FCFCFC;
 	}
@@ -89,10 +89,10 @@ class Gimbal extends Visual {
 		gimbal3.clip = circle;
 		gimbal4.clip = circle;
 
-		final top = new RoundedQuad(100, 100, 12);
+		final top = new RoundedQuad(100, 100, 12, color1);
 		top.pos(-50, 21);
-		top.color = color1;
-		top.subAlpha = this.subAlpha;
+		top.inheritAlpha = true;
+		top.alpha = 0.05 * this.subAlpha;
 		this.add(top);
 
 		return this;
