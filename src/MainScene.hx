@@ -89,9 +89,9 @@ class MainScene extends Scene {
 		tab.text = keyboard.name;
 		this.gui.tabbar.findComponent("projects").addComponent(tab);
 		// Create a new viewport
-		final viewport = new viewport.Viewport(keyboard);
+		final viewport = new viewport.Viewport(keyboard); //TODO better naming is needed
 		this.openProjects[flake] = viewport;
-		switchViewport(viewport);
+		switchViewport(viewport); 
 	}
 
 	public function closeViewport(viewport: viewport.Viewport) {
@@ -102,7 +102,7 @@ class MainScene extends Scene {
 		// this.gui.tabbar.findComponent("projects").disposeComponent();
 	}
 
-	public function switchViewport(viewport: viewport.Viewport) {
+	public function switchViewport(viewport: viewport.Viewport) { // TODO that's 4 Viewports in one line?
 		// TODO update the tabs to refect the active project
 		this.currentProject?.set_visible(false);
 		this.currentProject?.cursor?.set_visible(false);
