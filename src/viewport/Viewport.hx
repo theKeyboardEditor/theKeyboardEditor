@@ -86,6 +86,11 @@ class Viewport extends Scene {
 		// TODO change alpha on mouseover
 		// TODO make gimbal higher than blue placing cursor
 		this.add(gimbal);
+
+		// TODO delete this, it's only an example of construction:
+		var pivot = new Pivot(originX - gapX / 2, originY - gapY / 2);
+		pivot.create();
+		this.add(pivot);
 	}
 
 	/**
@@ -253,7 +258,8 @@ class Viewport extends Scene {
 		screen.onMouseWheel(screen, mouseWheel);
 
 		key.onPointerDown(key, (info) -> {
-			if (this.paused) return;
+			if (this.paused)
+				return;
 			if (info.buttonId == 1)
 				return;
 			if (key.border.visible) {

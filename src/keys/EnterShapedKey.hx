@@ -4,6 +4,7 @@ import ceramic.Shape;
 import ceramic.Color;
 import ceramic.Border;
 import ceramic.Visual;
+import viewport.Pivot;
 
 /**
  *    Draw a enter shaped rectangle with nice rounded corners
@@ -89,6 +90,13 @@ class EnterShapedKey extends KeyRenderer {
 		this.border.depth = 4;
 		this.border.visible = false; // per default created invisible
 		this.add(this.border);
+
+		this.pivot = new Pivot(0, 0);
+		// TODO account for key.relativeRotationCenter
+		// this.pivot.create();
+		this.pivot.depth = 999; // ueber alles o/
+		this.pivot.visible = false;
+		this.add(this.pivot);
 
 		this.add(enterShape(widthNorth - this.topOffset, heightNorth - this.topOffset, widthSouth - this.topOffset,
 			heightSouth - this.topOffset, topColor, topX, topY));
