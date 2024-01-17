@@ -24,7 +24,7 @@ class Cursor extends Visual {
 	override public function new(width: Float, height: Float) {
 		super();
 		size(width, height);
-		this.depth = 6;
+		this.depth = 800; // only pivots and gimbals higher than us
 		this.color = 0x6D3C4BC5; // UI theme accent color!
 
 		// @formatter:off
@@ -52,7 +52,7 @@ class Cursor extends Visual {
 		this.topLeft.vertices = this.vertices;
 		this.topLeft.indices = this.indices;
 		this.topLeft.pos(0, 0);
-		this.topLeft.depth = 6;
+		this.topLeft.depth = 800;
 		this.add(this.topLeft);
 
 		// BOTTOM LEFT
@@ -61,7 +61,7 @@ class Cursor extends Visual {
 		this.bottomLeft.vertices = this.vertices;
 		this.bottomLeft.indices = this.indices;
 		this.bottomLeft.pos(this.width, 0);
-		this.bottomLeft.depth = 6;
+		this.bottomLeft.depth = 800;
 		this.bottomLeft.rotation = 90;
 		this.add(this.bottomLeft);
 
@@ -71,7 +71,7 @@ class Cursor extends Visual {
 		this.topRight.vertices = this.vertices;
 		this.topRight.indices = this.indices;
 		this.topRight.pos(0, this.height);
-		this.topRight.depth = 6;
+		this.topRight.depth = 800;
 		this.topRight.rotation = -90;
 		this.add(this.topRight);
 
@@ -81,7 +81,7 @@ class Cursor extends Visual {
 		this.bottomRight.vertices = this.vertices;
 		this.bottomRight.indices = this.indices;
 		this.bottomRight.pos(this.width, this.height);
-		this.bottomRight.depth = 6;
+		this.bottomRight.depth = 800;
 		this.bottomRight.rotation = 180;
 		this.add(this.bottomRight);
 
