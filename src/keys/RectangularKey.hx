@@ -39,10 +39,10 @@ class RectangularKey extends KeyRenderer {
 		this.border.depth = 4;
 		this.border.visible = false;
 		this.add(this.border);
-		
-		this.pivot = new Pivot(0,0);
-		//TODO account for key.relativeRotationCenter
-		//this.pivot.create();
+
+		this.pivot = new Pivot(0, 0);
+		// TODO account for key.relativeRotationCenter
+		// this.pivot.create();
 		this.pivot.depth = 999; // ueber alles o/
 		this.pivot.visible = false;
 		this.add(this.pivot);
