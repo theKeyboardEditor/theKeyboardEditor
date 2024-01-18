@@ -1,28 +1,31 @@
-<box width="200px" style="background-color: #1d2021; height: 100%; padding: 10px; margin: 0px; spacing: 48px;" >
-    <frame text="Key Shapes" style="width: 100%;">
-        <hbox>
-            <vbox>
-                <button styleName="key-button" text="1u R1" width="100%" />
-                <button styleName="key-button" text="1.5u R2" />
-                <button styleName="key-button" text="2u R3" width="100%" />
-                <button styleName="key-button" text="2.75 R4" width="100%" />
-                <button styleName="key-button" text="7U R5" width="100%" />
-                <button styleName="key-button" text="BAE" width="100%" />
-                <button styleName="key-button" text="N+" width="100%" />
-                <button styleName="key-button" text="1u R2" width="100%" />
-                <button styleName="key-button" text="1u R4" width="100%" />
-            </vbox>
-            <vbox>
-                <button styleName="key-button" text="1.25 R2" width="100%" />
-                <button styleName="key-button" text="1.75 R3" />
-                <button styleName="key-button" text="2.25 R2" width="100%" />
-                <button styleName="key-button" text="6.25 R5" width="100%" />
-                <button styleName="key-button" text="ISO" width="100%" />
-                <button styleName="key-button" text="ANSI" width="100%" />
-                <button styleName="key-button" text="N ent" width="100%" />
-                <button styleName="key-button" text="1u R3" width="100%" />
-                <button styleName="key-button" text="2.25 R3" width="100%" />
-            </vbox>
-        </hbox>
-    </frame>
-</box>
+<vbox width="200px" height="100%" style="background-color: #1d2021; padding: 8px;" >
+	<vbox horizontalAlign="center">
+		<hbox>
+			<box style="background-color: #282828;" width="50px" height="50px" />
+			<box style="background-color: #282828;" width="50px" height="50px"/>
+			<box style="background-color: #282828;" width="50px" height="50px"/>
+		</hbox>
+		<hbox>
+			<box style="background-color: #282828;" width="50px" height="50px"/>
+			<box style="background-color: #282828;" width="50px" height="50px"/>
+			<box style="background-color: #282828;" width="50px" height="50px"/>
+		</hbox>
+	</vbox>
+
+	<hbox height="100%" horizontalAlign="center" verticalAlign="center">
+		<grid verticalAlign="center">
+			<box style="background-color: #282828;" width="75px" height="75px" />
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+			<box style="background-color: #282828;" width="75px" height="75px"/>
+		</grid>
+	</hbox>
+
+	<box style="background-color: #282828" width="150px" height="150px" horizontalAlign="center" />
+</vbox>
