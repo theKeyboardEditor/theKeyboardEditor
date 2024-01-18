@@ -26,6 +26,11 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__COLOR_MODE);
 		// MISC ICONS
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
+		assets.add(Images.ICONS__UNDO);
+		assets.add(Images.ICONS__REDO);
+		assets.add(Images.ICONS__COPY);
+		assets.add(Images.ICONS__CUT);
+		assets.add(Images.ICONS__PASTE);
 		assets.add(Images.HEADER);
 		// JSON
 		assets.add(Texts.NUMPAD);

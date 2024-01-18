@@ -1,31 +1,43 @@
-<vbox width="200px" height="100%" style="background-color: #1d2021; padding: 8px;" >
-	<vbox horizontalAlign="center">
-		<hbox>
-			<box style="background-color: #282828;" width="50px" height="50px" />
-			<box style="background-color: #282828;" width="50px" height="50px"/>
-			<box style="background-color: #282828;" width="50px" height="50px"/>
-		</hbox>
-		<hbox>
-			<box style="background-color: #282828;" width="50px" height="50px"/>
-			<box style="background-color: #282828;" width="50px" height="50px"/>
-			<box style="background-color: #282828;" width="50px" height="50px"/>
-		</hbox>
+<vbox width="160" height="100%" style="padding: 5px; background-color: #1d2021;" >
+	<label text="Edit Actions:"/>
+	<vbox horizontalAlign="center" height="25%" >
+		<scrollview width="153px" height="100%" contentWidth="100%">
+			<vbox width="100%"  horizontalAlign="center" verticalAlign="center">
+			<grid columns="2" horizontalAlign="center">
+				<button text="Undo" icon="icons/undo" width="64px" height="64px" iconPosition="top" />
+				<button text="Redo" icon="icons/redo" width="64px" height="64px" iconPosition="top" />
+				<button text="Copy" icon="icons/copy" width="64px" height="64px" iconPosition="top" />
+				<button text="Cut" icon="icons/cut" width="64px" height="64px" iconPosition="top" />
+				<button text="Paste" icon="icons/paste" width="64px" height="64px" iconPosition="top" />
+			</grid>
+			</vbox>
+		</scrollview>
 	</vbox>
-
-	<hbox height="100%" horizontalAlign="center" verticalAlign="center">
-		<grid verticalAlign="center">
-			<box style="background-color: #282828;" width="75px" height="75px" />
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-			<box style="background-color: #282828;" width="75px" height="75px"/>
-		</grid>
+	<label text="Keys:"/>
+	<hbox height="50%"  width="156px" horizontalAlign="center" verticalAlign="center">
+		<scrollview width="153px" height="100%"  contentWidth="100%" autoHideScrolls="true">
+			<vbox width="100%"  horizontalAlign="center" verticalAlign="center">
+			<grid columns="2" horizontalAlign="center" verticalAlign="center">
+				<button    text="1U" width="64px" height="64px" />
+				<button text="1.25U" width="64px" height="64px" />
+				<button  text="1.5U" width="64px" height="64px" />
+				<button text="1.75U" width="64px" height="64px" />
+				<button    text="2U" width="64px" height="64px" />
+				<button text="2.25U" width="64px" height="64px" />
+				<button text="2.75U" width="64px" height="64px" />
+				<button text="2U V." width="64px" height="64px" />
+				<button   text="ISO" width="64px" height="64px" />
+				<button text="6.25U" width="64px" height="64px" />
+				<button   text="BAE" width="64px" height="64px" />
+				<button    text="7U" width="64px" height="64px" />
+				<button   text="AEK" width="64px" height="64px" />
+				<button text="XT_2U" width="64px" height="64px" />
+			</grid>
+			</vbox>
+		</scrollview>
 	</hbox>
-
-	<box style="background-color: #282828" width="150px" height="150px" horizontalAlign="center" />
+	<label text="Selected:"/>
+	<hbox height="20%" horizontalAlign="center">
+		<box style="background-color: #282828" width="128px" height="128px" horizontalAlign="center" verticalAlign="bottom"/>
+	</hbox>
 </vbox>
