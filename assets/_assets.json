@@ -52,6 +52,12 @@
             "name": "icons/color-mode.png"
         },
         {
+            "name": "icons/copy.png"
+        },
+        {
+            "name": "icons/cut.png"
+        },
+        {
             "name": "icons/kebab-dropdown.png"
         },
         {
@@ -61,7 +67,16 @@
             "name": "icons/legend-mode.png"
         },
         {
+            "name": "icons/paste.png"
+        },
+        {
             "name": "icons/place-mode.png"
+        },
+        {
+            "name": "icons/redo.png"
+        },
+        {
+            "name": "icons/undo.png"
         },
         {
             "name": "icons/unit-mode.png"
@@ -95,6 +110,9 @@
         },
         {
             "name": "RobotoMedium.png"
+        },
+        {
+            "name": "svg/EditIcons.svg"
         },
         {
             "name": "textured.frag"
