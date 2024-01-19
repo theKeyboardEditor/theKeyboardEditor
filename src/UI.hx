@@ -31,6 +31,7 @@ class UI extends haxe.ui.containers.VBox {
 		this.percentWidth = this.percentHeight = 100;
 
 		// Render elements
+		// TODO show & hide selected tabbars according to current mode?
 		this.tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");
 		tabbarEvents();
 		this.addComponent(this.tabbar);

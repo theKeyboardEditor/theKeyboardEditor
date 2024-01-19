@@ -26,6 +26,11 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__COLOR_MODE);
 		// MISC ICONS
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
+		assets.add(Images.ICONS__UNDO);
+		assets.add(Images.ICONS__REDO);
+		assets.add(Images.ICONS__COPY);
+		assets.add(Images.ICONS__CUT);
+		assets.add(Images.ICONS__PASTE);
 		assets.add(Images.HEADER);
 		// JSON
 		assets.add(Texts.NUMPAD);
@@ -89,9 +94,9 @@ class MainScene extends Scene {
 		tab.text = keyboard.name;
 		this.gui.tabbar.findComponent("projects").addComponent(tab);
 		// Create a new viewport
-		final viewport = new viewport.Viewport(keyboard); //TODO better naming is needed
+		final viewport = new viewport.Viewport(keyboard); // TODO better naming is needed
 		this.openProjects[flake] = viewport;
-		switchViewport(viewport); 
+		switchViewport(viewport);
 	}
 
 	public function closeViewport(viewport: viewport.Viewport) {

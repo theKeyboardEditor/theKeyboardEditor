@@ -11,7 +11,7 @@
         }
     </style>
     <!-- -->
-    <button text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="showSideBarLeft" text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
     <button text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
     <button text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
     <button text="Keyboard" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
