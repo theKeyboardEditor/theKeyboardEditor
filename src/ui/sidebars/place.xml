@@ -11,7 +11,7 @@
 					<button text="Paste" icon="icons/paste" width="64px" height="64px" iconPosition="top" />
 				</hbox>
 				<hbox horizontalAlign="center">
-					<button text="Cut" icon="icons/cut" idth="133px" height="64px" iconPosition="top" />
+					<button text="Cut" icon="icons/cut" width="133px" height="64px" iconPosition="top" />
 				</hbox>
 			</vbox>
 		</scrollview>

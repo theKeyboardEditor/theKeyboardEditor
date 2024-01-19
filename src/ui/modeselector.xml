@@ -1,4 +1,4 @@
-<vbox styleName="modeSelector">
+<button-bar direction="vertical" styleName="modeSelector">
     <style>
         .modeSelector {
             width: 64px;
@@ -9,11 +9,14 @@
             width: 64px;
             height: 64px;
         }
+		.modeSelector button:down {
+			border-left: 3px solid $accent-color;
+		}
     </style>
     <!-- -->
-    <button id="showSideBarLeft" text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
-    <button text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
-    <button text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
-    <button text="Keyboard" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
-    <button text="Color" icon="icons/color-mode" width="32px" height="32px" iconPosition="top" />
-</vbox>
+    <button id="place" text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="unit" text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="legend" text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="keyboard" text="Keyboard" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="color" text="Color" icon="icons/color-mode" width="32px" height="32px" iconPosition="top" />
+</button-bar>

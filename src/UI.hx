@@ -7,15 +7,17 @@ import haxe.ui.events.UIEvent;
 import haxe.ui.containers.Box;
 import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
+import haxe.ui.containers.ButtonBar;
 import haxe.ui.containers.dialogs.Dialog;
 
 using StringTools;
 
 class UI extends haxe.ui.containers.VBox {
 	public var overlay: Box;
+	public var leftBox: HBox;
 	public var tabbar: HBox;
-	public var modeSelector: VBox;
-	public var sidebar: Box;
+	public var modeSelector: ButtonBar;
+	public var sidebar(default, set): Box;
 	public var welcome: VBox;
 
 	var scene: MainScene;
@@ -36,21 +38,29 @@ class UI extends haxe.ui.containers.VBox {
 		tabbarEvents();
 		this.addComponent(this.tabbar);
 
-		var left = new HBox();
-		left.styleString = "spacing: 0; height: 100%;";
-		this.addComponent(left);
+		leftBox = new HBox();
+		leftBox.styleString = "spacing: 0; height: 100%;";
+		this.addComponent(leftBox);
 		{
 			this.modeSelector = ComponentBuilder.fromFile("ui/modeselector.xml");
-			left.addComponent(this.modeSelector);
+			leftBox.addComponent(this.modeSelector);
 
-			this.sidebar = ComponentBuilder.fromFile("ui/sidebar.xml");
-			left.addComponent(this.sidebar);
+			this.sidebar = ComponentBuilder.fromFile("ui/sidebars/place.xml");
 		}
 
 		StatusBar.element = ComponentBuilder.fromFile("ui/status.xml");
 		this.addComponent(StatusBar.element);
 
 		this.overlay = createWelcome();
+	}
+
+	function set_sidebar(value: Box): Box {
+		if (sidebar != null) {
+			leftBox.removeComponent(sidebar);
+		}
+		this.sidebar = value;
+		leftBox.addComponent(sidebar);
+		return sidebar;
 	}
 
 	public function createWelcome(): Box {
@@ -106,6 +116,18 @@ class UI extends haxe.ui.containers.VBox {
 	public function welcomeEvents(event: MouseEvent) {
 		this.overlay.visible = false;
 		this.scene.openViewport(new keyson.Keyson());
+	}
+
+	@:bind(modeSelector, UIEvent.CHANGE)
+	public function switchMode(_: UIEvent) {
+		this.sidebar = switch (modeSelector.selectedButton.id) {
+			case "place":
+				ComponentBuilder.fromFile("ui/sidebars/place.xml");
+			case "color":
+				ComponentBuilder.fromFile("ui/sidebars/color.xml");
+			default:
+				ComponentBuilder.fromFile("ui/sidebars/404.xml");
+		};
 	}
 }
 
