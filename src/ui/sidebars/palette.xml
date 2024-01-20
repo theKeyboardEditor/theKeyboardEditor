@@ -1,0 +1,50 @@
+<vbox width="160" height="100%" style="padding: 5px; background-color: #1d2021;">
+	<vbox horizontalAlign="center" height="25%">
+		<scrollview width="153px" height="100%" contentWidth="100%" onmousewheel="event.cancel();">
+			<vbox width="100%" horizontalAlign="center" verticalAlign="center">
+				<hbox horizontalAlign="center">
+					<button text="Undo" icon="icons/undo" width="64px" height="64px" iconPosition="top" tooltip="Undo last action"/>
+					<button text="Redo" icon="icons/redo" width="64px" height="64px" iconPosition="top" tooltip="Redo last action"/>
+				</hbox>
+				<hbox horizontalAlign="center">
+					<button text="Copy" icon="icons/copy" width="64px" height="64px" iconPosition="top" tooltip="Copy selected to buffer"/>
+					<button text="Paste" icon="icons/paste" width="64px" height="64px" iconPosition="top" tooltip="Paste selected from buffer"/>
+				</hbox>
+				<hbox horizontalAlign="center">
+					<button text="Cut" icon="icons/cut" width="133px" height="64px" iconPosition="top" tooltip="Cut selectet to buffer"/>
+				</hbox>
+			</vbox>
+		</scrollview>
+	</vbox>
+	<label text="Colors:" />
+	<hbox height="50%" width="156px" horizontalAlign="center" verticalAlign="center">
+		<scrollview width="153px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
+			<vbox width="100%" horizontalAlign="center" verticalAlign="center">
+				<grid columns="2" horizontalAlign="center" verticalAlign="center">
+					<button id="black" text="black" width="64px" height="64px" style="background-color: #1A1C2C;" />
+					<button id="violet" text="violet" width="64px" height="64px" style="background-color: #5D275D;" />
+					<button id="red" text="red" width="64px" height="64px" style="background-color: #B13E53;" />
+					<button id="orange" text="orange" width="64px" height="64px" style="background-color: #EF7D57;" />
+					<button id="yellow" text="yellow" width="64px" height="64px" style="background-color: #FFCD75; color: #0c0c0c;" />
+					<button id="lime" text="lime" width="64px" height="64px" style="background-color: #A7F070;" />
+					<button id="green" text="green" width="64px" height="64px" style="background-color: #38B764;" />
+					<button id="teal" text="teal" width="64px" height="64px" style="background-color: #257179;" />
+					<button id="dblue" text="dblue" width="64px" height="64px" style="background-color: #29366F;" />
+					<button id="blue" text="blue" width="64px" height="64px" style="background-color: #3B5DC9;" />
+					<button id="sky" text="sky" width="64px" height="64px" style="background-color: #41A6F6;" />
+					<button id="cyan" text="cyan" width="64px" height="64px" style="background-color: #73EFF7; color: #0c0c0c;" />
+					<button id="white" text="white" width="64px" height="64px" style="background-color: #F4F4F4; color: #0c0c0c;" />
+					<button id="lgray" text="lgray" width="64px" height="64px" style="background-color: #94B0C2; color: #0c0c0c;" />
+					<button id="gray" text="gray" width="64px" height="64px" style="background-color: #566C86;" />
+					<button id="dgray" text="dgray" width="64px" height="64px" style="background-color: #333C57;" />
+				</grid>
+			</vbox>
+		</scrollview>
+	</hbox>
+	<label text="Selected:" />
+	<hbox height="20%" horizontalAlign="center">
+		<box style="background-color: #282828" width="128px" height="128px" horizontalAlign="center" verticalAlign="bottom">
+			<button text='Palette: "Sweetie-16"' width="100%" height="100%" horizontalAlign="center" verticalAlign="center" style="background-color: #73EFF7; color: #0c0c0c;" tooltip="Click to change palette (WIP)"/>
+		</box>
+	</hbox>
+</vbox>
