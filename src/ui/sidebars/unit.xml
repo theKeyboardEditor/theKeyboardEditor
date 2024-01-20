@@ -17,9 +17,46 @@
 		</scrollview>
 	</vbox>
 	<label text="Keys:" />
-	<hbox height="50%" width="156px" horizontalAlign="center" verticalAlign="center">
+	<hbox height="75%" width="156px" horizontalAlign="center" verticalAlign="center">
 		<scrollview width="153px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
 			<vbox width="100%" horizontalAlign="center" verticalAlign="center">
+				<hbox  horizontalAlign="left">
+					<label text="Units:" />
+				</hbox>
+				<vbox horizontalAlign="center">
+					<number-stepper width="133" pos="1" step="1" min="1" max="32" />
+				</vbox>
+				<hbox  horizontalAlign="left">
+					<label text="Unit:" />
+				</hbox>
+				<vbox horizontalAlign="center">
+					<number-stepper width="133" pos="0" step="1" min="0" max="31" />
+				</vbox>
+				<hbox>
+					<label text="Colors:" />
+				</hbox>
+				<hbox  horizontalAlign="center">
+					<button text="Body"  width="64px" height="64px" tooltip="Change color" style="background-color: #94B0C2; color: #0c0c0c;"/>
+					<button text="Plate"  width="64px" height="64px"  tooltip="Change color" style="background-color: #566C86;"/>
+				</hbox>
+				<hbox  horizontalAlign="left">
+					<label text="Corners radii:" />
+				</hbox>
+				<vbox horizontalAlign="center">
+					<number-stepper width="133" pos="8" step=".5" min="0" max="200" precision="2" />
+					<number-stepper width="133" pos="8" step=".5" min="0" max="200" precision="2" />
+					<number-stepper width="133" pos="8" step=".5" min="0" max="200" precision="2" />
+					<number-stepper width="133" pos="8" step=".5" min="0" max="200" precision="2" />
+				</vbox>
+				<hbox  horizontalAlign="left">
+					<label text="Side widths:" />
+				</hbox>
+				<vbox horizontalAlign="left">
+					<number-stepper width="133" pos="8" step=".5" min="0" max="200" precision="2" />
+					<number-stepper width="133" pos="8" step=".5" min="0" max="200" precision="2" />
+					<number-stepper width="133" pos="8" step=".5" min="0" max="200" precision="2" />
+					<number-stepper width="133" pos="8" step=".5" min="0" max="200" precision="2" />
+				</vbox>
 			</vbox>
 		</scrollview>
 	</hbox>
