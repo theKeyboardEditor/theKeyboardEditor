@@ -18,8 +18,8 @@ class Keyson {
 
 	@:jignored public static var tabulation: String = "	"; // keyson output indentation
 
-	public function new() { // initialize our object with sane defaults
-		name = "unknown";
+	public function new(?name:String) { // initialize our object with sane defaults
+		this.name = if ( name != null) name else "unknown";
 		author = "unknown";
 		license = "CC";
 		comment = "empty";

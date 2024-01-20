@@ -14,7 +14,9 @@ class Viewport extends Scene {
 	public var keyboard: Keyboard;
 
 	public var inputMap: Input;
-	public var wheelFactor = 1.0;
+	public var wheelFactor = 1; //scroll direction (inverse for Mac)
+	public var wheelZoomFactor = 8;
+	var i:Int = 0;
 	public var selected: Map<Key, KeyRenderer> = [];
 
 	// Everything inside the viewport is stored here
@@ -115,7 +117,7 @@ class Viewport extends Scene {
 	 */
 	public inline function moveViewportCamera(delta: Float) {
 		if (input.keyPressed(LCTRL) || input.keyPressed(RCTRL) || input.keyPressed(LMETA) || input.keyPressed(RMETA)) {
-			return;
+			return; // ignore all modified key presses (for now)
 		}
 
 		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
@@ -135,20 +137,6 @@ class Viewport extends Scene {
 			this.workSurface.x -= unitFractionU * this.workSurface.scaleX;
 			this.grid.x -= unitFractionU * this.workSurface.scaleX;
 		}
-		/* once somebody fixes rounding errors for the grid alignment please uncomment this and erase the above TIA
-			if (inputMap.pressed(UP)) {
-				this.workSurface.y += movementSpeed * delta;
-			}
-			if (inputMap.pressed(LEFT)) {
-				this.workSurface.x += movementSpeed * delta;
-			}
-			if (inputMap.pressed(DOWN)) {
-				this.workSurface.y -= movementSpeed * delta;
-			}
-			if (inputMap.pressed(RIGHT)) {
-				this.workSurface.x -= movementSpeed * delta;
-			}
-		 */
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
 			// nothing like nice predictable results
@@ -257,7 +245,7 @@ class Viewport extends Scene {
 		key.onPointerDown(key, (info) -> {
 			if (this.paused)
 				return;
-			if (info.buttonId == 1)
+			if (info.buttonId != 2)// now on we select with right mouse button (temporary)
 				return;
 			if (key.border.visible) {
 				selected.remove(k);
@@ -291,23 +279,27 @@ class Viewport extends Scene {
 	function mouseWheel(x: Float, y: Float): Void { // porcess scrolling with vertical mouse wheel
 		x *= wheelFactor #if mac * -1.0 #end;
 		y *= wheelFactor;
-		// now do the zooming!
-		if (y < 0) { // zoom in seems to be when negative values
-			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom;
-			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit / 4 else maxZoom;
-			this.cursor.scaleX = this.workSurface.scaleX;
-			this.cursor.scaleY = this.workSurface.scaleY;
-			this.grid.scaleX = this.workSurface.scaleX;
-			this.grid.scaleY = this.workSurface.scaleY;
-			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
-		} else if (y > 0) { // zoom out is when positive values are present
-			this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit / 4 else minZoom;
-			this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit / 4 else minZoom;
-			this.cursor.scaleX = this.workSurface.scaleX;
-			this.cursor.scaleY = this.workSurface.scaleY;
-			this.grid.scaleX = this.workSurface.scaleX;
-			this.grid.scaleY = this.workSurface.scaleY;
-			StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
+		//TODO somehow make the wheel zoom way slower than 1:1
+		i = if ( i < wheelZoomFactor ) i + 1 else 0;
+		if (i >= wheelZoomFactor) { //dampen the wheel zoom by skipping events
+			// now do the zooming!
+			if (y < 0) { // zoom_in seems to be with negative values
+				this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom;
+				this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit / 4 else maxZoom;
+				this.cursor.scaleX = this.workSurface.scaleX;
+				this.cursor.scaleY = this.workSurface.scaleY;
+				this.grid.scaleX = this.workSurface.scaleX;
+				this.grid.scaleY = this.workSurface.scaleY;
+				StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
+			} else if (y > 0) { // zoom_out is when positive values are present
+				this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit / 4 else minZoom;
+				this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit / 4 else minZoom;
+				this.cursor.scaleX = this.workSurface.scaleX;
+				this.cursor.scaleY = this.workSurface.scaleY;
+				this.grid.scaleX = this.workSurface.scaleX;
+				this.grid.scaleY = this.workSurface.scaleY;
+				StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
+			}
 		}
 	}
 }

@@ -22,7 +22,7 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__UNIT_MODE);
 		assets.add(Images.ICONS__LEGEND_MODE);
 		assets.add(Images.ICONS__KEYBOARD_MODE);
-		assets.add(Images.ICONS__COLOR_MODE);
+		assets.add(Images.ICONS__PALETTE_MODE);
 		// MISC ICONS
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
 		assets.add(Images.ICONS__UNDO);
