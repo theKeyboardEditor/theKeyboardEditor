@@ -18,6 +18,7 @@ class UI extends haxe.ui.containers.VBox {
 	public var tabbar: HBox;
 	public var modeSelector: ButtonBar;
 	public var sidebar(default, set): Box;
+	public var viewport: ui.ViewportComponent;
 	public var welcome: VBox;
 
 	var scene: MainScene;
@@ -46,6 +47,11 @@ class UI extends haxe.ui.containers.VBox {
 			leftBox.addComponent(this.modeSelector);
 
 			this.sidebar = ComponentBuilder.fromFile("ui/sidebars/place.xml");
+
+			this.viewport = new ui.ViewportComponent();
+			leftBox.addComponent(this.viewport);
+			this.viewport.percentWidth = 100;
+			this.viewport.percentHeight = 100;
 		}
 
 		StatusBar.element = ComponentBuilder.fromFile("ui/status.xml");
@@ -87,15 +93,15 @@ class UI extends haxe.ui.containers.VBox {
 						this.scene.openViewport(keyson.Keyson.parse(body));
 					});
 				case "save":
-					this.scene.save(scene.currentProject.keyson, store);
+					this.scene.save(viewport.display.keyson, store);
 				case "import":
 					final dialog = new FileDialog();
 					dialog.openJson("KLE Json File");
 					dialog.onFileLoaded(scene, (body: String) -> {
 						var dialog = new ImportNameDialog();
-						this.scene.currentProject.paused = true;
+						viewport.display.paused = true;
 						dialog.onDialogClosed = function(e: DialogEvent) {
-							this.scene.currentProject.paused = false;
+							viewport.display.paused = false;
 							final name = dialog.name.value;
 							if (StringTools.trim(name) == "")
 								return;
