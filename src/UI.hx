@@ -13,7 +13,7 @@ import haxe.ui.containers.dialogs.Dialog;
 
 using StringTools;
 
-class UI extends haxe.ui.containers.VBox { // this is haxe.ui class
+class UI extends haxe.ui.containers.VBox {
 	public var overlay: Box;
 	public var midBox: HBox;
 	public var leftBox: HBox;

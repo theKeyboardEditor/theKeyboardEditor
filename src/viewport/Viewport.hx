@@ -12,7 +12,7 @@ import keyson.Keyson.Key;
  * Viewport is the screenarea that contains the project representation 
  * 		with all helpers
  */
-class Viewport extends Scene { // this is ceramic class
+class Viewport extends Scene {
 	// TODO: Replace instances of keyboard with just keyson
 	public var keyson: Keyson;
 	public var keyboard: Keyboard;

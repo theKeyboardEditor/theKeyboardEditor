@@ -7,7 +7,7 @@ import ceramic.KeyCode;
 import haxe.ui.core.Screen;
 import uuid.FlakeId;
 
-class MainScene extends Scene { // this is ceramic class
+class MainScene extends Scene {
 	public var gui: UI;
 	public var flakeGen: FlakeId; // Used for generating the previously stated identifiers
 	public var openProjects: Map<String, viewport.Viewport> = []; // The Int64 is an random identifier for the specific viewport
