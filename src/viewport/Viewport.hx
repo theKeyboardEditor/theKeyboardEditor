@@ -50,7 +50,7 @@ class Viewport extends Scene { // this is ceramic class
 	inline static final maxZoom = 2.0;
 	inline static final minZoom = 0.25;
 	inline static final zoomUnit = 1 / 16; // 1/32 is accurate enough for most zooming cases
-	inline static final originX: Float = 310;
+	inline static final originX: Float = 110;
 	inline static final originY: Float = 60;
 
 	// Gap between the different keys
@@ -187,6 +187,7 @@ class Viewport extends Scene { // this is ceramic class
 		// Position the cursor right on top of the keycaps
 		this.cursor.pos(screenPosX - gapX / 2 * scale, screenPosY - gapY / 2 * scale);
 
+		// TODO make sure the action goes to the proper keyson and keyboardUnit
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
 			this.actionQueue.push(new PlaceKey(this, snappedPosX, snappedPosY, "1U"));
@@ -245,7 +246,7 @@ class Viewport extends Scene { // this is ceramic class
 
 		// Wheel Zooming:
 		screen.onMouseWheel(screen, mouseWheel);
-
+		// TODO check for proper project reciving actions of seelection
 		key.onPointerDown(key, (info) -> {
 			if (this.paused)
 				return;
