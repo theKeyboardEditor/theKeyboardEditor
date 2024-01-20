@@ -5,8 +5,8 @@ import ceramic.Color;
 import ceramic.Visual;
 
 /*
- * The cursor is the shape that points where the next object will be placed
- *
+ * The grid helps align move and place operations
+ * 
  */
 class Grid extends Visual {
 	public var color1: Color;
@@ -79,7 +79,7 @@ class Grid extends Visual {
 				}
 			}
 		}
-		this.anchorX = 0;
+		this.anchorX = 0;// top left corner
 		this.anchorY = 0;
 		return this;
 	}

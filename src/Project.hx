@@ -5,7 +5,7 @@ import ceramic.InitSettings;
 import ceramic.Preloader;
 import haxe.ui.Toolkit;
 
-class Project extends Entity {
+class Project extends Entity { // this is ceramic class
 	function new(settings: InitSettings) {
 		super();
 
