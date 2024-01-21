@@ -14,9 +14,11 @@ class Viewport extends Scene {
 	public var keyboard: Keyboard;
 
 	public var inputMap: Input;
-	public var wheelFactor = 1; //scroll direction (inverse for Mac)
+	public var wheelFactor = 1; // scroll direction (inverse for Mac)
 	public var wheelZoomFactor = 8;
-	var i:Int = 0;
+
+	var i: Int = 0;
+
 	public var selected: Map<Key, KeyRenderer> = [];
 
 	// Everything inside the viewport is stored here
@@ -46,8 +48,8 @@ class Viewport extends Scene {
 	inline static final maxZoom = 2.0;
 	inline static final minZoom = 0.25;
 	inline static final zoomUnit = 1 / 16; // 1/32 is accurate enough for most zooming cases
-	inline static final originX: Float = 310;
-	inline static final originY: Float = 60;
+	inline static final originX: Float = 0;
+	inline static final originY: Float = 0;
 
 	// Gap between the different keys
 	final gapX: Int;
@@ -245,7 +247,7 @@ class Viewport extends Scene {
 		key.onPointerDown(key, (info) -> {
 			if (this.paused)
 				return;
-			if (info.buttonId != 2)// now on we select with right mouse button (temporary)
+			if (info.buttonId != 2) // now on we select with right mouse button (temporary)
 				return;
 			if (key.border.visible) {
 				selected.remove(k);
@@ -279,9 +281,9 @@ class Viewport extends Scene {
 	function mouseWheel(x: Float, y: Float): Void { // porcess scrolling with vertical mouse wheel
 		x *= wheelFactor #if mac * -1.0 #end;
 		y *= wheelFactor;
-		//TODO somehow make the wheel zoom way slower than 1:1
-		i = if ( i < wheelZoomFactor ) i + 1 else 0;
-		if (i >= wheelZoomFactor) { //dampen the wheel zoom by skipping events
+		// TODO somehow make the wheel zoom way slower than 1:1
+		i = if (i < wheelZoomFactor) i + 1 else 0;
+		if (i >= wheelZoomFactor) { // dampen the wheel zoom by skipping events
 			// now do the zooming!
 			if (y < 0) { // zoom_in seems to be with negative values
 				this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom;

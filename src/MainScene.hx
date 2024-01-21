@@ -9,7 +9,6 @@ import uuid.FlakeId;
 
 class MainScene extends Scene {
 	public var openProjects: Map<String, viewport.Viewport> = []; // The Int64 is an random identifier for the specific viewport
-	public var currentProject: viewport.Viewport;
 	public var gui: UI;
 	public var flakeGen: FlakeId; // Used for generating the previously stated identifiers
 
@@ -67,7 +66,7 @@ class MainScene extends Scene {
 
 		// Savind
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
-			save(currentProject.keyson, store);
+			save(gui.viewport.display.keyson, store);
 		});
 
 		final project: haxe.ui.components.TabBar = cast gui.tabbar.findComponent("projects");
@@ -78,9 +77,9 @@ class MainScene extends Scene {
 		};
 
 		// Toggle overlay (i.e welcome screen)
-		this.currentProject.paused = true;
+		gui.viewport.display.paused = true;
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
-			this.currentProject.paused = !currentProject.paused;
+			gui.viewport.display.paused = !gui.viewport.display.paused;
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});
 	}
@@ -109,15 +108,15 @@ class MainScene extends Scene {
 
 	public function switchViewport(viewport: viewport.Viewport) { // TODO that's 4 Viewports in one line?
 		// TODO update the tabs to refect the active project
-		this.currentProject?.set_visible(false);
-		this.currentProject?.cursor?.set_visible(false);
+		gui.viewport.display?.set_visible(false);
+		gui.viewport.display?.cursor?.set_visible(false);
 
-		this.currentProject = viewport;
-		this.currentProject.create();
-		this.add(currentProject);
+		gui.viewport.display = viewport;
+		gui.viewport.display.create();
+		// this.add(gui.viewport.display);
 
-		this.currentProject.visible = true;
-		this.currentProject.cursor.visible = true;
+		gui.viewport.display.visible = true;
+		gui.viewport.display.cursor.visible = true;
 	}
 
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
