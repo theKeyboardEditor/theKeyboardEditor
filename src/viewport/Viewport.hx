@@ -12,42 +12,44 @@ class Viewport extends Scene {
 	// TODO: Replace instances of keyboard with just keyson
 	public var keyson: Keyson;
 	public var keyboard: Keyboard;
-
-	public var inputMap: Input;
-	public var wheelFactor = 1; // scroll direction (inverse for Mac)
-	public var wheelZoomFactor = 8;
-
-	var i: Int = 0;
-
 	public var selected: Map<Key, KeyRenderer> = [];
 
 	// Everything inside the viewport is stored here
 	public var workSurface: Visual = new Visual();
 
+	public var inputMap: Input;
+	// Scroll direction (inverse for Mac)
+	public var wheelFactor = 1;
+	public var wheelZoomFactor = 8;
+
+	// TODO: Yell at fire-hound about what the fuck this variable does
+	var i: Int = 0;
+
 	// This queue goes through all of the actions every frame
-	// Eventually we can use this to "rewind" and undo
 	var actionQueue: ActionQueue = new ActionQueue();
 	var actionEvent: String = "";
-
-	var oldX: Float;
-	var oldY: Float;
-	var olderX: Float;
-	var olderY: Float;
 
 	// The square that shows where the placed key is going to be located
 	public var cursor: Cursor = new Cursor(unit1U, unit1U);
 	public var grid: Grid = new Grid(unit1U, unit1U);
-	public var distance: Float;
 
-	// Constants
-	inline static final unit1U: Float = 100; // TODO unit1U is 1U for keyson key size
-	inline static final unitFractionU: Float = Std.int(unit1U / 4); // This is the keyson placement step size
-	// for some reason that eludes me setting this to anything lower than 1/5 breaks placing cursor fine alignment?
+	/**
+	 * Constants
+	 */
+	inline static final unit1U: Float = 100;
+
+	// This is the keyson placement step size
+	inline static final unitFractionU: Float = Std.int(unit1U / 4);
+
 	inline static final movementSpeed: Int = 1000;
+
 	inline static final zoom = 2;
 	inline static final maxZoom = 2.0;
 	inline static final minZoom = 0.25;
-	inline static final zoomUnit = 1 / 16; // 1/32 is accurate enough for most zooming cases
+	inline static final zoomUnit = 1 / 16;
+
+	public var distance: Float;
+
 	inline static final originX: Float = 0;
 	inline static final originY: Float = 0;
 
@@ -169,16 +171,17 @@ class Viewport extends Scene {
 		final scaledUnitFractionU = unitFractionU * scale;
 		final scaledUnit1U = unit1U * scale;
 
-		// Difference between Int and Float division by unitFractionU!
+		// Difference between Int and Float division by unitFractionU in pixels
 		final moduloX = (((this.workSurface.x / scaledUnitFractionU)
 			- Std.int(this.workSurface.x / scaledUnitFractionU)) * scaledUnitFractionU);
-		final moduloY = (((this.workSurface.y / scaledUnitFractionU) - Std.int(this.workSurface.y / scaledUnitFractionU)) * scaledUnitFractionU); // this is in pixels
+		final moduloY = (((this.workSurface.y / scaledUnitFractionU)
+			- Std.int(this.workSurface.y / scaledUnitFractionU)) * scaledUnitFractionU);
 
-		// The real screen coordinates we should draw our placing curor on
+		// The real screen coordinates we should draw our placing cursor on
 		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / scaledUnitFractionU) * scaledUnitFractionU + moduloX);
 		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / scaledUnitFractionU) * scaledUnitFractionU + moduloY);
 
-		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
+		// The keyson space (1U) coordinates we would draw the key to be placed on
 		final snappedPosX = (Std.int((screenPosX - this.workSurface.x) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
 		final snappedPosY = (Std.int((screenPosY - this.workSurface.y) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
 
@@ -197,14 +200,18 @@ class Viewport extends Scene {
 		if (inputMap.justPressed(UNDO)) {
 			this.actionQueue.undo();
 		}
+
+		var oldX: Float = 0;
+		var oldY: Float = 0;
+		var olderX: Float = 0;
+		var olderY: Float = 0;
 		if (inputMap.pressed(PAN)) {
-			// at this point we have last position (oldX) and the position before that (olderX)
-			// beside the new position (snappedPosX)
+			// At this point we have last position (oldX) and the position before that (olderX)
 			if (olderX == snappedPosX && oldX != olderX)
 				oldX = olderX;
 			if (olderY == snappedPosY && oldY != olderY)
 				oldY = olderY;
-			// add the difference of (old position to current position) to the workSurface and grid
+			// Add the difference of (old position to current position) to the workSurface and grid
 			final diffX = snappedPosX - oldX;
 			final diffY = snappedPosY - oldY;
 			olderX = oldX;
@@ -278,29 +285,36 @@ class Viewport extends Scene {
 		return createdKey;
 	}
 
-	function mouseWheel(x: Float, y: Float): Void { // porcess scrolling with vertical mouse wheel
+	/**
+	 * Used to process wheel zooming
+	 */
+	function mouseWheel(x: Float, y: Float): Void {
 		x *= wheelFactor #if mac * -1.0 #end;
 		y *= wheelFactor;
+
 		// TODO somehow make the wheel zoom way slower than 1:1
 		i = if (i < wheelZoomFactor) i + 1 else 0;
-		if (i >= wheelZoomFactor) { // dampen the wheel zoom by skipping events
-			// now do the zooming!
-			if (y < 0) { // zoom_in seems to be with negative values
+
+		// Dampen the wheel zoom by skipping events
+		if (i >= wheelZoomFactor) { // Now do the zooming!
+			// ZOOM IN
+			if (y < 0) {
 				this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom;
 				this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit / 4 else maxZoom;
 				this.cursor.scaleX = this.workSurface.scaleX;
 				this.cursor.scaleY = this.workSurface.scaleY;
 				this.grid.scaleX = this.workSurface.scaleX;
 				this.grid.scaleY = this.workSurface.scaleY;
-				StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
-			} else if (y > 0) { // zoom_out is when positive values are present
+				StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} ($distance)');
+				// ZOOM OUT
+			} else if (y > 0) {
 				this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit / 4 else minZoom;
 				this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit / 4 else minZoom;
 				this.cursor.scaleX = this.workSurface.scaleX;
 				this.cursor.scaleY = this.workSurface.scaleY;
 				this.grid.scaleX = this.workSurface.scaleX;
 				this.grid.scaleY = this.workSurface.scaleY;
-				StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
+				StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} ($distance)');
 			}
 		}
 	}
