@@ -17,6 +17,8 @@ class ViewportContainer extends Box {
 		this.display.height = e.target.height;
 		this.clipper.width = display.width;
 		this.clipper.height = display.height;
+		this.display.screenX = screenLeft;
+		this.display.screenY = screenTop;
 	}
 
 	function set_display(display: viewport.Viewport): viewport.Viewport {
@@ -27,6 +29,8 @@ class ViewportContainer extends Box {
 		this.display = display;
 		this.display.width = this.width;
 		this.display.height = this.height;
+		this.display.screenX = screenLeft;
+		this.display.screenY = screenTop;
 		this.display.clip = clipper;
 
 		this.add(display);
@@ -34,4 +38,9 @@ class ViewportContainer extends Box {
 
 		return display;
 	}
+
+	public function getpos() {
+		return [screenLeft,screenTop];
+	}
+
 }
