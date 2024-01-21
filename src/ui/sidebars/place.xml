@@ -1,50 +1,48 @@
-<vbox width="160" height="100%" style="padding: 5px; background-color: #1d2021;" >
+<vbox width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
 	<vbox horizontalAlign="center" height="25%">
 		<scrollview width="153px" height="100%" contentWidth="100%" onmousewheel="event.cancel();">
-			<vbox width="100%"  horizontalAlign="center" verticalAlign="center">
+			<vbox width="100%" horizontalAlign="center" verticalAlign="center">
 				<hbox horizontalAlign="center">
-					<button text="Undo" icon="icons/undo" width="64px" height="64px" iconPosition="top" />
-					<button text="Redo" icon="icons/redo" width="64px" height="64px" iconPosition="top" />
+					<button text="Undo" icon="icons/undo" width="64px" height="64px" iconPosition="top" tooltip="Undo last action"/>
+					<button text="Redo" icon="icons/redo" width="64px" height="64px" iconPosition="top" tooltip="Redo last action"/>
 				</hbox>
 				<hbox horizontalAlign="center">
-					<button text="Copy" icon="icons/copy" width="64px" height="64px" iconPosition="top" />
-					<button text="Paste" icon="icons/paste" width="64px" height="64px" iconPosition="top" />
+					<button text="Copy" icon="icons/copy" width="64px" height="64px" iconPosition="top" tooltip="Copy selected to buffer"/>
+					<button text="Paste" icon="icons/paste" width="64px" height="64px" iconPosition="top" tooltip="Paste selected from buffer"/>
 				</hbox>
 				<hbox horizontalAlign="center">
-					<button text="Cut" icon="icons/cut" width="133px" height="64px" iconPosition="top" />
+					<button text="Cut" icon="icons/cut" width="133px" height="64px" iconPosition="top" tooltip="Cut selectet to buffer"/>
 				</hbox>
 			</vbox>
 		</scrollview>
 	</vbox>
-
-	<label text="Keys:"/>
-	<hbox height="50%"  width="156px" horizontalAlign="center" verticalAlign="center">
-		<scrollview width="153px" height="100%"  contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
-			<vbox width="100%"  horizontalAlign="center" verticalAlign="center">
+	<label text="Keys:" />
+	<hbox height="50%" width="156px" horizontalAlign="center" verticalAlign="center">
+		<scrollview width="153px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
+			<vbox width="100%" horizontalAlign="center" verticalAlign="center">
 				<grid columns="2" horizontalAlign="center" verticalAlign="center">
-					<button text="1U" width="64px" height="64px" />
-					<button text="1.25U" width="64px" height="64px" />
-					<button text="1.5U" width="64px" height="64px" />
-					<button text="1.75U" width="64px" height="64px" />
-					<button text="2U" width="64px" height="64px" />
-					<button text="2.25U" width="64px" height="64px" />
-					<button text="2.75U" width="64px" height="64px" />
-					<button text="2U V." width="64px" height="64px" />
-					<button text="ISO" width="64px" height="64px" />
-					<button text="6.25U" width="64px" height="64px" />
-					<button text="BAE" width="64px" height="64px" />
-					<button text="7U" width="64px" height="64px" />
-					<button text="AEK" width="64px" height="64px" />
-					<button text="XT_2U" width="64px" height="64px" />
+					<button id="1U" text="1U" width="64px" height="64px" tooltip="select 1U sized key for placing."/>
+					<button id="1.25U" text="1.25U" width="64px" height="64px" tooltip="select 1.25U sized key for placing."/>
+					<button id="1.5U" text="1.5U" width="64px" height="64px" tooltip="select 1.5U sized key for placing."/>
+					<button id="1.75U" text="1.75U" width="64px" height="64px" tooltip="select 1.75U sized key for placing."/>
+					<button id="2U" text="2U" width="64px" height="64px" tooltip="select 2U sized key for placing."/>
+					<button id="2.25U" text="2.25U" width="64px" height="64px" tooltip="select 2.25U sized key for placing."/>
+					<button id="2.75.U" text="2.75U" width="64px" height="64px" tooltip="select 2.75U sized key for placing."/>
+					<button id="2U Vertical" text="2U V." width="64px" height="64px" tooltip="select 2U Vertical sized key for placing."/>
+					<button id="ISO" text="ISO" width="64px" height="64px" tooltip="select ISO shaped key for placing."/>
+					<button id="6.25U" text="6.25U" width="64px" height="64px" tooltip="select space bar for placing."/>
+					<button id="BAE" text="BAE" width="64px" height="64px" tooltip="select BAE shaped key for placing."/>
+					<button id="7U" text="7U" width="64px" height="64px" tooltip="select space bar for placing."/>
+					<button id="AEK" text="AEK" width="64px" height="64px" tooltip="select AEK shaped key for placing."/>
+					<button id="XT_2U" text="XT_2U" width="64px" height="64px" tooltip="select XT_2U sized key for placing."/>
 				</grid>
 			</vbox>
 		</scrollview>
 	</hbox>
-
 	<label text="Selected:" />
 	<hbox height="20%" horizontalAlign="center">
 		<box style="background-color: #282828" width="128px" height="128px" horizontalAlign="center" verticalAlign="bottom">
-			<button text="Preview" width="100%" height="100%" horizontalAlign="center" verticalAlign="center" />
+			<button text="Preview" width="100%" height="100%" horizontalAlign="center" verticalAlign="center" tooltip="Click to change keycap style (WIP)"/>
 		</box>
 	</hbox>
 </vbox>

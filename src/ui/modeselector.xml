@@ -18,5 +18,5 @@
     <button id="unit" text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
     <button id="legend" text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
     <button id="keyboard" text="Keyboard" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
-    <button id="color" text="Color" icon="icons/color-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="palette" text="Palette" icon="icons/palette-mode" width="32px" height="32px" iconPosition="top" />
 </button-bar>
