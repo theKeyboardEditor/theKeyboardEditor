@@ -1,0 +1,34 @@
+<vbox>
+	<style>
+		.designBar {
+		width: 64px;
+		height: 100%;
+		background-color: #282828;
+		}
+		.designBar button {
+		width: 64px;
+		height: 64px;
+		}
+		.designBar button:down {
+		border-left: 3px solid $accent-color;
+		}
+	</style>
+	<!-- -->
+	<button-bar direction="vertical" styleName="designBar">
+		<button id="undo" text="undo" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="redo" text="redo" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="copy" text="copy" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="cut" text="cut" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="paste" text="paste" icon="icons/palette-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="select" text="Select" icon="icons/palette-mode" width="32px" height="32px" iconPosition="top" />
+	</button-bar>
+	<vbox height="100%">
+	</vbox>
+	<button-bar direction="vertical" styleName="designBar">
+		<button id="place" text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="unit" text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="legend" text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="keyboard" text="Keyboard" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="palette" text="Palette" icon="icons/palette-mode" width="32px" height="32px" iconPosition="top" />
+	</button-bar>
+</vbox>
