@@ -21,7 +21,6 @@
             <item id="new" text="New" />
             <item id="open" text="Open" />
             <item id="save" text="Save" />
-            #if web <item id="download"  text="Download" />#end
             <item id="import" text="Import KLE" />
             <item id="export" disabled="true" text="Export" />
         </data>

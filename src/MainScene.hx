@@ -8,9 +8,10 @@ import haxe.ui.core.Screen;
 import uuid.FlakeId;
 
 class MainScene extends Scene {
+	public var openProjects: Map<String, viewport.Viewport> = []; // The Int64 is an random identifier for the specific viewport
+	public var currentProject: viewport.Viewport;
 	public var gui: UI;
 	public var flakeGen: FlakeId; // Used for generating the previously stated identifiers
-	public var openProjects: Map<String, viewport.Viewport> = []; // The Int64 is an random identifier for the specific viewport
 
 	/*
 	 * Add any assets you want to load here
@@ -22,7 +23,7 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__UNIT_MODE);
 		assets.add(Images.ICONS__LEGEND_MODE);
 		assets.add(Images.ICONS__KEYBOARD_MODE);
-		assets.add(Images.ICONS__PALETTE_MODE);
+		assets.add(Images.ICONS__COLOR_MODE);
 		// MISC ICONS
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
 		assets.add(Images.ICONS__UNDO);
@@ -64,9 +65,9 @@ class MainScene extends Scene {
 		// KEYBINDINGS!
 		var keyBindings = new KeyBindings();
 
-		// Saving
+		// Savind
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
-			save(gui.viewport.display.keyson, store);
+			save(currentProject.keyson, store);
 		});
 
 		final project: haxe.ui.components.TabBar = cast gui.tabbar.findComponent("projects");
@@ -74,13 +75,12 @@ class MainScene extends Scene {
 		project.onChange = (e) -> {
 			var view = openProjects[project.selectedTab.id];
 			switchViewport(view);
-
 		};
 
 		// Toggle overlay (i.e welcome screen)
-		gui.viewport.display.paused = true;
+		this.currentProject.paused = true;
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
-			gui.viewport.display.paused = !gui.viewport.display.paused;
+			this.currentProject.paused = !currentProject.paused;
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});
 	}
@@ -109,14 +109,15 @@ class MainScene extends Scene {
 
 	public function switchViewport(viewport: viewport.Viewport) { // TODO that's 4 Viewports in one line?
 		// TODO update the tabs to refect the active project
-		gui.viewport.display?.set_visible(false);
-		gui.viewport.display?.cursor?.set_visible(false);
+		this.currentProject?.set_visible(false);
+		this.currentProject?.cursor?.set_visible(false);
 
-		gui.viewport.display = viewport;
-		gui.viewport.display.create();
+		this.currentProject = viewport;
+		this.currentProject.create();
+		this.add(currentProject);
 
-		gui.viewport.display.visible = true;
-		gui.viewport.display.cursor.visible = true;
+		this.currentProject.visible = true;
+		this.currentProject.cursor.visible = true;
 	}
 
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
