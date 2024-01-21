@@ -160,6 +160,8 @@ class UI extends haxe.ui.containers.VBox {
 		this.sidebar = switch (modeSelector.selectedButton.id) {
 			case "place":
 				ComponentBuilder.fromFile("ui/sidebars/place.xml");
+			case "edit":
+				ComponentBuilder.fromFile("ui/sidebars/edit.xml");
 			case "unit":
 				ComponentBuilder.fromFile("ui/sidebars/unit.xml");
 			case "legend":

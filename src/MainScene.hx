@@ -19,6 +19,7 @@ class MainScene extends Scene {
 		assets.add(Fonts.FONTS__ROBOTO_REGULAR);
 		// MODES
 		assets.add(Images.ICONS__PLACE_MODE);
+		assets.add(Images.ICONS__EDIT_MODE);
 		assets.add(Images.ICONS__UNIT_MODE);
 		assets.add(Images.ICONS__LEGEND_MODE);
 		assets.add(Images.ICONS__KEYBOARD_MODE);
