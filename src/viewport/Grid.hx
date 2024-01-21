@@ -79,7 +79,7 @@ class Grid extends Visual {
 				}
 			}
 		}
-		this.anchorX = 0;// top left corner
+		this.anchorX = 0; // top left corner
 		this.anchorY = 0;
 		return this;
 	}

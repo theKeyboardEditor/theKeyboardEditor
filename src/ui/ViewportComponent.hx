@@ -7,7 +7,7 @@ class ViewportComponent extends VBox {
 	public var display(default, set): viewport.Viewport;
 
 	@:bind(this, UIEvent.RESIZE)
-	function resize(e:UIEvent) {
+	function resize(e: UIEvent) {
 		if (this.display == null) {
 			return;
 		}

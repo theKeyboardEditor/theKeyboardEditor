@@ -18,9 +18,11 @@ class Viewport extends Scene {
 	public var keyboard: Keyboard;
 
 	public var inputMap: Input;
-	public var wheelFactor = 1; //scroll direction (inverse for Mac)
+	public var wheelFactor = 1; // scroll direction (inverse for Mac)
 	public var wheelZoomFactor = 8;
-	var i:Int = 0;
+
+	var i: Int = 0;
+
 	public var selected: Map<Key, KeyRenderer> = [];
 
 	// renders our keyson elements into a compound ceramic entity
@@ -63,7 +65,7 @@ class Viewport extends Scene {
 
 		// Initialize variables
 		this.keyson = keyson;
-		this.keyboard = keyson.unit[0];//TODO  we presume a single unit
+		this.keyboard = keyson.unit[0]; // TODO  we presume a single unit
 		this.keyboardUnit.pos(originX, originY); // position the worksurface no the viewport
 
 		// Set the gap between the keys based on the keyson file
@@ -250,7 +252,7 @@ class Viewport extends Scene {
 		key.onPointerDown(key, (info) -> {
 			if (this.paused)
 				return;
-			if (info.buttonId != 2)// now on we select with right mouse button (temporary)
+			if (info.buttonId != 2) // now on we select with right mouse button (temporary)
 				return;
 			if (key.border.visible) {
 				selected.remove(k);
@@ -284,9 +286,9 @@ class Viewport extends Scene {
 	function mouseWheel(x: Float, y: Float): Void { // porcess scrolling with vertical mouse wheel
 		x *= wheelFactor #if mac * -1.0 #end;
 		y *= wheelFactor;
-		//TODO somehow make the wheel zoom way slower than 1:1
-		i = if ( i < wheelZoomFactor ) i + 1 else 0;
-		if (i >= wheelZoomFactor) { //dampen the wheel zoom by skipping events
+		// TODO somehow make the wheel zoom way slower than 1:1
+		i = if (i < wheelZoomFactor) i + 1 else 0;
+		if (i >= wheelZoomFactor) { // dampen the wheel zoom by skipping events
 			// now do the zooming!
 			if (y < 0) { // zoom_in seems to be with negative values
 				this.keyboardUnit.scaleX = if (this.keyboardUnit.scaleX < maxZoom) this.keyboardUnit.scaleX + zoomUnit / 4 else maxZoom;

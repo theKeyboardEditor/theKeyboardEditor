@@ -23,14 +23,14 @@ class UI extends haxe.ui.containers.VBox {
 	public var sidebar(default, set): Box;
 	public var viewport: ui.ViewportComponent;
 	public var welcome: VBox;
-	public var toolbar:String = 'palette'; //default (see below)
-// BUG If we initialize with void it fails to render the edit icons afterward forever!
-// But why?
+	public var toolbar: String = 'palette'; // default (see below)
 
+	// BUG If we initialize with void it fails to render the edit icons afterward forever!
+	// But why?
 	var scene: MainScene;
 	var store: PersistentData;
 
-// creating a fresh VBox
+	// creating a fresh VBox
 	public function new(scene: MainScene, store: PersistentData) {
 		super();
 		this.scene = scene;
@@ -57,14 +57,14 @@ class UI extends haxe.ui.containers.VBox {
 		midBox.addComponent(workBox); // Box
 		{
 			this.modeSelector = ComponentBuilder.fromFile("ui/modeselector.xml"); // 64 px
-			leftBox.addComponent(this.modeSelector);  // ButtonBar
+			leftBox.addComponent(this.modeSelector); // ButtonBar
 			this.sidebar = ComponentBuilder.fromFile("ui/sidebars/palette.xml"); // note it's not added yet! (160px)
 		}
 		{
-		this.viewport = new ui.ViewportComponent();
-		workBox.addComponent(this.viewport);
-		this.viewport.percentWidth = 100;
-		this.viewport.percentHeight = 100;
+			this.viewport = new ui.ViewportComponent();
+			workBox.addComponent(this.viewport);
+			this.viewport.percentWidth = 100;
+			this.viewport.percentHeight = 100;
 		}
 		StatusBar.element = ComponentBuilder.fromFile("ui/status.xml");
 		this.addComponent(StatusBar.element);
@@ -76,7 +76,7 @@ class UI extends haxe.ui.containers.VBox {
 		if (sidebar != null) { // don't remove an non existing sidebar
 			leftBox.removeComponent(sidebar);
 		}
-		this.sidebar = value;	// new to be set sidebar
+		this.sidebar = value; // new to be set sidebar
 		leftBox.addComponent(sidebar);
 		return sidebar;
 	}
@@ -117,7 +117,7 @@ class UI extends haxe.ui.containers.VBox {
 					});
 				case "save":
 					this.scene.save(viewport.display.keyson, store);
-					//TODO make download for local storage one day
+				// TODO make download for local storage one day
 				case "import":
 					final dialog = new FileDialog();
 					dialog.openJson("KLE Json File");
@@ -133,7 +133,7 @@ class UI extends haxe.ui.containers.VBox {
 						}
 						dialog.showDialog();
 					});
-					//TODO export to KLE somehow
+					// TODO export to KLE somehow
 			}
 		};
 	}
@@ -146,7 +146,7 @@ class UI extends haxe.ui.containers.VBox {
 	@:bind(welcome.findComponent("new-project"), MouseEvent.CLICK)
 	public function welcomeEvents(event: MouseEvent) {
 		this.overlay.visible = false;
-		//this.scene.openViewport(new keyson.Keyson());
+		// this.scene.openViewport(new keyson.Keyson());
 		final dialog = new NewNameDialog();
 		viewport.display.paused = true;
 		dialog.onDialogClosed = function(e: DialogEvent) {
@@ -163,29 +163,29 @@ class UI extends haxe.ui.containers.VBox {
 	@:bind(modeSelector, UIEvent.CHANGE)
 	// TODO for toggle to ever work this must trigger regardless if change takes place
 	public function switchMode(_: UIEvent) {
-		trace('${toolbar} ? ${modeSelector.selectedButton.id}'); 
+		trace('${toolbar} ? ${modeSelector.selectedButton.id}');
 		// assuming our boxex will always be called the same
 		this.sidebar = if (modeSelector.selectedButton.id == toolbar) { // we toggle  toolbars by default
-				toolbar = "void";
-				ComponentBuilder.fromFile("ui/sidebars/void.xml");
+			toolbar = "void";
+			ComponentBuilder.fromFile("ui/sidebars/void.xml");
 		} else if (modeSelector.selectedButton.id == "place") {
-				toolbar = "place";
-				ComponentBuilder.fromFile("ui/sidebars/place.xml");
+			toolbar = "place";
+			ComponentBuilder.fromFile("ui/sidebars/place.xml");
 		} else if (modeSelector.selectedButton.id == "unit") {
-				toolbar = "unit";
-				ComponentBuilder.fromFile("ui/sidebars/unit.xml");
+			toolbar = "unit";
+			ComponentBuilder.fromFile("ui/sidebars/unit.xml");
 		} else if (modeSelector.selectedButton.id == "legend") {
-				toolbar = "legend";
-				ComponentBuilder.fromFile("ui/sidebars/legend.xml");
+			toolbar = "legend";
+			ComponentBuilder.fromFile("ui/sidebars/legend.xml");
 		} else if (modeSelector.selectedButton.id == "keyboard") {
-				toolbar = "keyboard";
-				ComponentBuilder.fromFile("ui/sidebars/keyboard.xml");
+			toolbar = "keyboard";
+			ComponentBuilder.fromFile("ui/sidebars/keyboard.xml");
 		} else if (modeSelector.selectedButton.id == "palette") {
-				toolbar = "palette";
-				ComponentBuilder.fromFile("ui/sidebars/palette.xml");
+			toolbar = "palette";
+			ComponentBuilder.fromFile("ui/sidebars/palette.xml");
 		} else { // should anything go awry we default to void too
-				toolbar = "void";
-				ComponentBuilder.fromFile('ui/sidebars/void.xml');
+			toolbar = "void";
+			ComponentBuilder.fromFile('ui/sidebars/void.xml');
 		};
 	}
 }
@@ -205,6 +205,7 @@ class ImportNameDialog extends Dialog {
 		this.addComponent(name);
 	}
 }
+
 class NewNameDialog extends Dialog {
 	public var name: haxe.ui.components.TextField;
 

@@ -5,7 +5,8 @@ import ceramic.Dialogs;
 
 class FileDialog extends Entity {
 	@event function fileLoaded(body: String);
-//TODO make save dialog one day too
+
+	// TODO make save dialog one day too
 	public function openJson(title: String) {
 		#if web
 		var input: js.html.InputElement = cast js.Browser.document.createElement("input");

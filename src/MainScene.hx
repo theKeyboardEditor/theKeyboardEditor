@@ -74,7 +74,6 @@ class MainScene extends Scene {
 		project.onChange = (e) -> {
 			var view = openProjects[project.selectedTab.id];
 			switchViewport(view);
-
 		};
 
 		// Toggle overlay (i.e welcome screen)
