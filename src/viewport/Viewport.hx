@@ -38,8 +38,8 @@ class Viewport extends Scene {
 	// The square that shows where the placed key is going to be located
 	public var cursor: Cursor = new Cursor(unit1U, unit1U);
 	public var grid: Grid = new Grid(unit1U, unit1U);
-	public var screenX:Float; // where Viewport resides on the screen
-	public var screenY:Float;
+	public var screenX: Float; // where Viewport resides on the screen
+	public var screenY: Float;
 
 	/**
 	 * Constants
@@ -242,7 +242,7 @@ class Viewport extends Scene {
 		final key: KeyRenderer = KeyMaker.createKey(this.keyboard, k, unit1U, this.gapX, this.gapY, this.keyboard.keysColor);
 		key.pos(unit1U * k.position[Axis.X], unit1U * k.position[Axis.Y]);
 		key.onPointerOver(key, (_) -> {
-//			StatusBar.inform('Mouse hovering at: ${k.position}');
+			//			StatusBar.inform('Mouse hovering at: ${k.position}');
 			StatusBar.inform('Viewport offset: ${screenX}, ${screenY}');
 		});
 

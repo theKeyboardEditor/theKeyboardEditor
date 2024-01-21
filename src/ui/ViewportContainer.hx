@@ -40,7 +40,6 @@ class ViewportContainer extends Box {
 	}
 
 	public function getpos() {
-		return [screenLeft,screenTop];
+		return [screenLeft, screenTop];
 	}
-
 }
