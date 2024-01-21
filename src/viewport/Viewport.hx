@@ -8,6 +8,10 @@ import keyson.Keyson;
 import keyson.Keyson.Keyboard;
 import keyson.Keyson.Key;
 
+/*
+ * Viewport is the screenarea that contains the project representation 
+ * 		with all helpers
+ */
 class Viewport extends Scene {
 	// TODO: Replace instances of keyboard with just keyson
 	public var keyson: Keyson;
@@ -19,8 +23,8 @@ class Viewport extends Scene {
 	var i:Int = 0;
 	public var selected: Map<Key, KeyRenderer> = [];
 
-	// Everything inside the viewport is stored here
-	public var workSurface: Visual = new Visual();
+	// renders our keyson elements into a compound ceramic entity
+	public var keyboardUnit: Visual = new Visual();
 
 	// This queue goes through all of the actions every frame
 	// Eventually we can use this to "rewind" and undo
@@ -46,20 +50,21 @@ class Viewport extends Scene {
 	inline static final maxZoom = 2.0;
 	inline static final minZoom = 0.25;
 	inline static final zoomUnit = 1 / 16; // 1/32 is accurate enough for most zooming cases
-	inline static final originX: Float = 310;
+	inline static final originX: Float = 110;
 	inline static final originY: Float = 60;
 
 	// Gap between the different keys
 	final gapX: Int;
 	final gapY: Int;
 
+	// initialize new viewport
 	override public function new(keyson: Keyson) {
 		super();
 
 		// Initialize variables
 		this.keyson = keyson;
-		this.keyboard = keyson.unit[0];
-		this.workSurface.pos(originX, originY);
+		this.keyboard = keyson.unit[0];//TODO  we presume a single unit
+		this.keyboardUnit.pos(originX, originY); // position the worksurface no the viewport
 
 		// Set the gap between the keys based on the keyson file
 		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit1U);
@@ -73,10 +78,9 @@ class Viewport extends Scene {
 		this.grid.offsetY = -gapY / 2;
 		this.grid.subStepX = unitFractionU;
 		this.grid.subStepY = unitFractionU;
-		this.grid.x = originX;
-		this.grid.y = originY;
+		this.grid.pos(originX, originY);
 		this.grid.create();
-		this.add(grid);
+		this.add(grid); // grid is part of the viewport
 
 		// Define the inputs
 		this.inputMap = new Input();
@@ -99,7 +103,7 @@ class Viewport extends Scene {
 		for (key in this.keyboard.keys) {
 			drawKey(key);
 		}
-		this.add(workSurface);
+		this.add(keyboardUnit); // adding the worksurface to the viewport
 	}
 
 	/**
@@ -122,39 +126,39 @@ class Viewport extends Scene {
 
 		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
 		if (inputMap.pressed(PAN_UP)) {
-			this.workSurface.y += unitFractionU * this.workSurface.scaleY;
-			this.grid.y += unitFractionU * this.workSurface.scaleY;
+			this.keyboardUnit.y += unitFractionU * this.keyboardUnit.scaleY;
+			this.grid.y += unitFractionU * this.keyboardUnit.scaleY;
 		}
 		if (inputMap.pressed(PAN_LEFT)) {
-			this.workSurface.x += unitFractionU * this.workSurface.scaleX;
-			this.grid.x += unitFractionU * this.workSurface.scaleX;
+			this.keyboardUnit.x += unitFractionU * this.keyboardUnit.scaleX;
+			this.grid.x += unitFractionU * this.keyboardUnit.scaleX;
 		}
 		if (inputMap.pressed(PAN_DOWN)) {
-			this.workSurface.y -= unitFractionU * this.workSurface.scaleY;
-			this.grid.y -= unitFractionU * this.workSurface.scaleY;
+			this.keyboardUnit.y -= unitFractionU * this.keyboardUnit.scaleY;
+			this.grid.y -= unitFractionU * this.keyboardUnit.scaleY;
 		}
 		if (inputMap.pressed(PAN_RIGHT)) {
-			this.workSurface.x -= unitFractionU * this.workSurface.scaleX;
-			this.grid.x -= unitFractionU * this.workSurface.scaleX;
+			this.keyboardUnit.x -= unitFractionU * this.keyboardUnit.scaleX;
+			this.grid.x -= unitFractionU * this.keyboardUnit.scaleX;
 		}
 		// ZOOMING!
 		if (inputMap.pressed(ZOOM_IN)) {
 			// nothing like nice predictable results
-			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit else maxZoom;
-			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit else maxZoom;
-			this.cursor.scaleX = this.workSurface.scaleX;
-			this.cursor.scaleY = this.workSurface.scaleY;
-			this.grid.scaleX = this.workSurface.scaleX;
-			this.grid.scaleY = this.workSurface.scaleY;
-			StatusBar.inform('Zoom at: ${this.workSurface.scaleX}');
+			this.keyboardUnit.scaleX = if (this.keyboardUnit.scaleX < maxZoom) this.keyboardUnit.scaleX + zoomUnit else maxZoom;
+			this.keyboardUnit.scaleY = if (this.keyboardUnit.scaleY < maxZoom) this.keyboardUnit.scaleY + zoomUnit else maxZoom;
+			this.cursor.scaleX = this.keyboardUnit.scaleX;
+			this.cursor.scaleY = this.keyboardUnit.scaleY;
+			this.grid.scaleX = this.keyboardUnit.scaleX;
+			this.grid.scaleY = this.keyboardUnit.scaleY;
+			StatusBar.inform('Zoom at: ${this.keyboardUnit.scaleX}');
 		} else if (inputMap.pressed(ZOOM_OUT)) {
-			this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit else minZoom;
-			this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit else minZoom;
-			this.cursor.scaleX = this.workSurface.scaleX;
-			this.cursor.scaleY = this.workSurface.scaleY;
-			this.grid.scaleX = this.workSurface.scaleX;
-			this.grid.scaleY = this.workSurface.scaleY;
-			StatusBar.inform('Zoom at: ${this.workSurface.scaleX}');
+			this.keyboardUnit.scaleX = if (this.keyboardUnit.scaleX > minZoom) this.keyboardUnit.scaleX - zoomUnit else minZoom;
+			this.keyboardUnit.scaleY = if (this.keyboardUnit.scaleY > minZoom) this.keyboardUnit.scaleY - zoomUnit else minZoom;
+			this.cursor.scaleX = this.keyboardUnit.scaleX;
+			this.cursor.scaleY = this.keyboardUnit.scaleY;
+			this.grid.scaleX = this.keyboardUnit.scaleX;
+			this.grid.scaleY = this.keyboardUnit.scaleY;
+			StatusBar.inform('Zoom at: ${this.keyboardUnit.scaleX}');
 		}
 	}
 
@@ -163,26 +167,27 @@ class Viewport extends Scene {
 	 */
 	public function cursorUpdate() {
 		// presuming both our axes are scaled uniformly and in accord:
-		final scale = this.workSurface.scaleX;
+		final scale = this.keyboardUnit.scaleX;
 		final scaledUnitFractionU = unitFractionU * scale;
 		final scaledUnit1U = unit1U * scale;
 
 		// Difference between Int and Float division by unitFractionU!
-		final moduloX = (((this.workSurface.x / scaledUnitFractionU)
-			- Std.int(this.workSurface.x / scaledUnitFractionU)) * scaledUnitFractionU);
-		final moduloY = (((this.workSurface.y / scaledUnitFractionU) - Std.int(this.workSurface.y / scaledUnitFractionU)) * scaledUnitFractionU); // this is in pixels
+		final moduloX = (((this.keyboardUnit.x / scaledUnitFractionU)
+			- Std.int(this.keyboardUnit.x / scaledUnitFractionU)) * scaledUnitFractionU);
+		final moduloY = (((this.keyboardUnit.y / scaledUnitFractionU) - Std.int(this.keyboardUnit.y / scaledUnitFractionU)) * scaledUnitFractionU); // this is in pixels
 
 		// The real screen coordinates we should draw our placing curor on
 		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / scaledUnitFractionU) * scaledUnitFractionU + moduloX);
 		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / scaledUnitFractionU) * scaledUnitFractionU + moduloY);
 
 		// The keyson space (1U) coordinates we would draw the to_be_placed_key on:
-		final snappedPosX = (Std.int((screenPosX - this.workSurface.x) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
-		final snappedPosY = (Std.int((screenPosY - this.workSurface.y) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
+		final snappedPosX = (Std.int((screenPosX - this.keyboardUnit.x) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
+		final snappedPosY = (Std.int((screenPosY - this.keyboardUnit.y) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
 
 		// Position the cursor right on top of the keycaps
 		this.cursor.pos(screenPosX - gapX / 2 * scale, screenPosY - gapY / 2 * scale);
 
+		// TODO make sure the action goes to the proper keyson and keyboardUnit
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
 			this.actionQueue.push(new PlaceKey(this, snappedPosX, snappedPosY, "1U"));
@@ -202,7 +207,7 @@ class Viewport extends Scene {
 				oldX = olderX;
 			if (olderY == snappedPosY && oldY != olderY)
 				oldY = olderY;
-			// add the difference of (old position to current position) to the workSurface and grid
+			// add the difference of (old position to current position) to the keyboardUnit and grid
 			final diffX = snappedPosX - oldX;
 			final diffY = snappedPosY - oldY;
 			olderX = oldX;
@@ -210,10 +215,10 @@ class Viewport extends Scene {
 			oldX = snappedPosX;
 			oldY = snappedPosY;
 			// StatusBar.inform('pan action: $diffX, $diffY');
-			this.workSurface.y += diffY * unitFractionU * this.workSurface.scaleY;
-			this.grid.y += diffY * unitFractionU * this.workSurface.scaleY;
-			this.workSurface.x += diffX * unitFractionU * this.workSurface.scaleX;
-			this.grid.x += diffX * unitFractionU * this.workSurface.scaleX;
+			this.keyboardUnit.y += diffY * unitFractionU * this.keyboardUnit.scaleY;
+			this.grid.y += diffY * unitFractionU * this.keyboardUnit.scaleY;
+			this.keyboardUnit.x += diffX * unitFractionU * this.keyboardUnit.scaleX;
+			this.grid.x += diffX * unitFractionU * this.keyboardUnit.scaleX;
 		} else {
 			olderX = oldX;
 			olderY = oldY;
@@ -241,7 +246,7 @@ class Viewport extends Scene {
 
 		// Wheel Zooming:
 		screen.onMouseWheel(screen, mouseWheel);
-
+		// TODO check for proper project reciving actions of seelection
 		key.onPointerDown(key, (info) -> {
 			if (this.paused)
 				return;
@@ -258,19 +263,19 @@ class Viewport extends Scene {
 		});
 
 		final createdKey = key.create();
-		this.workSurface.add(createdKey);
+		this.keyboardUnit.add(createdKey);
 
 		/**
 		 * A ceramic visual does not inherit the size of it's children
 		 * Hence we must set it ourselves
 		 * We will end up with the biggest value once the loop is over
 		 */
-		if (key.width + key.x > this.workSurface.width) {
-			this.workSurface.width = key.width + this.gapX + key.x;
+		if (key.width + key.x > this.keyboardUnit.width) {
+			this.keyboardUnit.width = key.width + this.gapX + key.x;
 		}
 
-		if (key.height + key.y > this.workSurface.height) {
-			this.workSurface.height = key.height + this.gapY + key.y;
+		if (key.height + key.y > this.keyboardUnit.height) {
+			this.keyboardUnit.height = key.height + this.gapY + key.y;
 		}
 
 		return createdKey;
@@ -284,21 +289,21 @@ class Viewport extends Scene {
 		if (i >= wheelZoomFactor) { //dampen the wheel zoom by skipping events
 			// now do the zooming!
 			if (y < 0) { // zoom_in seems to be with negative values
-				this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom;
-				this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit / 4 else maxZoom;
-				this.cursor.scaleX = this.workSurface.scaleX;
-				this.cursor.scaleY = this.workSurface.scaleY;
-				this.grid.scaleX = this.workSurface.scaleX;
-				this.grid.scaleY = this.workSurface.scaleY;
-				StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
+				this.keyboardUnit.scaleX = if (this.keyboardUnit.scaleX < maxZoom) this.keyboardUnit.scaleX + zoomUnit / 4 else maxZoom;
+				this.keyboardUnit.scaleY = if (this.keyboardUnit.scaleY < maxZoom) this.keyboardUnit.scaleY + zoomUnit / 4 else maxZoom;
+				this.cursor.scaleX = this.keyboardUnit.scaleX;
+				this.cursor.scaleY = this.keyboardUnit.scaleY;
+				this.grid.scaleX = this.keyboardUnit.scaleX;
+				this.grid.scaleY = this.keyboardUnit.scaleY;
+				StatusBar.inform('Zoom wheel: ${this.keyboardUnit.scaleX} (${distance})');
 			} else if (y > 0) { // zoom_out is when positive values are present
-				this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit / 4 else minZoom;
-				this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit / 4 else minZoom;
-				this.cursor.scaleX = this.workSurface.scaleX;
-				this.cursor.scaleY = this.workSurface.scaleY;
-				this.grid.scaleX = this.workSurface.scaleX;
-				this.grid.scaleY = this.workSurface.scaleY;
-				StatusBar.inform('Zoom wheel: ${this.workSurface.scaleX} (${distance})');
+				this.keyboardUnit.scaleX = if (this.keyboardUnit.scaleX > minZoom) this.keyboardUnit.scaleX - zoomUnit / 4 else minZoom;
+				this.keyboardUnit.scaleY = if (this.keyboardUnit.scaleY > minZoom) this.keyboardUnit.scaleY - zoomUnit / 4 else minZoom;
+				this.cursor.scaleX = this.keyboardUnit.scaleX;
+				this.cursor.scaleY = this.keyboardUnit.scaleY;
+				this.grid.scaleX = this.keyboardUnit.scaleX;
+				this.grid.scaleY = this.keyboardUnit.scaleY;
+				StatusBar.inform('Zoom wheel: ${this.keyboardUnit.scaleX} (${distance})');
 			}
 		}
 	}

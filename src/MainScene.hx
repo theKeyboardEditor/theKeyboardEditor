@@ -8,9 +8,9 @@ import haxe.ui.core.Screen;
 import uuid.FlakeId;
 
 class MainScene extends Scene {
-	public var openProjects: Map<String, viewport.Viewport> = []; // The Int64 is an random identifier for the specific viewport
 	public var gui: UI;
 	public var flakeGen: FlakeId; // Used for generating the previously stated identifiers
+	public var openProjects: Map<String, viewport.Viewport> = []; // The Int64 is an random identifier for the specific viewport
 
 	/*
 	 * Add any assets you want to load here
@@ -64,7 +64,7 @@ class MainScene extends Scene {
 		// KEYBINDINGS!
 		var keyBindings = new KeyBindings();
 
-		// Savind
+		// Saving
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
 			save(gui.viewport.display.keyson, store);
 		});
@@ -74,6 +74,7 @@ class MainScene extends Scene {
 		project.onChange = (e) -> {
 			var view = openProjects[project.selectedTab.id];
 			switchViewport(view);
+
 		};
 
 		// Toggle overlay (i.e welcome screen)
