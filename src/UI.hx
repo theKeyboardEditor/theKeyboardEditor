@@ -99,9 +99,9 @@ class UI extends haxe.ui.containers.VBox {
 			switch (e.relatedComponent.id) {
 				case "new":
 					final dialog = new NewNameDialog();
-					viewport.display.paused = true;
+					// viewport.display.paused = true;
 					dialog.onDialogClosed = function(e: DialogEvent) {
-						viewport.display.paused = false;
+						// viewport.display.paused = false;
 						final name = dialog.name.value;
 						if (StringTools.trim(name) == "")
 							return;
@@ -121,9 +121,9 @@ class UI extends haxe.ui.containers.VBox {
 					dialog.openJson("KLE Json File");
 					dialog.onFileLoaded(scene, (body: String) -> {
 						var dialog = new ImportNameDialog();
-						viewport.display.paused = true;
+						// viewport.display.paused = true;
 						dialog.onDialogClosed = function(e: DialogEvent) {
-							viewport.display.paused = false;
+							// viewport.display.paused = false;
 							final name = dialog.name.value;
 							if (StringTools.trim(name) == "")
 								return;
@@ -144,9 +144,9 @@ class UI extends haxe.ui.containers.VBox {
 	public function welcomeEvents(event: MouseEvent) {
 		this.overlay.visible = false;
 		final dialog = new NewNameDialog();
-		viewport.display.paused = true;
+		// viewport.display.paused = true;
 		dialog.onDialogClosed = function(e: DialogEvent) {
-			viewport.display.paused = false;
+			// viewport.display.paused = false;
 			final name = dialog.name.value;
 			if (StringTools.trim(name) == "")
 				return;

@@ -78,9 +78,9 @@ class MainScene extends Scene {
 		};
 
 		// Toggle overlay (i.e welcome screen)
-		gui.viewport.display.paused = true;
+		// gui.viewport.display.paused = true;
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
-			gui.viewport.display.paused = !gui.viewport.display.paused;
+			// gui.viewport.display.paused = !gui.viewport.display.paused;
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});
 	}
@@ -94,14 +94,15 @@ class MainScene extends Scene {
 		tab.text = keyboard.name;
 		this.gui.tabbar.findComponent("projects").addComponent(tab);
 		// Create a new viewport
-		final viewport = new viewport.Viewport(keyboard); // TODO better naming is needed
+		var viewport = new viewport.Viewport(); // TODO better naming is needed
+		viewport.keyson = keyboard;
 		this.openProjects[flake] = viewport;
 		switchViewport(viewport);
 	}
 
 	public function closeViewport(viewport: viewport.Viewport) {
-		viewport?.cursor.destroy();
-		viewport?.grid.destroy();
+		// viewport?.cursor.destroy();
+		// viewport?.grid.destroy();
 		viewport?.destroy();
 		// TODO: Find correct tab to delete - logo
 		// this.gui.tabbar.findComponent("projects").disposeComponent();
@@ -110,14 +111,14 @@ class MainScene extends Scene {
 	public function switchViewport(viewport: viewport.Viewport) { // TODO that's 4 Viewports in one line?
 		// TODO update the tabs to refect the active project
 		gui.viewport.display?.set_visible(false);
-		gui.viewport.display?.cursor?.set_visible(false);
+		// gui.viewport.display?.cursor?.set_visible(false);
 
 		gui.viewport.display = viewport;
 		gui.viewport.display.create();
 		// this.add(gui.viewport.display);
 
 		gui.viewport.display.visible = true;
-		gui.viewport.display.cursor.visible = true;
+		// gui.viewport.display.cursor.visible = true;
 	}
 
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
