@@ -24,7 +24,7 @@ class Cursor extends Visual {
 	override public function new(width: Float, height: Float) {
 		super();
 		size(width, height);
-		this.depth = 800; // only pivots and gimbals higher than us
+		//this.depth = 800; // only pivots and gimbals higher than us
 		this.color = 0x6D3C4BC5; // UI theme accent color!
 
 		// @formatter:off
@@ -35,7 +35,7 @@ class Cursor extends Visual {
 			width * 0.04, height * 0.20,  //  |  /
 			0.0, height * 0.20,           //  |_/
 			0.0, height * 0.04,           // 4  3
-		]; 
+		];
 		this.indices = [
 			0, 1, 2,  // No way I draw this
 			0, 2, 5,  // in ASCII :-)

@@ -38,8 +38,8 @@ class Viewport extends Scene {
 	// The square that shows where the placed key is going to be located
 	public var cursor: Cursor = new Cursor(unit1U, unit1U);
 	public var grid: Grid = new Grid(unit1U, unit1U);
-	public var screenX: Float; // where Viewport resides on the screen
-	public var screenY: Float;
+	public var screenX: Float = 224; // where Viewport resides on the screen
+	public var screenY: Float = 32;  // TODO this should NOT be set here!
 
 	/**
 	 * Constants
@@ -56,9 +56,6 @@ class Viewport extends Scene {
 	inline static final minZoom = 0.25;
 	inline static final zoomUnit = 1 / 16;
 
-	inline static final originX: Float = 0;
-	inline static final originY: Float = 0;
-
 	// Gap between the different keys
 	final gapX: Int;
 	final gapY: Int;
@@ -66,26 +63,27 @@ class Viewport extends Scene {
 	override public function new(keyson: Keyson) {
 		super();
 
+//		this.cursor.depth = 10;
+		this.cursor.create();
+		trace ('Cursor: ${this.cursor.depth}');
+
 		// Initialize variables
 		this.keyson = keyson;
 		this.keyboard = keyson.unit[0];
-		this.workSurface.pos(originX, originY);
+//		this.workSurface.depth = 20;
+		trace ('worksurface: ${this.workSurface.depth}');
 
 		// Set the gap between the keys based on the keyson file
 		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit1U);
 		gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit1U);
 
 		// Create cursor object
-		this.cursor.create();
-		this.cursor.depth = 100;
 
 		// Define grid
 		this.grid.offsetX = -gapX / 2;
 		this.grid.offsetY = -gapY / 2;
 		this.grid.subStepX = unitFractionU;
 		this.grid.subStepY = unitFractionU;
-		this.grid.x = originX;
-		this.grid.y = originY;
 		this.grid.create();
 		this.add(grid);
 
@@ -104,7 +102,7 @@ class Viewport extends Scene {
 	 */
 	override function create() {
 		for (key in this.keyboard.keys) {
-			drawKey(key);
+			drawKey(key); // add a key to worksurface
 		}
 		this.add(workSurface);
 	}
@@ -113,6 +111,9 @@ class Viewport extends Scene {
 	 * Here, you can add code that will be executed at every frame
 	 */
 	override function update(delta: Float) {
+		// Wheel Zooming:
+		screen.onMouseWheel(screen, mouseWheel);
+		moveViewportCamera(delta);
 		cursorUpdate();
 		this.actionQueue.act();
 	}
@@ -171,23 +172,26 @@ class Viewport extends Scene {
 		final scale = this.workSurface.scaleX;
 		final scaledUnitFractionU = unitFractionU * scale;
 		final scaledUnit1U = unit1U * scale;
-
-		// Difference between Int and Float division by unitFractionU in pixels
-		final moduloX = (((this.workSurface.x / scaledUnitFractionU)
-			- Std.int(this.workSurface.x / scaledUnitFractionU)) * scaledUnitFractionU);
-		final moduloY = (((this.workSurface.y / scaledUnitFractionU)
-			- Std.int(this.workSurface.y / scaledUnitFractionU)) * scaledUnitFractionU);
+		final placerArrowX = scaledUnit1U / 2; // make placer centered to mouse arrow
+		final placerArrowY = scaledUnit1U / 2;
+		screenX = if ( screenX != null) screenX else 224; // TODO fallback
+		screenY = if ( screenX != null) screenY else 32;
 
 		// The real screen coordinates we should draw our placing cursor on
-		final screenPosX = (Std.int((screen.pointerX - scaledUnit1U / 2) / scaledUnitFractionU) * scaledUnitFractionU + moduloX * 0);
-		final screenPosY = (Std.int((screen.pointerY - scaledUnit1U / 2) / scaledUnitFractionU) * scaledUnitFractionU + moduloY * 0);
+		final screenPosX = screenX + (Std.int((screen.pointerX - screenX - placerArrowX) / scaledUnitFractionU) * scaledUnitFractionU);
+		final screenPosY = screenY + (Std.int((screen.pointerY - screenY - placerArrowY) / scaledUnitFractionU) * scaledUnitFractionU);
 
 		// The keyson space (1U) coordinates we would draw the key to be placed on
-		final snappedPosX = (Std.int((screenPosX - this.workSurface.x - 224) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
-		final snappedPosY = (Std.int((screenPosY - this.workSurface.y - 32) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
+		final snappedPosX = (Std.int((screenPosX - screenX) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
+		final snappedPosY = (Std.int((screenPosY - screenY) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
 
 		// Position the cursor right on top of the keycaps
-		this.cursor.pos(screenPosX - gapX / 2 * scale, screenPosY - gapY / 2 * scale);
+		this.cursor.pos(screenPosX, screenPosY);
+
+		// Adjust the status bar with the position of the cursor
+		StatusBar.pos(snappedPosX, snappedPosY); // can only have 2 args
+		//StatusBar.pos(screenPosX, screenPosY); // can only have 2 args
+		//StatusBar.pos(screen.pointerX, screen.pointerY); // can only have 2 args
 
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
@@ -226,9 +230,6 @@ class Viewport extends Scene {
 			oldY = snappedPosY;
 			oldX = snappedPosX;
 		}
-
-		// Adjust the status bar with the position of the cursor
-		StatusBar.pos(snappedPosX, snappedPosY); // can only have 2 args
 	}
 
 	/**
@@ -245,9 +246,6 @@ class Viewport extends Scene {
 			//			StatusBar.inform('Mouse hovering at: ${k.position}');
 			StatusBar.inform('Viewport offset: ${screenX}, ${screenY}');
 		});
-
-		// Wheel Zooming:
-		screen.onMouseWheel(screen, mouseWheel);
 
 		key.onPointerDown(key, (info) -> {
 			if (this.paused)
@@ -291,10 +289,10 @@ class Viewport extends Scene {
 		y *= wheelFactor;
 
 		// TODO somehow make the wheel zoom way slower than 1:1
-		wheelCycles = if (wheelCycles < 12) wheelCycles + 1 else 0;
+		wheelCycles = if (wheelCycles < 60) wheelCycles + 1 else 0;
 
 		// Dampen the wheel zoom by skipping events
-		if (wheelCycles >= 12) { // Now do the zooming!
+		if (wheelCycles >= 60) { // Now do the zooming!
 			// ZOOM IN
 			if (y < 0) {
 				this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit / 4 else maxZoom;
