@@ -1,12 +1,7 @@
 package viewport;
 
+import ceramic.Quad;
 import ceramic.Scene;
-import ceramic.Visual;
-import ceramic.TouchInfo;
-import keyson.Axis;
-import keyson.Keyson;
-import keyson.Keyson.Keyboard;
-import keyson.Keyson.Key;
 
 class Viewport extends Scene {
 	// TODO: Replace instances of keyboard with just keyson
@@ -21,7 +16,6 @@ class Viewport extends Scene {
 	// Scroll direction (inverse for Mac)
 	public var wheelFactor = 1;
 
-	// TODO: Yell at fire-hound about what the fuck this variable does
 	// How can wheelCycles keep the count in succesive invocations of function mouseWheel(); without this?
 	// repeat it must not clear when the function finishes.
 	var wheelCycles: Int = 0;
@@ -41,9 +35,6 @@ class Viewport extends Scene {
 	public var screenX: Float = 224; // where Viewport resides on the screen
 	public var screenY: Float = 32;  // TODO this should NOT be set here!
 
-	/**
-	 * Constants
-	 */
 	inline static final unit1U: Float = 100;
 
 	// This is the keyson placement step size
@@ -62,8 +53,6 @@ class Viewport extends Scene {
 
 	override public function new(keyson: Keyson) {
 		super();
-
-//		this.cursor.depth = 10;
 
 		// Initialize variables
 		this.keyson = keyson;
@@ -100,9 +89,6 @@ class Viewport extends Scene {
 		this.add(gimbal);
 	}
 
-	/**
-	 * Called when scene has finished preloading
-	 */
 	override function create() {
 		for (key in this.keyboard.keys) {
 			drawKey(key); // add a key to worksurface
@@ -110,9 +96,6 @@ class Viewport extends Scene {
 		this.add(workSurface);
 	}
 
-	/**
-	 * Here, you can add code that will be executed at every frame
-	 */
 	override function update(delta: Float) {
 		// Wheel Zooming:
 		screen.onMouseWheel(screen, mouseWheel);
@@ -121,55 +104,6 @@ class Viewport extends Scene {
 		this.actionQueue.act();
 	}
 
-	/**
-	 * Handles the movement of the viewport camera/work surface
-	 */
-	public inline function moveViewportCamera(delta: Float) {
-		if (input.keyPressed(LCTRL) || input.keyPressed(RCTRL) || input.keyPressed(LMETA) || input.keyPressed(RMETA)) {
-			return; // ignore all modified key presses (for now)
-		}
-
-		// temporary 1/4 unit aligned fixed stepping for good grid alignment:
-		if (inputMap.pressed(PAN_UP)) {
-			this.workSurface.y += unitFractionU * this.workSurface.scaleY;
-			this.grid.y += unitFractionU * this.workSurface.scaleY;
-		}
-		if (inputMap.pressed(PAN_LEFT)) {
-			this.workSurface.x += unitFractionU * this.workSurface.scaleX;
-			this.grid.x += unitFractionU * this.workSurface.scaleX;
-		}
-		if (inputMap.pressed(PAN_DOWN)) {
-			this.workSurface.y -= unitFractionU * this.workSurface.scaleY;
-			this.grid.y -= unitFractionU * this.workSurface.scaleY;
-		}
-		if (inputMap.pressed(PAN_RIGHT)) {
-			this.workSurface.x -= unitFractionU * this.workSurface.scaleX;
-			this.grid.x -= unitFractionU * this.workSurface.scaleX;
-		}
-		// ZOOMING!
-		if (inputMap.pressed(ZOOM_IN)) {
-			// nothing like nice predictable results
-			this.workSurface.scaleX = if (this.workSurface.scaleX < maxZoom) this.workSurface.scaleX + zoomUnit else maxZoom;
-			this.workSurface.scaleY = if (this.workSurface.scaleY < maxZoom) this.workSurface.scaleY + zoomUnit else maxZoom;
-			this.cursor.scaleX = this.workSurface.scaleX;
-			this.cursor.scaleY = this.workSurface.scaleY;
-			this.grid.scaleX = this.workSurface.scaleX;
-			this.grid.scaleY = this.workSurface.scaleY;
-			StatusBar.inform('Zoom at: ${this.workSurface.scaleX}');
-		} else if (inputMap.pressed(ZOOM_OUT)) {
-			this.workSurface.scaleX = if (this.workSurface.scaleX > minZoom) this.workSurface.scaleX - zoomUnit else minZoom;
-			this.workSurface.scaleY = if (this.workSurface.scaleY > minZoom) this.workSurface.scaleY - zoomUnit else minZoom;
-			this.cursor.scaleX = this.workSurface.scaleX;
-			this.cursor.scaleY = this.workSurface.scaleY;
-			this.grid.scaleX = this.workSurface.scaleX;
-			this.grid.scaleY = this.workSurface.scaleY;
-			StatusBar.inform('Zoom at: ${this.workSurface.scaleX}');
-		}
-	}
-
-	/**
-	 * Handles the position of the cursor and key placing, removing, and other manipulations
-	 */
 	public function cursorUpdate() {
 		// presuming both our axes are scaled uniformly and in accord:
 		final scale = this.workSurface.scaleX;
@@ -236,7 +170,7 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Draws and adds a key to the work surface
+	 * Initializes the scene
 	 */
 	public function drawKey(k: Key): Visual {
 		if (this.keyboard.keys.contains(k) == false) {
@@ -280,17 +214,20 @@ class Viewport extends Scene {
 		if (key.height + key.y > this.workSurface.height) {
 			this.workSurface.height = key.height + this.gapY + key.y;
 		}
-
-		return createdKey;
+		cursor = new Quad();
+		cursor.size(50, 50);
+		cursor.anchor(.5, .5);
+		cursor.color = 0xff0000ff;
+		cursor.depth = 10;
+		this.add(cursor);
 	}
 
 	/**
-	 * Used to process wheel zooming
+	 * Runs every frame
 	 */
-	function mouseWheel(x: Float, y: Float): Void {
-		x *= wheelFactor #if mac * -1.0 #end;
-		y *= wheelFactor;
-
+	override public function update(delta: Float) {
+		cursorUpdate();
+	}
 		// TODO somehow make the wheel zoom way slower than 1:1
 		wheelCycles = if (wheelCycles < 60) wheelCycles + 1 else 0;
 

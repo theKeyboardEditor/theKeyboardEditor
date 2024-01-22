@@ -19,6 +19,7 @@ class ViewportContainer extends Box {
 		this.clipper.height = display.height;
 		this.display.screenX = screenLeft;
 		this.display.screenY = screenTop;
+		trace(screenTop);
 	}
 
 	function set_display(display: viewport.Viewport): viewport.Viewport {

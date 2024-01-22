@@ -50,11 +50,13 @@ class Input extends InputMap<ViewportInput> {
 		this.bindScanCode(DELETE_SELECTED, DELETE);
 
 		// TODO undo/redo action(s)
-		this.bindScanCode(UNDO, KEY_Z); // TODO find Ctrl+Z keycode
+		this.bindScanCode(UNDO, KEY_Z);
 		this.bindScanCode(REDO, KEY_Y);
 
 		// Mouse buttons
-		this.bindMouseButton(SELECT, 0); // LEFT
-		this.bindMouseButton(PAN, 1); // MIDDLE
+		// LEFT
+		this.bindMouseButton(SELECT, 0);
+		// MIDDLE
+		this.bindMouseButton(PAN, 1);
 	}
 }
