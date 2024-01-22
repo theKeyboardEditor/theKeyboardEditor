@@ -36,7 +36,7 @@ class Viewport extends Scene {
 	var olderY: Float = 0;
 
 	// The square that shows where the placed key is going to be located
-	public var cursor: Cursor = new Cursor(unit1U, unit1U);
+	public var cursor: Cursor = new Cursor(unit1U, unit1U); // here we define it's size
 	public var grid: Grid = new Grid(unit1U, unit1U);
 	public var screenX: Float = 224; // where Viewport resides on the screen
 	public var screenY: Float = 32;  // TODO this should NOT be set here!
@@ -64,13 +64,11 @@ class Viewport extends Scene {
 		super();
 
 //		this.cursor.depth = 10;
-		this.cursor.create();
-		trace ('Cursor: ${this.cursor.depth}');
 
 		// Initialize variables
 		this.keyson = keyson;
 		this.keyboard = keyson.unit[0];
-//		this.workSurface.depth = 20;
+		this.workSurface.depth = -12;
 		trace ('worksurface: ${this.workSurface.depth}');
 
 		// Set the gap between the keys based on the keyson file
@@ -78,6 +76,10 @@ class Viewport extends Scene {
 		gapY = Std.int((this.keyboard.keyStep[Axis.Y] - this.keyboard.capSize[Axis.Y]) / this.keyboard.keyStep[Axis.Y] * unit1U);
 
 		// Create cursor object
+		this.cursor.create();
+		 // if we don't add it (again) it renders beneat grid and workSurface regardless what
+		this.add(cursor);
+		trace ('Cursor: ${this.cursor.depth}');
 
 		// Define grid
 		this.grid.offsetX = -gapX / 2;
@@ -85,6 +87,7 @@ class Viewport extends Scene {
 		this.grid.subStepX = unitFractionU;
 		this.grid.subStepY = unitFractionU;
 		this.grid.create();
+		this.grid.depth = -12;
 		this.add(grid);
 
 		// Define the inputs
@@ -178,12 +181,12 @@ class Viewport extends Scene {
 		screenY = if ( screenX != null) screenY else 32;
 
 		// The real screen coordinates we should draw our placing cursor on
-		final screenPosX = screenX + (Std.int((screen.pointerX - screenX - placerArrowX) / scaledUnitFractionU) * scaledUnitFractionU);
-		final screenPosY = screenY + (Std.int((screen.pointerY - screenY - placerArrowY) / scaledUnitFractionU) * scaledUnitFractionU);
+		final screenPosX = (Std.int((screen.pointerX - screenX - placerArrowX) / scaledUnitFractionU) * scaledUnitFractionU);
+		final screenPosY = (Std.int((screen.pointerY - screenY - placerArrowY) / scaledUnitFractionU) * scaledUnitFractionU);
 
 		// The keyson space (1U) coordinates we would draw the key to be placed on
-		final snappedPosX = (Std.int((screenPosX - screenX) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
-		final snappedPosY = (Std.int((screenPosY - screenY) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
+		final snappedPosX = (Std.int((screenPosX) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
+		final snappedPosY = (Std.int((screenPosY) / scaledUnitFractionU) * scaledUnitFractionU / scaledUnit1U);
 
 		// Position the cursor right on top of the keycaps
 		this.cursor.pos(screenPosX, screenPosY);
