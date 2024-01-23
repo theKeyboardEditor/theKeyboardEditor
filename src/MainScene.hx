@@ -118,7 +118,8 @@ class MainScene extends Scene {
 		gui.viewport.display.create(); // this here might be our culprit
 		// TODO find a way to reappear the viewport w/o readding the ceramic elements to it
 		// this has to happen over there and a different function is to be called here
-		// gui.viewport.display.reappear(ID); ?
+		// gui.viewport.display.restore(ID); ?
+		//
 		// this.add(gui.viewport.display);
 
 		gui.viewport.display.visible = true;

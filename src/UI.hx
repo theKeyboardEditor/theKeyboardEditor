@@ -51,7 +51,7 @@ class UI extends haxe.ui.containers.VBox {
 			this.modeSelector = ComponentBuilder.fromFile("ui/modeselector.xml");
 			leftBox.addComponent(this.modeSelector);
 
-			this.sidebar = ComponentBuilder.fromFile("ui/sidebars/place.xml"); // this is the default sidebar
+			this.sidebar = ComponentBuilder.fromFile("ui/sidebars/edit.xml"); // this is the default sidebar
 		}
 		middle.addComponent(leftBox);
 

@@ -1,7 +1,12 @@
 package viewport;
 
-import ceramic.Quad;
 import ceramic.Scene;
+import ceramic.Visual;
+import ceramic.TouchInfo;
+import keyson.Axis;
+import keyson.Keyson;
+import keyson.Keyson.Keyboard;
+import keyson.Keyson.Key;
 
 class Viewport extends Scene {
 	// TODO: Replace instances of keyboard with just keyson
@@ -33,7 +38,7 @@ class Viewport extends Scene {
 	public var cursor: Cursor = new Cursor(unit1U, unit1U); // here we define it's size
 	public var grid: Grid = new Grid(unit1U, unit1U);
 	public var screenX: Float = 224; // where Viewport resides on the screen
-	public var screenY: Float = 32;  // TODO this should NOT be set here!
+	public var screenY: Float = 32; // TODO this should NOT be set here!
 
 	inline static final unit1U: Float = 100;
 
@@ -58,7 +63,7 @@ class Viewport extends Scene {
 		this.keyson = keyson;
 		this.keyboard = keyson.unit[0];
 		this.workSurface.depth = -12;
-		trace ('worksurface: ${this.workSurface.depth}');
+		trace('worksurface: ${this.workSurface.depth}');
 
 		// Set the gap between the keys based on the keyson file
 		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit1U);
@@ -66,9 +71,9 @@ class Viewport extends Scene {
 
 		// Create cursor object
 		this.cursor.create();
-		 // if we don't add it (again) it renders beneat grid and workSurface regardless what
+		// if we don't add it (again) it renders beneat grid and workSurface regardless what
 		this.add(cursor);
-		trace ('Cursor: ${this.cursor.depth}');
+		trace('Cursor: ${this.cursor.depth}');
 
 		// Define grid
 		this.grid.offsetX = -gapX / 2;
@@ -88,7 +93,11 @@ class Viewport extends Scene {
 		gimbal.y = 800;
 		this.add(gimbal);
 	}
-
+	// TODO besides create(); we need:
+	//  suspend(ID);
+	// and
+	//  restore(ID);
+	// for tab switching
 	override function create() {
 		for (key in this.keyboard.keys) {
 			drawKey(key); // add a key to worksurface
@@ -99,7 +108,6 @@ class Viewport extends Scene {
 	override function update(delta: Float) {
 		// Wheel Zooming:
 		screen.onMouseWheel(screen, mouseWheel);
-		moveViewportCamera(delta);
 		cursorUpdate();
 		this.actionQueue.act();
 	}
@@ -111,8 +119,8 @@ class Viewport extends Scene {
 		final scaledUnit1U = unit1U * scale;
 		final placerArrowX = scaledUnit1U / 2; // make placer centered to mouse arrow
 		final placerArrowY = scaledUnit1U / 2;
-		screenX = if ( screenX != null) screenX else 224; // TODO fallback
-		screenY = if ( screenX != null) screenY else 32;
+		screenX = if (screenX != null) screenX else 224; // TODO fallback
+		screenY = if (screenX != null) screenY else 32;
 
 		// The real screen coordinates we should draw our placing cursor on
 		final screenPosX = (Std.int((screen.pointerX - screenX - placerArrowX) / scaledUnitFractionU) * scaledUnitFractionU);
@@ -127,8 +135,8 @@ class Viewport extends Scene {
 
 		// Adjust the status bar with the position of the cursor
 		StatusBar.pos(snappedPosX, snappedPosY); // can only have 2 args
-		//StatusBar.pos(screenPosX, screenPosY); // can only have 2 args
-		//StatusBar.pos(screen.pointerX, screen.pointerY); // can only have 2 args
+		// StatusBar.pos(screenPosX, screenPosY); // can only have 2 args
+		// StatusBar.pos(screen.pointerX, screen.pointerY); // can only have 2 args
 
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
@@ -214,20 +222,15 @@ class Viewport extends Scene {
 		if (key.height + key.y > this.workSurface.height) {
 			this.workSurface.height = key.height + this.gapY + key.y;
 		}
-		cursor = new Quad();
-		cursor.size(50, 50);
-		cursor.anchor(.5, .5);
-		cursor.color = 0xff0000ff;
-		cursor.depth = 10;
-		this.add(cursor);
+		return createdKey;
 	}
 
 	/**
-	 * Runs every frame
+	 * Used to process wheel zooming
 	 */
-	override public function update(delta: Float) {
-		cursorUpdate();
-	}
+	function mouseWheel(x: Float, y: Float): Void {
+		x *= wheelFactor #if mac * -1.0 #end;
+		y *= wheelFactor;
 		// TODO somehow make the wheel zoom way slower than 1:1
 		wheelCycles = if (wheelCycles < 60) wheelCycles + 1 else 0;
 
