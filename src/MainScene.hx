@@ -104,7 +104,7 @@ class MainScene extends Scene {
 	public function closeViewport(viewport: viewport.Viewport) {
 		// viewport?.cursor.destroy();
 		// viewport?.grid.destroy();
-		viewport?.suspend(); // TODO we could better use "disappear(ID);"?
+		viewport?.destroy(); // TODO we could better use "suspend(ID);"?
 		// TODO: Find correct tab to delete - logo
 		// this.gui.tabbar.findComponent("projects").disposeComponent();
 	}
