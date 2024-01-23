@@ -30,8 +30,13 @@ class ViewportContainer extends Box {
 		this.display = display;
 		this.display.width = this.width;
 		this.display.height = this.height;
+<<<<<<< Updated upstream
 		//this.display.screenX = screenLeft; //works better when commented out
 		//this.display.screenY = screenTop;  //why?
+=======
+		//this.display.screenX = screenLeft;
+		//this.display.screenY = screenTop;
+>>>>>>> Stashed changes
 		this.display.clip = clipper;
 
 		this.add(display);

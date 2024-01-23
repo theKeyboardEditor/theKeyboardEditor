@@ -172,6 +172,7 @@ class Viewport extends Scene {
 	/**
 	 * Initializes the scene
 	 */
+<<<<<<< Updated upstream
 	public function drawKey(k: Key): Visual {
 		if (this.keyboard.keys.contains(k) == false) {
 			throw "Key does not exist inside the Keyson keyboard";
@@ -201,6 +202,14 @@ class Viewport extends Scene {
 
 		final createdKey = key.create();
 		this.workSurface.add(createdKey);
+=======
+	override public function create() {
+		workSurface = new Quad();
+		workSurface.size(100, 100);
+		workSurface.color = 0xffffffff;
+		workSurface.depth = 0;
+		this.add(workSurface);
+>>>>>>> Stashed changes
 
 		/**
 		 * A ceramic visual does not inherit the size of it's children
