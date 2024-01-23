@@ -93,7 +93,11 @@ class Viewport extends Scene {
 		gimbal.y = 800;
 		this.add(gimbal);
 	}
-
+	// TODO besides create(); we need:
+	//  suspend(ID);
+	// and
+	//  restore(ID);
+	// for tab switching
 	override function create() {
 		for (key in this.keyboard.keys) {
 			drawKey(key); // add a key to worksurface
