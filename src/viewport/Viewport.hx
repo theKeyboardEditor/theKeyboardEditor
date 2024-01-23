@@ -38,7 +38,7 @@ class Viewport extends Scene {
 	public var cursor: Cursor = new Cursor(unit1U, unit1U); // here we define it's size
 	public var grid: Grid = new Grid(unit1U, unit1U);
 	public var screenX: Float = 224; // where Viewport resides on the screen
-	public var screenY: Float = 32;  // TODO this should NOT be set here!
+	public var screenY: Float = 32; // TODO this should NOT be set here!
 
 	inline static final unit1U: Float = 100;
 
@@ -63,7 +63,7 @@ class Viewport extends Scene {
 		this.keyson = keyson;
 		this.keyboard = keyson.unit[0];
 		this.workSurface.depth = -12;
-		trace ('worksurface: ${this.workSurface.depth}');
+		trace('worksurface: ${this.workSurface.depth}');
 
 		// Set the gap between the keys based on the keyson file
 		gapX = Std.int((this.keyboard.keyStep[Axis.X] - this.keyboard.capSize[Axis.X]) / this.keyboard.keyStep[Axis.X] * unit1U);
@@ -71,9 +71,9 @@ class Viewport extends Scene {
 
 		// Create cursor object
 		this.cursor.create();
-		 // if we don't add it (again) it renders beneat grid and workSurface regardless what
+		// if we don't add it (again) it renders beneat grid and workSurface regardless what
 		this.add(cursor);
-		trace ('Cursor: ${this.cursor.depth}');
+		trace('Cursor: ${this.cursor.depth}');
 
 		// Define grid
 		this.grid.offsetX = -gapX / 2;
@@ -115,8 +115,8 @@ class Viewport extends Scene {
 		final scaledUnit1U = unit1U * scale;
 		final placerArrowX = scaledUnit1U / 2; // make placer centered to mouse arrow
 		final placerArrowY = scaledUnit1U / 2;
-		screenX = if ( screenX != null) screenX else 224; // TODO fallback
-		screenY = if ( screenX != null) screenY else 32;
+		screenX = if (screenX != null) screenX else 224; // TODO fallback
+		screenY = if (screenX != null) screenY else 32;
 
 		// The real screen coordinates we should draw our placing cursor on
 		final screenPosX = (Std.int((screen.pointerX - screenX - placerArrowX) / scaledUnitFractionU) * scaledUnitFractionU);
@@ -131,8 +131,8 @@ class Viewport extends Scene {
 
 		// Adjust the status bar with the position of the cursor
 		StatusBar.pos(snappedPosX, snappedPosY); // can only have 2 args
-		//StatusBar.pos(screenPosX, screenPosY); // can only have 2 args
-		//StatusBar.pos(screen.pointerX, screen.pointerY); // can only have 2 args
+		// StatusBar.pos(screenPosX, screenPosY); // can only have 2 args
+		// StatusBar.pos(screen.pointerX, screen.pointerY); // can only have 2 args
 
 		// Check for key presses and queue appropriate action
 		if (inputMap.justPressed(PLACE_1U)) { // key [p] for 1U?
@@ -220,6 +220,7 @@ class Viewport extends Scene {
 		}
 		return createdKey;
 	}
+
 	/**
 	 * Used to process wheel zooming
 	 */
@@ -229,7 +230,7 @@ class Viewport extends Scene {
 		// TODO somehow make the wheel zoom way slower than 1:1
 		wheelCycles = if (wheelCycles < 60) {
 			wheelCycles + 1
-			} else 0;
+		} else 0;
 
 		// Dampen the wheel zoom by skipping events
 		if (wheelCycles >= 60) { // Now do the zooming!

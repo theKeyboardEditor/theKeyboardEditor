@@ -94,9 +94,9 @@ class MainScene extends Scene {
 		tab.text = keyboard.name;
 		this.gui.tabbar.findComponent("projects").addComponent(tab);
 		// Create a new viewport
-		//var viewport = new viewport.Viewport(); // TODO better naming is needed
+		// var viewport = new viewport.Viewport(); // TODO better naming is needed
 		var viewport = new viewport.Viewport(keyboard);
-		//viewport.keyson = keyboard;
+		// viewport.keyson = keyboard;
 		this.openProjects[flake] = viewport;
 		switchViewport(viewport);
 	}

@@ -24,7 +24,7 @@ class Cursor extends Visual {
 	override public function new(width: Float, height: Float) {
 		super();
 		size(width, height);
-		//this.depth = 800; // only pivots and gimbals higher than us
+		// this.depth = 800; // only pivots and gimbals higher than us
 		this.color = 0x6D3C4BC5; // UI theme accent color!
 
 		// @formatter:off
