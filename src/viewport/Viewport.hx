@@ -27,7 +27,23 @@ class Viewport extends Scene {
 	public var screenY: Float = 0;
 
 	// GLOBAL SCENE
+	public function new() {
+		super();
+		// if we add it later we create doubles
+		workSurface = new Quad();
+		workSurface.size(100, 100);
+		workSurface.color = 0xffffffff; // withe
+		workSurface.depth = -1;
+		this.add(workSurface);
 
+
+		cursor = new Quad();
+		cursor.size(50, 50);
+		cursor.anchor(.5, .5);
+		cursor.color = 0xff0000ff; // blue
+		cursor.depth = 10;
+		this.add(cursor);
+	}
 	/**
 	 * Dispatches keyboard and mouse inputs to the seperate functions
 	 */
@@ -37,22 +53,10 @@ class Viewport extends Scene {
 	 * Initializes the scene
 	 */
 	override public function create() {
-		workSurface = new Quad();
-		workSurface.size(100, 100);
-		workSurface.color = 0xffffffff;
-		workSurface.depth = -1;
-		this.add(workSurface);
-
-		cursor = new Quad();
-		cursor.size(50, 50);
-		cursor.anchor(.5, .5);
-		cursor.color = 0xff0000ff;
-		cursor.depth = 10;
-		this.add(cursor);
 	}
 
 	/**
-	 * Runs every frame
+	 * Runs every frame, updates the status
 	 */
 	override public function update(delta: Float) {
 		cursorUpdate();
@@ -61,7 +65,7 @@ class Viewport extends Scene {
 	// CURSOR
 
 	/**
-	 * Runs every frame, used to position the cursor
+	 * Runs every frame, used ONLY to position the cursor
 	 */
 	public function cursorUpdate() {
 		cursor.x = screen.pointerX - screenX;

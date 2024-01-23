@@ -114,8 +114,7 @@ class MainScene extends Scene {
 		// gui.viewport.display?.cursor?.set_visible(false);
 
 		gui.viewport.display = viewport;
-		gui.viewport.display.create();
-		// this.add(gui.viewport.display);
+		gui.viewport.display.create(); // BUG we create another viewport set every time we switch viewport
 
 		gui.viewport.display.visible = true;
 		// gui.viewport.display.cursor.visible = true;
@@ -131,6 +130,6 @@ class MainScene extends Scene {
 		 */
 		store.set(Std.string(keyboard.name), keyboard);
 		store.save();
-		StatusBar.inform("Project has been saved");
+		StatusBar.inform("Project [${Std.string(keyboard.name)}] has been saved"); // TODO implement actual save status check
 	}
 }
