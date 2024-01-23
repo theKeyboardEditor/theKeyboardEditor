@@ -1,7 +1,12 @@
 package viewport;
 
-import ceramic.Quad;
 import ceramic.Scene;
+import ceramic.Visual;
+import ceramic.TouchInfo;
+import keyson.Axis;
+import keyson.Keyson;
+import keyson.Keyson.Keyboard;
+import keyson.Keyson.Key;
 
 class Viewport extends Scene {
 	// TODO: Replace instances of keyboard with just keyson
@@ -99,7 +104,6 @@ class Viewport extends Scene {
 	override function update(delta: Float) {
 		// Wheel Zooming:
 		screen.onMouseWheel(screen, mouseWheel);
-		moveViewportCamera(delta);
 		cursorUpdate();
 		this.actionQueue.act();
 	}
@@ -214,20 +218,14 @@ class Viewport extends Scene {
 		if (key.height + key.y > this.workSurface.height) {
 			this.workSurface.height = key.height + this.gapY + key.y;
 		}
-		cursor = new Quad();
-		cursor.size(50, 50);
-		cursor.anchor(.5, .5);
-		cursor.color = 0xff0000ff;
-		cursor.depth = 10;
-		this.add(cursor);
+		return createdKey;
 	}
-
 	/**
-	 * Runs every frame
+	 * Used to process wheel zooming
 	 */
-	override public function update(delta: Float) {
-		cursorUpdate();
-	}
+	function mouseWheel(x: Float, y: Float): Void {
+		x *= wheelFactor #if mac * -1.0 #end;
+		y *= wheelFactor;
 		// TODO somehow make the wheel zoom way slower than 1:1
 		wheelCycles = if (wheelCycles < 60) {
 			wheelCycles + 1
