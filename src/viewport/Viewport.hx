@@ -228,9 +228,7 @@ class Viewport extends Scene {
 		x *= wheelFactor #if mac * -1.0 #end;
 		y *= wheelFactor;
 		// TODO somehow make the wheel zoom way slower than 1:1
-		wheelCycles = if (wheelCycles < 60) {
-			wheelCycles + 1
-		} else 0;
+		wheelCycles = if (wheelCycles < 60) wheelCycles + 1 else 0;
 
 		// Dampen the wheel zoom by skipping events
 		if (wheelCycles >= 60) { // Now do the zooming!
