@@ -10,7 +10,8 @@
 				<button text="Paste" icon="icons/paste" width="64px" height="64px" iconPosition="top" tooltip="Paste selected from buffer"/>
 			</hbox>
 			<hbox horizontalAlign="center">
-				<button text="Cut" icon="icons/cut" width="133px" height="64px" iconPosition="top" tooltip="Cut selected to buffer"/>
+				<button text="Cut" icon="icons/cut" width="64px" height="64px" iconPosition="top" tooltip="Cut selected to buffer"/>
+				<button text="Select" icon="icons/cut" width="64px" height="64px" iconPosition="top" tooltip="Select items"/>
 			</hbox>
 		</vbox>
 	</scrollview>

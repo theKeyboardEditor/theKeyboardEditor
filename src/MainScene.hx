@@ -94,8 +94,9 @@ class MainScene extends Scene {
 		tab.text = keyboard.name;
 		this.gui.tabbar.findComponent("projects").addComponent(tab);
 		// Create a new viewport
-		var viewport = new viewport.Viewport(); // TODO better naming is needed
-		viewport.keyson = keyboard;
+		// var viewport = new viewport.Viewport(); // TODO better naming is needed
+		var viewport = new viewport.Viewport(keyboard);
+		// viewport.keyson = keyboard;
 		this.openProjects[flake] = viewport;
 		switchViewport(viewport);
 	}
@@ -103,7 +104,7 @@ class MainScene extends Scene {
 	public function closeViewport(viewport: viewport.Viewport) {
 		// viewport?.cursor.destroy();
 		// viewport?.grid.destroy();
-		viewport?.destroy();
+		viewport?.suspend(); // TODO we could better use "disappear(ID);"?
 		// TODO: Find correct tab to delete - logo
 		// this.gui.tabbar.findComponent("projects").disposeComponent();
 	}
@@ -114,7 +115,11 @@ class MainScene extends Scene {
 		// gui.viewport.display?.cursor?.set_visible(false);
 
 		gui.viewport.display = viewport;
-		gui.viewport.display.create();
+		gui.viewport.display.create(); // this here might be our culprit
+		// TODO find a way to reappear the viewport w/o readding the ceramic elements to it
+		// this has to happen over there and a different function is to be called here
+		// gui.viewport.display.restore(ID); ?
+		//
 		// this.add(gui.viewport.display);
 
 		gui.viewport.display.visible = true;
