@@ -114,7 +114,6 @@ class MainScene extends Scene {
 		// gui.viewport.display?.cursor?.set_visible(false);
 
 		gui.viewport.display = viewport;
-		gui.viewport.display.create();
 		// this.add(gui.viewport.display);
 
 		gui.viewport.display.visible = true;

@@ -66,5 +66,6 @@ class Viewport extends Scene {
 	public function cursorUpdate() {
 		cursor.x = screen.pointerX - screenX;
 		cursor.y = screen.pointerY - screenY;
+		cursor.pos(cursor.x - cursor.x % 25, cursor.y - cursor.y % 25);
 	}
 }
