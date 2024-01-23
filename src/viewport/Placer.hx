@@ -5,28 +5,45 @@ import ceramic.Quad;
 import ceramic.Color;
 import ceramic.Visual;
 
-/*
- * The cursor is the shape that points where the next object will be placed
- *
+/**
+ * The placer is the shape that points where the next object will be placed
  */
-class Cursor extends Visual {
+class Placer extends Visual {
+	@content public var color: Color;
+
 	// Corners
-	public var topLeft: Mesh;
-	public var bottomLeft: Mesh;
-	public var bottomRight: Mesh;
-	public var topRight: Mesh;
-	public var color: Color;
+	var topLeft: Mesh;
+	var bottomLeft: Mesh;
+	var bottomRight: Mesh;
+	var topRight: Mesh;
 
 	// For corners
-	final vertices: Array<Float>;
-	final indices: Array<Int>;
+	var vertices: Array<Float>;
+	var indices: Array<Int>;
 
-	override public function new(width: Float, height: Float) {
-		super();
-		size(width, height);
-		this.depth = 800; // only pivots and gimbals higher than us
+	override public function set_width(width: Float): Float {
+		if (this.width == width)
+			return width;
+		super.set_width(width);
+		contentDirty = true;
+		return width;
+	}
+
+	override public function set_height(height: Float): Float {
+		if (this.height == height)
+			return height;
+		super.set_height(height);
+		contentDirty = true;
+		return height;
+	}
+
+	override public function new() {
 		this.color = 0x6D3C4BC5; // UI theme accent color!
+		contentDirty = true;
+		super();
+	}
 
+	override public function computeContent() {
 		// @formatter:off
 		this.vertices = [
 			width * 0.04, 0.0,            //  0____ 1
@@ -43,16 +60,13 @@ class Cursor extends Visual {
 			3, 4, 5
 		];
 		// @formatter:on
-	}
-
-	public function create(): Visual { // TODO make cursor's size dynamic
+		// Corners
 		// TOP LEFT
 		this.topLeft = new Mesh();
 		this.topLeft.color = this.color;
 		this.topLeft.vertices = this.vertices;
 		this.topLeft.indices = this.indices;
 		this.topLeft.pos(0, 0);
-		this.topLeft.depth = 800;
 		this.add(this.topLeft);
 
 		// BOTTOM LEFT
@@ -61,7 +75,6 @@ class Cursor extends Visual {
 		this.bottomLeft.vertices = this.vertices;
 		this.bottomLeft.indices = this.indices;
 		this.bottomLeft.pos(this.width, 0);
-		this.bottomLeft.depth = 800;
 		this.bottomLeft.rotation = 90;
 		this.add(this.bottomLeft);
 
@@ -71,7 +84,6 @@ class Cursor extends Visual {
 		this.topRight.vertices = this.vertices;
 		this.topRight.indices = this.indices;
 		this.topRight.pos(0, this.height);
-		this.topRight.depth = 800;
 		this.topRight.rotation = -90;
 		this.add(this.topRight);
 
@@ -81,10 +93,9 @@ class Cursor extends Visual {
 		this.bottomRight.vertices = this.vertices;
 		this.bottomRight.indices = this.indices;
 		this.bottomRight.pos(this.width, this.height);
-		this.bottomRight.depth = 800;
 		this.bottomRight.rotation = 180;
 		this.add(this.bottomRight);
 
-		return this;
+		super.computeContent();
 	}
 }

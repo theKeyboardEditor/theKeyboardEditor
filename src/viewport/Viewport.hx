@@ -20,7 +20,7 @@ class Viewport extends Scene {
 	 */
 	var workSurface: Quad;
 
-	var cursor: Quad;
+	var placer: Placer;
 
 	// Constants
 	public var screenX: Float = 0;
@@ -43,29 +43,28 @@ class Viewport extends Scene {
 		workSurface.depth = -1;
 		this.add(workSurface);
 
-		cursor = new Quad();
-		cursor.size(50, 50);
-		cursor.anchor(.5, .5);
-		cursor.color = 0xff0000ff;
-		cursor.depth = 10;
-		this.add(cursor);
+		placer = new Placer();
+		placer.size(100, 100);
+		placer.anchor(.5, .5);
+		placer.depth = 10;
+		this.add(placer);
 	}
 
 	/**
 	 * Runs every frame
 	 */
 	override public function update(delta: Float) {
-		cursorUpdate();
+		placerUpdate();
 	}
 
-	// CURSOR
+	// PLACER
 
 	/**
-	 * Runs every frame, used to position the cursor
+	 * Runs every frame, used to position the placer
 	 */
-	public function cursorUpdate() {
-		cursor.x = screen.pointerX - screenX;
-		cursor.y = screen.pointerY - screenY;
-		cursor.pos(cursor.x - cursor.x % 25, cursor.y - cursor.y % 25);
+	public function placerUpdate() {
+		placer.x = screen.pointerX - screenX;
+		placer.y = screen.pointerY - screenY;
+		placer.pos(placer.x - placer.x % 25, placer.y - placer.y % 25);
 	}
 }
