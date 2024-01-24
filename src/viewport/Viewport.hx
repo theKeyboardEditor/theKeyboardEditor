@@ -26,6 +26,9 @@ class Viewport extends Scene {
 	public var screenX: Float = 0;
 	public var screenY: Float = 0;
 
+	inline static final unit: Float = 100;
+	inline static final quarterUnit: Float = Std.int(unit / 4);
+
 	// GLOBAL SCENE
 
 	/**
@@ -37,10 +40,15 @@ class Viewport extends Scene {
 	 * Initializes the scene
 	 */
 	override public function create() {
+		var grid = new Grid();
+		grid.primaryStep(unit);
+		grid.subStep(quarterUnit);
+		grid.depth = -1;
+		this.add(grid);
+
 		workSurface = new Quad();
 		workSurface.size(100, 100);
 		workSurface.color = 0xffffffff;
-		workSurface.depth = -1;
 		this.add(workSurface);
 
 		placer = new Placer();

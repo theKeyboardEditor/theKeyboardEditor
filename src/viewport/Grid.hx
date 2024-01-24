@@ -4,83 +4,94 @@ import ceramic.Quad;
 import ceramic.Color;
 import ceramic.Visual;
 
-/*
- * The cursor is the shape that points where the next object will be placed
- *
+/**
+ * The grid is a background used for alignment
+ * It is comprised of boxes made up of pluses and dots
  */
 class Grid extends Visual {
-	public var color1: Color;
-	public var color2: Color;
-	public var mainStepX: Float;
-	public var mainStepY: Float;
-	public var subStepX: Float;
-	public var subStepY: Float;
-	public var offsetX: Float;
-	public var offsetY: Float;
-	public var maxStepsX: Int = 48;
-	public var maxStepsY: Int = 12;
+	@content public var color: Color = 0xff282828;
+	public var primaryStepX(default, set): Float = 100;
+	public var primaryStepY(default, set): Float = 100;
+	@content public var subStepX: Float = 25;
+	@content public var subStepY: Float = 25;
+	@content public var maxStepsX: Int = 48;
+	@content public var maxStepsY: Int = 12;
 
-	var long: Float = 15;
-	var thick: Float = 3;
+	// Defines the size of the pluses
+	static inline final long: Float = 15;
+	// Defines the thickness of the pluses which effects the dots
+	static inline final thick: Float = 3;
 
-	override public function new(mainStepX: Float, mainStepY: Float) {
-		super();
-		size(mainStepX * maxStepsX, mainStepY * maxStepsY);
-		this.color1 = 0xff282828; // UI theme background color!
-		this.color2 = 0xff1d2021; // UI theme 2nd background color!
-		this.color2 = Color.WHITE; // UI theme 2nd background color!
-		this.pos(0, 0);
-		this.mainStepX = mainStepX;
-		this.mainStepY = mainStepY;
-	}
+	override public function computeContent() {
+		var quad = new Quad();
+		quad.pos(3.5, 3.5);
+		quad.size(7, 7);
+		quad.depth = 0;
+		quad.color = color;
+		quad.color.lightnessHSLuv += 0.15;
+		this.add(quad);
 
-	public function create(): Visual {
-		final q5 = new Quad();
-		q5.pos(offsetX - 3.5, offsetY - 3.5);
-		q5.size(7, 7);
-		q5.depth = 0;
-		q5.color = 0xFF282828;
-		q5.color.lightnessHSLuv += 0.15;
-		this.add(q5);
 		for (xPos in 0...maxStepsX) {
 			for (yPos in 0...maxStepsY) {
-				final q1 = new Quad();
-				q1.pos(offsetX + xPos * mainStepX - thick / 2, offsetY + yPos * mainStepY - long / 2);
-				q1.size(thick, long);
-				q1.depth = 0;
-				q1.color = 0xff282828;
-				q1.color.lightnessHSLuv += 0.15;
-				this.add(q1);
-				for (subX in 0...Std.int(this.mainStepX / this.subStepX)) {
-					final q3 = new Quad();
-					q3.pos(offsetX + xPos * mainStepX - thick / 2 + subX * subStepX, offsetY + yPos * mainStepY - thick / 2);
-					q3.size(thick, thick);
-					q3.depth = 0;
-					q3.color = 0xff282828;
-					q3.color.lightnessHSLuv += 0.15;
-					this.add(q3);
+				var quad1 = new Quad();
+				quad1.pos(xPos * primaryStepX - thick / 2, yPos * primaryStepY - long / 2);
+				quad1.size(thick, long);
+				quad1.depth = 0;
+				quad1.color = color;
+				quad1.color.lightnessHSLuv += 0.15;
+				this.add(quad1);
+
+				for (subX in 0...Std.int(this.primaryStepX / this.subStepX)) {
+					var quad3 = new Quad();
+					quad3.pos(xPos * primaryStepX - thick / 2 + subX * subStepX, yPos * primaryStepY - thick / 2);
+					quad3.size(thick, thick);
+					quad3.depth = 0;
+					quad3.color = color;
+					quad3.color.lightnessHSLuv += 0.15;
+					this.add(quad3);
 				}
 
-				final q2 = new Quad();
-				q2.pos(offsetX + xPos * mainStepX - long / 2, offsetY + yPos * mainStepY - thick / 2);
-				q2.size(long, thick);
-				q2.depth = 0;
-				q2.color = 0xff282828;
-				q2.color.lightnessHSLuv += 0.15;
-				this.add(q2);
-				for (subY in 0...Std.int(this.mainStepY / this.subStepY)) {
-					final q4 = new Quad();
-					q4.pos(offsetX + xPos * mainStepX - thick / 2, offsetY + yPos * mainStepY - thick / 2 + subY * subStepY);
-					q4.size(thick, thick);
-					q4.depth = 0;
-					q4.color = 0xff282828;
-					q4.color.lightnessHSLuv += 0.15;
-					this.add(q4);
+				var quad2 = new Quad();
+				quad2.pos(xPos * primaryStepX - long / 2, yPos * primaryStepY - thick / 2);
+				quad2.size(long, thick);
+				quad2.depth = 0;
+				quad2.color = color;
+				quad2.color.lightnessHSLuv += 0.15;
+				this.add(quad2);
+
+				for (subY in 0...Std.int(this.primaryStepY / this.subStepY)) {
+					var quad4 = new Quad();
+					quad4.pos(xPos * primaryStepX - thick / 2, yPos * primaryStepY - thick / 2 + subY * subStepY);
+					quad4.size(thick, thick);
+					quad4.depth = 0;
+					quad4.color = color;
+					quad4.color.lightnessHSLuv += 0.15;
+					this.add(quad4);
 				}
 			}
 		}
-		this.anchorX = 0;
-		this.anchorY = 0;
-		return this;
+		super.computeContent();
+	}
+
+	function set_primaryStepX(step: Float) {
+		this.width = primaryStepX * maxStepsX;
+		contentDirty = true;
+		return step;
+	}
+
+	function set_primaryStepY(step: Float) {
+		this.height = primaryStepY * maxStepsY;
+		contentDirty = true;
+		return step;
+	}
+
+	public function primaryStep(value: Float) {
+		this.primaryStepX = value;
+		this.primaryStepY = value;
+	}
+
+	public function subStep(value: Float) {
+		this.subStepX = value;
+		this.subStepY = value;
 	}
 }
