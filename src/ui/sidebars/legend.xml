@@ -21,7 +21,7 @@
 							<label text="Font size:" />
 						</hbox>
 						<vbox horizontalAlign="left">
-							<number-stepper width="133" pos="9" step="1" min="5" max="144"/>
+							<number-stepper width="133" pos="9" step="1" min="5" max="144" />
 						</vbox>
 						<hbox horizontalAlign="left">
 							<label text="Text position:" />
@@ -61,7 +61,7 @@
 							<label text="Font size:" />
 						</hbox>
 						<vbox horizontalAlign="left">
-							<number-stepper width="133" pos="9" step="1" min="5" max="144"/>
+							<number-stepper width="133" pos="9" step="1" min="5" max="144" />
 						</vbox>
 						<hbox horizontalAlign="left">
 							<label text="Text position:" />
