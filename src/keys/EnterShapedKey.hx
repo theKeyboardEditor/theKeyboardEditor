@@ -44,6 +44,8 @@ class EnterShapedKey extends KeyRenderer {
 	var points: Array<Float>;
 	var turn: Int;
 
+	public var top: Shape; // we might use top for clipping the legend this way?
+	public var bottom: Shape;
 	public var segments: Int = 10; // 1...many (sane only up to 10)
 
 	override public function new(widthNorth: Float, heightNorth: Float, topColor: Int, bodyColor: Int, widthSouth: Float, heightSouth: Float,
@@ -98,14 +100,17 @@ class EnterShapedKey extends KeyRenderer {
 		this.pivot.visible = false;
 		this.add(this.pivot);
 
-		this.add(enterShape(widthNorth - this.topOffset, heightNorth - this.topOffset, widthSouth - this.topOffset,
+		this.top = new enterShape(widthNorth - this.topOffset, heightNorth - this.topOffset, widthSouth - this.topOffset,
 			heightSouth - this.topOffset, topColor, topX, topY));
-		this.add(enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bodyColor, 0.0, 0.0));
+		this.add(top);
+		this.bottom = new enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bodyColor, 0.0, 0.0));
+		this.add(bottom);
 
 		return this;
 	}
 
-	function enterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float, posY: Float) {
+	function enterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float,
+			posY: Float): Shape {
 		var sine = [for (angle in 0...segments + 1) Math.sin(Math.PI / 2 * angle / segments)];
 		var cosine = [for (angle in 0...segments + 1) Math.cos(Math.PI / 2 * angle / segments)];
 		// @formatter:off
@@ -130,7 +135,7 @@ class EnterShapedKey extends KeyRenderer {
 			localWidth = widthNorth;
 			localHeight = heightSouth;
 			recipe = "7FLNLJ";
-			//        012345 
+			//        012345
 			// 7 #### F
 			//   ### NL
 			// J     L
@@ -165,7 +170,7 @@ class EnterShapedKey extends KeyRenderer {
 			localHeight = heightSouth;
 			recipe = "7FLJIJ";
 			// 7 #### F
-			// J I###  
+			// J I###
 			//   J   L
 			signumL= [ 0, 0, 0, 1, 1, 0];
 			signumR= [ 0, 0, 0, 0, 0, 0];
