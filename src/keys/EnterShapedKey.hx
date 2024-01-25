@@ -108,7 +108,7 @@ class EnterShapedKey extends KeyRenderer {
 		return this;
 	}
 
-	final function enterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float, posY: Float):Shape {
+	function enterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float, posY: Float):Shape {
 		var sine = [for (angle in 0...segments + 1) Math.sin(Math.PI / 2 * angle / segments)];
 		var cosine = [for (angle in 0...segments + 1) Math.cos(Math.PI / 2 * angle / segments)];
 		// @formatter:off
