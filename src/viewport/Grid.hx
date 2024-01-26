@@ -10,6 +10,7 @@ import ceramic.Visual;
  */
 class Grid extends Visual {
 	@content public var color: Color = 0xff282828;
+	@content public var floor: Color = 0xff1d2021;
 	public var primaryStepX(default, set): Float = 100;
 	public var primaryStepY(default, set): Float = 100;
 	@content public var subStepX: Float = 25;
@@ -23,12 +24,20 @@ class Grid extends Visual {
 	static inline final thick: Float = 3;
 
 	override public function computeContent() {
+		var base = new Quad();
+		base.pos(0 - long, 0 - long);
+		base.size((maxStepsX * primaryStepX) + 2 * long, (maxStepsY * primaryStepY) + 2 * long);
+		base.depth = 0;
+		base.color = floor;
+		base.color.lightnessHSLuv += 0.05;
+		this.add(base);
+
 		var quad = new Quad();
 		quad.pos(3.5, 3.5);
 		quad.size(7, 7);
-		quad.depth = 0;
+		quad.depth = 1;
 		quad.color = color;
-		quad.color.lightnessHSLuv += 0.15;
+		quad.color.lightnessHSLuv += 0.10;
 		this.add(quad);
 
 		for (xPos in 0...maxStepsX) {
@@ -36,36 +45,36 @@ class Grid extends Visual {
 				var quad1 = new Quad();
 				quad1.pos(xPos * primaryStepX - thick / 2, yPos * primaryStepY - long / 2);
 				quad1.size(thick, long);
-				quad1.depth = 0;
+				quad1.depth = 1;
 				quad1.color = color;
-				quad1.color.lightnessHSLuv += 0.15;
+				quad1.color.lightnessHSLuv += 0.10;
 				this.add(quad1);
 
 				for (subX in 0...Std.int(this.primaryStepX / this.subStepX)) {
 					var quad3 = new Quad();
 					quad3.pos(xPos * primaryStepX - thick / 2 + subX * subStepX, yPos * primaryStepY - thick / 2);
 					quad3.size(thick, thick);
-					quad3.depth = 0;
+					quad3.depth = 1;
 					quad3.color = color;
-					quad3.color.lightnessHSLuv += 0.15;
+					quad3.color.lightnessHSLuv += 0.10;
 					this.add(quad3);
 				}
 
 				var quad2 = new Quad();
 				quad2.pos(xPos * primaryStepX - long / 2, yPos * primaryStepY - thick / 2);
 				quad2.size(long, thick);
-				quad2.depth = 0;
+				quad2.depth = 1;
 				quad2.color = color;
-				quad2.color.lightnessHSLuv += 0.15;
+				quad2.color.lightnessHSLuv += 0.10;
 				this.add(quad2);
 
 				for (subY in 0...Std.int(this.primaryStepY / this.subStepY)) {
 					var quad4 = new Quad();
 					quad4.pos(xPos * primaryStepX - thick / 2, yPos * primaryStepY - thick / 2 + subY * subStepY);
 					quad4.size(thick, thick);
-					quad4.depth = 0;
+					quad4.depth = 1;
 					quad4.color = color;
-					quad4.color.lightnessHSLuv += 0.15;
+					quad4.color.lightnessHSLuv += 0.10;
 					this.add(quad4);
 				}
 			}
