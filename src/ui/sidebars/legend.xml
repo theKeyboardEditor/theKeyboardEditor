@@ -3,12 +3,107 @@
 	<hbox height="100%" width="156px" horizontalAlign="center" verticalAlign="center">
 		<scrollview width="153px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
 			<vbox width="100%" horizontalAlign="center" verticalAlign="center">
-				<tabview width="150px" height="580" closable="true">
-					<vbox text="Legend">
+				<accordion width="150px" height="580">
+					<!-- The two default elements every keyboard will have: -->
+					<vbox id="global" text="Global">
+						<dropdown text="Select a font:">
+							<data>
+								<item text="<default>" />
+								<item text="Noto" />
+								<item text="Roboto" />
+								<item text="Tahoma" />
+								<item text="Consolas" />
+								<item text="Din-D" />
+								<item text="Vera-Sans" />
+							</data>
+						</dropdown>
+						<hbox horizontalAlign="left">
+							<label text="Font size:" />
+						</hbox>
+						<vbox horizontalAlign="left">
+							<number-stepper width="133" pos="9" step="1" min="5" max="144" />
+						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="Text position:" />
+						</hbox>
+						<vbox horizontalAlign="left">
+							<number-stepper width="133" pos="8" step=".1" min="-32767" max="32768" precision="2" />
+							<number-stepper width="133" pos="8" step=".1" min="-32767" max="32768" precision="2" />
+						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="Rotation anchor:" />
+						</hbox>
+						<vbox horizontalAlign="left">
+							<number-stepper width="133" pos="0" step=".1" min="-32767" max="32768" precision="2" />
+							<number-stepper width="133" pos="0" step=".1" min="-32767" max="32768" precision="2" />
+						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="Legend angle:" />
+						</hbox>
+						<vbox horizontalAlign="left">
+							<number-stepper width="133" pos="0" step="22.5" min="0" max="359" precision="2" />
+						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="All Legends:" />
+						</hbox>
+						<vbox width="100%" >
+							<button text="Default" width="100%" />
+							<button text="Apply" width="100%" />
+						</vbox>
+					</vbox>
+					<vbox id="unit[0]" text="[Numpad]">
+						<dropdown text="Select a font:">
+							<data>
+								<item text="<none>" />
+								<item text="Noto" />
+								<item text="Roboto" />
+								<item text="Tahoma" />
+								<item text="Consolas" />
+								<item text="Din-D" />
+								<item text="Vera-Sans" />
+							</data>
+						</dropdown>
+						<hbox horizontalAlign="left">
+							<label text="Font size:" />
+						</hbox>
+						<vbox horizontalAlign="left">
+							<number-stepper width="133" pos="9" step="1" min="5" max="144" />
+						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="Text position:" />
+						</hbox>
+						<vbox horizontalAlign="left">
+							<number-stepper width="133" pos="8" step=".1" min="-32767" max="32768" precision="2" />
+							<number-stepper width="133" pos="8" step=".1" min="-32767" max="32768" precision="2" />
+						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="Rotation anchor:" />
+						</hbox>
+						<vbox horizontalAlign="left">
+							<number-stepper width="133" pos="0" step=".1" min="-32767" max="32768" precision="2" />
+							<number-stepper width="133" pos="0" step=".1" min="-32767" max="32768" precision="2" />
+						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="Legend angle:" />
+						</hbox>
+						<vbox horizontalAlign="left">
+							<number-stepper width="133" pos="0" step="22.5" min="0" max="359" precision="2" />
+						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="Unit legends:" />
+						</hbox>
+						<vbox width="100%" >
+							<button text="Clear" width="100%" />
+							<button text="Apply" width="100%" />
+						</vbox>
+					</vbox>
+					<!-- end of The two default elements every keyboard will have -->
+					<vbox id="legend[0]" text="[U1]">
 						<label text="Legend text:" verticalAlign="center" />
 						<textfield width="128" placeholder="U1" />
 						<dropdown text="Select a font:">
 							<data>
+								<item text="<none>" />
 								<item text="Noto" />
 								<item text="Roboto" />
 								<item text="Tahoma" />
@@ -43,12 +138,20 @@
 						<vbox horizontalAlign="left">
 							<number-stepper width="133" pos="0" step="22.5" min="0" max="359" precision="2" />
 						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="This Legend:" />
+						</hbox>
+						<vbox width="100%" >
+							<button text="Delete" width="100%" />
+							<button text="Duplicate" width="100%" />
+						</vbox>
 					</vbox>
-					<vbox text="underLegend">
+					<vbox id="legend[1]" text="U2 V.">
 						<label text="Legend text:" verticalAlign="center" />
 						<textfield width="128" placeholder="U2 V." />
 						<dropdown text="Select a font:">
 							<data>
+								<item text="<none>" />
 								<item text="Noto" />
 								<item text="Roboto" />
 								<item text="Tahoma" />
@@ -83,8 +186,15 @@
 						<vbox horizontalAlign="left">
 							<number-stepper width="133" pos="0" step="22.5" min="0" max="359" precision="2" />
 						</vbox>
+						<hbox horizontalAlign="left">
+							<label text="This Legend:" />
+						</hbox>
+						<vbox width="100%" >
+							<button text="Delete" width="100%" />
+							<button text="Duplicate" width="100%" />
+						</vbox>
 					</vbox>
-				</tabview>
+				</accordion>
 			</vbox>
 		</scrollview>
 	</hbox>
