@@ -46,9 +46,11 @@ class Viewport extends Scene {
 		grid.depth = -1;
 		this.add(grid);
 
+		var random = new ceramic.SeedRandom(Date.now().getTime());
+
 		workSurface = new Quad();
 		workSurface.size(100, 100);
-		workSurface.color = 0xffffffff;
+		workSurface.color = random.between(100000000, 999999999);
 		this.add(workSurface);
 
 		placer = new Placer();

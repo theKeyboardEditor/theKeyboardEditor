@@ -8,9 +8,7 @@ import haxe.ui.core.Screen;
 import uuid.FlakeId;
 
 class MainScene extends Scene {
-	public var openProjects: Map<String, viewport.Viewport> = []; // The Int64 is an random identifier for the specific viewport
 	public var gui: UI;
-	public var flakeGen: FlakeId; // Used for generating the previously stated identifiers
 
 	/*
 	 * Add any assets you want to load here
@@ -46,11 +44,10 @@ class MainScene extends Scene {
 
 		// Initialize global variables
 		this.gui = new UI(this, store);
-		this.flakeGen = new FlakeId();
 
 		// Render keys
-		openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
-		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
+		gui.openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
+		gui.openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
 
 		// Add stored projects to list
 		for (key in store.keys()) {
@@ -65,17 +62,10 @@ class MainScene extends Scene {
 		// KEYBINDINGS!
 		var keyBindings = new KeyBindings();
 
-		// Savind
+		// Saving
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
-			save(gui.viewport.display.keyson, store);
+			save(cast(gui.tabs.selectedPage, ui.ViewportContainer).display.keyson, store);
 		});
-
-		final project: haxe.ui.components.TabBar = cast gui.tabbar.findComponent("projects");
-		project.selectedIndex = project.tabCount - 1;
-		project.onChange = (e) -> {
-			var view = openProjects[project.selectedTab.id];
-			switchViewport(view);
-		};
 
 		// Toggle overlay (i.e welcome screen)
 		// gui.viewport.display.paused = true;
@@ -83,41 +73,6 @@ class MainScene extends Scene {
 			// gui.viewport.display.paused = !gui.viewport.display.paused;
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});
-	}
-
-	public function openViewport(keyboard: keyson.Keyson) {
-		// Generate an identifier
-		final flake = Std.string(this.flakeGen.nextId());
-		// Create a tab on the top
-		var tab = new haxe.ui.components.Button();
-		tab.id = flake;
-		tab.text = keyboard.name;
-		this.gui.tabbar.findComponent("projects").addComponent(tab);
-		// Create a new viewport
-		var viewport = new viewport.Viewport(); // TODO better naming is needed
-		viewport.keyson = keyboard;
-		this.openProjects[flake] = viewport;
-		switchViewport(viewport);
-	}
-
-	public function closeViewport(viewport: viewport.Viewport) {
-		// viewport?.cursor.destroy();
-		// viewport?.grid.destroy();
-		viewport?.destroy();
-		// TODO: Find correct tab to delete - logo
-		// this.gui.tabbar.findComponent("projects").disposeComponent();
-	}
-
-	public function switchViewport(viewport: viewport.Viewport) { // TODO that's 4 Viewports in one line?
-		// TODO update the tabs to refect the active project
-		gui.viewport.display?.set_visible(false);
-		// gui.viewport.display?.cursor?.set_visible(false);
-
-		gui.viewport.display = viewport;
-		// this.add(gui.viewport.display);
-
-		gui.viewport.display.visible = true;
-		// gui.viewport.display.cursor.visible = true;
 	}
 
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {

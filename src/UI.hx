@@ -5,6 +5,7 @@ import haxe.ui.ComponentBuilder;
 import haxe.ui.events.MouseEvent;
 import haxe.ui.events.UIEvent;
 import haxe.ui.events.ItemEvent;
+import haxe.ui.containers.TabView;
 import haxe.ui.containers.Box;
 import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
@@ -14,11 +15,11 @@ import haxe.ui.containers.dialogs.Dialog;
 using StringTools;
 
 class UI extends haxe.ui.containers.VBox {
+	public var tabs: TabView;
 	public var overlay: Box;
 	public var leftBox: HBox;
 	public var tabbar: HBox;
 	public var modeSelector: ButtonBar;
-	public var viewport: ui.ViewportContainer;
 	public var sidebar(default, set): Box;
 	public var welcome: VBox;
 
@@ -33,12 +34,6 @@ class UI extends haxe.ui.containers.VBox {
 		// Create base container
 		this.styleString = "spacing: 0;";
 		this.percentWidth = this.percentHeight = 100;
-
-		// Render elements
-		// TOP
-		this.tabbar = ComponentBuilder.fromFile("ui/tabbar.xml");
-		tabbarEvents();
-		this.addComponent(this.tabbar);
 
 		// MIDDLE
 		var middle = new HBox();
@@ -55,9 +50,9 @@ class UI extends haxe.ui.containers.VBox {
 		}
 		middle.addComponent(leftBox);
 
-		this.viewport = new ui.ViewportContainer();
-		viewport.styleString = "width: 100%; height: 100%;";
-		middle.addComponent(viewport);
+		tabs = new TabView();
+		tabs.styleString = "width: 100%; height: 100%; background-color: #282828;";
+		middle.addComponent(tabs);
 
 		// BOTTOM
 		StatusBar.element = ComponentBuilder.fromFile("ui/status.xml");
@@ -65,6 +60,18 @@ class UI extends haxe.ui.containers.VBox {
 
 		// This is put on top of all other elements
 		this.overlay = createWelcome();
+	}
+
+	public function openViewport(keyboard: keyson.Keyson) {
+		var viewport = new viewport.Viewport();
+		viewport.keyson = keyboard;
+
+		var container = new ui.ViewportContainer();
+		container.styleString = "width: 100%; height: 100%;";
+		container.text = keyboard.name;
+		container.display = viewport;
+
+		tabs.addComponent(container);
 	}
 
 	function set_sidebar(value: Box): Box {
@@ -80,7 +87,7 @@ class UI extends haxe.ui.containers.VBox {
 		return sidebar;
 	}
 
-	public function createWelcome(): Box {
+	function createWelcome(): Box {
 		var overlay = new Box();
 		overlay.percentWidth = 100;
 		overlay.percentHeight = 100;
@@ -93,70 +100,57 @@ class UI extends haxe.ui.containers.VBox {
 		return overlay;
 	}
 
-	public function tabbarEvents() {
-		this.tabbar.findComponent("picker").onChange = (e) -> {
-			trace('File operation selected: ${e.relatedComponent.id}');
-			switch (e.relatedComponent.id) {
-				case "new":
-					final dialog = new NewNameDialog();
-					// viewport.display.paused = true;
+	@:bind(modeSelector.findComponent("picker"), UIEvent.CHANGE)
+	function pickerEvents(event: UIEvent) {
+		switch (event.relatedComponent.id) {
+			case "new":
+				final dialog = new NewNameDialog();
+				dialog.onDialogClosed = function(e: DialogEvent) {
+					final name = dialog.name.value;
+					if (StringTools.trim(name) == "")
+						return;
+					openViewport(new keyson.Keyson(name));
+				}
+				dialog.showDialog();
+			case "open":
+				final dialog = new FileDialog();
+				dialog.openJson("Keyson File");
+				dialog.onFileLoaded(scene, (body: String) -> {
+					openViewport(keyson.Keyson.parse(body));
+				});
+			case "save":
+				this.scene.save(cast(tabs.selectedPage, ui.ViewportContainer).display.keyson, store);
+			case "import":
+				final dialog = new FileDialog();
+				dialog.openJson("KLE Json File");
+				dialog.onFileLoaded(scene, (body: String) -> {
+					var dialog = new ImportNameDialog();
 					dialog.onDialogClosed = function(e: DialogEvent) {
-						// viewport.display.paused = false;
 						final name = dialog.name.value;
 						if (StringTools.trim(name) == "")
 							return;
-						this.scene.openViewport(new keyson.Keyson(name));
+						openViewport(keyson.KLE.toKeyson(name, body));
 					}
 					dialog.showDialog();
-				case "open":
-					final dialog = new FileDialog();
-					dialog.openJson("Keyson File");
-					dialog.onFileLoaded(scene, (body: String) -> {
-						this.scene.openViewport(keyson.Keyson.parse(body));
-					});
-				case "save":
-					this.scene.save(viewport.display.keyson, store);
-				case "import":
-					final dialog = new FileDialog();
-					dialog.openJson("KLE Json File");
-					dialog.onFileLoaded(scene, (body: String) -> {
-						var dialog = new ImportNameDialog();
-						// viewport.display.paused = true;
-						dialog.onDialogClosed = function(e: DialogEvent) {
-							// viewport.display.paused = false;
-							final name = dialog.name.value;
-							if (StringTools.trim(name) == "")
-								return;
-							this.scene.openViewport(keyson.KLE.toKeyson(name, body));
-						}
-						dialog.showDialog();
-					});
-			}
-		};
-	}
-
-	@:bind(tabbar.findComponent("projects"), UIEvent.CLOSE)
-	public function closeProject(event: UIEvent) {
-		this.scene.closeViewport(this.scene.openProjects[event.target.id]);
+				});
+		}
 	}
 
 	@:bind(welcome.findComponent("new-project"), MouseEvent.CLICK)
-	public function welcomeEvents(event: MouseEvent) {
+	function welcomeEvents(event: MouseEvent) {
 		this.overlay.visible = false;
 		final dialog = new NewNameDialog();
-		// viewport.display.paused = true;
 		dialog.onDialogClosed = function(e: DialogEvent) {
-			// viewport.display.paused = false;
 			final name = dialog.name.value;
 			if (StringTools.trim(name) == "")
 				return;
-			this.scene.openViewport(new keyson.Keyson(name));
+			openViewport(new keyson.Keyson(name));
 		}
 		dialog.showDialog();
 	}
 
 	@:bind(modeSelector, UIEvent.CHANGE)
-	public function switchMode(_: UIEvent) {
+	function switchMode(_: UIEvent) {
 		this.sidebar = switch (modeSelector.selectedButton.id) {
 			case "place":
 				ComponentBuilder.fromFile("ui/sidebars/place.xml");
