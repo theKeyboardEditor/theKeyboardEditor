@@ -14,11 +14,6 @@ class Viewport extends Scene {
 	 */
 	public var keyson: keyson.Keyson;
 
-	public var keyboard: Keyboard;
-	public var selected: Map<Key, KeyRenderer> = [];
-
-	// Set the gap between the keycaps based on the keyson file
-
 	/**
 	 * This is where we map all of the different events to specific keys
 	 * See Input.hx file for more details
@@ -28,9 +23,7 @@ class Viewport extends Scene {
 	/**
 	 * Ceramic elements
 	 */
-	// var workSurface: Quad;
 	var workSurface: Visual;
-
 	var placer: Placer;
 
 	// Constants
@@ -78,8 +71,8 @@ class Viewport extends Scene {
 	override public function update(delta: Float) {
 		placerUpdate();
 		/*   run a task every ${skipFrames} only:
-			**
-			** (this is primarly intended for odd cases like zooming)
+		 *
+		 * (this is primarly intended for odd cases like zooming)
 		 */
 		if (framesSkipped < skipFrames) {
 			framesSkipped++;

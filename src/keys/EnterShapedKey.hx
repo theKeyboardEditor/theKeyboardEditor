@@ -100,8 +100,9 @@ class EnterShapedKey extends KeyRenderer {
 		this.pivot.visible = false;
 		this.add(this.pivot);
 
-		this.top = enterShape(widthNorth - this.topOffset, heightNorth - this.topOffset, widthSouth - this.topOffset,
-			heightSouth - this.topOffset, topColor, topX, topY);
+		this.top = enterShape(widthNorth - this.topOffset, heightNorth - this.topOffset,
+							  widthSouth - this.topOffset, heightSouth - this.topOffset,
+							  topColor, topX, topY);
 		this.top.depth = 5;
 		this.add(this.top);
 		this.bottom = enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bodyColor, 0.0, 0.0);
