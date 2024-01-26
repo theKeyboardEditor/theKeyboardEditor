@@ -5,7 +5,7 @@ import ceramic.Color;
 
 /*
  * Here we convert the shape-string into an actual key shape and bestow the legend(s) upon it :^]
- * 
+ *
  */
 class KeyMaker {
 	// create a complete key with all its belonging features
@@ -117,7 +117,7 @@ class KeyMaker {
 				legend.fontSize = keyboard.keyboardFontSize;
 			}
 
-			legend.depth = 4; // make sure labels render on top
+			legend.depth = 10; // make sure labels render on top
 			legend.pos(legendOffsetX + legend.topX, legendOffsetY + legend.topY); // relative to the key shape
 
 			keyLegends.push(legend);

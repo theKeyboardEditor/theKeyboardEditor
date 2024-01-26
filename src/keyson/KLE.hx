@@ -24,7 +24,7 @@ class KLE {
 		// HANDY RULER:                 0   1   2   3   4   5   6   7   8   9
 		var fontSizes: Array<Float> = [20, 11, 14, 20, 24, 26, 27, 28, 30, 32];
 
-		keyson.unit[0].legendPosition = [6.0, 0.0]; // a default nice looking collective offset
+		keyson.units[0].legendPosition = [6.0, 0.0]; // a default nice looking collective offset
 		// KLE's keyson has really odd fileds and relations?
 		for (row in kle) { // iterate thru rows
 			row[0]; // with calling this we force haxe alow iteration of row
@@ -78,9 +78,9 @@ class KLE {
 					// trace(s, "/", legend);
 					// @formatter:off
 					if (shape == "ISO") // special case - for one reason or the other it renders 0.25U off to the right
-						key = keyson.unit[0].addKey(shape, [x - 0.25, y], legend)
+						key = keyson.units[0].addKey(shape, [x - 0.25, y], legend)
 					else
-						key = keyson.unit[0].addKey(shape, [x, y], legend);
+						key = keyson.units[0].addKey(shape, [x, y], legend);
 					key.keysColor = keysColor;
 					key.legends[0].legendColor = legendColor;
 					key.legends[0].legendSize = legendSize;
