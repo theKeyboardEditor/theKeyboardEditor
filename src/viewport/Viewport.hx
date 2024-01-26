@@ -13,8 +13,10 @@ class Viewport extends Scene {
 	 * The keyson being renderered
 	 */
 	public var keyson: keyson.Keyson;
+
 	public var keyboard: Keyboard;
 	public var selected: Map<Key, KeyRenderer> = [];
+
 	// Set the gap between the keycaps based on the keyson file
 
 	/**
@@ -26,7 +28,7 @@ class Viewport extends Scene {
 	/**
 	 * Ceramic elements
 	 */
-	//var workSurface: Quad;
+	// var workSurface: Quad;
 	var workSurface: Visual;
 
 	var placer: Placer;
@@ -37,8 +39,10 @@ class Viewport extends Scene {
 
 	inline static final unit: Float = 100;
 	inline static final quarterUnit: Float = Std.int(unit / 4);
-	inline static final skipFrames:Float = 10; // how many frames to skip
-	var framesSkipped:Float = 0; // current count (kept between skips)
+	inline static final skipFrames: Float = 10; // how many frames to skip
+
+	var framesSkipped: Float = 0; // current count (kept between skips)
+
 	// GLOBAL SCENE
 
 	/**
@@ -74,16 +78,16 @@ class Viewport extends Scene {
 	override public function update(delta: Float) {
 		placerUpdate();
 		/*   run a task every ${skipFrames} only:
-		**
-		** (this is primarly intended for odd cases like zooming)
-		*/
-		if ( framesSkipped < skipFrames ) {
+			**
+			** (this is primarly intended for odd cases like zooming)
+		 */
+		if (framesSkipped < skipFrames) {
 			framesSkipped++;
 		} else {
 			framesSkipped = 0;
 
-			 // 0.5 is accounting for the middle of the 1U sized placer
-			StatusBar.pos(placer.x / unit - .5 , placer.y / unit - .5);
+			// 0.5 is accounting for the middle of the 1U sized placer
+			StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
 		}
 	}
 
@@ -101,9 +105,9 @@ class Viewport extends Scene {
 	/**
 	 *  Called only once to parse in the keyboard into the workSurface
 	 */
-	public function parseInKeyboard(keyboard:Keyson):Visual {
+	public function parseInKeyboard(keyboard: Keyson): Visual {
 		final workKeyboard = new Visual(); // initialize what we draw onto
-		for ( keyboardUnit in keyboard.units ) { // parse all units (usually just one)
+		for (keyboardUnit in keyboard.units) { // parse all units (usually just one)
 			// Set unit's gap values
 			final gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
 			final gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
