@@ -62,7 +62,7 @@ class EnterShapedKey extends KeyRenderer {
 		this.shape = shape; // the string
 	}
 
-	override public function create(): Visual {
+	override public function create() {
 		offsetB = heightSouth - heightNorth;
 		offsetL = widthSouth - widthNorth;
 		// TODO  There is still some oddity to fix with BEA and XT_2U
@@ -96,21 +96,23 @@ class EnterShapedKey extends KeyRenderer {
 		this.pivot = new Pivot(0, 0);
 		// TODO account for key.relativeRotationCenter
 		// this.pivot.create();
-		this.pivot.depth = 999; // ueber alles o/
+		this.pivot.depth = 500; // ueber alles o/
 		this.pivot.visible = false;
 		this.add(this.pivot);
 
-		this.top = new enterShape(widthNorth - this.topOffset, heightNorth - this.topOffset, widthSouth - this.topOffset,
-			heightSouth - this.topOffset, topColor, topX, topY));
-		this.add(top);
-		this.bottom = new enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bodyColor, 0.0, 0.0));
-		this.add(bottom);
+		this.top = enterShape(widthNorth - this.topOffset, heightNorth - this.topOffset,
+							  widthSouth - this.topOffset, heightSouth - this.topOffset,
+							  topColor, topX, topY);
+		this.top.depth = 5;
+		this.add(this.top);
+		this.bottom = enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bodyColor, 0.0, 0.0);
+		this.bottom.depth = 0;
+		this.add(this.bottom);
 
 		return this;
 	}
 
-	function enterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float,
-			posY: Float): Shape {
+	function enterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float, posY: Float) {
 		var sine = [for (angle in 0...segments + 1) Math.sin(Math.PI / 2 * angle / segments)];
 		var cosine = [for (angle in 0...segments + 1) Math.cos(Math.PI / 2 * angle / segments)];
 		// @formatter:off
@@ -255,7 +257,7 @@ class EnterShapedKey extends KeyRenderer {
 					}
 			}
 		}
-		final shape = new Shape();
+		var shape = new Shape();
 		shape.color = color;
 		shape.points = points;
 		// shape.triangulation = POLY2TRI;

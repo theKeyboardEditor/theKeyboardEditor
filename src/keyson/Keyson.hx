@@ -14,7 +14,7 @@ class Keyson {
 	public var license: String;
 	public var comment: String;
 	public var colorTable: Palette;
-	public var unit: Array<Keyboard>;
+	public var units: Array<Keyboard>;
 
 	@:jignored public static var tabulation: String = "	"; // keyson output indentation
 
@@ -24,7 +24,7 @@ class Keyson {
 		license = "CC";
 		comment = "empty";
 		colorTable = new Palette();
-		unit = [new Keyboard()]; // one of keyboard rulerUnits
+		units = [new Keyboard()]; // one of keyboard rulerUnits
 	}
 
 	/** The parser and the encoder

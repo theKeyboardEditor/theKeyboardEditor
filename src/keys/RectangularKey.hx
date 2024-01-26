@@ -48,7 +48,7 @@ class RectangularKey extends KeyRenderer {
 		this.add(this.pivot);
 
 		final top = new RoundedQuad(width - this.topOffset, height - this.topOffset, roundedCorner, topColor);
-		top.depth = 0; // this is in the sense of layers
+		top.depth = 5; // this is in the sense of layers
 		top.pos(topX, topY);
 		this.add(top);
 
