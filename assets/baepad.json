@@ -27,7 +27,7 @@
       { "name": "navy", "value": "0xFF000080" }
     ]
   },
-  "unit": [
+  "units": [
     {
       "id": 0,
       "designator": "BAEpad",
