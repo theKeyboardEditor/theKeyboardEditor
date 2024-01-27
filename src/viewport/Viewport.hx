@@ -3,6 +3,7 @@ package viewport;
 import ceramic.Quad;
 import ceramic.Visual;
 import ceramic.Scene;
+import ceramic.TouchInfo;
 import keyson.Axis;
 import keyson.Keyson;
 import keyson.Keyson.Keyboard;
@@ -78,7 +79,11 @@ class Viewport extends Scene {
 			framesSkipped++;
 		} else {
 			framesSkipped = 0;
-
+			this.onPointerDown (workSurface, (info) -> {
+				if (info.buttonId == 0) {
+					StatusBar.inform('Placer at: ${placer.x / unit - .5}, ${placer.y / unit - .5}');
+				}
+			});
 			// 0.5 is accounting for the middle of the 1U sized placer
 			StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
 		}
