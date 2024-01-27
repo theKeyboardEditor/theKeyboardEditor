@@ -24,6 +24,7 @@ class Viewport extends Scene {
 	 * Ceramic elements
 	 */
 	var workSurface: Visual;
+
 	var placer: Placer;
 
 	// Constants
@@ -52,8 +53,6 @@ class Viewport extends Scene {
 		grid.subStep(quarterUnit);
 		grid.depth = -1;
 		this.add(grid);
-
-		var random = new ceramic.SeedRandom(Date.now().getTime());
 
 		workSurface = parseInKeyboard(keyson);
 		this.add(workSurface);
@@ -110,8 +109,7 @@ class Viewport extends Scene {
 				}
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]); // position the unit
-				final createdKey = keycap.create(); // execute the drawing
-				workKeyboard.add(createdKey);
+				workKeyboard.add(keycap);
 			}
 		}
 		return workKeyboard;
