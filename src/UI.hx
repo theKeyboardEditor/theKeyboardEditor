@@ -51,7 +51,8 @@ class UI extends haxe.ui.containers.VBox {
 		middle.addComponent(leftBox);
 
 		tabs = new TabView();
-		tabs.styleString = "width: 100%; height: 100%; background-color: #282828;";
+		tabs.styleString = "width: 100%; height: 100%; padding: 0; background-color: #1d2021;";
+		tabs.findComponent('tabview-content').styleString = "background-color: #282828;";
 		middle.addComponent(tabs);
 
 		// BOTTOM
@@ -67,7 +68,7 @@ class UI extends haxe.ui.containers.VBox {
 		viewport.keyson = keyboard;
 
 		var container = new ui.ViewportContainer();
-		container.styleString = "width: 100%; height: 100%;";
+		container.styleString = "width: 100%; height: 100%; background-color: #282828;";
 		container.text = keyboard.name;
 		container.display = viewport;
 
