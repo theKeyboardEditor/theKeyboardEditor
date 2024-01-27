@@ -78,9 +78,19 @@ class KeyMaker {
 				width = unit * keySize - gapX;
 				height = unit - gapY;
 			}
-			key = new keys.RectangularKey(width, height, keyColor, keyShadow);
+			key = new keys.RectangularKey();
+			key.size(width, height);
+			key.topColor = keyColor;
+			key.bottomColor = keyShadow;
 		} else { // non '<number>U' cases:
-			key = new keys.EnterShapedKey(widthNorth, heightNorth, keyColor, keyShadow, widthSouth, heightSouth, k.shape, gapX, gapY);
+			var enterShaped = new keys.EnterShapedKey();
+			enterShaped.heightNorth = heightNorth;
+			enterShaped.widthSouth = widthSouth;
+			enterShaped.heightSouth = heightSouth;
+			enterShaped.topColor = keyColor;
+			enterShaped.bottomColor = keyShadow;
+			enterShaped.shape = k.shape;
+			key = enterShaped;
 		}
 
 		// here we populate the legends (see function below)
