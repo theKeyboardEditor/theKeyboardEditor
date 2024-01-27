@@ -77,7 +77,8 @@ class EnterShapedKey extends KeyRenderer {
 		this.border.visible = false;
 		this.add(this.border);
 
-		this.pivot = new Pivot(0, 0);
+		this.pivot = new Pivot();
+		this.pivot.pos(0, 0);
 		this.pivot.depth = 500; // ueber alles o/
 		this.pivot.visible = false;
 		this.add(this.pivot);
