@@ -84,6 +84,7 @@ class KeyMaker {
 			key.bottomColor = keyShadow;
 		} else { // non '<number>U' cases:
 			var enterShaped = new keys.EnterShapedKey();
+			enterShaped.widthNorth = widthNorth;
 			enterShaped.heightNorth = heightNorth;
 			enterShaped.widthSouth = widthSouth;
 			enterShaped.heightSouth = heightSouth;
