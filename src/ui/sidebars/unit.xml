@@ -23,6 +23,26 @@
 					<button text="Plate"  width="64px" height="64px"  tooltip="Change color" style="background-color: #566C86;"/>
 				</hbox>
 				<hbox  horizontalAlign="left">
+					<label text="Key step" />
+				</hbox>
+				<vbox horizontalAlign="center">
+					<number-stepper width="133" pos="19.05" step=".01" min="0" max="512" precision="2" />
+					<number-stepper width="133" pos="19.05" step=".01" min="0" max="512" precision="2" />
+				</vbox>
+				<hbox  horizontalAlign="center">
+					<label text="Keycap size:" />
+				</hbox>
+				<vbox horizontalAlign="left">
+					<number-stepper width="133" pos="18.5" step=".1" min="0" max="512" precision="2" />
+					<number-stepper width="133" pos="18.5" step=".1" min="0" max="512" precision="2" />
+				</vbox>
+				<hbox  horizontalAlign="left">
+					<label text="Unit angle:" />
+				</hbox>
+				<vbox horizontalAlign="center">
+					<number-stepper width="133" pos="0" step=".5" min="0" max="359.99" precision="2" />
+				</vbox>
+				<hbox  horizontalAlign="left">
 					<label text="Corners radii:" />
 				</hbox>
 				<vbox horizontalAlign="center">
