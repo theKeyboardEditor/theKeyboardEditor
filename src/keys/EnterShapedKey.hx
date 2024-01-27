@@ -90,6 +90,8 @@ class EnterShapedKey extends KeyRenderer {
 		this.bottom = enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bottomColor, 0.0, 0.0);
 		this.bottom.depth = 0;
 		this.add(this.bottom);
+
+		super.computeContent();
 	}
 
 	function enterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, topX: Float, topY: Float) {

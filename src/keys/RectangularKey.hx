@@ -46,5 +46,7 @@ class RectangularKey extends KeyRenderer {
 		bottom.depth = 0; // this is in the sense of layers
 		bottom.pos(0, 0);
 		this.add(bottom);
+
+		super.computeContent();
 	}
 }
