@@ -6,6 +6,8 @@ import ceramic.Border;
 import ceramic.Arc;
 import ceramic.Quad;
 import viewport.Pivot;
+import viewport.Viewport;
+import ceramic.TouchInfo;
 
 class RectangularKey extends KeyRenderer {
 	/**

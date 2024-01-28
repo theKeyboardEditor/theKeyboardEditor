@@ -5,6 +5,8 @@ import ceramic.Color;
 import ceramic.Border;
 import ceramic.Visual;
 import viewport.Pivot;
+import viewport.Viewport;
+import ceramic.TouchInfo;
 
 /**
  * Draws a enter shaped rectangle with nice rounded corners
@@ -82,12 +84,13 @@ class EnterShapedKey extends KeyRenderer {
 		this.pivot.depth = 500; // ueber alles o/
 		this.pivot.visible = false;
 		this.add(this.pivot);
-
-		this.top = enterShape(widthNorth - topOffset, heightNorth - topOffset, widthSouth - topOffset, heightSouth - topOffset, topColor,
-			topX, topY);
+// @formatter:off
+		this.top = enterShape(widthNorth - topOffset, heightNorth - topOffset,
+							  widthSouth - topOffset, heightSouth - topOffset,
+							  topColor, topX, topY);
 		this.top.depth = 5;
 		this.add(this.top);
-
+// @formatter:on
 		this.bottom = enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bottomColor, 0.0, 0.0);
 		this.bottom.depth = 0;
 		this.add(this.bottom);
@@ -99,9 +102,7 @@ class EnterShapedKey extends KeyRenderer {
 		final sine = [for (angle in 0...segments + 1) Math.sin(Math.PI / 2 * angle / segments)];
 		final cosine = [for (angle in 0...segments + 1) Math.cos(Math.PI / 2 * angle / segments)];
 		// @formatter:off
-
 		var points = []; // re-clear the array since we are pushing only
-
 		/**
 		 * the shape has 4 corner types:
 		 * +--------+
@@ -116,13 +117,11 @@ class EnterShapedKey extends KeyRenderer {
 		 * |J      L|
 		 * +--------+
 		 */
-
 		var recipe: String = "777777"; // default is BAE
 		var signumL: Array<Int> = [];
 		var signumR: Array<Int> = [];
 		var signumT: Array<Int> = [];
 		var signumB: Array<Int> = [];
-
 		// clockwise around we go:
 		switch shape {
 			case 'BAE Inverted':
@@ -180,7 +179,6 @@ class EnterShapedKey extends KeyRenderer {
 		if (recipe.length != 6) {
 			throw "Recipe must be six characters long";
 		}
-
 		for (turn in 0...6) {
 			switch shape {
 				case 'AEK' | 'ISO' | 'BAE Inverted':
@@ -190,7 +188,6 @@ class EnterShapedKey extends KeyRenderer {
 					offsetT = Math.abs(heightSouth) * signumT[turn]; // TODO account for gapX and gapY
 					offsetB = Math.abs(heightSouth) * signumB[turn];
 			}
-
 			offsetL = Math.abs(widthNorth - widthSouth) * signumL[turn];
 			offsetR = Math.abs(widthNorth - widthSouth) * signumR[turn];
 
@@ -257,11 +254,9 @@ class EnterShapedKey extends KeyRenderer {
 					}
 			}
 		}
-
 		var shape = new Shape();
 		shape.color = color;
 		shape.points = points;
-
 		return shape;
 	}
 }
