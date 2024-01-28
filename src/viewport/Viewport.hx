@@ -114,9 +114,15 @@ class Viewport extends Scene {
 				}
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]); // position the unit
+				keycap.onPointerDown(this, keyMouseDown);
 				workKeyboard.add(keycap);
 			}
 		}
 		return workKeyboard;
+	}
+
+	function keyMouseDown(info: TouchInfo) {
+		trace("boo!");
+		trace(info.x);
 	}
 }
