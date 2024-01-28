@@ -52,7 +52,7 @@ class Placer extends Visual {
 			width * 0.04, height * 0.20,  //  |  /
 			0.0, height * 0.20,           //  |_/
 			0.0, height * 0.04,           // 4  3
-		]; 
+		];
 		this.indices = [
 			0, 1, 2,  // No way I draw this
 			0, 2, 5,  // in ASCII :-)

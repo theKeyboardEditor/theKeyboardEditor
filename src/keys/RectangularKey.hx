@@ -48,6 +48,17 @@ class RectangularKey extends KeyRenderer {
 		bottom.pos(0, 0);
 		this.add(bottom);
 
+		this.onPointerDown(this,keyMouseDown);
+
 		super.computeContent();
 	}
+
+	// MOUSE ACTIONS
+
+	function keyMouseDown(info:TouchInfo) {
+		// TODO send this info to Viewport somehow
+		trace(info,unitIndex,keyIndex,x,y);
+		// Viewport.mouseDown(info,unitIndex,keyIndex,x,y);
+	}
+
 }

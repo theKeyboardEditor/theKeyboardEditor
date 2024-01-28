@@ -79,11 +79,16 @@ class KeyMaker {
 				height = unit - gapY;
 			}
 			key = new keys.RectangularKey();
+			key.keyIndex = k.id;
+			key.unitIndex = keyboard.id;
 			key.size(width, height);
 			key.topColor = keyColor;
 			key.bottomColor = keyShadow;
 		} else { // non '<number>U' cases:
+			// different fileds require different variable here
 			var enterShaped = new keys.EnterShapedKey();
+			enterShaped.keyIndex = k.id;
+			enterShaped.unitIndex = keyboard.id;
 			enterShaped.widthNorth = widthNorth;
 			enterShaped.heightNorth = heightNorth;
 			enterShaped.widthSouth = widthSouth;
@@ -91,6 +96,7 @@ class KeyMaker {
 			enterShaped.topColor = keyColor;
 			enterShaped.bottomColor = keyShadow;
 			enterShaped.shape = k.shape;
+			// we assign it only at the end to "key" var
 			key = enterShaped;
 		}
 

@@ -95,6 +95,8 @@ class EnterShapedKey extends KeyRenderer {
 		this.bottom.depth = 0;
 		this.add(this.bottom);
 
+		this.onPointerDown(this,keyMouseDown);
+
 		super.computeContent();
 	}
 
@@ -259,4 +261,14 @@ class EnterShapedKey extends KeyRenderer {
 		shape.points = points;
 		return shape;
 	}
+
+	// MOUSE ACTIONS
+
+	function keyMouseDown(info:TouchInfo) {
+		// TODO send this info to Viewport somehow
+		trace(info,unitIndex,keyIndex,x,y);
+		// TODO why i can send this to StatusBar but can't to Viewport?
+		// Viewport.mouseDown(info,unitIndex,keyIndex,x,y);
+	}
+
 }

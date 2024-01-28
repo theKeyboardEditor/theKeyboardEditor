@@ -33,7 +33,7 @@ class Viewport extends Scene {
 	public var screenY: Float = 0;
 
 	public var unit: Float = 100;
-	public inline static final quarterUnit: Float = Std.int(unit / 4);
+	public var quarterUnit: Float = Std.int(100 / 4);
 	inline static final skipFrames: Float = 10; // how many frames to skip
 
 	var framesSkipped: Float = 0; // current count (kept between skips)
@@ -119,5 +119,4 @@ class Viewport extends Scene {
 		}
 		return workKeyboard;
 	}
-
 }
