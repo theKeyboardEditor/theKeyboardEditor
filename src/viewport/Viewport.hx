@@ -29,8 +29,8 @@ class Viewport extends Scene {
 	var placer: Placer;
 
 	// Constants
-	var quadStartX: Float = 0.0;
-	var quadStartY: Float = 0.0;
+	var viewportStartX: Float = 0.0;
+	var viewportStartY: Float = 0.0;
 	var pointerStartX: Float = 0.0;
 	var pointerStartY: Float = 0.0;
 
@@ -139,8 +139,8 @@ class Viewport extends Scene {
 	 * Ran on the start of the drag 
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		quadStartX = this.x;
-		quadStartY = this.y;
+		viewportStartX = this.x;
+		viewportStartY = this.y;
 		pointerStartX = screen.pointerX;
 		pointerStartY = screen.pointerY;
 
@@ -155,7 +155,7 @@ class Viewport extends Scene {
 	 * Ran during the drag
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-		this.pos(quadStartX + screen.pointerX - pointerStartX, quadStartY + screen.pointerY - pointerStartY);
+		this.pos(viewportStartX + screen.pointerX - pointerStartX, viewportStartY + screen.pointerY - pointerStartY);
 	}
 
 	/**
