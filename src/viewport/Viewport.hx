@@ -29,6 +29,11 @@ class Viewport extends Scene {
 	var placer: Placer;
 
 	// Constants
+	var quadStartX: Float = 0.0;
+	var quadStartY: Float = 0.0;
+	var pointerStartX: Float = 0.0;
+	var pointerStartY: Float = 0.0;
+
 	public var screenX: Float = 0;
 	public var screenY: Float = 0;
 
@@ -49,6 +54,8 @@ class Viewport extends Scene {
 	 * Initializes the scene
 	 */
 	override public function create() {
+		screen.onPointerDown(this, viewportMouseDown);
+
 		var grid = new Grid();
 		grid.primaryStep(unit);
 		grid.subStep(quarterUnit);
@@ -78,7 +85,7 @@ class Viewport extends Scene {
 			framesSkipped++;
 		} else {
 			framesSkipped = 0;
-			this.onPointerDown (workSurface, (info) -> {
+			this.onPointerDown(workSurface, (info) -> {
 				if (info.buttonId == 0) {
 					StatusBar.inform('Placer at: ${placer.x / unit - .5}, ${placer.y / unit - .5}');
 				}
@@ -93,7 +100,7 @@ class Viewport extends Scene {
 	/**
 	 * Runs every frame, used to position the placer
 	 */
-	public function placerUpdate() {
+	function placerUpdate() {
 		placer.x = screen.pointerX - screenX;
 		placer.y = screen.pointerY - screenY;
 		placer.pos(placer.x - placer.x % 25, placer.y - placer.y % 25);
@@ -102,7 +109,7 @@ class Viewport extends Scene {
 	/**
 	 *  Called only once to parse in the keyboard into the workSurface
 	 */
-	public function parseInKeyboard(keyboard: Keyson): Visual {
+	function parseInKeyboard(keyboard: Keyson): Visual {
 		final workKeyboard = new Visual(); // initialize what we draw onto
 		for (keyboardUnit in keyboard.units) { // parse all units (usually just one)
 			// Set unit's gap values
@@ -124,5 +131,37 @@ class Viewport extends Scene {
 	function keyMouseDown(info: TouchInfo) {
 		trace("boo!");
 		trace(info.x);
+	}
+
+	// MOVEMENT
+
+	/**
+	 * Ran on the start of the drag 
+	 */
+	function viewportMouseDown(info: TouchInfo) {
+		quadStartX = this.x;
+		quadStartY = this.y;
+		pointerStartX = screen.pointerX;
+		pointerStartY = screen.pointerY;
+
+		// Follow movement from screen
+		screen.onPointerMove(this, viewportMouseMove);
+
+		// Stop dragging when releasing pointer
+		screen.oncePointerUp(this, viewportMouseUp);
+	}
+
+	/**
+	 * Ran during the drag
+	 */
+	function viewportMouseMove(info: TouchInfo) {
+		this.pos(quadStartX + screen.pointerX - pointerStartX, quadStartY + screen.pointerY - pointerStartY);
+	}
+
+	/**
+	 * Ran after the drag
+	 */
+	function viewportMouseUp(info: TouchInfo) {
+		screen.offPointerMove(viewportMouseMove);
 	}
 }
