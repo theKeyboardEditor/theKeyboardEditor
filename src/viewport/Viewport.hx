@@ -38,7 +38,7 @@ class Viewport extends Scene {
 	var pointerStartY: Float = 0.0;
 	var keyPosStartX: Float = 0.0;
 	var keyPosStartY: Float = 0.0;
-	var thisKeyCap: KeyRenderer;
+	var selectedKey: KeyRenderer;
 
 	public var screenX: Float = 0;
 	public var screenY: Float = 0;
@@ -140,15 +140,15 @@ class Viewport extends Scene {
 	}
 
 	// this gets called only if clicked on a key on the worksurface!
-	function keyMouseDown(info: TouchInfo, keycap) {
+	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		activeProject = this.keyson;
 		touchType = "Element";
 		trace('keycap!', keycap);
 		// TODO store current key position into ViewportStart
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
-		thisKeyCap = keycap;
-		thisKeyCap.select();
+		selectedKey = keycap;
+		selectedKey.select();
 		// store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
@@ -197,8 +197,8 @@ class Viewport extends Scene {
 	}
 
 	function keyMouseMove(info: TouchInfo) {
-		thisKeyCap.pos(keyPosStartX + screen.pointerX - pointerStartX, keyPosStartY + screen.pointerY - pointerStartY);
-		thisKeyCap.pos(thisKeyCap.x - thisKeyCap.x % 25, thisKeyCap.y - thisKeyCap.y % 25);
+		selectedKey.pos(keyPosStartX + screen.pointerX - pointerStartX, keyPosStartY + screen.pointerY - pointerStartY);
+		selectedKey.pos(selectedKey.x - selectedKey.x % 25, selectedKey.y - selectedKey.y % 25);
 		StatusBar.inform('Move key:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
 	}
 
@@ -206,7 +206,7 @@ class Viewport extends Scene {
 	 * Called after the drag
 	 */
 	function keyMouseUp(info: TouchInfo) {
-		// thisKeyCap.select(); // <- this would toggle selection off on release!
+		// selectedKey.select(); // <- this would toggle selection off on release!
 		// finish the moving to the final position
 		screen.offPointerMove(keyMouseMove);
 	}
