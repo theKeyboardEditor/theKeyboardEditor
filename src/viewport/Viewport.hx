@@ -8,6 +8,7 @@ import keyson.Axis;
 import keyson.Keyson;
 import keyson.Keyson.Keyboard;
 import keyson.Keyson.Key;
+import Type;
 
 class Viewport extends Scene {
 	/**
@@ -27,6 +28,7 @@ class Viewport extends Scene {
 	var workSurface: Visual;
 
 	var placer: Placer;
+	public var touchType: String = "";
 
 	// Constants
 	var viewportStartX: Float = 0.0;
@@ -54,6 +56,7 @@ class Viewport extends Scene {
 	 * Initializes the scene
 	 */
 	override public function create() {
+		// we intercept every mouse down event:
 		screen.onPointerDown(this, viewportMouseDown);
 
 		var grid = new Grid();
@@ -91,7 +94,8 @@ class Viewport extends Scene {
 				}
 			});
 			// 0.5 is accounting for the middle of the 1U sized placer
-			StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
+			//StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
+			StatusBar.pos(viewportStartX,viewportStartY);
 		}
 	}
 
@@ -101,8 +105,8 @@ class Viewport extends Scene {
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		placer.x = screen.pointerX - screenX;
-		placer.y = screen.pointerY - screenY;
+		placer.x = screen.pointerX - screenX - this.x;
+		placer.y = screen.pointerY - screenY - this.y;
 		placer.pos(placer.x - placer.x % 25, placer.y - placer.y % 25);
 	}
 
@@ -121,7 +125,7 @@ class Viewport extends Scene {
 				}
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]); // position the unit
-				keycap.onPointerDown(this, keyMouseDown);
+				keycap.onPointerDown(keycap, keyMouseDown);
 				workKeyboard.add(keycap);
 			}
 		}
@@ -129,20 +133,33 @@ class Viewport extends Scene {
 	}
 
 	function keyMouseDown(info: TouchInfo) {
-		trace("boo!");
-		trace(info.x);
+		// TODO calculate stepped coordinates of the touch
+		// TODO Detect the object that received the touch
+		touchType = ""; // reset
+		//StatusBar.inform('Touch detected at: ${info.x / unit - .5}, ${info.y / unit - .5}');
+		if (Type.getClass(this) == Viewport) {
+			StatusBar.inform('Touched workSurface at: ${info.x / unit - .5}, ${info.y / unit - .5}');
+			touchType = "Element";
+		}
 	}
 
 	// MOVEMENT
 
 	/**
-	 * Ran on the start of the drag 
+	 * Ran on the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		viewportStartX = this.x;
-		viewportStartY = this.y;
-		pointerStartX = screen.pointerX;
-		pointerStartY = screen.pointerY;
+		// TODO check if we are over the wievport at all
+		if (touchType == "Element") {
+			// TODO move keys one day
+		} else {
+		// TODO there should be certain amount of movement before we declare it's a drag at all
+			this.viewportStartX = this.x;
+			this.viewportStartY = this.y;
+			this.pointerStartX = screen.pointerX;
+			this.pointerStartY = screen.pointerY;
+			StatusBar.inform('Pan started: ${(viewportStartX + screen.pointerX - pointerStartX) / unit - .5}, ${(viewportStartX + screen.pointerY - pointerStartY) / unit - .5}');
+		}
 
 		// Follow movement from screen
 		screen.onPointerMove(this, viewportMouseMove);
@@ -155,7 +172,12 @@ class Viewport extends Scene {
 	 * Ran during the drag
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-		this.pos(viewportStartX + screen.pointerX - pointerStartX, viewportStartY + screen.pointerY - pointerStartY);
+		if (touchType == "Element") {
+			this.pos(this.viewportStartX, this.viewportStartY);
+			// TODO move keys one day
+		} else {
+			this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
+		}
 	}
 
 	/**
@@ -163,5 +185,7 @@ class Viewport extends Scene {
 	 */
 	function viewportMouseUp(info: TouchInfo) {
 		screen.offPointerMove(viewportMouseMove);
+		StatusBar.inform('Touch finished at: ${info.x / unit - .5}, ${info.y / unit - .5}');
+		touchType="";
 	}
 }
