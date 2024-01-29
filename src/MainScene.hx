@@ -1,11 +1,9 @@
 package;
 
 import ceramic.Scene;
-import ceramic.Quad;
 import ceramic.KeyBindings;
 import ceramic.KeyCode;
 import haxe.ui.core.Screen;
-import uuid.FlakeId;
 
 class MainScene extends Scene {
 	public var gui: UI;
