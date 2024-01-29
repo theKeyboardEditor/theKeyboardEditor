@@ -28,7 +28,8 @@ class Viewport extends Scene {
 	var workSurface: Visual;
 
 	var placer: Placer;
-	public var touchType: String = "";
+
+	var touchType: String = "";
 
 	// Constants
 	var viewportStartX: Float = 0.0;
@@ -94,8 +95,8 @@ class Viewport extends Scene {
 				}
 			});
 			// 0.5 is accounting for the middle of the 1U sized placer
-			//StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
-			StatusBar.pos(viewportStartX,viewportStartY);
+			// StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
+			StatusBar.pos(viewportStartX, viewportStartY);
 		}
 	}
 
@@ -136,7 +137,7 @@ class Viewport extends Scene {
 		// TODO calculate stepped coordinates of the touch
 		// TODO Detect the object that received the touch
 		touchType = ""; // reset
-		//StatusBar.inform('Touch detected at: ${info.x / unit - .5}, ${info.y / unit - .5}');
+		// StatusBar.inform('Touch detected at: ${info.x / unit - .5}, ${info.y / unit - .5}');
 		if (Type.getClass(this) == Viewport) {
 			StatusBar.inform('Touched workSurface at: ${info.x / unit - .5}, ${info.y / unit - .5}');
 			touchType = "Element";
@@ -153,7 +154,7 @@ class Viewport extends Scene {
 		if (touchType == "Element") {
 			// TODO move keys one day
 		} else {
-		// TODO there should be certain amount of movement before we declare it's a drag at all
+			// TODO there should be certain amount of movement before we declare it's a drag at all
 			this.viewportStartX = this.x;
 			this.viewportStartY = this.y;
 			this.pointerStartX = screen.pointerX;
@@ -186,6 +187,6 @@ class Viewport extends Scene {
 	function viewportMouseUp(info: TouchInfo) {
 		screen.offPointerMove(viewportMouseMove);
 		StatusBar.inform('Touch finished at: ${info.x / unit - .5}, ${info.y / unit - .5}');
-		touchType="";
+		touchType = "";
 	}
 }
