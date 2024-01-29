@@ -1,4 +1,6 @@
-package viewport;
+package;
+
+import actions.Action;
 
 /**
  * This is a data structure that is used for saving and executing different "actions"

@@ -1,4 +1,6 @@
-package viewport;
+package actions;
+
+import viewport.Viewport;
 
 class DeleteKeys extends Action {
 	final viewport: Viewport;

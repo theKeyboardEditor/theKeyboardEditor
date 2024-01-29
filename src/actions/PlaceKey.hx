@@ -1,4 +1,6 @@
-package viewport;
+package actions;
+
+import viewport.Viewport;
 
 class PlaceKey extends Action {
 	var viewport: Viewport;
@@ -13,7 +15,6 @@ class PlaceKey extends Action {
 		this.viewport = viewport;
 		this.x = x;
 		this.y = y;
-		// we take shape for input what actual key to place
 		this.shape = shape;
 	};
 

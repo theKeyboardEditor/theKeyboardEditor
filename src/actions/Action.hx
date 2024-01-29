@@ -1,4 +1,4 @@
-package viewport;
+package actions;
 
 import ceramic.Entity;
 import keyson.Keyson.Keyboard;
