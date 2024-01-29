@@ -23,7 +23,7 @@ class RectangularKey extends KeyRenderer {
 		this.border = new Border();
 		this.border.pos(0, 0);
 		this.border.size(this.width, this.height);
-		this.border.borderColor = Color.RED; // UI theme 2ndary accent color!
+		this.border.borderColor = 0xFFB13E53; // sweetie-16 red (UI theme 2ndary accent color!)
 		this.border.borderPosition = MIDDLE;
 		this.border.borderSize = 2;
 		this.border.depth = 4;

@@ -10,7 +10,7 @@ import ceramic.Visual;
  * A hollow circle with what would be a cross if it extended thru it's center
  */
 class Pivot extends Visual {
-	@content var color: Int = Color.YELLOW;
+	@content var color: Int = 0xFFFFCD75; // sweetie-16 yellow (3rd accent color)
 	@content var thickness: Float = 1.25;
 	@content var dimension: Float = 32.0;
 
