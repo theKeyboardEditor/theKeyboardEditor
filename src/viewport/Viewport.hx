@@ -30,6 +30,7 @@ class Viewport extends Scene {
 	var placer: Placer;
 
 	var touchType: String = "";
+	var activeProjectName:String = "";
 
 	// Constants
 	var viewportStartX: Float = 0.0;
@@ -57,8 +58,8 @@ class Viewport extends Scene {
 	 * Initializes the scene
 	 */
 	override public function create() {
-		// we intercept every mouse down event:
-		screen.onPointerDown(this, viewportMouseDown);
+		// we intercept only this.viewport mouse down event:
+		this.onPointerDown(workSurface, viewportMouseDown);
 
 		var grid = new Grid();
 		grid.primaryStep(unit);
@@ -134,12 +135,10 @@ class Viewport extends Scene {
 	}
 
 	function keyMouseDown(info: TouchInfo) {
-		// TODO calculate stepped coordinates of the touch
-		// TODO Detect the object that received the touch
-		touchType = ""; // reset
-		// StatusBar.inform('Touch detected at: ${info.x / unit - .5}, ${info.y / unit - .5}');
+		// this gets called only if clicked on a key on the worksurface!
+		activeProjectName=this.keyson.name;
 		if (Type.getClass(this) == Viewport) {
-			StatusBar.inform('Touched workSurface at: ${info.x / unit - .5}, ${info.y / unit - .5}');
+			StatusBar.inform('Touched [${this.keyson.name}] at: ${info.x / unit - .5}, ${info.y / unit - .5}');
 			touchType = "Element";
 		}
 	}
@@ -150,31 +149,33 @@ class Viewport extends Scene {
 	 * Ran on the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		// TODO check if we are over the wievport at all
-		if (touchType == "Element") {
-			// TODO move keys one day
-		} else {
-			// TODO there should be certain amount of movement before we declare it's a drag at all
-			this.viewportStartX = this.x;
-			this.viewportStartY = this.y;
-			this.pointerStartX = screen.pointerX;
-			this.pointerStartY = screen.pointerY;
-			StatusBar.inform('Pan started: ${(viewportStartX + screen.pointerX - pointerStartX) / unit - .5}, ${(viewportStartX + screen.pointerY - pointerStartY) / unit - .5}');
+		if (activeProjectName == this.keyson.name) {
+			if (touchType == "Element") {
+				// TODO move keys one day
+				StatusBar.inform('Move started: ');
+			} else {
+				// TODO there should be certain amount of movement before we declare it's a drag at all
+				// store current viewport position into ViewportStart
+				this.viewportStartX = this.x;
+				this.viewportStartY = this.y;
+				// store current mouse position
+				this.pointerStartX = screen.pointerX;
+				this.pointerStartY = screen.pointerY;
+				// move along as we pan the touch
+				screen.onPointerMove(this, viewportMouseMove);
+			}
+			touchType = ""; // reset
+			trace('type:<none>',this.keyson.name);
+			// Stop dragging when releasing pointer
+			this.oncePointerUp(this, viewportMouseUp);
 		}
-
-		// Follow movement from screen
-		screen.onPointerMove(this, viewportMouseMove);
-
-		// Stop dragging when releasing pointer
-		screen.oncePointerUp(this, viewportMouseUp);
 	}
 
 	/**
-	 * Ran during the drag
+	 * Ran during AND at the very end of the drag
 	 */
 	function viewportMouseMove(info: TouchInfo) {
 		if (touchType == "Element") {
-			this.pos(this.viewportStartX, this.viewportStartY);
 			// TODO move keys one day
 		} else {
 			this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
@@ -182,11 +183,10 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Ran after the drag
+	 * Called after the drag
 	 */
 	function viewportMouseUp(info: TouchInfo) {
+		//finish the moving to the final position
 		screen.offPointerMove(viewportMouseMove);
-		StatusBar.inform('Touch finished at: ${info.x / unit - .5}, ${info.y / unit - .5}');
-		touchType = "";
 	}
 }
