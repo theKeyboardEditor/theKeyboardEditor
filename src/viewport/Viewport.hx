@@ -30,7 +30,7 @@ class Viewport extends Scene {
 	var placer: Placer;
 
 	var touchType: String = "";
-	var activeProjectName:String = "";
+	var activeProjectName: String = "";
 
 	// Constants
 	var viewportStartX: Float = 0.0;
@@ -136,7 +136,7 @@ class Viewport extends Scene {
 
 	function keyMouseDown(info: TouchInfo) {
 		// this gets called only if clicked on a key on the worksurface!
-		activeProjectName=this.keyson.name;
+		activeProjectName = this.keyson.name;
 		if (Type.getClass(this) == Viewport) {
 			StatusBar.inform('Touched [${this.keyson.name}] at: ${info.x / unit - .5}, ${info.y / unit - .5}');
 			touchType = "Element";
@@ -165,7 +165,7 @@ class Viewport extends Scene {
 				screen.onPointerMove(this, viewportMouseMove);
 			}
 			touchType = ""; // reset
-			trace('type:<none>',this.keyson.name);
+			trace('type:<none>', this.keyson.name);
 			// Stop dragging when releasing pointer
 			this.oncePointerUp(this, viewportMouseUp);
 		}
@@ -186,7 +186,7 @@ class Viewport extends Scene {
 	 * Called after the drag
 	 */
 	function viewportMouseUp(info: TouchInfo) {
-		//finish the moving to the final position
+		// finish the moving to the final position
 		screen.offPointerMove(viewportMouseMove);
 	}
 }
