@@ -30,7 +30,7 @@ class Viewport extends Scene {
 	var placer: Placer;
 
 	var touchType: String = "";
-	var activeProjectName: String = "";
+	var activeProjectName: Keyson;
 
 	// Constants
 	var viewportStartX: Float = 0.0;
@@ -136,7 +136,7 @@ class Viewport extends Scene {
 
 	function keyMouseDown(info: TouchInfo) {
 		// this gets called only if clicked on a key on the worksurface!
-		activeProjectName = this.keyson.name;
+		activeProjectName = this.keyson;
 		if (Type.getClass(this) == Viewport) {
 			StatusBar.inform('Touched [${this.keyson.name}] at: ${info.x / unit - .5}, ${info.y / unit - .5}');
 			touchType = "Element";
@@ -149,7 +149,7 @@ class Viewport extends Scene {
 	 * Ran on the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		if (activeProjectName == this.keyson.name) {
+		if (activeProjectName == this.keyson) {
 			if (touchType == "Element") {
 				// TODO move keys one day
 				StatusBar.inform('Move started: ');
