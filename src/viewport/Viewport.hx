@@ -143,7 +143,7 @@ class Viewport extends Scene {
 	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		activeProject = this.keyson;
 		touchType = "Element";
-		trace('keycap!', keycap);
+		trace('keycap!', keycap.sourceKey);
 		// TODO store current key position into ViewportStart
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;

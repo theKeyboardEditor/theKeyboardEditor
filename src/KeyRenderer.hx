@@ -6,6 +6,7 @@ class KeyRenderer extends ceramic.Visual {
 
 	public var border: ceramic.Border;
 	public var pivot: viewport.Pivot;
+	public var sourceKey: keyson.Keyson.Key;
 
 	public function select() {
 		border.visible = !border.visible;
