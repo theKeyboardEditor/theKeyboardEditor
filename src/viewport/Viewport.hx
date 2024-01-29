@@ -8,7 +8,7 @@ import keyson.Axis;
 import keyson.Keyson;
 import keyson.Keyson.Keyboard;
 import keyson.Keyson.Key;
-import Type;
+
 
 class Viewport extends Scene {
 	/**
@@ -30,7 +30,7 @@ class Viewport extends Scene {
 	var placer: Placer;
 
 	var touchType: String = "";
-	var activeProjectName: Keyson;
+	var activeProject: Keyson;
 
 	// Constants
 	var viewportStartX: Float = 0.0;
@@ -92,7 +92,7 @@ class Viewport extends Scene {
 			framesSkipped = 0;
 			this.onPointerDown(workSurface, (info) -> {
 				if (info.buttonId == 0) {
-					StatusBar.inform('Placer at: ${placer.x / unit - .5}, ${placer.y / unit - .5}');
+					//StatusBar.inform('Placer at: ${placer.x / unit - .5}, ${placer.y / unit - .5}');
 				}
 			});
 			// 0.5 is accounting for the middle of the 1U sized placer
@@ -134,51 +134,54 @@ class Viewport extends Scene {
 		return workKeyboard;
 	}
 
+// this gets called only if clicked on a key on the worksurface!
 	function keyMouseDown(info: TouchInfo) {
-		// this gets called only if clicked on a key on the worksurface!
-		activeProjectName = this.keyson;
-		if (Type.getClass(this) == Viewport) {
-			StatusBar.inform('Touched [${this.keyson.name}] at: ${info.x / unit - .5}, ${info.y / unit - .5}');
-			touchType = "Element";
-		}
+		activeProject = this.keyson;
+		touchType = "Element";
+		trace('keycap!');
+		// TODO store current key position into ViewportStart
+
+		// store current mouse position
+		this.pointerStartX = screen.pointerX;
+		this.pointerStartY = screen.pointerY;
+		// try move along as we pan the touch
+		screen.onPointerMove(this, keyMouseMove);
+		// Stop dragging when releasing pointer
+		screen.oncePointerUp(this, keyMouseUp);
 	}
 
 	// MOVEMENT
 
 	/**
-	 * Ran on the start of the drag
+	 * Called from any viewport and any click on the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		if (activeProjectName == this.keyson) {
-			if (touchType == "Element") {
-				// TODO move keys one day
-				StatusBar.inform('Move started: ');
-			} else {
-				// TODO there should be certain amount of movement before we declare it's a drag at all
-				// store current viewport position into ViewportStart
-				this.viewportStartX = this.x;
-				this.viewportStartY = this.y;
-				// store current mouse position
-				this.pointerStartX = screen.pointerX;
-				this.pointerStartY = screen.pointerY;
-				// move along as we pan the touch
-				screen.onPointerMove(this, viewportMouseMove);
-			}
-			touchType = ""; // reset
-			trace('type:<none>', this.keyson.name);
-			// Stop dragging when releasing pointer
-			this.oncePointerUp(this, viewportMouseUp);
-		}
+		// TODO there should be certain amount of movement before we declare it's a drag at all
+		// store current viewport position into ViewportStart
+		this.viewportStartX = this.x;
+		this.viewportStartY = this.y;
+		// store current mouse position
+		this.pointerStartX = screen.pointerX;
+		this.pointerStartY = screen.pointerY;
+		trace('touched:<none> on [${this.keyson.name}]');
+
+		// try move along as we pan the touch
+		screen.onPointerMove(this, viewportMouseMove);
+		// Stop dragging when releasing pointer
+		screen.oncePointerUp(this, viewportMouseUp);
 	}
 
 	/**
 	 * Ran during AND at the very end of the drag
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-		if (touchType == "Element") {
-			// TODO move keys one day
-		} else {
+		// we can only discriminate if a touch or pan happened once the mouse moved every so slightly
+		if (Math.abs(screen.pointerX - this.pointerStartX) + Math.abs(screen.pointerY - this.pointerStartY) > quarterUnit * 0) {
 			this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
+			StatusBar.inform('Pan view:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
+		} else {
+			// a click happened
+			StatusBar.inform('Click in progress: ');
 		}
 	}
 
@@ -186,7 +189,27 @@ class Viewport extends Scene {
 	 * Called after the drag
 	 */
 	function viewportMouseUp(info: TouchInfo) {
+		touchType = ""; // reset
 		// finish the moving to the final position
 		screen.offPointerMove(viewportMouseMove);
+	}
+
+	function keyMouseMove(info: TouchInfo) {
+		// we can only discriminate if a touch or pan happened once the mouse moved every so slightly
+		if (Math.abs(screen.pointerX - this.pointerStartX) + Math.abs(screen.pointerY - this.pointerStartY) > quarterUnit * 0) {
+			//this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
+			StatusBar.inform('Move key:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
+		} else {
+			// a click happened
+			StatusBar.inform('Click in progress: ');
+		}
+	}
+
+	/**
+	 * Called after the drag
+	 */
+	function keyMouseUp(info: TouchInfo) {
+		// finish the moving to the final position
+		screen.offPointerMove(keyMouseMove);
 	}
 }
