@@ -9,7 +9,6 @@ import keyson.Keyson;
 import keyson.Keyson.Keyboard;
 import keyson.Keyson.Key;
 
-
 class Viewport extends Scene {
 	/**
 	 * The keyson being renderered
@@ -37,6 +36,9 @@ class Viewport extends Scene {
 	var viewportStartY: Float = 0.0;
 	var pointerStartX: Float = 0.0;
 	var pointerStartY: Float = 0.0;
+	var keyPosStartX: Float = 0.0;
+	var keyPosStartY: Float = 0.0;
+	var thisKeyCap: KeyRenderer;
 
 	public var screenX: Float = 0;
 	public var screenY: Float = 0;
@@ -92,7 +94,7 @@ class Viewport extends Scene {
 			framesSkipped = 0;
 			this.onPointerDown(workSurface, (info) -> {
 				if (info.buttonId == 0) {
-					//StatusBar.inform('Placer at: ${placer.x / unit - .5}, ${placer.y / unit - .5}');
+					// StatusBar.inform('Placer at: ${placer.x / unit - .5}, ${placer.y / unit - .5}');
 				}
 			});
 			// 0.5 is accounting for the middle of the 1U sized placer
@@ -127,20 +129,26 @@ class Viewport extends Scene {
 				}
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]); // position the unit
-				keycap.onPointerDown(keycap, keyMouseDown);
+				// implicit callback to the KeyRenderer object that received the click (kudos to Logo o/ )
+				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
+					keyMouseDown(t, keycap);
+				});
 				workKeyboard.add(keycap);
 			}
 		}
 		return workKeyboard;
 	}
 
-// this gets called only if clicked on a key on the worksurface!
-	function keyMouseDown(info: TouchInfo) {
+	// this gets called only if clicked on a key on the worksurface!
+	function keyMouseDown(info: TouchInfo, keycap) {
 		activeProject = this.keyson;
 		touchType = "Element";
-		trace('keycap!');
+		trace('keycap!', keycap);
 		// TODO store current key position into ViewportStart
-
+		keyPosStartX = keycap.x;
+		keyPosStartY = keycap.y;
+		thisKeyCap = keycap;
+		thisKeyCap.select();
 		// store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
@@ -175,14 +183,8 @@ class Viewport extends Scene {
 	 * Ran during AND at the very end of the drag
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-		// we can only discriminate if a touch or pan happened once the mouse moved every so slightly
-		if (Math.abs(screen.pointerX - this.pointerStartX) + Math.abs(screen.pointerY - this.pointerStartY) > quarterUnit * 0) {
-			this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
-			StatusBar.inform('Pan view:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
-		} else {
-			// a click happened
-			StatusBar.inform('Click in progress: ');
-		}
+		this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
+		StatusBar.inform('Pan view:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
 	}
 
 	/**
@@ -195,20 +197,16 @@ class Viewport extends Scene {
 	}
 
 	function keyMouseMove(info: TouchInfo) {
-		// we can only discriminate if a touch or pan happened once the mouse moved every so slightly
-		if (Math.abs(screen.pointerX - this.pointerStartX) + Math.abs(screen.pointerY - this.pointerStartY) > quarterUnit * 0) {
-			//this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
-			StatusBar.inform('Move key:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
-		} else {
-			// a click happened
-			StatusBar.inform('Click in progress: ');
-		}
+		thisKeyCap.pos(keyPosStartX + screen.pointerX - pointerStartX, keyPosStartY + screen.pointerY - pointerStartY);
+		thisKeyCap.pos(thisKeyCap.x - thisKeyCap.x % 25, thisKeyCap.y - thisKeyCap.y % 25);
+		StatusBar.inform('Move key:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
 	}
 
 	/**
 	 * Called after the drag
 	 */
 	function keyMouseUp(info: TouchInfo) {
+		// thisKeyCap.select(); // <- this would toggle selection off on release!
 		// finish the moving to the final position
 		screen.offPointerMove(keyMouseMove);
 	}
