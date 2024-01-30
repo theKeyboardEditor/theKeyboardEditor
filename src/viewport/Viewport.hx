@@ -73,7 +73,10 @@ class Viewport extends Scene {
 		this.add(workSurface);
 
 		placer = new Placer();
-		placer.size(100, 100);
+		placer.piecesSize = unit;
+		placer.size(unit, unit);// same as scale for now
+		// TODO placer resizing is broken - it adds shapes on recompute
+		// instead of just recomputing the positions
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
@@ -149,6 +152,8 @@ class Viewport extends Scene {
 		keyPosStartY = keycap.y;
 		selectedKey = keycap;
 		selectedKey.select();
+		// TODO infer the selection size and apply it to the placer:
+		placer.size(selectedKey.width, selectedKey.height);
 		// store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
@@ -206,6 +211,7 @@ class Viewport extends Scene {
 	 * Called after the drag
 	 */
 	function keyMouseUp(info: TouchInfo) {
+		placer.size(unit, unit); // restore placer to default
 		// selectedKey.select(); // <- this would toggle selection off on release!
 		// finish the moving to the final position
 		screen.offPointerMove(keyMouseMove);

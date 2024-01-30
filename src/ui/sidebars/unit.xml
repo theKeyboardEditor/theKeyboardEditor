@@ -7,13 +7,16 @@
 					<label text="Units:" />
 				</hbox>
 				<vbox horizontalAlign="center">
-					<number-stepper width="133" pos="1" step="1" min="1" max="32" />
+					<number-stepper width="133" pos="1" step="1" min="1" max="32" disabled="true"/>
+					<!-- this actually never should get enabled -->
 				</vbox>
 				<hbox  horizontalAlign="left">
 					<label text="Unit:" />
 				</hbox>
 				<vbox horizontalAlign="center">
-					<number-stepper width="133" pos="0" step="1" min="0" max="31" />
+					<number-stepper width="133" pos="0" step="1" min="0" max="1" />
+					<button text="Create" width="100%" disabled="true" />
+					<!-- increment max units only as a new one gets created, then disble the create button again -->
 				</vbox>
 				<hbox>
 					<label text="Colors:" />

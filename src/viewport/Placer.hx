@@ -10,6 +10,7 @@ import ceramic.Visual;
  */
 class Placer extends Visual {
 	@content public var color: Color;
+	@content public var piecesSize: Float; // is 100 (same as unit) for 1:1 scale
 
 	// Corners
 	var topLeft: Mesh;
@@ -46,13 +47,13 @@ class Placer extends Visual {
 	override public function computeContent() {
 		// @formatter:off
 		this.vertices = [
-			width * 0.04, 0.0,            //  0____ 1
-			width * 0.20, 0.0,            //  /    |
-			width * 0.20, height * 0.04,  // 5|   / 2
-			width * 0.04, height * 0.20,  //  |  /
-			0.0, height * 0.20,           //  |_/
-			0.0, height * 0.04,           // 4  3
-		]; 
+			piecesSize * 0.04, 0.0,            //  0____ 1
+			piecesSize * 0.20, 0.0,            //  /    |
+			piecesSize * 0.20, piecesSize * 0.04,  // 5|   / 2
+			piecesSize * 0.04, piecesSize * 0.20,  //  |  /
+			0.0, piecesSize * 0.20,           //  |_/
+			0.0, piecesSize * 0.04,           // 4  3
+		];
 		this.indices = [
 			0, 1, 2,  // No way I draw this
 			0, 2, 5,  // in ASCII :-)
@@ -62,6 +63,7 @@ class Placer extends Visual {
 		// @formatter:on
 		// Corners
 		// TOP LEFT
+		this.clear(); // destroy all children
 		this.topLeft = new Mesh();
 		this.topLeft.color = this.color;
 		this.topLeft.vertices = this.vertices;
