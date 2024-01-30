@@ -5,9 +5,9 @@ import viewport.Viewport;
 class MoveKeys extends Action {
 	final viewport: Viewport;
 	final keys: Array<KeyRenderer>;
-	final to: Array<Int>;
+	final to: Array<Float>;
 
-	override public function new(viewport: Viewport, keys: Array<KeyRenderer>, to: Array<Int>) {
+	override public function new(viewport: Viewport, keys: Array<KeyRenderer>, to: Array<Float>) {
 		super();
 		this.viewport = viewport;
 		this.keys = keys;

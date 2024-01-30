@@ -46,6 +46,10 @@ class Viewport extends Scene {
 	var keyPosStartX: Float = 0.0;
 	var keyPosStartY: Float = 0.0;
 
+	// there exists certain placer mismatch...
+	var placerMismatchX: Float = 0.0;
+	var placerMismatchY: Float = 0.0;
+
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
@@ -59,9 +63,10 @@ class Viewport extends Scene {
 
 	// Size of a key
 	inline static final unit: Float = 100;
-	inline static final quarterUnit: Float = Std.int(unit / 4);
+	inline static final placingStep: Float = Std.int(unit / 4);
 	// How many frames to skip
 	inline static final skipFrames: Float = 10;
+	public var framesSkipped: Float = 0; // current count (kept between skips)
 
 	// GLOBAL SCENE
 
@@ -86,7 +91,7 @@ class Viewport extends Scene {
 	override public function create() {
 		var grid = new Grid();
 		grid.primaryStep(unit);
-		grid.subStep(quarterUnit);
+		grid.subStep(placingStep);
 		grid.depth = -1;
 		this.add(grid);
 
@@ -94,8 +99,8 @@ class Viewport extends Scene {
 		this.add(workSurface);
 
 		placer = new Placer();
-		// placer.piecesSize = unit; // the pieces are not scaled
-		// placer.size(unit, unit);
+		placer.piecesSize = unit; // the pieces are not scaled
+		placer.size(unit, unit);
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
@@ -108,6 +113,21 @@ class Viewport extends Scene {
 	 */
 	override public function update(delta: Float) {
 		placerUpdate();
+
+		if (framesSkipped < skipFrames) {
+			framesSkipped++;
+		} else {
+			framesSkipped = 0;
+			this.onPointerDown(workSurface, (info) -> {
+				if (info.buttonId == 0) {
+					// StatusBar.inform('Placer at: ${placer.x / unit - .5}, ${placer.y / unit - .5}');
+				}
+			});
+			// 0.5 is accounting for the middle of the 1U sized placer
+			StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
+			//StatusBar.pos(viewportStartX, viewportStartY);
+		}
+
 		queue.act();
 	}
 	// PLACER
@@ -116,9 +136,9 @@ class Viewport extends Scene {
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		placer.x = screen.pointerX - screenX - this.x;
-		placer.y = screen.pointerY - screenY - this.y;
-		placer.pos(placer.x - placer.x % 25, placer.y - placer.y % 25);
+		placer.x = screen.pointerX - screenX - this.x + placerMismatchX;
+		placer.y = screen.pointerY - screenY - this.y + placerMismatchY;
+		placer.pos(placer.x - placer.x % placingStep, placer.y - placer.y % placingStep);
 	}
 
 	/**
@@ -159,6 +179,12 @@ class Viewport extends Scene {
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 
+		// placer is usually referenced to mouse cursor, but while we move that's off
+		placerMismatchX = keyPosStartX - this.pointerStartX + screenX + this.x + selectedKey.width / 2;
+		placerMismatchY = keyPosStartY - this.pointerStartY + screenY + this.y + selectedKey.height / 2;
+		if (selectedKey.sourceKey.shape == "BAE" ) placerMismatchX -= 75;
+		if (selectedKey.sourceKey.shape == "XT_2U" ) placerMismatchX -= 100;
+
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, keyMouseMove);
 
@@ -181,6 +207,9 @@ class Viewport extends Scene {
 		this.pointerStartY = screen.pointerY;
 		trace('touched:<none> on [${this.keyson.name}]');
 
+		placerMismatchX = 0;
+		placerMismatchY = 0;
+
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, viewportMouseMove);
 
@@ -189,7 +218,7 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Ran during and at the very end of the drag of the viewport
+	 * Ran during and at the very end of the pan of the viewport
 	 */
 	function viewportMouseMove(info: TouchInfo) {
 		this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
@@ -197,7 +226,7 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Called after the drag of the viewport
+	 * Called after the pan of the viewport
 	 */
 	function viewportMouseUp(info: TouchInfo) {
 		touchType = "";
@@ -209,8 +238,9 @@ class Viewport extends Scene {
 	 */
 	function keyMouseMove(info: TouchInfo) {
 		selectedKey.pos(keyPosStartX + screen.pointerX - pointerStartX, keyPosStartY + screen.pointerY - pointerStartY);
-		selectedKey.pos(selectedKey.x - selectedKey.x % 25, selectedKey.y - selectedKey.y % 25);
-		StatusBar.inform('Move key:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
+		selectedKey.pos(selectedKey.x - selectedKey.x % placingStep, selectedKey.y - selectedKey.y % placingStep);
+		//StatusBar.inform('Moved key to:[${selectedKey.x}x${selectedKey.y}]');
+		StatusBar.inform('Move:[${placerMismatchX}x${placerMismatchY}]');
 	}
 
 	/**
@@ -218,7 +248,10 @@ class Viewport extends Scene {
 	 */
 	function keyMouseUp(info: TouchInfo) {
 		placer.size(unit, unit); // restore placer to default
-		queue.push(new actions.MoveKeys(this, [selectedKey], [0, 0]));
+		placerMismatchX=0;
+		placerMismatchY=0;
+		selectedKey.select(); // remove selection by toggle
+		queue.push(new actions.MoveKeys(this, [selectedKey], [selectedKey.x, selectedKey.y]));
 		screen.offPointerMove(keyMouseMove);
 	}
 }
