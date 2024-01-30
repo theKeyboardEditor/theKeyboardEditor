@@ -73,10 +73,8 @@ class Viewport extends Scene {
 		this.add(workSurface);
 
 		placer = new Placer();
-		placer.piecesSize = unit;
-		placer.size(unit, unit); // same as scale for now
-		// TODO placer resizing is broken - it adds shapes on recompute
-		// instead of just recomputing the positions
+		placer.piecesSize = unit; // the pieces are not scaled
+		placer.size(unit, unit);
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
@@ -101,8 +99,8 @@ class Viewport extends Scene {
 				}
 			});
 			// 0.5 is accounting for the middle of the 1U sized placer
-			// StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
-			StatusBar.pos(viewportStartX, viewportStartY);
+			StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
+			//StatusBar.pos(viewportStartX, viewportStartY);
 		}
 	}
 
