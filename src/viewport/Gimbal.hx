@@ -5,6 +5,7 @@ import ceramic.Quad;
 import ceramic.Arc;
 import ceramic.Color;
 import ceramic.Visual;
+import ceramic.RoundedRect;
 
 /*
  * The gimbal is the shape that when dragged transfers actions to other objects

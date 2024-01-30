@@ -1,10 +1,8 @@
 package keys;
 
 import ceramic.Color;
-import ceramic.Visual;
 import ceramic.Border;
-import ceramic.Arc;
-import ceramic.Quad;
+import ceramic.RoundedRect;
 import viewport.Pivot;
 
 class RectangularKey extends KeyRenderer {
