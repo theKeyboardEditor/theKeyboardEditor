@@ -74,7 +74,7 @@ class Viewport extends Scene {
 
 		placer = new Placer();
 		placer.piecesSize = unit;
-		placer.size(unit, unit);// same as scale for now
+		placer.size(unit, unit); // same as scale for now
 		// TODO placer resizing is broken - it adds shapes on recompute
 		// instead of just recomputing the positions
 		placer.anchor(.5, .5);
