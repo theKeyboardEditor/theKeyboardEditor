@@ -1,9 +1,10 @@
 package viewport;
 
-import ceramic.Quad;
 import ceramic.Visual;
 import ceramic.Scene;
 import ceramic.TouchInfo;
+import ceramic.KeyBindings;
+import ceramic.KeyCode;
 import keyson.Axis;
 import keyson.Keyson;
 import keyson.Keyson.Keyboard;
@@ -20,6 +21,7 @@ class Viewport extends Scene {
 	 * See Input.hx file for more details
 	 */
 	final inputMap = new Input();
+
 	final queue = new ActionQueue();
 
 	/**
@@ -72,15 +74,22 @@ class Viewport extends Scene {
 	/**
 	 * Dispatches keyboard and mouse inputs to the seperate functions
 	 */
-	public function inputDispatch() {}
+	public function inputDispatch() {
+		var keyBindings = new KeyBindings();
+
+		// When the keyboard has the mouse clicked down
+		this.onPointerDown(workSurface, viewportMouseDown);
+
+		// Undo
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
+			queue.undo();
+		});
+	}
 
 	/**
 	 * Initializes the scene
 	 */
 	override public function create() {
-		// We intercept only this.viewport mouse down event:
-		this.onPointerDown(workSurface, viewportMouseDown);
-
 		var grid = new Grid();
 		grid.primaryStep(unit);
 		grid.subStep(quarterUnit);
@@ -96,6 +105,8 @@ class Viewport extends Scene {
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
+
+		inputDispatch();
 	}
 
 	/**
@@ -103,6 +114,7 @@ class Viewport extends Scene {
 	 */
 	override public function update(delta: Float) {
 		placerUpdate();
+		queue.act();
 	}
 
 	// PLACER
@@ -126,7 +138,7 @@ class Viewport extends Scene {
 			final gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
 			final gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
 			// Parse all keycaps/elements
-			for (key in keyboardUnit.keys) { 
+			for (key in keyboardUnit.keys) {
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
@@ -214,7 +226,7 @@ class Viewport extends Scene {
 	 */
 	function keyMouseUp(info: TouchInfo) {
 		placer.size(unit, unit); // restore placer to default
-		// queue.push(new actions.MoveKeys(this, [selectedKey], [0, 0]));
+		queue.push(new actions.MoveKeys(this, [selectedKey], [0, 0]));
 		screen.offPointerMove(keyMouseMove);
 	}
 }

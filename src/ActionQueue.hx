@@ -24,7 +24,6 @@ class ActionQueue {
 	}
 
 	public inline function undo() {
-		trace(applied);
 		if (applied.length > 0) {
 			var action = this.applied.pop();
 			action.undo();
