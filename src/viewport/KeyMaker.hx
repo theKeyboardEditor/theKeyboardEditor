@@ -82,6 +82,7 @@ class KeyMaker {
 			key.size(width, height);
 			key.topColor = keyColor;
 			key.bottomColor = keyShadow;
+			key.sourceKey = k;
 		} else { // non '<number>U' cases:
 			var enterShaped = new keys.EnterShapedKey();
 			enterShaped.widthNorth = widthNorth;
@@ -91,6 +92,7 @@ class KeyMaker {
 			enterShaped.topColor = keyColor;
 			enterShaped.bottomColor = keyShadow;
 			enterShaped.shape = k.shape;
+			enterShaped.sourceKey = k;
 			key = enterShaped;
 		}
 

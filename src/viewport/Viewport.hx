@@ -73,7 +73,8 @@ class Viewport extends Scene {
 		this.add(workSurface);
 
 		placer = new Placer();
-		placer.size(100, 100);
+		placer.piecesSize = unit; // the pieces are not scaled
+		placer.size(unit, unit);
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
@@ -98,8 +99,8 @@ class Viewport extends Scene {
 				}
 			});
 			// 0.5 is accounting for the middle of the 1U sized placer
-			// StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
-			StatusBar.pos(viewportStartX, viewportStartY);
+			StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
+			//StatusBar.pos(viewportStartX, viewportStartY);
 		}
 	}
 
@@ -143,12 +144,14 @@ class Viewport extends Scene {
 	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		activeProject = this.keyson;
 		touchType = "Element";
-		trace('keycap!', keycap);
+		trace('keycap!', keycap.sourceKey);
 		// TODO store current key position into ViewportStart
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
 		selectedKey = keycap;
 		selectedKey.select();
+		// TODO infer the selection size and apply it to the placer:
+		placer.size(selectedKey.width, selectedKey.height);
 		// store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
@@ -206,6 +209,7 @@ class Viewport extends Scene {
 	 * Called after the drag
 	 */
 	function keyMouseUp(info: TouchInfo) {
+		placer.size(unit, unit); // restore placer to default
 		// selectedKey.select(); // <- this would toggle selection off on release!
 		// finish the moving to the final position
 		screen.offPointerMove(keyMouseMove);
