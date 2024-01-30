@@ -1,21 +1,23 @@
 package actions;
 
 import viewport.Viewport;
+import keyson.Keyson;
 
 class MoveKeys extends Action {
-	final viewport: Viewport;
-	final keys: Array<KeyRenderer>;
-	final to: Array<Float>;
+	var activeProject: Keyson;
+	var keys: Array<KeyRenderer>;
+	var destinations: Array<Float>;
 
-	override public function new(viewport: Viewport, keys: Array<KeyRenderer>, to: Array<Float>) {
+	override public function new(activeProject: Keyson, keys: Array<KeyRenderer>, destinations: Array<Float>) {
 		super();
-		this.viewport = viewport;
+		this.activeProject = activeProject;
 		this.keys = keys;
-		this.to = to;
+		this.destinations = destinations;
 	}
 
 	override public function act() {
-		trace("Beep boop");
+		trace('Move in:[${this.activeProject.name}] objects:${keys} to: ${destinations}');
+		//TODO check for origin pos
 		super.act();
 	}
 

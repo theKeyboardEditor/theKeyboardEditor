@@ -205,7 +205,7 @@ class Viewport extends Scene {
 		// Store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
-		trace('touched:<none> on [${this.keyson.name}]');
+		//trace('touched:<none> on [${this.keyson.name}]');
 
 		placerMismatchX = 0;
 		placerMismatchY = 0;
@@ -251,7 +251,8 @@ class Viewport extends Scene {
 		placerMismatchX=0;
 		placerMismatchY=0;
 		selectedKey.select(); // remove selection by toggle
-		queue.push(new actions.MoveKeys(this, [selectedKey], [selectedKey.x, selectedKey.y]));
+		// move single key now
+		queue.push(new actions.MoveKeys(activeProject, [selectedKey], [selectedKey.x, selectedKey.y]));
 		screen.offPointerMove(keyMouseMove);
 	}
 }
