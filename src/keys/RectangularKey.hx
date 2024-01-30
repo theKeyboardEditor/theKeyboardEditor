@@ -14,7 +14,6 @@ class RectangularKey extends KeyRenderer {
 	 * TODO: more presets
 	 */
 	var topX: Float = 100 / 8;
-
 	var topY: Float = (100 / 8) * 0.25;
 	var topOffset: Float = (100 / 8) * 2;
 	var roundedCorner: Float = (100 / 8);

@@ -36,14 +36,12 @@ class Keyson {
 		object = parser.fromJson(data);
 		return object;
 	}
-
 	public static function encode(object: Keyson) {
 		var writer = new json2object.JsonWriter<Keyson>();
 		var data = writer.write(object, tabulation);
 		return data;
 	}
 }
-
 class Palette {
 	public var name: String;
 	public var url: String;
@@ -234,7 +232,6 @@ class KeyLegend {
 		this.symbol = symbol;
 	}
 }
-
 /*
  * Various key position features/replacements and their
  * respective properties:
@@ -246,7 +243,6 @@ class KeyLegend {
 class LEDFeature {
 	public var diameter: Float; // diameter usually 3.0 or 5.0 mm
 }
-
 class EncoderFeature {
 	public var diameter: Float; // in unit size
 	public var barrelSize: Float; // height/length in rulerUnits size

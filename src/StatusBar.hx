@@ -9,7 +9,6 @@ class StatusBar {
 	public static function inform(with: String) {
 		element.findComponent("action").text = with;
 	}
-
 	public static function error(with: String) {
 		element.findComponent("action").text = with;
 		haxe.ui.animation.AnimationTools.flash(element.findComponent("action"), 0xFFb13e53);

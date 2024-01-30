@@ -21,14 +21,12 @@ class Viewport extends Scene {
 	 * See Input.hx file for more details
 	 */
 	final inputMap = new Input();
-
 	final queue = new ActionQueue();
 
 	/**
 	 * Ceramic elements
 	 */
 	var workSurface: Visual;
-
 	var placer: Placer;
 
 	// Movement variables
@@ -37,7 +35,6 @@ class Viewport extends Scene {
 	 * For dragging of the viewport
 	 */
 	var viewportStartX: Float = 0.0;
-
 	var viewportStartY: Float = 0.0;
 
 	var pointerStartX: Float = 0.0;
@@ -47,16 +44,13 @@ class Viewport extends Scene {
 	 * For dragging keys around
 	 */
 	var keyPosStartX: Float = 0.0;
-
 	var keyPosStartY: Float = 0.0;
 
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
 	var activeProject: Keyson;
-
 	var selectedKey: KeyRenderer;
-
 	var touchType: String = "";
 
 	// Constants
@@ -100,8 +94,8 @@ class Viewport extends Scene {
 		this.add(workSurface);
 
 		placer = new Placer();
-		placer.piecesSize = unit; // the pieces are not scaled
-		placer.size(unit, unit);
+		// placer.piecesSize = unit; // the pieces are not scaled
+		// placer.size(unit, unit);
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
@@ -116,7 +110,6 @@ class Viewport extends Scene {
 		placerUpdate();
 		queue.act();
 	}
-
 	// PLACER
 
 	/**
@@ -149,7 +142,6 @@ class Viewport extends Scene {
 		}
 		return workKeyboard;
 	}
-
 	// This gets called only if clicked on a key on the worksurface!
 	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		activeProject = this.keyson;
