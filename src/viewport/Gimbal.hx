@@ -8,7 +8,6 @@ import ceramic.Visual;
 
 /*
  * The gimbal is the shape that when dragged transfers actions to other objects
- *
  */
 class Gimbal extends Visual {
 	// Elements
@@ -89,7 +88,10 @@ class Gimbal extends Visual {
 		gimbal3.clip = circle;
 		gimbal4.clip = circle;
 
-		final top = new RoundedQuad(100, 100, 12, color1);
+		final top = new RoundedRect();
+		top.size(100, 100);
+		top.radius(12);
+		top.color = color1;
 		top.pos(-50, 21);
 		top.inheritAlpha = true;
 		top.alpha = 0.05 * this.subAlpha;
