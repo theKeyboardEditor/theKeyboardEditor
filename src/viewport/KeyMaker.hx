@@ -99,7 +99,7 @@ class KeyMaker {
 		// here we populate the legends (see function below)
 		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit); // it is another Visual
 		for (l in keyLegends) {
-			key.add(l.create()); // adding ti to the key visual
+			key.add(l.create()); // adding it to the key visual
 		}
 
 		return key;
@@ -114,7 +114,7 @@ class KeyMaker {
 		for (l in k.legends) { // we can have many labels!
 			// default to GRAY if undefined
 			var legendColor = Std.parseInt(l.legendColor) ?? Std.parseInt(keyboard.legendColor) ?? Color.GRAY;
-			var legend = new LegendRenderer(l.symbol, legendColor);
+			var symbol = new LegendRenderer(l.legend, legendColor);
 			// is the legend position set specifically?
 			if (l.legendPosition != null) { // yes we account for individual adjustment too!
 				legendOffsetX = l.legendPosition[Axis.X] + keyboard.legendPosition[Axis.X];
@@ -125,15 +125,15 @@ class KeyMaker {
 			}
 			// is the fontsize set specifically?
 			if (l.legendSize != 0) { // TODO make this detect per key font change
-				legend.fontSize = l.legendSize;
+				symbol.fontSize = l.legendSize;
 			} else {
-				legend.fontSize = keyboard.keyboardFontSize;
+				symbol.fontSize = keyboard.keyboardFontSize;
 			}
 
-			legend.depth = 10; // make sure labels render on top
-			legend.pos(legendOffsetX + legend.topX, legendOffsetY + legend.topY); // relative to the key shape
+			symbol.depth = 10; // make sure labels render on top
+			symbol.pos(legendOffsetX + symbol.topX, legendOffsetY + symbol.topY); // relative to the key shape
 
-			keyLegends.push(legend);
+			keyLegends.push(symbol);
 		}
 
 		return keyLegends;

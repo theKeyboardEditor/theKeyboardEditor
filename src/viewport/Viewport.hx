@@ -15,7 +15,10 @@ class Viewport extends Scene {
 	 * The keyson being renderered
 	 */
 	public var keyson: keyson.Keyson;
-
+	
+	public var screenX: Float = 0;
+	public var screenY: Float = 0;
+	
 	/**
 	 * This is where we map all of the different events to specific keys
 	 * See Input.hx file for more details
@@ -46,22 +49,20 @@ class Viewport extends Scene {
 	var keyPosStartX: Float = 0.0;
 	var keyPosStartY: Float = 0.0;
 
+	// there exists certain placer mismatch...
+	var placerMismatchX: Float = 0.0;
+	var placerMismatchY: Float = 0.0;
+
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
-	var activeProject: Keyson;
-	var selectedKey: KeyRenderer;
-	var touchType: String = "";
+	var selectedKey: KeyRenderer; // still needed across few functions -.-'
 
 	// Constants
-	public var screenX: Float = 0;
-	public var screenY: Float = 0;
 
 	// Size of a key
 	inline static final unit: Float = 100;
-	inline static final quarterUnit: Float = Std.int(unit / 4);
-	// How many frames to skip
-	inline static final skipFrames: Float = 10;
+	inline static final placingStep: Float = Std.int(unit / 4);
 
 	// GLOBAL SCENE
 
@@ -86,7 +87,7 @@ class Viewport extends Scene {
 	override public function create() {
 		var grid = new Grid();
 		grid.primaryStep(unit);
-		grid.subStep(quarterUnit);
+		grid.subStep(placingStep);
 		grid.depth = -1;
 		this.add(grid);
 
@@ -94,8 +95,8 @@ class Viewport extends Scene {
 		this.add(workSurface);
 
 		placer = new Placer();
-		// placer.piecesSize = unit; // the pieces are not scaled
-		// placer.size(unit, unit);
+		placer.piecesSize = unit; // the pieces are not scaled
+		placer.size(unit, unit);
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
@@ -116,9 +117,9 @@ class Viewport extends Scene {
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		placer.x = screen.pointerX - screenX - this.x;
-		placer.y = screen.pointerY - screenY - this.y;
-		placer.pos(placer.x - placer.x % 25, placer.y - placer.y % 25);
+		placer.x = screen.pointerX - screenX - this.x + placerMismatchX;
+		placer.y = screen.pointerY - screenY - this.y + placerMismatchY;
+		placer.pos(placer.x - placer.x % placingStep, placer.y - placer.y % placingStep);
 	}
 
 	/**
@@ -142,11 +143,50 @@ class Viewport extends Scene {
 		}
 		return workKeyboard;
 	}
-	// This gets called only if clicked on a key on the worksurface!
+	// MOVEMENT
+
+	/**
+	 * Called from any viewport and any click on the start of the drag
+	 */
+	function viewportMouseDown(info: TouchInfo) {
+		// TODO: Check for maximum amount of movement before drag is declared
+		this.viewportStartX = this.x;
+		this.viewportStartY = this.y;
+
+		// Store current mouse position
+		this.pointerStartX = screen.pointerX;
+		this.pointerStartY = screen.pointerY;
+		// trace('touched:<none> on [${this.keyson.name}]');
+
+		placerMismatchX = 0;
+		placerMismatchY = 0;
+
+		// Try move along as we pan the touch
+		screen.onPointerMove(this, viewportMouseMove);
+
+		// Stop dragging when releasing pointer
+		screen.oncePointerUp(this, viewportMouseUp);
+	}
+
+	/**
+	 * Ran during and at the very end of the pan of the viewport
+	 */
+	function viewportMouseMove(info: TouchInfo) {
+		this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
+		StatusBar.inform('Pan view:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
+	}
+
+	/**
+	 * Called after the pan of the viewport
+	 */
+	function viewportMouseUp(info: TouchInfo) {
+		screen.offPointerMove(viewportMouseMove);
+	}
+
+	/**
+	 *  This gets called only if clicked on a key on the worksurface!
+	 */
 	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
-		activeProject = this.keyson;
-		touchType = "Element";
-		// TODO: store current key position into ViewportStart
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
 		selectedKey = keycap;
@@ -159,58 +199,28 @@ class Viewport extends Scene {
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 
+		// placer is usually referenced to mouse cursor, but while we move that's off
+		placerMismatchX = keyPosStartX - this.pointerStartX + screenX + this.x + selectedKey.width / 2;
+		placerMismatchY = keyPosStartY - this.pointerStartY + screenY + this.y + selectedKey.height / 2;
+		if (selectedKey.sourceKey.shape == "BAE")
+			placerMismatchX -= 75;
+		if (selectedKey.sourceKey.shape == "XT_2U")
+			placerMismatchX -= 100;
+
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, keyMouseMove);
 
-		// Stop dragging when releasing pointer
+		// Stop dragging when the pointer is released
 		screen.oncePointerUp(this, keyMouseUp);
-	}
-
-	// MOVEMENT
-
-	/**
-	 * Called from any viewport and any click on the start of the drag
-	 */
-	function viewportMouseDown(info: TouchInfo) {
-		// TODO: Check for maximum amount of movement before dragging
-		this.viewportStartX = this.x;
-		this.viewportStartY = this.y;
-
-		// Store current mouse position
-		this.pointerStartX = screen.pointerX;
-		this.pointerStartY = screen.pointerY;
-		trace('touched:<none> on [${this.keyson.name}]');
-
-		// Try move along as we pan the touch
-		screen.onPointerMove(this, viewportMouseMove);
-
-		// Stop dragging when releasing pointer
-		screen.oncePointerUp(this, viewportMouseUp);
-	}
-
-	/**
-	 * Ran during and at the very end of the drag of the viewport
-	 */
-	function viewportMouseMove(info: TouchInfo) {
-		this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
-		StatusBar.inform('Pan view:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
-	}
-
-	/**
-	 * Called after the drag of the viewport
-	 */
-	function viewportMouseUp(info: TouchInfo) {
-		touchType = "";
-		screen.offPointerMove(viewportMouseMove);
 	}
 
 	/**
 	 * Called during key movement
 	 */
 	function keyMouseMove(info: TouchInfo) {
+		// TODO inspect why and how the rounding error happens while dragging and ordering the move
 		selectedKey.pos(keyPosStartX + screen.pointerX - pointerStartX, keyPosStartY + screen.pointerY - pointerStartY);
-		selectedKey.pos(selectedKey.x - selectedKey.x % 25, selectedKey.y - selectedKey.y % 25);
-		StatusBar.inform('Move key:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
+		selectedKey.pos(selectedKey.x - selectedKey.x % placingStep, selectedKey.y - selectedKey.y % placingStep);
 	}
 
 	/**
@@ -218,7 +228,30 @@ class Viewport extends Scene {
 	 */
 	function keyMouseUp(info: TouchInfo) {
 		placer.size(unit, unit); // restore placer to default
-		queue.push(new actions.MoveKeys(this, [selectedKey], [0, 0]));
+		placerMismatchX = 0;
+		placerMismatchY = 0;
+		selectedKey.select(); // remove selection by toggle
+		// move now
+		// Otherwise we'd have gazillion undo actions per move operations!
+		// @formatter:off
+		queue.push(new actions.MoveKeys(this.keyson, [selectedKey],
+					((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit,
+					((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit)
+					);
+		// @formatter:on
+		// Logo just loves this XD
+
+		// TODO we have to render what's actually stored in the keyson (due to rounding mismatch in the math)
+		// from selectedKey.sourceKey:
+		// descend thru the keyson to match the key
+		// while on the matched key, clear(); the ceramic key shape too, and produce it from scratch
+		// so what we see reflects the actual keyson
+
+		final x = ((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit;
+		final y = ((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit;
+		StatusBar.inform('Moved key to:${x}x${y}');
+
+		// the touch is already over, we're really just returning from the event
 		screen.offPointerMove(keyMouseMove);
 	}
 }
