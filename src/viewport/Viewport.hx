@@ -57,6 +57,7 @@ class Viewport extends Scene {
 	 */
 	var selectedKey: KeyRenderer; // still needed across few functions -.-'
 	var selectedKeys: Array<KeyRenderer> = []; // still needed across few functions -.-'
+
 	// Constants
 	// Size of a key
 	inline static final unit: Float = 100;
@@ -238,11 +239,11 @@ class Viewport extends Scene {
 	 */
 	function keyMouseMove(info: TouchInfo) {
 		if (selectedKeys.length > 0) {
-		final xStep   = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) - selectedKeys[0].x;
-		final yStep   = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) - selectedKeys[0].y;
+			final xStep = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) - selectedKeys[0].x;
+			final yStep = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) - selectedKeys[0].y;
 			for (key in selectedKeys) {
-				key.x +=xStep;
-				key.y +=yStep;
+				key.x += xStep;
+				key.y += yStep;
 			}
 		} else {
 			selectedKey.x = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep);
@@ -258,17 +259,18 @@ class Viewport extends Scene {
 		placer.size(unit, unit);
 		placerMismatchX = 0;
 		placerMismatchY = 0;
-		// Remove selection by toggle
+		// Remove selection toggling it right after move
 		// selectedKey.select();
 		if (selectedKeys.length < 1) { // single unselected key
 			final x = (selectedKey.x - keyPosStartX) / unit;
 			final y = (selectedKey.y - keyPosStartY) / unit;
+			// Move now single (and unselected)
 			queue.push(new actions.MoveKeys(this.keyson, [selectedKey], x, y));
 			StatusBar.inform('Moved unselected key to:${x}x${y}');
 		} else { // move selection
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
-			// Move now
+			// Move now many
 			queue.push(new actions.MoveKeys(this.keyson, selectedKeys, x, y));
 			StatusBar.inform('Moved selected key to:${x}x${y}');
 		}
