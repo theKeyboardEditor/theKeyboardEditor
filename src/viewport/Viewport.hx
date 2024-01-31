@@ -15,10 +15,9 @@ class Viewport extends Scene {
 	 * The keyson being renderered
 	 */
 	public var keyson: keyson.Keyson;
-	
 	public var screenX: Float = 0;
 	public var screenY: Float = 0;
-	
+
 	/**
 	 * This is where we map all of the different events to specific keys
 	 * See Input.hx file for more details
@@ -57,9 +56,7 @@ class Viewport extends Scene {
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
 	var selectedKey: KeyRenderer; // still needed across few functions -.-'
-
 	// Constants
-
 	// Size of a key
 	inline static final unit: Float = 100;
 	inline static final placingStep: Float = Std.int(unit / 4);
@@ -227,31 +224,32 @@ class Viewport extends Scene {
 	 * Called after the drag
 	 */
 	function keyMouseUp(info: TouchInfo) {
-		placer.size(unit, unit); // restore placer to default
+		// Restore placer to default size
+		placer.size(unit, unit);
 		placerMismatchX = 0;
+		// Remove selection by toggle
 		placerMismatchY = 0;
-		selectedKey.select(); // remove selection by toggle
-		// move now
+		selectedKey.select();
+		// Move now
 		// Otherwise we'd have gazillion undo actions per move operations!
-		// @formatter:off
 		queue.push(new actions.MoveKeys(this.keyson, [selectedKey],
-					((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit,
-					((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit)
-					);
-		// @formatter:on
+			((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit,
+			((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit));
 		// Logo just loves this XD
 
-		// TODO we have to render what's actually stored in the keyson (due to rounding mismatch in the math)
-		// from selectedKey.sourceKey:
-		// descend thru the keyson to match the key
-		// while on the matched key, clear(); the ceramic key shape too, and produce it from scratch
-		// so what we see reflects the actual keyson
+		/**
+		 * TODO we have to render what's actually stored in the keyson (due to rounding mismatch in the math)
+		 * from selectedKey.sourceKey:
+		 * descend thru the keyson to match the key
+		 * while on the matched key, clear(); the ceramic key shape too, and produce it from scratch
+		 * so what we see reflects the actual keyson
+		 */
 
 		final x = ((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit;
 		final y = ((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit;
 		StatusBar.inform('Moved key to:${x}x${y}');
 
-		// the touch is already over, we're really just returning from the event
+		// The touch is already over, we're really just returning from the event
 		screen.offPointerMove(keyMouseMove);
 	}
 }

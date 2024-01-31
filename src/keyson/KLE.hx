@@ -76,7 +76,6 @@ class KLE {
 						legend = legend.substr(0, legend.indexOf("&#")) + s + legend.substr(7 + legend.indexOf("&#"));
 					}
 					// trace(s, "/", legend);
-					// @formatter:off
 					if (shape == "ISO") // special case - for one reason or the other it renders 0.25U off to the right
 						key = keyson.units[0].addKey(shape, [x - 0.25, y], legend)
 					else
@@ -84,42 +83,37 @@ class KLE {
 					key.keysColor = keysColor;
 					key.legends[0].legendColor = legendColor;
 					key.legends[0].legendSize = legendSize;
-					key.legends[0].legendPosition = [posX,posY];
+					key.legends[0].legendPosition = [posX, posY];
 					w = 1; // default presumed width (if none is given)
 					shape = "1U"; // presumed shape
 				} else { // no there is no string in this element:
-					w =  if (column.w != null) column.w // if we have w: pair we evaluate width
-					else if (column.h != null) column.h
-					else 1; // default is width of 1U
+					w = if (column.w != null) column.w // if we have w: pair we evaluate width
+					else if (column.h != null) column.h else 1; // default is width of 1U
 					// SHAPES
 					// TODO stepped
 					// TODO actually rotate the rotated keys
 					// ROTATION center seems to overide the current position!
 					x = if (column.rx != null) column.rx else x;
-					y = if (column.ry != null) column.ry+1 else y;// our running y is preadded by now
-					shape = if (column.w2 != null && column.w2 == 1.5 && column.h == 2) "ISO"
-					else    if (column.w2 != null && column.w2 == 2.25 && column.h == 2 ) "BAE"
-					else    if (column.h != null) Std.string(w) + "U Vertical"
-					else    if (column.w != null) Std.string(w) + "U"
-					else       "1U"; // w to shape
+					y = if (column.ry != null) column.ry + 1 else y; // our running y is preadded by now
+					shape = if (column.w2 != null && column.w2 == 1.5 && column.h == 2) "ISO" else if (column.w2 != null
+						&& column.w2 == 2.25 && column.h == 2) "BAE" else if (column.h != null) Std.string(w) + "U Vertical" else
+						if (column.w != null) Std.string(w)
+						+ "U" else "1U"; // w to shape
 					// trace("shape:",shape);
 					// COLOR
 					if (column.c != null)
-					keysColor = if (column.c != null)
-						"0xFF" + column.c.split("#")[1] else keysColor;
-					legendColor = if (column.t != null)
-						"0xFF" + column.t.split("#")[1] else legendColor;
-					legendSize = if (column.f != null)
-						legendSize = fontSizes[column.f] else legendSize;
+						keysColor = if (column.c != null) "0xFF" + column.c.split("#")[1] else keysColor;
+					legendColor = if (column.t != null) "0xFF" + column.t.split("#")[1] else legendColor;
+					legendSize = if (column.f != null) legendSize = fontSizes[column.f] else legendSize;
 					if (column.a != null) {
-					// LEGEND POSITIONS:
-					// bitmask 1 << 0 (0x01) seems to be for X offset to the middle
-					// TODO this should actually be the middle but we don't have centered text just yet
-						posX = if ((column.a & 1 << 0) == 1 << 0) 18 else posX; // so far 22 seems a good middle point (that's 28 actually see above)
+						// LEGEND POSITIONS:
+						// bitmask 1 << 0 (0x01) seems to be for X offset to the middle
+						// TODO this should actually be the middle but we don't have centered text just yet
+						posX = if ((column.a & 1 << 0) == 1 << 0) 18 else
+							posX; // so far 22 seems a good middle point (that's 28 actually see above)
 						// bitmask 1 << 1 (0x02) seems to be for X offset to the middle
 						posY = if ((column.a & 1 << 1) == 1 << 1) legendSize * 0.8 else 0;
 					}
-					// @formatter:on
 					x--; // we compensate default automatic horizontal stepping for this non key producing element
 				}
 				x = x + xNext; // make horizontal stepping for the next item

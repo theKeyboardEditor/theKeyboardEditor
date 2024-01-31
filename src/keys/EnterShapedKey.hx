@@ -98,7 +98,6 @@ class EnterShapedKey extends KeyRenderer {
 	function enterShape(widthNorth: Float, heightNorth: Float, widthSouth: Float, heightSouth: Float, color: Int, posX: Float, posY: Float) {
 		final sine = [for (angle in 0...segments + 1) Math.sin(Math.PI / 2 * angle / segments)];
 		final cosine = [for (angle in 0...segments + 1) Math.cos(Math.PI / 2 * angle / segments)];
-		// @formatter:off
 
 		var points = []; // re-clear the array since we are pushing only
 
@@ -135,45 +134,50 @@ class EnterShapedKey extends KeyRenderer {
 				 *   ### NL
 				 * J     L
 				 */
-				signumL= [ 0, 0, 0, 0, 0, 0];
-				signumR= [ 0, 0, 0,-1,-1, 0];
-				signumT= [ 0, 0, 0, 0, 0, 0];
-				signumB= [ 0, 0,-1,-1, 0, 0];
+				signumL = [0, 0, 0, 0, 0, 0];
+				signumR = [0, 0, 0, -1, -1, 0];
+				signumT = [0, 0, 0, 0, 0, 0];
+				signumB = [0, 0, -1, -1, 0, 0];
 			case 'BAE' | 'XT_2U':
 				localWidth = widthSouth;
 				localHeight = heightNorth;
 				recipe = "7FLJZV";
-				//    7   F
-				// ZV  ##
-				// J #### L
-				signumL= [ 0,-1,-1,-1,-1, 0];
-				signumR= [ 0, 0, 0, 0, 0, 0];
-				signumT= [ 0, 0, 0, 0, 0, 0];
-				signumB= [ 0, 0, 0, 0,-1,-1];
+				/**
+				 *    7   F
+				 * ZV  ##
+				 * J #### L
+				 */
+				signumL = [0, -1, -1, -1, -1, 0];
+				signumR = [0, 0, 0, 0, 0, 0];
+				signumT = [0, 0, 0, 0, 0, 0];
+				signumB = [0, 0, 0, 0, -1, -1];
 			case 'ISO Inverted':
 				localWidth = widthSouth;
 				localHeight = heightNorth;
 				recipe = "7FDYLJ";
-				// 7 ### F
-				//   ####DF
-				// J     L
-				signumL= [ 0, 0, 0, 0, 0, 0];
-				signumR= [ 0,-1,-1, 0, 0, 0];
-				signumT= [ 0, 0, 0, 0, 0, 0];
-				signumB= [ 0, 0,-1,-1, 0, 0];
+				/**
+				 * 7 ### F
+				 *   ####DF
+				 * J     L
+				 */
+				signumL = [0, 0, 0, 0, 0, 0];
+				signumR = [0, -1, -1, 0, 0, 0];
+				signumT = [0, 0, 0, 0, 0, 0];
+				signumB = [0, 0, -1, -1, 0, 0];
 			case 'AEK' | 'ISO':
 				localWidth = widthNorth;
 				localHeight = heightSouth;
 				recipe = "7FLJIJ";
-				// 7 #### F
-				// J I###
-				//   J   L
-				signumL= [ 0, 0, 0, 1, 1, 0];
-				signumR= [ 0, 0, 0, 0, 0, 0];
-				signumT= [ 0, 0, 0, 0, 0, 0];
-				signumB= [ 0, 0, 0, 0,-1,-1];
+				/**
+				 * 7 #### F
+				 * J I###
+				 *   J   L
+				 */
+				signumL = [0, 0, 0, 1, 1, 0];
+				signumR = [0, 0, 0, 0, 0, 0];
+				signumT = [0, 0, 0, 0, 0, 0];
+				signumB = [0, 0, 0, 0, -1, -1];
 		}
-		// @formatter:on
 		this.localRadius = roundedCorner;
 		size(localWidth, localHeight);
 
