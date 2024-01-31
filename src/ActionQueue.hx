@@ -19,7 +19,8 @@ class ActionQueue {
 			final action = this.queue.pop();
 			action.act();
 			this.applied.push(action);
-			StatusBar.inform('Applied action: $action');
+			// temporary disable this so i can see move amount TODO re enable
+			// StatusBar.inform('Applied action: $action');
 		}
 	}
 

@@ -1,21 +1,35 @@
 package actions;
 
 import viewport.Viewport;
+import keyson.Keyson;
+import keyson.Axis;
 
 class MoveKeys extends Action {
-	final viewport: Viewport;
+	final activeProject: Keyson;
 	final keys: Array<KeyRenderer>;
-	final to: Array<Int>;
+	final deltaX: Float;
+	final deltaY: Float;
 
-	override public function new(viewport: Viewport, keys: Array<KeyRenderer>, to: Array<Int>) {
+	override public function new(activeProject: Keyson, keys: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {
 		super();
-		this.viewport = viewport;
+		this.activeProject = activeProject;
 		this.keys = keys;
-		this.to = to;
+		this.deltaX = deltaX;
+		this.deltaY = deltaY;
 	}
 
 	override public function act() {
-		trace("Beep boop");
+		for (member in keys) {
+			for (unit in activeProject.units) {
+				for (key in unit.keys) {
+					if (member.sourceKey == key) {
+						trace('Moving ${key.legends[0].legend} for: [${deltaX},${deltaY}]');
+						key.position[Axis.X] += deltaX;
+						key.position[Axis.Y] += deltaY;
+					}
+				}
+			}
+		}
 		super.act();
 	}
 

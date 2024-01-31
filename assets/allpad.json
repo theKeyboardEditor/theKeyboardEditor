@@ -55,7 +55,7 @@
           "shape": "2U",
           "legends": [
             {
-              "symbol": "2U"
+              "legend": "2U"
             }
           ]
         },
@@ -66,7 +66,7 @@
           "shape": "XT_2U",
           "legends": [
             {
-              "symbol": "XT 2U",
+              "legend": "XT 2U",
               "legendPosition": [5.12, 80]
             }
           ]
@@ -78,7 +78,7 @@
           "shape": "BAE Inverted",
           "legends": [
             {
-              "symbol": "BAE \nInverted",
+              "legend": "BAE \nInverted",
               "legendPosition": [5.12, 70]
             }
           ]
@@ -90,7 +90,7 @@
           "shape": "ISO",
           "legends": [
             {
-              "symbol": "ISO",
+              "legend": "ISO",
               "legendPosition": [30.75, 80]
             }
           ]
@@ -102,7 +102,7 @@
           "shape": "ISO Inverted",
           "legends": [
             {
-              "symbol": "ISO \nInverted",
+              "legend": "ISO \nInverted",
               "legendPosition": [5.12, 70]
             }
           ]
@@ -114,7 +114,7 @@
           "shape": "BAE",
           "legends": [
             {
-              "symbol": "BAE",
+              "legend": "BAE",
               "legendPosition": [5.12, 80]
             }
           ]
@@ -126,7 +126,7 @@
           "shape": "3U Vertical",
           "legends": [
             {
-              "symbol": "3U Vertical",
+              "legend": "3U Vertical",
               "legendPosition": [5.12, 120]
             }
           ]
@@ -137,7 +137,7 @@
           "shape": "2U Vertical",
           "legends": [
             {
-              "symbol": "2U Vertical",
+              "legend": "2U Vertical",
               "legendPosition": [5.12, 80]
             }
           ]
@@ -148,7 +148,7 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "1U"
+              "legend": "1U"
             }
           ]
         },
@@ -158,7 +158,7 @@
           "shape": "1.25U",
           "legends": [
             {
-              "symbol": "1.25U"
+              "legend": "1.25U"
             }
           ]
         },
@@ -168,7 +168,7 @@
           "shape": "1.5U",
           "legends": [
             {
-              "symbol": "1.5U"
+              "legend": "1.5U"
             }
           ]
         },
@@ -178,7 +178,7 @@
           "shape": "0.75U",
           "legends": [
             {
-              "symbol": "0.75U"
+              "legend": "0.75U"
             }
           ]
         },
@@ -188,7 +188,7 @@
           "shape": "2.25U",
           "legends": [
             {
-              "symbol": "2.25U"
+              "legend": "2.25U"
             }
           ]
         },
@@ -198,7 +198,7 @@
           "shape": "2.75U",
           "legends": [
             {
-              "symbol": "2.75U"
+              "legend": "2.75U"
             }
           ]
         },
@@ -209,7 +209,7 @@
           "shape": "3U",
           "legends": [
             {
-              "symbol": "3U"
+              "legend": "3U"
             }
           ]
         },
@@ -220,7 +220,7 @@
           "shape": "6.5U",
           "legends": [
             {
-              "symbol": "6.5"
+              "legend": "6.5"
             }
           ]
         },
@@ -230,7 +230,7 @@
           "shape": "1.75U",
           "legends": [
             {
-              "symbol": "1.75U"
+              "legend": "1.75U"
             }
           ]
         },
@@ -241,7 +241,7 @@
           "shape": "6.25U",
           "legends": [
             {
-              "symbol": "6.25U"
+              "legend": "6.25U"
             }
           ]
         },
@@ -252,7 +252,7 @@
           "shape": "2.5U",
           "legends": [
             {
-              "symbol": "2.5U"
+              "legend": "2.5U"
             }
           ]
         },
@@ -263,7 +263,7 @@
           "shape": "7U",
           "legends": [
             {
-              "symbol": "7U"
+              "legend": "7U"
             }
           ]
         },
@@ -274,7 +274,7 @@
           "shape": "10U",
           "legends": [
             {
-              "symbol": "10U (Big Ass Space)"
+              "legend": "10U (Big Ass Space)"
             }
           ]
         }
