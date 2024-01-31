@@ -209,8 +209,8 @@ class Key {
 		this.legends.push(new KeyLegend(legend));
 	}
 
-	public function addLegend(symbol: String, position: Array<Float>) {
-		var newLegend = new KeyLegend(symbol);
+	public function addLegend(legend: String, position: Array<Float>) {
+		var newLegend = new KeyLegend(legend);
 	}
 }
 
@@ -222,14 +222,12 @@ class KeyLegend {
 	public var legendSize: Float;
 	public var legendColor: String;
 	public var legendPosition: Array<Float>;
-	public var symbol: String;
 
-	public function new(symbol: String) {
+	public function new(legend: String) {
 		this.legend = "";
 		this.legendSize = 24.0; // sane default
 		this.legendColor = "0xFF00000f";
 		this.legendPosition = [5.0, 5.0];
-		this.symbol = symbol;
 	}
 }
 /*

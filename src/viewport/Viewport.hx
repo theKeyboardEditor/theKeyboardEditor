@@ -251,8 +251,8 @@ class Viewport extends Scene {
 		placerMismatchX=0;
 		placerMismatchY=0;
 		selectedKey.select(); // remove selection by toggle
-		// move single key now
-		queue.push(new actions.MoveKeys(activeProject, [selectedKey], [selectedKey.x, selectedKey.y]));
+		// move now
+		queue.push(new actions.MoveKeys(activeProject, [selectedKey], screen.pointerX - pointerStartX, screen.pointerX - pointerStartX));
 		screen.offPointerMove(keyMouseMove);
 	}
 }
