@@ -55,7 +55,7 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "Num \nLock",
+              "legend": "Num \nLock",
               "legendSize": 24.0
             }
           ]
@@ -67,7 +67,7 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "/"
+              "legend": "/"
             }
           ]
         },
@@ -78,7 +78,7 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "*"
+              "legend": "*"
             }
           ]
         },
@@ -89,7 +89,7 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "-"
+              "legend": "-"
             }
           ]
         },
@@ -99,10 +99,10 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "7"
+              "legend": "7"
             },
             {
-              "symbol": "Home",
+              "legend": "Home",
               "legendColor": "0xFFCCCCCC",
               "legendPosition": [5.12, 40],
               "legendSize": 24.0
@@ -115,10 +115,10 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "8"
+              "legend": "8"
             },
             {
-              "symbol": "^",
+              "legend": "^",
               "legendColor": "0xFFCCCCCC",
               "legendPosition": [5.12, 40],
               "legendSize": 24.0
@@ -131,10 +131,10 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "9"
+              "legend": "9"
             },
             {
-              "symbol": "PgUp",
+              "legend": "PgUp",
               "legendColor": "0xFFCCCCCC",
               "legendPosition": [5.12, 40],
               "legendSize": 24.0
@@ -149,7 +149,7 @@
           "shape": "2U Vertical",
           "legends": [
             {
-              "symbol": "+",
+              "legend": "+",
               "legendPosition": [5.12, 70]
             }
           ]
@@ -160,10 +160,10 @@
           "shape": "1U",
           "legends": [
           {
-            "symbol": "4"
+            "legend": "4"
           },
             {
-              "symbol": "<",
+              "legend": "<",
               "legendColor": "0xFFCCCCCC",
               "legendPosition": [5.12, 40],
               "legendSize": 24.0
@@ -177,7 +177,7 @@
           "Features": "Homing",
           "legends": [
             {
-              "symbol": "5"
+              "legend": "5"
             }
           ]
         },
@@ -187,10 +187,10 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "6"
+              "legend": "6"
             },
             {
-              "symbol": ">",
+              "legend": ">",
               "legendColor": "0xFFCCCCCC",
               "legendPosition": [5.12, 40],
               "legendSize": 24.0
@@ -203,10 +203,10 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "1"
+              "legend": "1"
             },
             {
-              "symbol": "End",
+              "legend": "End",
               "legendColor": "0xFFCCCCCC",
               "legendPosition": [5.12, 40],
               "legendSize": 24.0
@@ -219,10 +219,10 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "2"
+              "legend": "2"
             },
             {
-              "symbol": "v",
+              "legend": "v",
               "legendColor": "0xFFCCCCCC",
               "legendPosition": [5.12, 40],
               "legendSize": 24.0
@@ -235,10 +235,10 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "3"
+              "legend": "3"
             },
             {
-              "symbol": "PgDn",
+              "legend": "PgDn",
               "legendColor": "0xFFCCCCCC",
               "legendPosition": [5.12, 40],
               "legendSize": 24.0
@@ -253,7 +253,7 @@
           "shape": "2U Vertical",
           "legends": [
             {
-              "symbol": "Enter",
+              "legend": "Enter",
               "legendSize": 24.0,
               "legendPosition": [5.12, 80]
             }
@@ -266,10 +266,10 @@
           "shape": "2U",
           "legends": [
             {
-              "symbol": "0"
+              "legend": "0"
             },
             {
-              "symbol": "Ins",
+              "legend": "Ins",
               "legendColor": "0xFFCCCCCC",
               "legendSize": 24.0,
               "legendPosition": [5.12, 40]
@@ -282,10 +282,10 @@
           "shape": "1U",
           "legends": [
             {
-              "symbol": "."
+              "legend": "."
             },
             {
-              "symbol": "Del",
+              "legend": "Del",
               "legendColor": "0xFFCCCCCC",
               "legendSize": 24.0,
               "legendPosition": [5.12, 40]
