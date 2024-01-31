@@ -22,6 +22,7 @@ class Viewport extends Scene {
 	 */
 	final inputMap = new Input();
 	final queue = new ActionQueue();
+
 	/**
 	 * Ceramic elements
 	 */
@@ -48,7 +49,6 @@ class Viewport extends Scene {
 	// there exists certain placer mismatch...
 	var placerMismatchX: Float = 0.0;
 	var placerMismatchY: Float = 0.0;
-	var finishMove: Bool = false;
 
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove

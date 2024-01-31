@@ -5,10 +5,10 @@ import keyson.Keyson;
 import keyson.Axis;
 
 class MoveKeys extends Action {
-	var activeProject: Keyson;
-	var keys: Array<KeyRenderer>;
-	var deltaX: Float;
-	var deltaY: Float;
+	final activeProject: Keyson;
+	final keys: Array<KeyRenderer>;
+	final deltaX: Float;
+	final deltaY: Float;
 
 	override public function new(activeProject: Keyson, keys: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {
 		super();
