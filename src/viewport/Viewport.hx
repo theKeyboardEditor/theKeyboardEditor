@@ -53,10 +53,7 @@ class Viewport extends Scene {
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
-	var activeProject: Keyson;
-	var selectedKey: KeyRenderer;
-	var touchType: String = "";
-
+	var selectedKey: KeyRenderer; // still needed across few functions -.-'
 	// Constants
 	public var screenX: Float = 0;
 	public var screenY: Float = 0;
@@ -163,45 +160,13 @@ class Viewport extends Scene {
 		}
 		return workKeyboard;
 	}
-	// This gets called only if clicked on a key on the worksurface!
-	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
-		activeProject = this.keyson;
-		touchType = "Element";
-		// TODO: store current key position into ViewportStart
-		keyPosStartX = keycap.x;
-		keyPosStartY = keycap.y;
-		selectedKey = keycap;
-		selectedKey.select();
-
-		// TODO infer the selection size and apply it to the placer:
-		placer.size(selectedKey.width, selectedKey.height);
-
-		// store current mouse position
-		this.pointerStartX = screen.pointerX;
-		this.pointerStartY = screen.pointerY;
-
-		// placer is usually referenced to mouse cursor, but while we move that's off
-		placerMismatchX = keyPosStartX - this.pointerStartX + screenX + this.x + selectedKey.width / 2;
-		placerMismatchY = keyPosStartY - this.pointerStartY + screenY + this.y + selectedKey.height / 2;
-		if (selectedKey.sourceKey.shape == "BAE")
-			placerMismatchX -= 75;
-		if (selectedKey.sourceKey.shape == "XT_2U")
-			placerMismatchX -= 100;
-
-		// Try move along as we pan the touch
-		screen.onPointerMove(this, keyMouseMove);
-
-		// Stop dragging when releasing pointer
-		screen.oncePointerUp(this, keyMouseUp);
-	}
-
 	// MOVEMENT
 
 	/**
 	 * Called from any viewport and any click on the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		// TODO: Check for maximum amount of movement before dragging
+		// TODO: Check for maximum amount of movement before drag is declared
 		this.viewportStartX = this.x;
 		this.viewportStartY = this.y;
 
@@ -232,14 +197,45 @@ class Viewport extends Scene {
 	 * Called after the pan of the viewport
 	 */
 	function viewportMouseUp(info: TouchInfo) {
-		touchType = "";
 		screen.offPointerMove(viewportMouseMove);
+	}
+
+	/**
+	 *  This gets called only if clicked on a key on the worksurface!
+	 */
+	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
+		keyPosStartX = keycap.x;
+		keyPosStartY = keycap.y;
+		selectedKey = keycap;
+		selectedKey.select();
+
+		// TODO infer the selection size and apply it to the placer:
+		placer.size(selectedKey.width, selectedKey.height);
+
+		// store current mouse position
+		this.pointerStartX = screen.pointerX;
+		this.pointerStartY = screen.pointerY;
+
+		// placer is usually referenced to mouse cursor, but while we move that's off
+		placerMismatchX = keyPosStartX - this.pointerStartX + screenX + this.x + selectedKey.width / 2;
+		placerMismatchY = keyPosStartY - this.pointerStartY + screenY + this.y + selectedKey.height / 2;
+		if (selectedKey.sourceKey.shape == "BAE")
+			placerMismatchX -= 75;
+		if (selectedKey.sourceKey.shape == "XT_2U")
+			placerMismatchX -= 100;
+
+		// Try move along as we pan the touch
+		screen.onPointerMove(this, keyMouseMove);
+
+		// Stop dragging when the pointer is released
+		screen.oncePointerUp(this, keyMouseUp);
 	}
 
 	/**
 	 * Called during key movement
 	 */
 	function keyMouseMove(info: TouchInfo) {
+		// TODO inspect why and how the rounding error happens while dragging and ordering the move
 		selectedKey.pos(keyPosStartX + screen.pointerX - pointerStartX, keyPosStartY + screen.pointerY - pointerStartY);
 		selectedKey.pos(selectedKey.x - selectedKey.x % placingStep, selectedKey.y - selectedKey.y % placingStep);
 	}
@@ -253,16 +249,26 @@ class Viewport extends Scene {
 		placerMismatchY = 0;
 		selectedKey.select(); // remove selection by toggle
 		// move now
-		// TODO move this to the keyMouseMove where the actual last portion of the move happens - but make it be called only once!
 		// Otherwise we'd have gazillion undo actions per move operations!
 		// @formatter:off
-		queue.push(new actions.MoveKeys(activeProject, [selectedKey],
+		queue.push(new actions.MoveKeys(this.keyson, [selectedKey],
 					((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit,
 					((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit)
 					);
 		// @formatter:on
 		// Logo just loves this XD
-		StatusBar.inform('Moved key to:${((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit}x${((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit}');
+
+		// TODO we have to render what's actually stored in the keyson (due to rounding mismatch in the math)
+		// from selectedKey.sourceKey:
+		// descend thru the keyson to match the key
+		// while on the matched key, clear(); the ceramic key shape too, and produce it from scratch
+		// so what we see reflects the actual keyson
+
+		final x = ((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit;
+		final y = ((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit;
+		StatusBar.inform('Moved key to:${x}x${y}');
+
+		// the touch is already over, we're really just returning from the event
 		screen.offPointerMove(keyMouseMove);
 	}
 }
