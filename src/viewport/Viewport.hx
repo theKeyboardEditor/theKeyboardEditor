@@ -22,7 +22,6 @@ class Viewport extends Scene {
 	 */
 	final inputMap = new Input();
 	final queue = new ActionQueue();
-
 	/**
 	 * Ceramic elements
 	 */
@@ -49,6 +48,7 @@ class Viewport extends Scene {
 	// there exists certain placer mismatch...
 	var placerMismatchX: Float = 0.0;
 	var placerMismatchY: Float = 0.0;
+	var finishMove: Bool = false;
 
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove
@@ -66,6 +66,7 @@ class Viewport extends Scene {
 	inline static final placingStep: Float = Std.int(unit / 4);
 	// How many frames to skip
 	inline static final skipFrames: Float = 10;
+
 	public var framesSkipped: Float = 0; // current count (kept between skips)
 
 	// GLOBAL SCENE
@@ -125,7 +126,7 @@ class Viewport extends Scene {
 			});
 			// 0.5 is accounting for the middle of the 1U sized placer
 			StatusBar.pos(placer.x / unit - .5, placer.y / unit - .5);
-			//StatusBar.pos(viewportStartX, viewportStartY);
+			// StatusBar.pos(viewportStartX, viewportStartY);
 		}
 
 		queue.act();
@@ -182,8 +183,10 @@ class Viewport extends Scene {
 		// placer is usually referenced to mouse cursor, but while we move that's off
 		placerMismatchX = keyPosStartX - this.pointerStartX + screenX + this.x + selectedKey.width / 2;
 		placerMismatchY = keyPosStartY - this.pointerStartY + screenY + this.y + selectedKey.height / 2;
-		if (selectedKey.sourceKey.shape == "BAE" ) placerMismatchX -= 75;
-		if (selectedKey.sourceKey.shape == "XT_2U" ) placerMismatchX -= 100;
+		if (selectedKey.sourceKey.shape == "BAE")
+			placerMismatchX -= 75;
+		if (selectedKey.sourceKey.shape == "XT_2U")
+			placerMismatchX -= 100;
 
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, keyMouseMove);
@@ -205,7 +208,7 @@ class Viewport extends Scene {
 		// Store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
-		//trace('touched:<none> on [${this.keyson.name}]');
+		// trace('touched:<none> on [${this.keyson.name}]');
 
 		placerMismatchX = 0;
 		placerMismatchY = 0;
@@ -239,8 +242,6 @@ class Viewport extends Scene {
 	function keyMouseMove(info: TouchInfo) {
 		selectedKey.pos(keyPosStartX + screen.pointerX - pointerStartX, keyPosStartY + screen.pointerY - pointerStartY);
 		selectedKey.pos(selectedKey.x - selectedKey.x % placingStep, selectedKey.y - selectedKey.y % placingStep);
-		//StatusBar.inform('Moved key to:[${selectedKey.x}x${selectedKey.y}]');
-		StatusBar.inform('Move:[${placerMismatchX}x${placerMismatchY}]');
 	}
 
 	/**
@@ -248,11 +249,20 @@ class Viewport extends Scene {
 	 */
 	function keyMouseUp(info: TouchInfo) {
 		placer.size(unit, unit); // restore placer to default
-		placerMismatchX=0;
-		placerMismatchY=0;
+		placerMismatchX = 0;
+		placerMismatchY = 0;
 		selectedKey.select(); // remove selection by toggle
 		// move now
-		queue.push(new actions.MoveKeys(activeProject, [selectedKey], screen.pointerX - pointerStartX, screen.pointerX - pointerStartX));
+		// TODO move this to the keyMouseMove where the actual last portion of the move happens - but make it be called only once!
+		// Otherwise we'd have gazillion undo actions per move operations!
+		// @formatter:off
+		queue.push(new actions.MoveKeys(activeProject, [selectedKey],
+					((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit,
+					((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit)
+					);
+		// @formatter:on
+		// Logo just loves this XD
+		StatusBar.inform('Moved key to:${((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit}x${((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit}');
 		screen.offPointerMove(keyMouseMove);
 	}
 }

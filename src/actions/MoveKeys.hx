@@ -2,6 +2,7 @@ package actions;
 
 import viewport.Viewport;
 import keyson.Keyson;
+import keyson.Axis;
 
 class MoveKeys extends Action {
 	var activeProject: Keyson;
@@ -18,14 +19,13 @@ class MoveKeys extends Action {
 	}
 
 	override public function act() {
-		trace('Move in:[${this.activeProject.name}] objects:${keys} for: [${deltaX},${deltaY}]');
-		//TODO check for origin pos to store to undo
-		for ( member in keys) {
-			for ( unit in activeProject.units) {
-				for ( key in unit.keys) {
-					if ( member.sourceKey == key ) {
-						trace ('Found ${member.sourceKey.legends[0].legend} as ${key.legends[0].legend}!');
-						// TODO move for the offset!
+		for (member in keys) {
+			for (unit in activeProject.units) {
+				for (key in unit.keys) {
+					if (member.sourceKey == key) {
+						trace('Moving ${key.legends[0].legend} for: [${deltaX},${deltaY}]');
+						key.position[Axis.X] += deltaX;
+						key.position[Axis.Y] += deltaY;
 					}
 				}
 			}
