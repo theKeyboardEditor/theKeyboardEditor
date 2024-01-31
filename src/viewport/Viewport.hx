@@ -111,12 +111,18 @@ class Viewport extends Scene {
 	// PLACER
 
 	/**
+	 * Cogify the movement to step edges
+	 */
+	final inline function cogify(x: Float, cogs: Float): Float {
+		return x - x % cogs;
+	}
+
+	/**
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		placer.x = screen.pointerX - screenX - this.x + placerMismatchX;
-		placer.y = screen.pointerY - screenY - this.y + placerMismatchY;
-		placer.pos(placer.x - placer.x % placingStep, placer.y - placer.y % placingStep);
+		placer.x = cogify(screen.pointerX - screenX - this.x + placerMismatchX, placingStep);
+		placer.y = cogify(screen.pointerY - screenY - this.y + placerMismatchY, placingStep);
 	}
 
 	/**
@@ -169,7 +175,8 @@ class Viewport extends Scene {
 	 * Ran during and at the very end of the pan of the viewport
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-		this.pos(this.viewportStartX + screen.pointerX - this.pointerStartX, this.viewportStartY + screen.pointerY - this.pointerStartY);
+		this.x = this.viewportStartX + screen.pointerX - this.pointerStartX;
+		this.y = this.viewportStartY + screen.pointerY - this.pointerStartY;
 		StatusBar.inform('Pan view:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
 	}
 
@@ -181,7 +188,7 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 *  This gets called only if clicked on a key on the worksurface!
+	 * This gets called only if clicked on a key on the worksurface!
 	 */
 	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		keyPosStartX = keycap.x;
@@ -216,8 +223,8 @@ class Viewport extends Scene {
 	 */
 	function keyMouseMove(info: TouchInfo) {
 		// TODO inspect why and how the rounding error happens while dragging and ordering the move
-		selectedKey.pos(keyPosStartX + screen.pointerX - pointerStartX, keyPosStartY + screen.pointerY - pointerStartY);
-		selectedKey.pos(selectedKey.x - selectedKey.x % placingStep, selectedKey.y - selectedKey.y % placingStep);
+		selectedKey.x = cogify(keyPosStartX + screen.pointerX - pointerStartX, placingStep);
+		selectedKey.y = cogify(keyPosStartY + screen.pointerY - pointerStartY, placingStep);
 	}
 
 	/**
@@ -227,15 +234,11 @@ class Viewport extends Scene {
 		// Restore placer to default size
 		placer.size(unit, unit);
 		placerMismatchX = 0;
-		// Remove selection by toggle
 		placerMismatchY = 0;
+		// Remove selection by toggle
 		selectedKey.select();
 		// Move now
-		// Otherwise we'd have gazillion undo actions per move operations!
-		queue.push(new actions.MoveKeys(this.keyson, [selectedKey],
-			((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit,
-			((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit));
-		// Logo just loves this XD
+		queue.push(new actions.MoveKeys(this.keyson, [selectedKey], selectedKey.x / unit, selectedKey.y / unit));
 
 		/**
 		 * TODO we have to render what's actually stored in the keyson (due to rounding mismatch in the math)
@@ -245,8 +248,8 @@ class Viewport extends Scene {
 		 * so what we see reflects the actual keyson
 		 */
 
-		final x = ((screen.pointerX - pointerStartX) - (screen.pointerX - pointerStartX) % placingStep) / unit;
-		final y = ((screen.pointerY - pointerStartY) - (screen.pointerY - pointerStartY) % placingStep) / unit;
+		final x = (selectedKey.x - keyPosStartX) / unit;
+		final y = (selectedKey.y - keyPosStartY) / unit;
 		StatusBar.inform('Moved key to:${x}x${y}');
 
 		// The touch is already over, we're really just returning from the event

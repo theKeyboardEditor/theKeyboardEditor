@@ -233,11 +233,12 @@ class KeyLegend {
 /*
  * Various key position features/replacements and their
  * respective properties:
-**/
+ */
 // TODO do we want actual separate features or will we mimick them with standard keycap features instead?
 
-/** The Actual Keyboard status led
-**/
+/**
+ *  The Actual Keyboard status led
+ */
 class LEDFeature {
 	public var diameter: Float; // diameter usually 3.0 or 5.0 mm
 }
