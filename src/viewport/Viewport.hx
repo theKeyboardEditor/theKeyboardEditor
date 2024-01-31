@@ -109,12 +109,13 @@ class Viewport extends Scene {
 		queue.act();
 	}
 	// PLACER
+
 	/**
-	 *
+	 * Cogify the movement to step edges
 	 */
-	 inline function cogify(x: Float, cogs:Float):Float {
-		 return x - x % cogs;
-	 }
+	final inline function cogify(x: Float, cogs: Float): Float {
+		return x - x % cogs;
+	}
 
 	/**
 	 * Runs every frame, used to position the placer
@@ -187,7 +188,7 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 *  This gets called only if clicked on a key on the worksurface!
+	 * This gets called only if clicked on a key on the worksurface!
 	 */
 	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		keyPosStartX = keycap.x;
@@ -233,17 +234,11 @@ class Viewport extends Scene {
 		// Restore placer to default size
 		placer.size(unit, unit);
 		placerMismatchX = 0;
-		// Remove selection by toggle
 		placerMismatchY = 0;
+		// Remove selection by toggle
 		selectedKey.select();
 		// Move now
-//		queue.push(new actions.MoveKeys(this.keyson, [selectedKey],
-//			cogify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) / unit,
-//			cogify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) / unit));
-		queue.push(new actions.MoveKeys(this.keyson, [selectedKey],
-			selectedKey.x / unit,
-			selectedKey.y / unit));
-		// Logo just loves this XD
+		queue.push(new actions.MoveKeys(this.keyson, [selectedKey], selectedKey.x / unit, selectedKey.y / unit));
 
 		/**
 		 * TODO we have to render what's actually stored in the keyson (due to rounding mismatch in the math)
