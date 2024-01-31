@@ -197,13 +197,14 @@ class Viewport extends Scene {
 		keyPosStartY = keycap.y;
 		selectedKey = keycap;
 		if (selectedKey.border.visible) {
-			// is selected:
+			// is selected: (by using select we take care of pivot too!)
 			selectedKey.select();
 			selectedKeys.remove(selectedKey);
 		} else {
 			// wasn't selected:
 			selectedKey.select();
-			selectedKeys.push(selectedKey);
+			// by using .unshift() instead of .push() the last added member is on index 0
+			selectedKeys.unshift(selectedKey);
 		}
 
 		// TODO infer the selection size and apply it to the placer:
