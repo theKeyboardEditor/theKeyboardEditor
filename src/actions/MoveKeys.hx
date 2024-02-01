@@ -7,7 +7,7 @@ import keyson.Axis;
 class MoveKeys extends Action {
 	final activeProject: Keyson;
 	final keys: Array<KeyRenderer>;
-	final deltaX: Float;
+	final deltaX: Float; // in keyson 1U units
 	final deltaY: Float;
 
 	override public function new(activeProject: Keyson, keys: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {
@@ -23,7 +23,6 @@ class MoveKeys extends Action {
 			for (unit in activeProject.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
-						trace('Moving ${key.legends[0].legend} for: [${deltaX},${deltaY}]');
 						key.position[Axis.X] += deltaX;
 						key.position[Axis.Y] += deltaY;
 					}

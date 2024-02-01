@@ -56,6 +56,8 @@ class Viewport extends Scene {
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
 	var selectedKey: KeyRenderer; // still needed across few functions -.-'
+	var selectedKeys: Array<KeyRenderer> = []; // still needed across few functions -.-'
+
 	// Constants
 	// Size of a key
 	inline static final unit: Float = 100;
@@ -113,7 +115,7 @@ class Viewport extends Scene {
 	/**
 	 * Cogify the movement to step edges
 	 */
-	final inline function cogify(x: Float, cogs: Float): Float {
+	final inline function coggify(x: Float, cogs: Float): Float {
 		return x - x % cogs;
 	}
 
@@ -121,8 +123,8 @@ class Viewport extends Scene {
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		placer.x = cogify(screen.pointerX - screenX - this.x + placerMismatchX, placingStep);
-		placer.y = cogify(screen.pointerY - screenY - this.y + placerMismatchY, placingStep);
+		placer.x = coggify(screen.pointerX - screenX - this.x + placerMismatchX, placingStep);
+		placer.y = coggify(screen.pointerY - screenY - this.y + placerMismatchY, placingStep);
 	}
 
 	/**
@@ -191,13 +193,27 @@ class Viewport extends Scene {
 	 * This gets called only if clicked on a key on the worksurface!
 	 */
 	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
+		// inital point of move vector:
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
 		selectedKey = keycap;
-		selectedKey.select();
+		if (selectedKey.border.visible) {
+			// is selected: (by using select we take care of pivot too!)
+			selectedKey.select();
+			selectedKeys.remove(selectedKey);
+		} else {
+			// wasn't selected:
+			selectedKey.select();
+			// by using .unshift() instead of .push() the last added member is on index 0
+			selectedKeys.unshift(selectedKey);
+		}
 
 		// TODO infer the selection size and apply it to the placer:
-		placer.size(selectedKey.width, selectedKey.height);
+		if (selectedKeys.length > 0) {
+			placer.size(selectedKeys[0].width, selectedKeys[0].height);
+		} else {
+			placer.size(selectedKey.width, selectedKey.height);
+		}
 
 		// store current mouse position
 		this.pointerStartX = screen.pointerX;
@@ -222,9 +238,17 @@ class Viewport extends Scene {
 	 * Called during key movement
 	 */
 	function keyMouseMove(info: TouchInfo) {
-		// TODO inspect why and how the rounding error happens while dragging and ordering the move
-		selectedKey.x = cogify(keyPosStartX + screen.pointerX - pointerStartX, placingStep);
-		selectedKey.y = cogify(keyPosStartY + screen.pointerY - pointerStartY, placingStep);
+		if (selectedKeys.length > 0) {
+			final xStep = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) - selectedKeys[0].x;
+			final yStep = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) - selectedKeys[0].y;
+			for (key in selectedKeys) {
+				key.x += xStep;
+				key.y += yStep;
+			}
+		} else {
+			selectedKey.x = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep);
+			selectedKey.y = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep);
+		}
 	}
 
 	/**
@@ -235,22 +259,21 @@ class Viewport extends Scene {
 		placer.size(unit, unit);
 		placerMismatchX = 0;
 		placerMismatchY = 0;
-		// Remove selection by toggle
-		selectedKey.select();
-		// Move now
-		queue.push(new actions.MoveKeys(this.keyson, [selectedKey], selectedKey.x / unit, selectedKey.y / unit));
-
-		/**
-		 * TODO we have to render what's actually stored in the keyson (due to rounding mismatch in the math)
-		 * from selectedKey.sourceKey:
-		 * descend thru the keyson to match the key
-		 * while on the matched key, clear(); the ceramic key shape too, and produce it from scratch
-		 * so what we see reflects the actual keyson
-		 */
-
-		final x = (selectedKey.x - keyPosStartX) / unit;
-		final y = (selectedKey.y - keyPosStartY) / unit;
-		StatusBar.inform('Moved key to:${x}x${y}');
+		// Remove selection toggling it right after move
+		// selectedKey.select();
+		if (selectedKeys.length < 1) { // single unselected key
+			final x = (selectedKey.x - keyPosStartX) / unit;
+			final y = (selectedKey.y - keyPosStartY) / unit;
+			// Move now single (and unselected)
+			queue.push(new actions.MoveKeys(this.keyson, [selectedKey], x, y));
+			StatusBar.inform('Moved unselected key to:${x}x${y}');
+		} else { // move selection
+			final x = (selectedKeys[0].x - keyPosStartX) / unit;
+			final y = (selectedKeys[0].y - keyPosStartY) / unit;
+			// Move now many
+			queue.push(new actions.MoveKeys(this.keyson, selectedKeys, x, y));
+			StatusBar.inform('Moved selected key to:${x}x${y}');
+		}
 
 		// The touch is already over, we're really just returning from the event
 		screen.offPointerMove(keyMouseMove);
