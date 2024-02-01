@@ -121,6 +121,9 @@ class UI extends haxe.ui.containers.VBox {
 				});
 			case "save":
 				this.scene.save(cast(tabs.selectedPage, ui.ViewportContainer).display.keyson, store);
+			case "download":
+				final keyson = cast(tabs.selectedPage, ui.ViewportContainer).display.keyson;
+				FileDialog.download(haxe.Json.stringify(keyson), keyson.name, "application/json");
 			case "import":
 				final dialog = new FileDialog();
 				dialog.openJson("KLE Json File");
@@ -134,6 +137,8 @@ class UI extends haxe.ui.containers.VBox {
 					}
 					dialog.showDialog();
 				});
+			default:
+				StatusBar.error("Unimplemented action");
 		}
 	}
 
