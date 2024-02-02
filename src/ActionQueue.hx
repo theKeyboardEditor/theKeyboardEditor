@@ -20,7 +20,7 @@ class ActionQueue {
 			action.act();
 			this.applied.push(action);
 			// temporary disable this so i can see move amount TODO re enable
-			// StatusBar.inform('Applied action: $action');
+			StatusBar.inform('Applied action: $action [${applied.length}]');
 		}
 	}
 
@@ -28,9 +28,9 @@ class ActionQueue {
 		if (applied.length > 0) {
 			var action = this.applied.pop();
 			action.undo();
-			StatusBar.inform('Reverted previous action: $action');
+			StatusBar.inform('Reverted previous action: $action [${applied.length}]');
 		} else {
-			StatusBar.error("No action to undo");
+			StatusBar.error('No action to undo [${applied.length}]');
 		}
 	}
 

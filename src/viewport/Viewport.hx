@@ -265,14 +265,14 @@ class Viewport extends Scene {
 			final x = (selectedKey.x - keyPosStartX) / unit;
 			final y = (selectedKey.y - keyPosStartY) / unit;
 			// Move now single (and unselected)
-			queue.push(new actions.MoveKeys(this.keyson, [selectedKey], x, y));
-			StatusBar.inform('Moved unselected key to:${x}x${y}');
+			if ( x !=0 && y != 0 ) queue.push(new actions.MoveKeys(this, [selectedKey], x, y));
+			//StatusBar.inform('Moved unselected key to:${x}x${y}');
 		} else { // move selection
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
 			// Move now many
-			queue.push(new actions.MoveKeys(this.keyson, selectedKeys, x, y));
-			StatusBar.inform('Moved selected key to:${x}x${y}');
+			if ( x !=0 && y != 0 ) queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
+			//StatusBar.inform('Moved selected key to:${x}x${y}');
 		}
 
 		// The touch is already over, we're really just returning from the event
