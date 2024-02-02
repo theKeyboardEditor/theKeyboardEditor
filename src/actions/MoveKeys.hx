@@ -31,7 +31,7 @@ class MoveKeys extends Action {
 					}
 				}
 			}
-		tracked.push(member);
+			tracked.push(member);
 		}
 		final moved = [];
 		super.act();
