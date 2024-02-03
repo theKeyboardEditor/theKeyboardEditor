@@ -62,7 +62,7 @@ class MainScene extends Scene {
 
 		// Saving
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
-			save(cast(gui.tabs.selectedPage, ui.ViewportContainer).display.keyson, store);
+			save((cast gui.tabs.selectedPage: ui.ViewportContainer).display.keyson, store);
 		});
 
 		// Toggle overlay (i.e welcome screen)
@@ -70,6 +70,10 @@ class MainScene extends Scene {
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
 			// gui.viewport.display.paused = !gui.viewport.display.paused;
 			gui.overlay.hidden = !gui.overlay.hidden;
+		});
+
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.undo();
 		});
 	}
 

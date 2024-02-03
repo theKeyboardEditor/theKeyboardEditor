@@ -18,12 +18,13 @@ class Viewport extends Scene {
 	public var screenX: Float = 0;
 	public var screenY: Float = 0;
 
+	public final queue = new ActionQueue();
+
 	/**
 	 * This is where we map all of the different events to specific keys
 	 * See Input.hx file for more details
 	 */
 	final inputMap = new Input();
-	final queue = new ActionQueue();
 
 	/**
 	 * Ceramic elements
@@ -48,7 +49,6 @@ class Viewport extends Scene {
 	var keyPosStartX: Float = 0.0;
 	var keyPosStartY: Float = 0.0;
 
-	// there exists certain placer mismatch...
 	var placerMismatchX: Float = 0.0;
 	var placerMismatchY: Float = 0.0;
 
@@ -68,17 +68,7 @@ class Viewport extends Scene {
 	/**
 	 * Dispatches keyboard and mouse inputs to the seperate functions
 	 */
-	public function inputDispatch() {
-		var keyBindings = new KeyBindings();
-
-		// When the keyboard has the mouse clicked down
-		this.onPointerDown(workSurface, viewportMouseDown);
-
-		// Undo
-		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
-			queue.undo();
-		});
-	}
+	public function inputDispatch() {}
 
 	/**
 	 * Initializes the scene
@@ -99,8 +89,6 @@ class Viewport extends Scene {
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
-
-		inputDispatch();
 	}
 
 	/**

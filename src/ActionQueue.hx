@@ -8,7 +8,6 @@ import actions.Action;
  * We can use this to handle undo/redo by reconstructing the "base" from the beginning
  */
 class ActionQueue {
-	// The original class that we start the reconstruction from
 	var queue: Array<Action> = [];
 	var applied: Array<Action> = [];
 
@@ -19,7 +18,7 @@ class ActionQueue {
 			final action = this.queue.pop();
 			action.act();
 			this.applied.push(action);
-			// temporary disable this so i can see move amount TODO re enable
+			trace(applied);
 			StatusBar.inform('Applied action: $action [${applied.length}]');
 		}
 	}

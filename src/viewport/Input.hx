@@ -39,24 +39,10 @@ class Input extends InputMap<ViewportInput> {
 		this.bindScanCode(PAN_LEFT, KEY_A);
 		this.bindScanCode(PAN_RIGHT, KEY_D);
 
-		// Zoom Time
-		this.bindScanCode(ZOOM_IN, EQUALS);
-		this.bindScanCode(ZOOM_OUT, MINUS);
-
 		// Key Placement (Temporary)
 		this.bindScanCode(PLACE_1U, KEY_P);
 		this.bindScanCode(PLACE_ISO, KEY_I);
 		this.bindScanCode(DELETE_SELECTED, BACKSPACE);
 		this.bindScanCode(DELETE_SELECTED, DELETE);
-
-		// TODO undo/redo action(s)
-		this.bindScanCode(UNDO, KEY_Z);
-		this.bindScanCode(REDO, KEY_Y);
-
-		// Mouse buttons
-		// LEFT
-		this.bindMouseButton(SELECT, 0);
-		// MIDDLE
-		this.bindMouseButton(PAN, 1);
 	}
 }
