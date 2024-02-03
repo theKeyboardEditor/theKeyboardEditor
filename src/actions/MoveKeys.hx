@@ -7,7 +7,6 @@ import keyson.Axis;
 class MoveKeys extends Action {
 	final viewport: Viewport;
 	final moved: Array<KeyRenderer>;
-	final tracked: Array<KeyRenderer>;
 	final deltaX: Float; // in keyson 1U units
 	final deltaY: Float;
 
@@ -15,17 +14,16 @@ class MoveKeys extends Action {
 		super();
 		this.viewport = viewport;
 		this.moved = moved;
-		this.tracked = [];
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 	}
 
 	override public function act() {
-		for (member in this.moved) {
+		for (member in moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
-						trace('move: [$member].');
+						trace('move: [${member.sourceKey.legends[0].legend}] d[${this.deltaX}/${this.deltaY}].');
 						// since our key is already moved by the desinger we only update keyson:
 						key.position[Axis.X] += this.deltaX;
 						key.position[Axis.Y] += this.deltaY;
@@ -37,11 +35,12 @@ class MoveKeys extends Action {
 	}
 
 	override public function undo() {
-		for (member in this.moved) {
+		trace ('undoing: [${moved.length}] members.');
+		for (member in moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
-						trace('undo move: [$member].');
+						trace('undo move: [${member.sourceKey.legends[0].legend}] d[${this.deltaX}/${this.deltaY}].');
 						key.position[Axis.X] -= this.deltaX;
 						key.position[Axis.Y] -= this.deltaY;
 						// undo moving the member too:
@@ -55,11 +54,11 @@ class MoveKeys extends Action {
 	}
 
 	override public function redo() {
-		for (member in this.moved) {
+		for (member in moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
-						trace('undo move: [$member].');
+						trace('undo move: [${member.sourceKey.legends[0].legend}] d[${this.deltaX}/${this.deltaY}].');
 						key.position[Axis.X] += this.deltaX;
 						key.position[Axis.Y] += this.deltaY;
 						// undo moving the member too:

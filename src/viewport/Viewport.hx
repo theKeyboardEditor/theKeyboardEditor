@@ -186,7 +186,7 @@ class Viewport extends Scene {
 		// inital point of move vector:
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
-		selectedKey = keycap;
+		this.selectedKey = keycap;
 		if (selectedKey.border.visible) {
 			// is selected: (by using select we take care of pivot too!)
 			selectedKey.select();
@@ -210,8 +210,8 @@ class Viewport extends Scene {
 		this.pointerStartY = screen.pointerY;
 
 		// placer is usually referenced to mouse cursor, but while we move that's off
-		placerMismatchX = keyPosStartX - this.pointerStartX + screenX + this.x + selectedKey.width / 2;
-		placerMismatchY = keyPosStartY - this.pointerStartY + screenY + this.y + selectedKey.height / 2;
+		placerMismatchX = keyPosStartX - pointerStartX + screenX + this.x + selectedKey.width / 2;
+		placerMismatchY = keyPosStartY - pointerStartY + screenY + this.y + selectedKey.height / 2;
 		if (selectedKey.sourceKey.shape == "BAE")
 			placerMismatchX -= 75;
 		if (selectedKey.sourceKey.shape == "XT_2U")
@@ -235,10 +235,10 @@ class Viewport extends Scene {
 				key.x += xStep;
 				key.y += yStep;
 			}
-		} else {
-			selectedKey.x = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep);
-			selectedKey.y = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep);
-		}
+		}/* else {
+			selectedKey.x = coggify(this.keyPosStartX + screen.pointerX - pointerStartX, placingStep);
+			selectedKey.y = coggify(this.keyPosStartY + screen.pointerY - pointerStartY, placingStep);
+		}*/
 	}
 
 	/**
@@ -249,23 +249,25 @@ class Viewport extends Scene {
 		placer.size(unit, unit);
 		placerMismatchX = 0;
 		placerMismatchY = 0;
-		// Remove selection toggling it right after move
-		// selectedKey.select();
-		if (selectedKeys.length < 1) { // single unselected key
-			final x = (selectedKey.x - keyPosStartX) / unit;
-			final y = (selectedKey.y - keyPosStartY) / unit;
-			// Move now single (and unselected)
-			if (x * y != 0)
-				queue.push(new actions.MoveKeys(this, [selectedKey], x, y));
-			// StatusBar.inform('Moved unselected key to:${x}x${y}');
-		} else { // move selection
+		// Remove selection by toggling it right after each move
+		//selectedKey.select();
+		if (selectedKeys.length > 0) { // move selection
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
 			// Move now many
-			if (x * y != 0)
+			//if (x != 0 && y != 0)
 				queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
 			// StatusBar.inform('Moved selected key to:${x}x${y}');
-		}
+		}/* else { // single unselected key
+			// since we are "cogged" no need for round up
+			final x = (selectedKey.x - this.keyPosStartX) / unit;
+			final y = (selectedKey.y - this.keyPosStartY) / unit;
+			// Move now single (unselected too)
+			 // if both coordinates equal zero means no move at all
+			//if (x != 0 && y != 0)
+				queue.push(new actions.MoveKeys(this, [selectedKey], x, y));
+			// StatusBar.inform('Moved unselected key to:${x}x${y}');
+		}*/
 
 		// The touch is already over, we're really just returning from the event
 		screen.offPointerMove(keyMouseMove);
