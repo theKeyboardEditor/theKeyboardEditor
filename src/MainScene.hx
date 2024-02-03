@@ -75,6 +75,10 @@ class MainScene extends Scene {
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.undo();
 		});
+
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Y)], () -> {
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
+		});
 	}
 
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {

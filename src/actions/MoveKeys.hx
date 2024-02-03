@@ -21,7 +21,6 @@ class MoveKeys extends Action {
 	}
 
 	override public function act() {
-//		final tracked = [];
 		for (member in this.moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
@@ -33,14 +32,11 @@ class MoveKeys extends Action {
 					}
 				}
 			}
-//			tracked.push(member);
 		}
-//		final moved = [];
 		super.act();
 	}
 
 	override public function undo() {
-//		for (member in tracked) {
 		for (member in this.moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
@@ -54,9 +50,25 @@ class MoveKeys extends Action {
 					}
 				}
 			}
-//			moved.push(member);
 		}
-//		final tracked = [];
 		super.undo();
+	}
+
+	override public function redo() {
+		for (member in this.moved) {
+			for (unit in viewport.keyson.units) {
+				for (key in unit.keys) {
+					if (member.sourceKey == key) {
+						trace('undo move: [$member].');
+						key.position[Axis.X] += this.deltaX;
+						key.position[Axis.Y] += this.deltaY;
+						// undo moving the member too:
+						member.x += this.deltaX * this.viewport.unit;
+						member.y += this.deltaY * this.viewport.unit;
+					}
+				}
+			}
+		}
+		super.redo();
 	}
 }

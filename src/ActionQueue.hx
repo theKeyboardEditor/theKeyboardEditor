@@ -10,6 +10,7 @@ import actions.Action;
 class ActionQueue {
 	var queue: Array<Action> = [];
 	var applied: Array<Action> = [];
+	var unapplied: Array<Action> = [];
 
 	public function new() {}
 
@@ -26,9 +27,21 @@ class ActionQueue {
 		if (applied.length > 0) {
 			var action = this.applied.pop();
 			action.undo();
-			StatusBar.inform('Reverted previous action: $action [${applied.length}]');
+			this.unapplied.push(action);
+			StatusBar.inform('Reverted previous action: $action [U:${applied.length}/R:${unapplied.length}]');
 		} else {
-			StatusBar.error('No action to undo [${applied.length}]');
+			StatusBar.error('No action to undo [U:${applied.length}]');
+		}
+	}
+
+	public inline function redo() {
+		if (unapplied.length > 0) {
+			var action = this.unapplied.pop();
+			action.redo();
+			this.applied.push(action);
+			StatusBar.inform('Repeated previously undone action: $action [U:${applied.length}/R:${unapplied.length}]');
+		} else {
+			StatusBar.error('No undone action to redo [R:${unapplied.length}]');
 		}
 	}
 

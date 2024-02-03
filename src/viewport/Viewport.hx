@@ -61,7 +61,7 @@ class Viewport extends Scene {
 	// Constants
 	// Size of a key
 	public var unit: Float = 100;
-	public var placingStep: Float = Std.int(100 / 4);
+	inline static final placingStep: Float = Std.int(100 / 4);
 
 	// GLOBAL SCENE
 
@@ -113,6 +113,7 @@ class Viewport extends Scene {
 	function placerUpdate() {
 		placer.x = coggify(screen.pointerX - screenX - this.x + placerMismatchX, placingStep);
 		placer.y = coggify(screen.pointerY - screenY - this.y + placerMismatchY, placingStep);
+		StatusBar.pos(placer.x / unit, placer.y / unit);
 	}
 
 	/**

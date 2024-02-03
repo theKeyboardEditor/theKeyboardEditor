@@ -11,7 +11,7 @@ import keyson.Keyson.Keyboard;
 class Action extends Entity {
 	@event function actionCompleted();
 
-	@event function actionReverted();
+//	@event function actionReverted();
 
 	public function new() {
 		super();
@@ -22,6 +22,10 @@ class Action extends Entity {
 	}
 
 	public function undo(): Void {
+		emitActionCompleted();
+	}
+
+	public function redo(): Void {
 		emitActionCompleted();
 	}
 }
