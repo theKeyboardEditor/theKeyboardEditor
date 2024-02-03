@@ -61,6 +61,7 @@ class Viewport extends Scene {
 	// Constants
 	// Size of a key
 	public var unit: Float = 100;
+
 	inline static final placingStep: Float = Std.int(100 / 4);
 
 	// GLOBAL SCENE
