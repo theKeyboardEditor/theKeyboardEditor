@@ -18,7 +18,6 @@ class ActionQueue {
 			final action = this.queue.pop();
 			action.act();
 			this.applied.push(action);
-			trace(applied);
 			StatusBar.inform('Applied action: $action [${applied.length}]');
 		}
 	}

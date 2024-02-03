@@ -21,35 +21,42 @@ class MoveKeys extends Action {
 	}
 
 	override public function act() {
-		final tracked = [];
-		for (member in moved) {
+//		final tracked = [];
+		for (member in this.moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
-						key.position[Axis.X] += deltaX;
-						key.position[Axis.Y] += deltaY;
+						trace('move: [$member].');
+						// since our key is already moved by the desinger we only update keyson:
+						key.position[Axis.X] += this.deltaX;
+						key.position[Axis.Y] += this.deltaY;
 					}
 				}
 			}
-			tracked.push(member);
+//			tracked.push(member);
 		}
-		final moved = [];
+//		final moved = [];
 		super.act();
 	}
 
 	override public function undo() {
-		for (member in tracked) {
+//		for (member in tracked) {
+		for (member in this.moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
-						key.position[Axis.X] -= deltaX;
-						key.position[Axis.Y] -= deltaY;
+						trace('undo move: [$member].');
+						key.position[Axis.X] -= this.deltaX;
+						key.position[Axis.Y] -= this.deltaY;
+						// undo moving the member too:
+						member.x -= this.deltaX * this.viewport.unit;
+						member.y -= this.deltaY * this.viewport.unit;
 					}
 				}
 			}
-			moved.push(member);
+//			moved.push(member);
 		}
-		final tracked = [];
+//		final tracked = [];
 		super.undo();
 	}
 }

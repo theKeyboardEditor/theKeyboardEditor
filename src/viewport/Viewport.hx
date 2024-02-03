@@ -60,8 +60,8 @@ class Viewport extends Scene {
 
 	// Constants
 	// Size of a key
-	inline static final unit: Float = 100;
-	inline static final placingStep: Float = Std.int(unit / 4);
+	public var unit: Float = 100;
+	public var placingStep: Float = Std.int(100 / 4);
 
 	// GLOBAL SCENE
 
@@ -253,14 +253,14 @@ class Viewport extends Scene {
 			final x = (selectedKey.x - keyPosStartX) / unit;
 			final y = (selectedKey.y - keyPosStartY) / unit;
 			// Move now single (and unselected)
-			if (x != 0 && y != 0)
+			if (x * y != 0)
 				queue.push(new actions.MoveKeys(this, [selectedKey], x, y));
 			// StatusBar.inform('Moved unselected key to:${x}x${y}');
 		} else { // move selection
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
 			// Move now many
-			if (x != 0 && y != 0)
+			if (x * y != 0)
 				queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
 			// StatusBar.inform('Moved selected key to:${x}x${y}');
 		}
