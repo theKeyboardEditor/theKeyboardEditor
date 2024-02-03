@@ -256,7 +256,8 @@ class Viewport extends Scene {
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
 			// Move now many
-			// if (x != 0 && y != 0)
+			if (x != 0 && y != 0)
+			// filter out false moves
 			queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
 			// StatusBar.inform('Moved selected key to:${x}x${y}');
 		}

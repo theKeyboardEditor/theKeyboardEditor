@@ -6,14 +6,17 @@ import keyson.Axis;
 
 class MoveKeys extends Action {
 	final viewport: Viewport;
-	final moved: Array<KeyRenderer>;
+	private var  moved: Array<KeyRenderer>;
 	final deltaX: Float; // in keyson 1U units
 	final deltaY: Float;
 
 	override public function new(viewport: Viewport, moved: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {
 		super();
 		this.viewport = viewport;
-		this.moved = moved;
+		// deep copy:
+		this.moved = [];
+		for( i in 0...moved.length )
+			this.moved.unshift(moved[i]);
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 	}
