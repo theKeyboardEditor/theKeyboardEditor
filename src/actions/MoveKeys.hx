@@ -35,7 +35,7 @@ class MoveKeys extends Action {
 	}
 
 	override public function undo() {
-		trace ('undoing: [${moved.length}] members.');
+		trace('undoing: [${moved.length}] members.');
 		for (member in moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {

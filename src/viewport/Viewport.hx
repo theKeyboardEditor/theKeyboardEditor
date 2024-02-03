@@ -235,7 +235,8 @@ class Viewport extends Scene {
 				key.x += xStep;
 				key.y += yStep;
 			}
-		}/* else {
+		}
+		/* else {
 			selectedKey.x = coggify(this.keyPosStartX + screen.pointerX - pointerStartX, placingStep);
 			selectedKey.y = coggify(this.keyPosStartY + screen.pointerY - pointerStartY, placingStep);
 		}*/
@@ -250,15 +251,16 @@ class Viewport extends Scene {
 		placerMismatchX = 0;
 		placerMismatchY = 0;
 		// Remove selection by toggling it right after each move
-		//selectedKey.select();
+		// selectedKey.select();
 		if (selectedKeys.length > 0) { // move selection
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
 			// Move now many
-			//if (x != 0 && y != 0)
-				queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
+			// if (x != 0 && y != 0)
+			queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
 			// StatusBar.inform('Moved selected key to:${x}x${y}');
-		}/* else { // single unselected key
+		}
+		/* else { // single unselected key
 			// since we are "cogged" no need for round up
 			final x = (selectedKey.x - this.keyPosStartX) / unit;
 			final y = (selectedKey.y - this.keyPosStartY) / unit;
