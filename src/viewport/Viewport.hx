@@ -253,6 +253,8 @@ class Viewport extends Scene {
 		// Remove selection by toggling it right after each move
 		// selectedKey.select();
 		if (selectedKeys.length > 0) { // move selection
+			// if the previous [0]th member gets deselected the array will change pos()!
+			// TODO how can we know wich remaining key will not move the array's position?
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
 			// Move now many
