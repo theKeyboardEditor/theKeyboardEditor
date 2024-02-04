@@ -6,8 +6,9 @@ import keyson.Axis;
 
 class MoveKeys extends Action {
 	final viewport: Viewport;
-	private var moved: Array<KeyRenderer>;
-	final deltaX: Float; // in keyson 1U units
+	var moved: Array<KeyRenderer>;
+	// in the sense of keyson 1U units
+	final deltaX: Float;
 	final deltaY: Float;
 
 	override public function new(viewport: Viewport, moved: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {

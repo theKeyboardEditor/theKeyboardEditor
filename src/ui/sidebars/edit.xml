@@ -2,8 +2,9 @@
 	<scrollview width="153px" height="100%" contentWidth="100%" onmousewheel="event.cancel();">
 		<vbox width="100%" horizontalAlign="center" verticalAlign="center">
 			<hbox horizontalAlign="center">
-				<button text="Undo" icon="icons/undo" width="64px" height="64px" iconPosition="top" tooltip="Undo last action"/>
-				<button text="Redo" icon="icons/redo" width="64px" height="64px" iconPosition="top" tooltip="Redo last action"/>
+				<!-- TODO: Move onClick event to UI.hx -->
+				<button text="Undo" id="edit-undo" onClick="(cast tabs.selectedPage : ui.ViewportContainer).display.queue.undo()" icon="icons/undo" width="64px" height="64px" iconPosition="top" tooltip="Undo last action"/>
+				<button text="Redo" id="edit-redo" onClick="(cast tabs.selectedPage : ui.ViewportContainer).display.queue.redo()" icon="icons/redo" width="64px" height="64px" iconPosition="top" tooltip="Redo last action"/>
 			</hbox>
 			<hbox horizontalAlign="center">
 				<button text="Copy" icon="icons/copy" width="64px" height="64px" iconPosition="top" tooltip="Copy selected to buffer"/>
