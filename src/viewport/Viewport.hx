@@ -60,8 +60,9 @@ class Viewport extends Scene {
 
 	// Constants
 	// Size of a key
-	inline static final unit: Float = 100;
-	inline static final placingStep: Float = Std.int(unit / 4);
+	public var unit: Float = 100;
+
+	inline static final placingStep: Float = Std.int(100 / 4);
 
 	// GLOBAL SCENE
 
@@ -113,6 +114,7 @@ class Viewport extends Scene {
 	function placerUpdate() {
 		placer.x = coggify(screen.pointerX - screenX - this.x + placerMismatchX, placingStep);
 		placer.y = coggify(screen.pointerY - screenY - this.y + placerMismatchY, placingStep);
+		StatusBar.pos(placer.x / unit, placer.y / unit);
 	}
 
 	/**
@@ -121,10 +123,9 @@ class Viewport extends Scene {
 	function parseInKeyboard(keyboard: Keyson): Visual {
 		final workKeyboard = new Visual();
 		for (keyboardUnit in keyboard.units) {
-			// Set unit's gap values
 			final gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
 			final gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
-			// Parse all keycaps/elements
+
 			for (key in keyboardUnit.keys) {
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
@@ -149,15 +150,14 @@ class Viewport extends Scene {
 		// Store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
-		// trace('touched:<none> on [${this.keyson.name}]');
 
 		placerMismatchX = 0;
 		placerMismatchY = 0;
 
-		// Try move along as we pan the touch
+		// Move along as we pan the touch
 		screen.onPointerMove(this, viewportMouseMove);
 
-		// Stop dragging when releasing pointer
+		// Stop dragging when pointer is released
 		screen.oncePointerUp(this, viewportMouseUp);
 	}
 
@@ -181,10 +181,10 @@ class Viewport extends Scene {
 	 * This gets called only if clicked on a key on the worksurface!
 	 */
 	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
-		// inital point of move vector:
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
-		selectedKey = keycap;
+		this.selectedKey = keycap;
+
 		if (selectedKey.border.visible) {
 			// is selected: (by using select we take care of pivot too!)
 			selectedKey.select();
@@ -208,12 +208,14 @@ class Viewport extends Scene {
 		this.pointerStartY = screen.pointerY;
 
 		// placer is usually referenced to mouse cursor, but while we move that's off
-		placerMismatchX = keyPosStartX - this.pointerStartX + screenX + this.x + selectedKey.width / 2;
-		placerMismatchY = keyPosStartY - this.pointerStartY + screenY + this.y + selectedKey.height / 2;
-		if (selectedKey.sourceKey.shape == "BAE")
-			placerMismatchX -= 75;
-		if (selectedKey.sourceKey.shape == "XT_2U")
-			placerMismatchX -= 100;
+		placerMismatchX = keyPosStartX - pointerStartX + screenX + this.x + selectedKey.width / 2;
+		placerMismatchY = keyPosStartY - pointerStartY + screenY + this.y + selectedKey.height / 2;
+
+		placerMismatchX += switch (selectedKey.sourceKey.shape) {
+			case "BAE": -75
+			case "XT_2U": -100
+			default: 0
+		}
 
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, keyMouseMove);
@@ -229,13 +231,11 @@ class Viewport extends Scene {
 		if (selectedKeys.length > 0) {
 			final xStep = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) - selectedKeys[0].x;
 			final yStep = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) - selectedKeys[0].y;
+
 			for (key in selectedKeys) {
 				key.x += xStep;
 				key.y += yStep;
 			}
-		} else {
-			selectedKey.x = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep);
-			selectedKey.y = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep);
 		}
 	}
 
@@ -247,25 +247,21 @@ class Viewport extends Scene {
 		placer.size(unit, unit);
 		placerMismatchX = 0;
 		placerMismatchY = 0;
-		// Remove selection toggling it right after move
-		// selectedKey.select();
-		if (selectedKeys.length < 1) { // single unselected key
-			final x = (selectedKey.x - keyPosStartX) / unit;
-			final y = (selectedKey.y - keyPosStartY) / unit;
-			// Move now single (and unselected)
-			if (x != 0 && y != 0)
-				queue.push(new actions.MoveKeys(this, [selectedKey], x, y));
-			// StatusBar.inform('Moved unselected key to:${x}x${y}');
-		} else { // move selection
+
+		// Move selection
+		if (selectedKeys.length > 0) {
+			/**
+			 * If the previous first member gets deselected the array will change pos()
+			 * TODO: how can we know which remaining key will not move the array's position?
+			 */
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
-			// Move now many
-			if (x != 0 && y != 0)
+			if (x != 0 || y != 0) {
 				queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
-			// StatusBar.inform('Moved selected key to:${x}x${y}');
+			}
 		}
 
-		// The touch is already over, we're really just returning from the event
+		// The touch is already over, now cleanup
 		screen.offPointerMove(keyMouseMove);
 	}
 }

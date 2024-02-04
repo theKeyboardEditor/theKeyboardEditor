@@ -11,13 +11,13 @@ import keyson.Keyson.Keyboard;
 class Action extends Entity {
 	@event function actionCompleted();
 
-	@event function actionReverted();
+	//	@event function actionReverted();
 
 	public function new() {
 		super();
 	}
 
-	public function act(): Void {
+	public function act(type: ActionType): Void {
 		emitActionCompleted();
 	}
 
