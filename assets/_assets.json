@@ -88,6 +88,9 @@
             "name": "innerLight.frag"
         },
         {
+            "name": "main.css"
+        },
+        {
             "name": "msdf.frag"
         },
         {
