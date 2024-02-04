@@ -44,8 +44,8 @@ class MainScene extends Scene {
 		this.gui = new UI(this, store);
 
 		// Render keys
-		gui.openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
-		gui.openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
+		openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
+		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
 
 		// Add stored projects to list
 		for (key in store.keys()) {
@@ -92,5 +92,17 @@ class MainScene extends Scene {
 		store.set(Std.string(keyboard.name), keyboard);
 		store.save();
 		StatusBar.inform("Project has been saved");
+	}
+
+	public function openViewport(keyboard: keyson.Keyson) {
+		var viewport = new viewport.Viewport();
+		viewport.keyson = keyboard;
+
+		var container = new ui.ViewportContainer();
+		container.styleString = "width: 100%; height: 100%; background-color: #282828;";
+		container.text = keyboard.name;
+		container.display = viewport;
+
+		gui.tabs.addComponent(container);
 	}
 }

@@ -1,3 +1,10 @@
+package ui;
+
+import haxe.ui.containers.VBox;
+import haxe.ui.events.MouseEvent;
+import haxe.ui.containers.dialogs.Dialog;
+
+@xml('
 <vbox id="welcome" width="60%" height="65%">
 	<style>
 		#welcome {
@@ -49,3 +56,20 @@
 		</vbox>
 	</hbox>
 </vbox>
+')
+class Welcome extends VBox {
+	public var scene: MainScene;
+
+	@:bind(newProject, MouseEvent.CLICK)
+	function projectNew(event: MouseEvent) {
+		//this.overlay.visible = false;
+		final dialog = new ui.dialogs.NewNameDialog();
+		dialog.onDialogClosed = function(e: DialogEvent) {
+			final name = dialog.name.value;
+			if (StringTools.trim(name) == "")
+				return;
+			scene.openViewport(new keyson.Keyson(name));
+		}
+		dialog.showDialog();
+	}
+}

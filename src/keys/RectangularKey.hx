@@ -13,9 +13,8 @@ class RectangularKey extends KeyRenderer {
 	 */
 	var topX: Float = 100 / 8;
 	var topY: Float = (100 / 8) * 0.25;
-	var topOffset: Float = (100 / 8) * 2;
-	// TODO: Replace with float
-	var roundedCorner: Int = Std.int(100 / 8);
+	final topOffset: Float = (100 / 8) * 2;
+	final roundedCorner: Float = 100 / 8;
 
 	override public function computeContent() {
 		this.border = new Border();
