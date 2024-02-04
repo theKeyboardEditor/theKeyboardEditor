@@ -94,7 +94,6 @@ class Viewport extends Scene {
 		this.add(placer);
 
 		this.onPointerDown(workSurface, viewportMouseDown);
-
 	}
 
 	/**
@@ -171,8 +170,8 @@ class Viewport extends Scene {
 	 * Ran during and at the very end of the pan of the viewport
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-			final xStep = this.viewportStartX + screen.pointerX - this.pointerStartX;
-			final yStep = this.viewportStartY + screen.pointerY - this.pointerStartY;
+		final xStep = this.viewportStartX + screen.pointerX - this.pointerStartX;
+		final yStep = this.viewportStartY + screen.pointerY - this.pointerStartY;
 		if (xStep != 0 || yStep != 0) {
 			drag = true;
 			this.x = xStep;
@@ -188,9 +187,9 @@ class Viewport extends Scene {
 			// that we do if dragging the viewport?
 		} else {
 			// click on empty should deselect everything
-			for ( i in 0...selectedKeys.length)
+			for (i in 0...selectedKeys.length)
 				selectedKeys[i].select();
-			//and dump the selection
+			// and dump the selection
 			selectedKeys = [];
 		}
 		screen.offPointerMove(viewportMouseMove);
