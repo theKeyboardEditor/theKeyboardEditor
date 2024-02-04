@@ -212,10 +212,10 @@ class Viewport extends Scene {
 		placerMismatchY = keyPosStartY - pointerStartY + screenY + this.y + selectedKey.height / 2;
 
 		placerMismatchX += switch (selectedKey.sourceKey.shape) {
-			case "BAE": -75
-			case "XT_2U": -100
-			default: 0
-		}
+			case "BAE": -75;
+			case "XT_2U": -100;
+			default: 0;
+		};
 
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, keyMouseMove);
