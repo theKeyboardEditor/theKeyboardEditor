@@ -17,15 +17,11 @@ class Action extends Entity {
 		super();
 	}
 
-	public function act(): Void {
+	public function act(type: ActionType): Void {
 		emitActionCompleted();
 	}
 
 	public function undo(): Void {
-		emitActionCompleted();
-	}
-
-	public function redo(): Void {
 		emitActionCompleted();
 	}
 }

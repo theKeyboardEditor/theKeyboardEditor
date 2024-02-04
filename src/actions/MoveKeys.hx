@@ -13,40 +13,36 @@ class MoveKeys extends Action {
 	override public function new(viewport: Viewport, moved: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {
 		super();
 		this.viewport = viewport;
-		// deep copy:
-		this.moved = [];
-		for (i in 0...moved.length)
-			this.moved.push(moved[i]);
+		this.moved = moved.copy();
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 	}
 
-	override public function act() {
+	override public function act(type: ActionType) {
 		for (member in moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
-						trace('move: [${member.sourceKey.legends[0].legend}] d[${this.deltaX}/${this.deltaY}].');
-						// since our key is already moved by the desinger we only update keyson:
 						key.position[Axis.X] += this.deltaX;
 						key.position[Axis.Y] += this.deltaY;
+						if (type == Redo) {
+							member.x += this.deltaX * this.viewport.unit;
+							member.y += this.deltaY * this.viewport.unit;
+						}
 					}
 				}
 			}
 		}
-		super.act();
+		super.act(type);
 	}
 
 	override public function undo() {
-		trace('undoing: [${moved.length}] members.');
 		for (member in moved) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
-						trace('undo move: [${member.sourceKey.legends[0].legend}] d[${this.deltaX}/${this.deltaY}].');
 						key.position[Axis.X] -= this.deltaX;
 						key.position[Axis.Y] -= this.deltaY;
-						// undo moving the member too:
 						member.x -= this.deltaX * this.viewport.unit;
 						member.y -= this.deltaY * this.viewport.unit;
 					}
@@ -54,23 +50,5 @@ class MoveKeys extends Action {
 			}
 		}
 		super.undo();
-	}
-
-	override public function redo() {
-		for (member in moved) {
-			for (unit in viewport.keyson.units) {
-				for (key in unit.keys) {
-					if (member.sourceKey == key) {
-						trace('undo move: [${member.sourceKey.legends[0].legend}] d[${this.deltaX}/${this.deltaY}].');
-						key.position[Axis.X] += this.deltaX;
-						key.position[Axis.Y] += this.deltaY;
-						// undo moving the member too:
-						member.x += this.deltaX * this.viewport.unit;
-						member.y += this.deltaY * this.viewport.unit;
-					}
-				}
-			}
-		}
-		super.redo();
 	}
 }
