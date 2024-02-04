@@ -18,7 +18,7 @@ class ActionQueue {
 		if (queue.length > 0) {
 			final action = this.queue.pop();
 			action.act(Initial);
-			//FIXME we can't just blindly push actions on top when we have redo
+			// FIXME we can't just blindly push actions on top when we have redo
 			this.applied.push(action);
 			StatusBar.inform('Applied action: $action');
 		}

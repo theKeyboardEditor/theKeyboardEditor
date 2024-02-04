@@ -183,9 +183,7 @@ class Viewport extends Scene {
 	 * finished the pan make a return
 	 */
 	function viewportMouseUp(info: TouchInfo) {
-		if (drag) {
-			// that we do if dragging the viewport?
-		} else {
+		if (!drag) {
 			// click on empty should deselect everything
 			for (i in 0...selectedKeys.length)
 				selectedKeys[i].select();
