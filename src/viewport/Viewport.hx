@@ -57,6 +57,8 @@ class Viewport extends Scene {
 	 */
 	var selectedKey: KeyRenderer; // still needed across few functions -.-'
 	var selectedKeys: Array<KeyRenderer> = []; // still needed across few functions -.-'
+	var drag: Bool = false; // is a drag or click event hapening flag
+	var deselection: Bool = false; // is a deselect event resulting in a drag
 
 	// Constants
 	// Size of a key
@@ -90,6 +92,9 @@ class Viewport extends Scene {
 		placer.anchor(.5, .5);
 		placer.depth = 10;
 		this.add(placer);
+
+		this.onPointerDown(workSurface, viewportMouseDown);
+
 	}
 
 	/**
@@ -146,6 +151,7 @@ class Viewport extends Scene {
 		// TODO: Check for maximum amount of movement before drag is declared
 		this.viewportStartX = this.x;
 		this.viewportStartY = this.y;
+		drag = false;
 
 		// Store current mouse position
 		this.pointerStartX = screen.pointerX;
@@ -165,15 +171,28 @@ class Viewport extends Scene {
 	 * Ran during and at the very end of the pan of the viewport
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-		this.x = this.viewportStartX + screen.pointerX - this.pointerStartX;
-		this.y = this.viewportStartY + screen.pointerY - this.pointerStartY;
-		StatusBar.inform('Pan view:[${screen.pointerX - this.pointerStartX}x${screen.pointerY - this.pointerStartY}]');
+			final xStep = this.viewportStartX + screen.pointerX - this.pointerStartX;
+			final yStep = this.viewportStartY + screen.pointerY - this.pointerStartY;
+		if (xStep != 0 || yStep != 0) {
+			drag = true;
+			this.x = xStep;
+			this.y = yStep;
+		}
 	}
 
 	/**
-	 * Called after the pan of the viewport
+	 * finished the pan make a return
 	 */
 	function viewportMouseUp(info: TouchInfo) {
+		if (drag) {
+			// that we do if dragging the viewport?
+		} else {
+			// click on empty should deselect everything
+			for ( i in 0...selectedKeys.length)
+				selectedKeys[i].select();
+			//and dump the selection
+			selectedKeys = [];
+		}
 		screen.offPointerMove(viewportMouseMove);
 	}
 
@@ -184,16 +203,24 @@ class Viewport extends Scene {
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
 		this.selectedKey = keycap;
+		drag = false;
+
+		// store current mouse position
+		this.pointerStartX = screen.pointerX;
+		this.pointerStartY = screen.pointerY;
 
 		if (selectedKey.border.visible) {
 			// is selected: (by using select we take care of pivot too!)
 			selectedKey.select();
 			selectedKeys.remove(selectedKey);
+			// we just had a deselect, allowing drag leads to problems.
+			deselection = true;
 		} else {
 			// wasn't selected:
 			selectedKey.select();
 			// by using .unshift() instead of .push() the last added member is on index 0
 			selectedKeys.unshift(selectedKey);
+			deselection = false;
 		}
 
 		// TODO infer the selection size and apply it to the placer:
@@ -203,11 +230,7 @@ class Viewport extends Scene {
 			placer.size(selectedKey.width, selectedKey.height);
 		}
 
-		// store current mouse position
-		this.pointerStartX = screen.pointerX;
-		this.pointerStartY = screen.pointerY;
-
-		// placer is usually referenced to mouse cursor, but while we move that's off
+		// placer is usually referenced to mouse cursor, but while we move that's offset
 		placerMismatchX = keyPosStartX - pointerStartX + screenX + this.x + selectedKey.width / 2;
 		placerMismatchY = keyPosStartY - pointerStartY + screenY + this.y + selectedKey.height / 2;
 
@@ -220,7 +243,7 @@ class Viewport extends Scene {
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, keyMouseMove);
 
-		// Stop dragging when the pointer is released
+		// Finish the drag along when the pointer is released
 		screen.oncePointerUp(this, keyMouseUp);
 	}
 
@@ -228,19 +251,25 @@ class Viewport extends Scene {
 	 * Called during key movement
 	 */
 	function keyMouseMove(info: TouchInfo) {
+		// there is a special case where the last selected element gets deselected and dragged
 		if (selectedKeys.length > 0) {
 			final xStep = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) - selectedKeys[0].x;
 			final yStep = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) - selectedKeys[0].y;
-
-			for (key in selectedKeys) {
-				key.x += xStep;
-				key.y += yStep;
+			if (xStep != 0 || yStep != 0)
+				drag = true;
+			if (!deselection) {
+				if (selectedKeys.length > 0) {
+					for (key in selectedKeys) {
+						key.x += xStep;
+						key.y += yStep;
+					}
+				}
 			}
 		}
 	}
 
 	/**
-	 * Called after the drag
+	 * Called after the drag (touch/press is released)
 	 */
 	function keyMouseUp(info: TouchInfo) {
 		// Restore placer to default size
@@ -248,7 +277,7 @@ class Viewport extends Scene {
 		placerMismatchX = 0;
 		placerMismatchY = 0;
 
-		// Move selection
+		// Actually execute the move of the selection
 		if (selectedKeys.length > 0) {
 			/**
 			 * If the previous first member gets deselected the array will change pos()
@@ -256,12 +285,21 @@ class Viewport extends Scene {
 			 */
 			final x = (selectedKeys[0].x - keyPosStartX) / unit;
 			final y = (selectedKeys[0].y - keyPosStartY) / unit;
-			if (x != 0 || y != 0) {
+			// only if at least x or y is non zero
+			// it was a valid drag
+			// that didn't result in deselection
+			// and we have actual keys to move at all
+			if (x != 0 || y != 0 && drag && !deselection && selectedKeys.length > 0) {
 				queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
+				if (selectedKeys.length == 1) {
+					// deselect if single element was just dragged
+					selectedKey.select();
+					selectedKeys.remove(selectedKey);
+				}
 			}
 		}
 
-		// The touch is already over, now cleanup
+		// The touch is already over, now cleanup and retur from there
 		screen.offPointerMove(keyMouseMove);
 	}
 }
