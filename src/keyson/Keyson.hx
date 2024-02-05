@@ -224,7 +224,7 @@ class KeyLegend {
 	public var legendPosition: Array<Float>;
 
 	public function new(legend: String) {
-		this.legend = "";
+		this.legend = legend; // the ordered content
 		this.legendSize = 24.0; // sane default
 		this.legendColor = "0xFF00000f";
 		this.legendPosition = [5.0, 5.0];
