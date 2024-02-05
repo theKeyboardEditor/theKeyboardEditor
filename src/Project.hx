@@ -32,17 +32,17 @@ class Project extends Entity {
 
 	function autoFps(settings: InitSettings) {
 		var lastFastFpsTime: Float = Timer.now;
-		settings.targetFps = 60;
+		settings.targetFps = 45;
 
 		Timer.interval(this, 0.5, () -> {
-			if (Timer.now - lastFastFpsTime > 5.0) {
+			if (Timer.now - lastFastFpsTime > 10.0) {
 				settings.targetFps = 15;
 			}
 		});
 
 		screen.onPointerDown(this, _ -> {
 			lastFastFpsTime = Timer.now;
-			settings.targetFps = 60;
+			settings.targetFps = 45;
 		});
 	}
 }
