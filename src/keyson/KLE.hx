@@ -84,7 +84,7 @@ class KLE {
 					key.legends[0].legendColor = legendColor;
 					key.legends[0].legendSize = legendSize;
 					key.legends[0].legendPosition = [posX, posY];
-					trace ('legends: [${key.legends}]');
+					trace('legends: [${key.legends}]');
 					w = 1; // default presumed width (if none is given)
 					shape = "1U"; // presumed shape
 				} else { // no there is no string in this element:
