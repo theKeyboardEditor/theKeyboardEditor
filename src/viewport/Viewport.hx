@@ -80,8 +80,15 @@ class Viewport extends Scene {
 		var grid = new Grid();
 		grid.primaryStep(unit);
 		grid.subStep(placingStep);
-		grid.depth = -1;
-		this.add(grid);
+
+		var gridFilter = new ceramic.Filter();
+		gridFilter.explicitRender = true;
+		gridFilter.autoRender = false;
+		gridFilter.size(grid.width, grid.height);
+		gridFilter.content.add(grid);
+		this.add(gridFilter);
+		gridFilter.render();
+
 
 		workSurface = parseInKeyboard(keyson);
 		this.add(workSurface);
