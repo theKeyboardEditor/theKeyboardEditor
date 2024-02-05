@@ -65,4 +65,5 @@ app:
 
   defines:
     - ceramic_no_skip
+    - ceramic_debug_draw
     - message.reporting: pretty

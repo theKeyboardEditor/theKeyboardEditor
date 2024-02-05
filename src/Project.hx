@@ -14,6 +14,7 @@ class Project extends Entity {
 		settings.background = 0xFF282828;
 		settings.targetWidth = 1920;
 		settings.targetHeight = 1080;
+		settings.targetFps = 30;
 		settings.scaling = RESIZE;
 		settings.resizable = true;
 		settings.defaultFont = Fonts.FONTS__ROBOTO_REGULAR;

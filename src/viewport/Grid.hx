@@ -41,7 +41,7 @@ class Grid extends Visual {
 				quad1.color.lightnessHSLuv += 0.15;
 				this.add(quad1);
 
-				for (subX in 0...Std.int(this.primaryStepX / this.subStepX)) {
+				for (subX in 1...Std.int(this.primaryStepX / this.subStepX)) {
 					var quad3 = new Quad();
 					quad3.pos(xPos * primaryStepX - thick / 2 + subX * subStepX, yPos * primaryStepY - thick / 2);
 					quad3.size(thick, thick);
@@ -59,7 +59,7 @@ class Grid extends Visual {
 				quad2.color.lightnessHSLuv += 0.15;
 				this.add(quad2);
 
-				for (subY in 0...Std.int(this.primaryStepY / this.subStepY)) {
+				for (subY in 1...Std.int(this.primaryStepY / this.subStepY)) {
 					var quad4 = new Quad();
 					quad4.pos(xPos * primaryStepX - thick / 2, yPos * primaryStepY - thick / 2 + subY * subStepY);
 					quad4.size(thick, thick);
