@@ -14,8 +14,8 @@ class Grid extends Visual {
 	public var primaryStepY(default, set): Float = 100;
 	@content public var subStepX: Float = 25;
 	@content public var subStepY: Float = 25;
-	@content public var maxStepsX: Int = 48;
-	@content public var maxStepsY: Int = 12;
+	@content public var maxStepsX: Int = 23;
+	@content public var maxStepsY: Int = 7;
 
 	// Defines the size of the pluses
 	static inline final long: Float = 15;
@@ -24,7 +24,7 @@ class Grid extends Visual {
 
 	override public function computeContent() {
 		var quad = new Quad();
-		quad.pos(3.5, 3.5);
+		quad.pos(-3.5, -3.5);
 		quad.size(7, 7);
 		quad.depth = 0;
 		quad.color = color;
@@ -41,7 +41,7 @@ class Grid extends Visual {
 				quad1.color.lightnessHSLuv += 0.15;
 				this.add(quad1);
 
-				for (subX in 0...Std.int(this.primaryStepX / this.subStepX)) {
+				for (subX in 1...Std.int(this.primaryStepX / this.subStepX)) {
 					var quad3 = new Quad();
 					quad3.pos(xPos * primaryStepX - thick / 2 + subX * subStepX, yPos * primaryStepY - thick / 2);
 					quad3.size(thick, thick);
@@ -59,7 +59,7 @@ class Grid extends Visual {
 				quad2.color.lightnessHSLuv += 0.15;
 				this.add(quad2);
 
-				for (subY in 0...Std.int(this.primaryStepY / this.subStepY)) {
+				for (subY in 1...Std.int(this.primaryStepY / this.subStepY)) {
 					var quad4 = new Quad();
 					quad4.pos(xPos * primaryStepX - thick / 2, yPos * primaryStepY - thick / 2 + subY * subStepY);
 					quad4.size(thick, thick);
