@@ -144,11 +144,19 @@ class Keyboard {
 		return key;
 	}
 
-	public function removeKey(id: Int) {
+	public function removeKeyById(id: Int) {
 		var i: Int = 0;
 		this.keys = [
 			for (key in this.keys.filter(key -> key.id != id)) {
 				key.id = i++;
+				key;
+			}
+		];
+	}
+
+	public function removeKey(deletee: Key) {
+		this.keys = [
+			for (key in this.keys.filter(key -> key != deletee)) {
 				key;
 			}
 		];
