@@ -95,7 +95,7 @@ class ModeSelector extends VerticalButtonBar {
 				final dialog = new FileDialog();
 				dialog.openJson("Keyson File");
 				dialog.onFileLoaded(mainScene, (body: String) -> {
-				mainScene.openViewport(keyson.Keyson.parse(body));
+					mainScene.openViewport(keyson.Keyson.parse(body));
 				});
 			case "save":
 				this.mainScene.save(cast(guiScene.tabs.selectedPage, ui.ViewportContainer).display.keyson, store);

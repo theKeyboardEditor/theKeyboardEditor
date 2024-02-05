@@ -62,7 +62,7 @@ class Welcome extends VBox {
 
 	@:bind(newProject, MouseEvent.CLICK)
 	function projectNew(event: MouseEvent) {
-		//this.overlay.visible = false;
+		// this.overlay.visible = false;
 		final dialog = new ui.dialogs.NewNameDialog();
 		dialog.onDialogClosed = function(e: DialogEvent) {
 			final name = dialog.name.value;

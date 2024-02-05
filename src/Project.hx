@@ -1,6 +1,7 @@
 package;
 
 import ceramic.Entity;
+import ceramic.Timer;
 import ceramic.InitSettings;
 import ceramic.Preloader;
 import haxe.ui.Toolkit;
@@ -17,6 +18,7 @@ class Project extends Entity {
 		settings.scaling = RESIZE;
 		settings.resizable = true;
 		settings.defaultFont = Fonts.FONTS__ROBOTO_REGULAR;
+		autoFps(settings);
 
 		app.onceReady(this, ready);
 	}
@@ -26,5 +28,21 @@ class Project extends Entity {
 		// Set MainScene as the current scene (see MainScene.hx)
 		app.scenes.main = new Preloader(() -> new MainScene());
 		Toolkit.theme = 'keyboard-editor-theme';
+	}
+
+	function autoFps(settings: InitSettings) {
+		var lastFastFpsTime: Float = Timer.now;
+		settings.targetFps = 60;
+
+		Timer.interval(this, 0.5, () -> {
+			if (Timer.now - lastFastFpsTime > 5.0) {
+				settings.targetFps = 15;
+			}
+		});
+
+		screen.onPointerDown(this, _ -> {
+			lastFastFpsTime = Timer.now;
+			settings.targetFps = 60;
+		});
 	}
 }

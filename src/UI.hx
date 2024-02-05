@@ -50,10 +50,10 @@ class UI extends haxe.ui.containers.VBox {
 			modeSelector.mainScene = scene;
 			modeSelector.store = store;
 			leftBox.addComponent(this.modeSelector);
-			
+
 			// This is the default sidebar
 			// Note to future developers: when sidebar is set it automatically gets added
-			this.sidebar = ComponentBuilder.fromFile("ui/sidebars/place.xml"); 
+			this.sidebar = ComponentBuilder.fromFile("ui/sidebars/place.xml");
 		}
 		middle.addComponent(leftBox);
 

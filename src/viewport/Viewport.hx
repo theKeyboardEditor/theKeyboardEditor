@@ -89,7 +89,6 @@ class Viewport extends Scene {
 		this.add(gridFilter);
 		gridFilter.render();
 
-
 		workSurface = parseInKeyboard(keyson);
 		this.add(workSurface);
 

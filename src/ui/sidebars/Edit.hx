@@ -29,11 +29,11 @@ class Edit extends VBox {
 
 	@:bind(editUndo, MouseEvent.CLICK)
 	function undo(_) {
-		(cast tabs.selectedPage : ui.ViewportContainer).display.queue.undo();
+		(cast tabs.selectedPage: ui.ViewportContainer).display.queue.undo();
 	}
 
-	@:bind(editRedo, MouseEvent.CLICK) 
+	@:bind(editRedo, MouseEvent.CLICK)
 	function redo(_) {
-		(cast tabs.selectedPage : ui.ViewportContainer).display.queue.redo();
+		(cast tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
 	}
 }
