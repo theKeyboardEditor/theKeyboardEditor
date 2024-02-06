@@ -1,8 +1,6 @@
 package actions;
 
 import viewport.Viewport;
-import keyson.Keyson;
-import keyson.Axis;
 
 class DeleteKeys extends Action {
 	final viewport: Viewport;

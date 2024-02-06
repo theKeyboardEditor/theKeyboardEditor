@@ -2,7 +2,6 @@ package viewport;
 
 import ceramic.Arc;
 import ceramic.Quad;
-import ceramic.Color;
 import ceramic.Visual;
 
 /**

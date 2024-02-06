@@ -2,7 +2,6 @@ package ui;
 
 import haxe.ui.containers.VBox;
 import haxe.ui.events.MouseEvent;
-import haxe.ui.containers.dialogs.Dialog;
 
 @xml('
 <vbox id="welcome" width="60%" height="65%">
@@ -64,7 +63,7 @@ class Welcome extends VBox {
 	function projectNew(event: MouseEvent) {
 		// this.overlay.visible = false;
 		final dialog = new ui.dialogs.NewNameDialog();
-		dialog.onDialogClosed = function(e: DialogEvent) {
+		dialog.onDialogClosed = function(_) {
 			final name = dialog.name.value;
 			if (StringTools.trim(name) == "")
 				return;

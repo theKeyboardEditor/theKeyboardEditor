@@ -3,12 +3,8 @@ package viewport;
 import ceramic.Visual;
 import ceramic.Scene;
 import ceramic.TouchInfo;
-import ceramic.KeyBindings;
-import ceramic.KeyCode;
 import keyson.Axis;
 import keyson.Keyson;
-import keyson.Keyson.Keyboard;
-import keyson.Keyson.Key;
 
 class Viewport extends Scene {
 	/**

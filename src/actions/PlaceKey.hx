@@ -1,7 +1,6 @@
 package actions;
 
 import viewport.Viewport;
-import keyson.Keyson;
 import keyson.Axis;
 
 class PlaceKey extends Action {

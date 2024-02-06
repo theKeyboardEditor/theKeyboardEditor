@@ -1,7 +1,6 @@
 package actions;
 
 import ceramic.Entity;
-import keyson.Keyson.Keyboard;
 
 /**
  * This class represents a user-caused action that will be placed in a stack/queue

@@ -1,7 +1,6 @@
 package viewport;
 
 import ceramic.Mesh;
-import ceramic.Quad;
 import ceramic.Color;
 import ceramic.Visual;
 

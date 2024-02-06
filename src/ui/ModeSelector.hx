@@ -4,8 +4,6 @@ import haxe.ui.containers.Box;
 import haxe.ui.containers.VerticalButtonBar;
 import haxe.ui.ComponentBuilder;
 import haxe.ui.events.UIEvent;
-import haxe.ui.containers.dialogs.Dialog;
-import haxe.ui.containers.dialogs.Dialogs;
 
 @xml('
 <button-bar direction="vertical" styleName="modeSelector">
@@ -91,7 +89,7 @@ class ModeSelector extends VerticalButtonBar {
 		switch (event.relatedComponent.id) {
 			case "new":
 				final dialog = new ui.dialogs.NewNameDialog();
-				dialog.onDialogClosed = function(e: DialogEvent) {
+				dialog.onDialogClosed = function(_) {
 					final name = dialog.name.value;
 					if (StringTools.trim(name) == "")
 						return;
@@ -114,7 +112,7 @@ class ModeSelector extends VerticalButtonBar {
 				dialog.openJson("KLE Json File");
 				dialog.onFileLoaded(mainScene, (body: String) -> {
 					var dialog = new ui.dialogs.ImportNameDialog();
-					dialog.onDialogClosed = function(e: DialogEvent) {
+					dialog.onDialogClosed = function(_) {
 						final name = dialog.name.value;
 						if (StringTools.trim(name) == "")
 							return;

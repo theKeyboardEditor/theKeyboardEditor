@@ -1,7 +1,6 @@
 package viewport;
 
 import ceramic.InputMap;
-import ceramic.MouseButton;
 
 enum abstract ViewportInput(Int) {
 	final UP;

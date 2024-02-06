@@ -1,6 +1,5 @@
 package keys;
 
-import ceramic.Color;
 import ceramic.Border;
 import ceramic.RoundedRect;
 import viewport.Pivot;

@@ -1,0 +1,5 @@
+{
+    "checks": [
+        {"type": "UnusedImport", "props": {"severity": "WARNING"}}
+    ]
+}

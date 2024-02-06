@@ -1,9 +1,7 @@
 package keys;
 
 import ceramic.Shape;
-import ceramic.Color;
 import ceramic.Border;
-import ceramic.Visual;
 import viewport.Pivot;
 
 /**

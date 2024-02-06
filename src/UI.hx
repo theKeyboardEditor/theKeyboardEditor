@@ -5,7 +5,6 @@ import haxe.ui.ComponentBuilder;
 import haxe.ui.containers.TabView;
 import haxe.ui.containers.Box;
 import haxe.ui.containers.HBox;
-import haxe.ui.containers.VBox;
 
 using StringTools;
 
