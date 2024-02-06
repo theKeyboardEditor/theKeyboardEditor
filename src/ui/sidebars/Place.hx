@@ -55,7 +55,7 @@ class Place extends VBox {
 
 	@:bind(keys, UIEvent.CHANGE)
 	function onSelected(_) {
-		CopyBuffer.selectedKey = keys.selectedButton.id;
+		CopyBuffer.selectedKey = keyTypes[keys.selectedButton.id];
 		StatusBar.inform('Selected ${CopyBuffer.selectedKey}');
 	}
 }
