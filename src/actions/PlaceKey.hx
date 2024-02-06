@@ -23,10 +23,7 @@ class PlaceKey extends Action {
 	};
 
 	override public function act(type: ActionType) {
-		// if (type == Redo) {
-		// }
-		// TODO is there any difference with act and redo?
-		// Create a keyson key   second shape is legend!
+		// Create a keyson key, the second shape is legend!
 		final key = viewport.keyson.units[unit].addKey(shape, [x, y], shape);
 		// Draw that key
 		final keycap: KeyRenderer = KeyMaker.createKey(this.viewport.keyson.units[unit], key, this.viewport.unit, this.viewport.gapX,
@@ -34,21 +31,21 @@ class PlaceKey extends Action {
 		keycap.pos(this.viewport.unit * key.position[Axis.X], this.viewport.unit * key.position[Axis.Y]);
 		this.viewport.workKeyboard.add(keycap);
 		this.placed = keycap;
+		
+		super.act(type);
 	}
-	super.act(type);
-}
 
-override public function undo() {
-	for (unit in viewport.keyson.units) {
-		for (key in unit.keys) {
-			if (placed.sourceKey == key) {
-				// clear keyson:
-				this.viewport.keyson.units[unit].removeKey(placed.sourceKey);
-				// clear Ceramic:
-				this.viewport.workKeyboard.dispose(placed);
+	override public function undo() {
+		for (unit in viewport.keyson.units) {
+			for (key in unit.keys) {
+				if (placed.sourceKey == key) {
+					// clear keyson:
+					this.viewport.keyson.units[unit].removeKey(placed.sourceKey);
+					// clear Ceramic:
+					this.viewport.workKeyboard.dispose(placed);
+				}
 			}
 		}
+		super.undo();
 	}
-	super.undo();
-}
 }

@@ -58,10 +58,14 @@ class ModeSelector extends VerticalButtonBar {
 	public var guiScene: UI;
 
 	@:bind(this, UIEvent.CHANGE)
-	function switchMode(_: UIEvent) {
-		this.guiScene.sidebar = switch (selectedButton.id) {
+	function onSelection(_: UIEvent) {
+		this.guiScene.sidebar = switchMode(selectedButton.id);
+	}
+
+	public function switchMode(id: String): Box {
+		return switch (id) {
 			case "place":
-				ComponentBuilder.fromFile("ui/sidebars/place.xml");
+				new ui.sidebars.Place();
 			case "edit":
 				var edit = new ui.sidebars.Edit();
 				edit.tabs = guiScene.tabs;

@@ -2,16 +2,10 @@ package;
 
 import ceramic.PersistentData;
 import haxe.ui.ComponentBuilder;
-import haxe.ui.events.MouseEvent;
-import haxe.ui.events.UIEvent;
-import haxe.ui.events.ItemEvent;
 import haxe.ui.containers.TabView;
 import haxe.ui.containers.Box;
 import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
-import haxe.ui.containers.ButtonBar;
-import haxe.ui.containers.dialogs.Dialog;
-import haxe.ui.containers.dialogs.Dialogs;
 
 using StringTools;
 
@@ -53,7 +47,7 @@ class UI extends haxe.ui.containers.VBox {
 
 			// This is the default sidebar
 			// Note to future developers: when sidebar is set it automatically gets added
-			this.sidebar = ComponentBuilder.fromFile("ui/sidebars/place.xml");
+			this.sidebar = modeSelector.switchMode("place");
 		}
 		middle.addComponent(leftBox);
 
