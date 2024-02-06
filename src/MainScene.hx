@@ -104,7 +104,7 @@ class MainScene extends Scene {
 		container.display = viewport;
 
 		gui.tabs.addComponent(container);
-//		viewport.mainScene = this;
+		//		viewport.mainScene = this;
 		viewport.guiScene = gui;
 	}
 }

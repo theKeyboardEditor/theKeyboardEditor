@@ -17,7 +17,7 @@ class Viewport extends Scene {
 	public var keyson: keyson.Keyson;
 	public var screenX: Float = 0;
 	public var screenY: Float = 0;
-//	public var mainScene: MainScene;
+	//	public var mainScene: MainScene;
 	public var guiScene: UI;
 	public var barMode: String; // acces to active mode from gui.modeSelector.barMode
 	public final queue = new ActionQueue();
@@ -151,7 +151,6 @@ class Viewport extends Scene {
 		}
 		return workKeyboard;
 	}
-
 	// APPLYING DESIGN
 
 	/**
@@ -184,7 +183,7 @@ class Viewport extends Scene {
 		final yStep = this.viewportStartY + screen.pointerY - this.pointerStartY;
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
-				// just ignore drag
+			// just ignore drag
 			case "edit":
 				// Check for minimum amount of movement before drag is declared
 				if (xStep != 0 || yStep != 0) {
@@ -216,8 +215,8 @@ class Viewport extends Scene {
 					// TODO calculate proper shaper size and offset:
 					final placerMismatchX = 1 / 2;
 					final placerMismatchY = 1 / 2;
-					final x =placer.x / unit - placerMismatchX;
-					final y =placer.y / unit - placerMismatchY;
+					final x = placer.x / unit - placerMismatchX;
+					final y = placer.y / unit - placerMismatchY;
 					final gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
 					final gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
 					final key = keyboardUnit.addKey(shape, [x, y], legend);
@@ -307,7 +306,7 @@ class Viewport extends Scene {
 	function keyMouseMove(info: TouchInfo) {
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
-				// just ignore drag
+			// just ignore drag
 			case "edit":
 				// there is a special case where the last selected element gets deselected and dragged
 				if (selectedKeys.length > 0) {
@@ -362,7 +361,7 @@ class Viewport extends Scene {
 					}
 				}
 			case _:
-			// undefined gets ignored
+				// undefined gets ignored
 		}
 
 		// The touch is already over, now cleanup and retur from there
