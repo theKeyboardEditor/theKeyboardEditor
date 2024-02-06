@@ -6,6 +6,7 @@ import haxe.ui.events.MouseEvent;
 
 @xml('
 <vbox width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
+	<label text="Operations:" />
 	<scrollview width="153px" height="100%" contentWidth="100%" onmousewheel="event.cancel();">
 		<vbox width="100%" horizontalAlign="center" verticalAlign="center">
 			<hbox horizontalAlign="center">

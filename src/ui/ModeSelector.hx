@@ -21,7 +21,7 @@ import haxe.ui.containers.dialogs.Dialogs;
 	}
 	.modeSelector button:down {
 	border-left: 3px solid $accent-color;
-	} 
+	}
 	.menu-item-picker {
 	background-color: #1d2021;
 	border: none;
@@ -38,7 +38,7 @@ import haxe.ui.containers.dialogs.Dialogs;
             <item id="new" text="New" />
             <item id="open" text="Open" />
             <item id="save" text="Save" />
-            <item id="download"  text="Download" />
+            <item id="download" text="Download" />
             <item id="import" text="Import KLE" />
             <item id="export" disabled="true" text="Export" />
         </data>
@@ -56,13 +56,16 @@ class ModeSelector extends VerticalButtonBar {
 	public var store: ceramic.PersistentData;
 	public var mainScene: MainScene;
 	public var guiScene: UI;
+	public var barMode: String; // for viewport processes
 
 	@:bind(this, UIEvent.CHANGE)
 	function onSelection(_: UIEvent) {
 		this.guiScene.sidebar = switchMode(selectedButton.id);
+		StatusBar.inform('Selected mode:[${this.barMode}]');
 	}
 
 	public function switchMode(id: String): Box {
+		this.barMode = id;
 		return switch (id) {
 			case "place":
 				new ui.sidebars.Place();

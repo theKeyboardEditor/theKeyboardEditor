@@ -31,7 +31,7 @@ class PlaceKey extends Action {
 		keycap.pos(this.viewport.unit * key.position[Axis.X], this.viewport.unit * key.position[Axis.Y]);
 		this.viewport.workKeyboard.add(keycap);
 		this.placed = keycap;
-		
+
 		super.act(type);
 	}
 
