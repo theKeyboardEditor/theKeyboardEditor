@@ -216,9 +216,9 @@ class Viewport extends Scene {
 	function viewportMouseUp(info: TouchInfo) {
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
-				// TODO final place action
+				// place action
 				if (x != 0 || y != 0) {
-					// for drag - what do we do?
+					// for drag - what do we do - should we fill with keys on drag?
 				} else {
 					// TODO determine actually selected keyboard unit:
 					final device = 0;

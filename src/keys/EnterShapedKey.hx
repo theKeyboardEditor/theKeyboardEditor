@@ -41,14 +41,13 @@ class EnterShapedKey extends KeyRenderer {
 	var localHeight: Float;
 
 	override public function computeContent() {
-		offsetB = heightSouth - heightNorth;
-		offsetL = widthSouth - widthNorth;
+		this.offsetB = heightSouth - heightNorth;
+		this.offsetL = widthSouth - widthNorth;
 
 		// TODO  There is still some oddity to fix with BEA and XT_2U
 		this.border = new Border();
 
 		if (this.shape == 'BAE' || this.shape == 'XT_2U') {
-			this.border.pos(-this.offsetL, 0); // negative for BAE and XT_2U
 			this.width = widthSouth;
 		} else {
 			this.border.pos(0, 0);
@@ -81,14 +80,23 @@ class EnterShapedKey extends KeyRenderer {
 		this.pivot.visible = false;
 		this.add(this.pivot);
 
-		this.top = enterShape(widthNorth - topOffset, heightNorth - topOffset, widthSouth - topOffset, heightSouth - topOffset, topColor,
+		top = enterShape(widthNorth - topOffset, heightNorth - topOffset, widthSouth - topOffset, heightSouth - topOffset, topColor,
 			topX, topY);
-		this.top.depth = 5;
-		this.add(this.top);
+		top.depth = 5;
+		this.add(top);
 
-		this.bottom = enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bottomColor, 0.0, 0.0);
-		this.bottom.depth = 0;
+		bottom = enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bottomColor, 0.0, 0.0);
+		bottom.depth = 0;
 		this.add(this.bottom);
+
+		if (this.shape == 'BAE' || this.shape == 'XT_2U') {
+			// all this swing is to get the shape to align right
+			top.x = (widthSouth - widthNorth);
+			bottom.x = (widthSouth - widthNorth);
+			this.x -= (widthSouth - widthNorth);
+			// TODO align the pivot too
+		}
+
 
 		super.computeContent();
 	}
