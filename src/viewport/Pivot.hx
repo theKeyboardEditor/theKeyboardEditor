@@ -16,15 +16,6 @@ class Pivot extends Visual {
 	override public function computeContent() {
 		final radius = (dimension - 4) / 2;
 
-		var round = new Arc();
-		round.radius = radius;
-		round.sides = 18;
-		round.borderPosition = MIDDLE;
-		round.thickness = thickness;
-		round.angle = 360;
-		round.color = this.color;
-		this.add(round);
-
 		for (i in 0...4) {
 			final dash = new Quad();
 			dash.color = this.color;
@@ -35,6 +26,15 @@ class Pivot extends Visual {
 			dash.rotation = i * 90;
 			this.add(dash);
 		}
+
+		var round = new Arc();
+		round.radius = radius;
+		round.sides = 18;
+		round.borderPosition = MIDDLE;
+		round.thickness = thickness;
+		round.angle = 360;
+		round.color = this.color;
+		this.add(round);
 
 		super.computeContent();
 	}
