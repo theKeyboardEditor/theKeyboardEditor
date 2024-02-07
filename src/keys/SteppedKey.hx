@@ -7,19 +7,17 @@ import viewport.Pivot;
 class SteppedKey extends KeyRenderer {
 	/**
 	 * we are in the 1U = 100 units of scale ratio here:
-	 * this is the preset for OEM/Cherry profile keycaps (
-	 * TODO: more presets
 	 */
-	public var stepWidth: Float;
-	public var stepHeight: Float;
-	public var stepOffsetX: Float;
-	public var stepOffsetY: Float;
-	public var stepped: Float;
+	@content public var stepWidth: Float;
+	@content public var stepHeight: Float;
+	@content public var stepOffsetX: Float;
+	@content public var stepOffsetY: Float;
+	@content public var stepped: Float;
 
-	var topX: Float = 100 / 8; // TODO make this be actual units of 1U!
-	var topY: Float = (100 / 8) * 0.25;
-	final topOffset: Float = (100 / 8) * 2;
-	final roundedCorner: Float = 100 / 8;
+	@content var topX: Float = 100 / 8; // TODO make this be actual units of 1U!
+	@content var topY: Float = (100 / 8) * 0.25;
+	@content final topOffset: Float = (100 / 8) * 2;
+	@content final roundedCorner: Float = 100 / 8;
 
 	override public function computeContent() {
 		this.border = new Border();
