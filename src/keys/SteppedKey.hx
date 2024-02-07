@@ -4,13 +4,19 @@ import ceramic.Border;
 import ceramic.RoundedRect;
 import viewport.Pivot;
 
-class RectangularKey extends KeyRenderer {
+class SteppedKey extends KeyRenderer {
 	/**
 	 * we are in the 1U = 100 units of scale ratio here:
 	 * this is the preset for OEM/Cherry profile keycaps (
 	 * TODO: more presets
 	 */
-	var topX: Float = 100 / 8;
+	public var stepWidth: Float;
+	public var stepHeight: Float;
+	public var stepOffsetX: Float;
+	public var stepOffsetY: Float;
+	public var stepped: Float;
+
+	var topX: Float = 100 / 8; // TODO make this be actual units of 1U!
 	var topY: Float = (100 / 8) * 0.25;
 	final topOffset: Float = (100 / 8) * 2;
 	final roundedCorner: Float = 100 / 8;
@@ -33,15 +39,32 @@ class RectangularKey extends KeyRenderer {
 		this.add(this.pivot);
 
 		final top = new RoundedRect();
-		top.size(width - this.topOffset, height - this.topOffset);
+		top.size(Std.int(this.stepWidth - this.topOffset), Std.int(this.stepHeight - this.topOffset));
 		top.radius(roundedCorner);
 		top.color = topColor;
 		top.depth = 5;
-		top.pos(topX, topY);
+		top.pos(this.stepOffsetX + topX, this.stepOffsetY + topY);
 		this.add(top);
 
+		final sides = new RoundedRect();
+		sides.size(Std.int(this.stepWidth - topX / 4), Std.int(this.stepHeight - topX / 4));
+		sides.radius(roundedCorner);
+		sides.color = bottomColor;
+		sides.depth = 4;
+		sides.pos(this.stepOffsetX + topX / 4, this.stepOffsetY + topY / 4);
+		this.add(sides);
+
+		final stepTop = new RoundedRect();
+		stepTop.size(Std.int(width - this.topOffset / 4), Std.int(height - this.topOffset / 4));
+		stepTop.radius(roundedCorner);
+		stepTop.color = topColor;
+		stepTop.depth = 1;
+		stepTop.pos(this.topX / 4, this.topY / 4);
+		this.add(stepTop);
+
+		// same as rectangular key
 		final bottom = new RoundedRect();
-		bottom.size(width, height);
+		bottom.size(Std.int(width), Std.int(height));
 		bottom.radius(roundedCorner);
 		bottom.color = bottomColor;
 		bottom.depth = 0;
