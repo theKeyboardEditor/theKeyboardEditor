@@ -3,23 +3,10 @@ package viewport;
 import ceramic.InputMap;
 
 enum abstract ViewportInput(Int) {
-	final UP;
-	final DOWN;
-	final LEFT;
-	final RIGHT;
 	final PAN_UP;
 	final PAN_DOWN;
 	final PAN_LEFT;
 	final PAN_RIGHT;
-	final PAN;
-	final SELECT;
-	final ZOOM_IN;
-	final ZOOM_OUT;
-	final PLACE_1U;
-	final PLACE_ISO;
-	final UNDO;
-	final REDO;
-	final DELETE_SELECTED;
 }
 
 class Input extends InputMap<ViewportInput> {
@@ -27,21 +14,15 @@ class Input extends InputMap<ViewportInput> {
 		super();
 
 		// Basic movement
-		this.bindKeyCode(UP, UP);
-		this.bindKeyCode(DOWN, DOWN);
-		this.bindKeyCode(LEFT, LEFT);
-		this.bindKeyCode(RIGHT, RIGHT);
+		this.bindKeyCode(PAN_UP, UP);
+		this.bindKeyCode(PAN_DOWN, DOWN);
+		this.bindKeyCode(PAN_LEFT, LEFT);
+		this.bindKeyCode(PAN_RIGHT, RIGHT);
 
 		// Same as above, but with arrow keys
 		this.bindScanCode(PAN_UP, KEY_W);
 		this.bindScanCode(PAN_DOWN, KEY_S);
 		this.bindScanCode(PAN_LEFT, KEY_A);
 		this.bindScanCode(PAN_RIGHT, KEY_D);
-
-		// Key Placement (Temporary)
-		this.bindScanCode(PLACE_1U, KEY_P);
-		this.bindScanCode(PLACE_ISO, KEY_I);
-		this.bindScanCode(DELETE_SELECTED, BACKSPACE);
-		this.bindScanCode(DELETE_SELECTED, DELETE);
 	}
 }

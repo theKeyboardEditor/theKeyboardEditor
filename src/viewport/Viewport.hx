@@ -31,6 +31,7 @@ class Viewport extends Scene {
 	var placer: Placer;
 
 	// Movement variables
+	inline static final keyboardSpeed: Int = 35;
 
 	/**
 	 * For dragging of the viewport
@@ -69,7 +70,24 @@ class Viewport extends Scene {
 	/**
 	 * Dispatches keyboard and mouse inputs to the seperate functions
 	 */
-	public function inputDispatch() {}
+	public function inputCreate() {
+		// Here we account only for events that happen over this Viewport
+		this.onPointerDown(this, viewportMouseDown);
+	}
+	public function inputUpdate(delta: Float) {
+		if (inputMap.pressed(PAN_UP)) {
+			this.y += keyboardSpeed;
+		}
+		if (inputMap.pressed(PAN_DOWN)) {
+			this.y -= keyboardSpeed;
+		}
+		if (inputMap.pressed(PAN_LEFT)) {
+			this.x += keyboardSpeed;
+		}
+		if (inputMap.pressed(PAN_RIGHT)) {
+			this.x -= keyboardSpeed;
+		}
+	}
 
 	/**
 	 * Initializes the scene
@@ -97,8 +115,7 @@ class Viewport extends Scene {
 		placer.depth = 10;
 		this.add(placer);
 
-		// here we account only for events that happen over this Viewport
-		this.onPointerDown(workSurface, viewportMouseDown);
+		inputCreate();
 	}
 
 	/**
@@ -107,6 +124,7 @@ class Viewport extends Scene {
 	override public function update(delta: Float) {
 		// TODO: make this.pasue effective again
 		placerUpdate();
+		inputUpdate(delta);
 		queue.act();
 	}
 	// PLACER
@@ -226,7 +244,6 @@ class Viewport extends Scene {
 			case "edit":
 				if (!drag) {
 					// click on empty should deselect everything
-
 					for (i in 0...selectedKeys.length)
 						selectedKeys[i].select();
 					// and dump the selection
