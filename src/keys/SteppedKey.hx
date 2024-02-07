@@ -16,8 +16,8 @@ class SteppedKey extends KeyRenderer {
 
 	@content var topX: Float = 100 / 8; // TODO make this be actual units of 1U!
 	@content var topY: Float = (100 / 8) * 0.25;
-	@content final topOffset: Float = (100 / 8) * 2;
-	@content final roundedCorner: Float = 100 / 8;
+	@content topOffset: Float = (100 / 8) * 2;
+	@content roundedCorner: Float = 100 / 8;
 
 	override public function computeContent() {
 		this.border = new Border();
