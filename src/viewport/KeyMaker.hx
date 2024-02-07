@@ -16,6 +16,12 @@ class KeyMaker {
 		var width: Float;
 		var height: Float;
 
+		var stepWidth: Float = 0;
+		var stepHeight: Float = 0;
+		var stepOffsetX: Float = 0;
+		var stepOffsetY: Float = 0;
+		var stepped: Float = 0;
+
 		var widthNorth: Float = 0;
 		var heightNorth: Float = 0;
 		var widthSouth: Float = 0;
@@ -68,21 +74,60 @@ class KeyMaker {
 				}
 			}
 		}
-
 		final keySize = Std.parseFloat(k.shape); // every valid size will get caught here
 		if (Math.isNaN(keySize) == false) { // aka it is a number
 			if (k.shape.split(' ').indexOf("Vertical") != -1) { // it's vertical! '<Number>U Vertical'
+				// VERTICAL
 				width = unit - gapX;
 				height = unit * keySize - gapY;
+				if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped key!
+					stepped = Std.parseFloat(k.shape.split('Stepped')[1]) * unit + gapX;
+					if (stepped < 0) {
+						// NEGATIVE
+						stepOffsetY = width + stepped; // stepped is negative so this is actually subtraction!
+					} else {
+						stepOffsetY = 0;
+					}
+					stepOffsetX = 0;
+					stepHeight = Math.abs(stepped);
+					stepWidth = unit - gapY;
+				}
 			} else {
 				width = unit * keySize - gapX;
 				height = unit - gapY;
+				if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped key!
+					// STEPPED
+					stepped = Std.parseFloat(k.shape.split('Stepped')[1]) * unit + gapX;
+					if (stepped < 0) {
+						// NEGATIVE
+						stepOffsetX = width + stepped; // stepped is negative so this is actually subtraction!
+					} else {
+						stepOffsetX = 0;
+					}
+					stepOffsetY = 0;
+					stepWidth = Math.abs(stepped);
+					stepHeight = unit - gapY;
+				}
 			}
-			key = new keys.RectangularKey();
-			key.size(width, height);
-			key.topColor = keyColor;
-			key.bottomColor = keyShadow;
-			key.sourceKey = k;
+			if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped key!
+				var stepedKey = new keys.SteppedKey();
+				stepedKey.size(width, height);
+				stepedKey.stepWidth = stepWidth;
+				stepedKey.stepHeight = stepHeight;
+				stepedKey.stepOffsetX = stepOffsetX;
+				stepedKey.stepOffsetY = stepOffsetY;
+				stepedKey.stepped = stepped;
+				stepedKey.topColor = keyColor;
+				stepedKey.bottomColor = keyShadow;
+				stepedKey.sourceKey = k;
+				key = stepedKey;
+			} else {
+				key = new keys.RectangularKey();
+				key.size(width, height);
+				key.topColor = keyColor;
+				key.bottomColor = keyShadow;
+				key.sourceKey = k;
+			}
 		} else { // non '<number>U' cases:
 			var enterShaped = new keys.EnterShapedKey();
 			enterShaped.widthNorth = widthNorth;

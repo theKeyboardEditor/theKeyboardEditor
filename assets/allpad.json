@@ -46,7 +46,7 @@
       "profile": "OEM",
       "keySculpt": "R3",
       "amountOfUnits": 1,
-      "size": 21,
+      "size": 22,
       "keys": [
         {
           "id": 0,
@@ -246,7 +246,7 @@
           ]
         },
         {
-          "id": 17,
+          "id": 18,
           "position": [8, 4],
           "stabilizer": "2.25U",
           "shape": "2.5U",
@@ -257,7 +257,7 @@
           ]
         },
         {
-          "id": 17,
+          "id": 19,
           "position": [0, 6],
           "stabilizer": "7U",
           "shape": "7U",
@@ -268,13 +268,33 @@
           ]
         },
         {
-          "id": 17,
+          "id": 20,
           "position": [0, 5],
           "stabilizer": "7U",
           "shape": "10U",
           "legends": [
             {
               "legend": "10U (Big Ass Space)"
+            }
+          ]
+        },
+        {
+          "id": 21,
+          "position": [0, 7],
+          "shape": "1.75U Stepped 1.5",
+          "legends": [
+            {
+              "legend": "CAPS 3800"
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "position": [1.75, 7],
+          "shape": "1.75U Stepped -1.5",
+          "legends": [
+            {
+              "legend": "0083 SPAC"
             }
           ]
         }

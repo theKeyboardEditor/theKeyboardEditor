@@ -28,7 +28,7 @@ class RectangularKey extends KeyRenderer {
 
 		this.pivot = new Pivot();
 		this.pivot.pos(0, 0);
-		this.pivot.depth = 999; // ueber alles o/
+		this.pivot.depth = 500; // ueber alles o/
 		this.pivot.visible = false;
 		this.add(this.pivot);
 
