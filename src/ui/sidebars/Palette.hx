@@ -9,7 +9,7 @@ import haxe.ui.components.Button;
 	<hbox height="80%" width="156px" horizontalAlign="center" verticalAlign="center">
 		<scrollview width="153px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
 			<vbox width="100%" horizontalAlign="center" verticalAlign="center">
-				<grid id="colors" columns="2" horizontalAlign="center" verticalAlign="center" />
+				<grid id="colors" columns="${columns}" horizontalAlign="center" verticalAlign="center" />
 			</vbox>
 		</scrollview>
 	</hbox>
@@ -22,14 +22,17 @@ import haxe.ui.components.Button;
 </vbox>
 ')
 class Palette extends VBox {
+	public var columns: Int = 4;
+
 	public function new(viewport: viewport.Viewport) {
 		super();
+
 		final swatches = viewport.keyson?.colorTable.swatches ?? [];
 		for (color in swatches) {
 			var button = new Button();
 			button.id = color.name;
 			button.tooltip = color.name;
-			button.width = button.height = 64;
+			button.width = button.height = 128 / columns;
 			button.styleString = 'background-color: #${color.value.substring(4)};';
 			colors.addComponent(button);
 		}
