@@ -34,6 +34,11 @@ class UI extends haxe.ui.containers.VBox {
 		middle.styleString = "spacing: 0; width: 100%; height: 100%;";
 		this.addComponent(middle);
 
+		tabs = new TabView();
+		tabs.styleString = "width: 100%; height: 100%; padding: 0; background-color: #1d2021;";
+		tabs.findComponent('tabview-content').styleString = "background-color: #282828;";
+		tabs.closable = true;
+		
 		leftBox = new HBox();
 		leftBox.styleString = "spacing: 0; height: 100%;";
 		{
@@ -49,11 +54,6 @@ class UI extends haxe.ui.containers.VBox {
 			this.sidebar = modeSelector.switchMode("place");
 		}
 		middle.addComponent(leftBox);
-
-		tabs = new TabView();
-		tabs.styleString = "width: 100%; height: 100%; padding: 0; background-color: #1d2021;";
-		tabs.findComponent('tabview-content').styleString = "background-color: #282828;";
-		tabs.closable = true;
 		middle.addComponent(tabs);
 
 		// BOTTOM

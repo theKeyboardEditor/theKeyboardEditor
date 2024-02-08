@@ -78,7 +78,7 @@ class ModeSelector extends VerticalButtonBar {
 			case "keyboard":
 				ComponentBuilder.fromFile("ui/sidebars/keyboard.xml");
 			case "palette":
-				ComponentBuilder.fromFile("ui/sidebars/palette.xml");
+				new ui.sidebars.Palette((cast guiScene.tabs.selectedPage : ViewportContainer).display);
 			default:
 				ComponentBuilder.fromFile('ui/sidebars/void.xml');
 		};
