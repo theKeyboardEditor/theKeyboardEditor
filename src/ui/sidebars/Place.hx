@@ -24,6 +24,7 @@ import haxe.ui.events.UIEvent;
 ')
 class Place extends VBox {
 	// HaxeUI ID => Keyson Shape
+	// TODO make shape and lebels different one day
 	static final keyTypes: Map<String, String> = [
 		"oneU" => "1U",
 		"oneTwentyFiveU" => "1.25U",
@@ -33,6 +34,8 @@ class Place extends VBox {
 		"twoTwentyFiveU" => "2.25U",
 		"twoSeventyFiveU" => "2.75U",
 		"twoUVertical" => "2U Vertical",
+		"caps38oo" => "1.75U Stepped 1.5",
+		"caps3ooo" => "1.75U Stepped 1.25",
 		"ISO" => "ISO",
 		"sixTwentyFiveU" => "6.25U",
 		"BAE" => "BAE",
