@@ -38,7 +38,7 @@ class UI extends haxe.ui.containers.VBox {
 		tabs.styleString = "width: 100%; height: 100%; padding: 0; background-color: #1d2021;";
 		tabs.findComponent('tabview-content').styleString = "background-color: #282828;";
 		tabs.closable = true;
-		
+
 		leftBox = new HBox();
 		leftBox.styleString = "spacing: 0; height: 100%;";
 		{

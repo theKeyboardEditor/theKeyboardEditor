@@ -80,8 +80,8 @@ class EnterShapedKey extends KeyRenderer {
 		this.pivot.visible = false;
 		this.add(this.pivot);
 
-		top = enterShape(widthNorth - topOffset, heightNorth - topOffset, widthSouth - topOffset, heightSouth - topOffset, topColor,
-			topX, topY);
+		top = enterShape(widthNorth - topOffset, heightNorth - topOffset, widthSouth - topOffset, heightSouth - topOffset, topColor, topX,
+			topY);
 		top.depth = 5;
 		this.add(top);
 
@@ -96,7 +96,6 @@ class EnterShapedKey extends KeyRenderer {
 			this.x -= (widthSouth - widthNorth);
 			// TODO align the pivot too
 		}
-
 
 		super.computeContent();
 	}

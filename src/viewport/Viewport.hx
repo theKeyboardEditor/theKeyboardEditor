@@ -50,7 +50,6 @@ class Viewport extends Scene {
 	 */
 	var selectedKey: KeyRenderer; // still needed across few functions -.-'
 	var selectedKeys: Array<KeyRenderer> = []; // still needed across few functions -.-'
-	var drag: Bool = false; // is a drag or click event hapening flag
 	var deselection: Bool = false; // is a deselect event resulting in a drag
 
 	// Constants
@@ -66,45 +65,46 @@ class Viewport extends Scene {
 	 */
 	public function inputCreate() {
 		// Here we account only for events that happen over this Viewport
-		screen.onPointerDown(this, viewportMouseDown);
+		this.onPointerDown(this, viewportMouseDown);
 	}
-
 	public function inputUpdate(delta: Float) {
-// TODO add key actions here:
-/*
+		if (!active) {
+			return;
+		}
+
 		if (inputMap.pressed(PAN_UP)) {
-			this.y += keyboardSpeed;
+			workSurface.y += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_DOWN)) {
-			this.y -= keyboardSpeed;
+			workSurface.y -= keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_LEFT)) {
-			this.x += keyboardSpeed;
+			workSurface.x += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_RIGHT)) {
-			this.x -= keyboardSpeed;
+			workSurface.x -= keyboardSpeed;
 		}
-*/
 	}
 
 	/**
 	 * Initializes the scene
 	 */
 	override public function create() {
+		workSurface = parseInKeyboard(keyson);
+		this.add(workSurface);
+
 		var grid = new Grid();
 		grid.primaryStep(unit);
 		grid.subStep(placingStep);
+		this.size(grid.width, grid.height);
 
 		var gridFilter = new ceramic.Filter();
 		gridFilter.explicitRender = true;
 		gridFilter.autoRender = false;
 		gridFilter.size(grid.width, grid.height);
 		gridFilter.content.add(grid);
-		this.add(gridFilter);
+		workSurface.add(gridFilter);
 		gridFilter.render();
-
-		workSurface = parseInKeyboard(keyson);
-		this.add(workSurface);
 
 		placer = new Placer();
 		placer.piecesSize = unit; // the pieces are not scaled
@@ -169,8 +169,6 @@ class Viewport extends Scene {
 	 * Called from any viewport and any click on the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		drag = false;
-
 		// Store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
@@ -178,32 +176,8 @@ class Viewport extends Scene {
 		placerMismatchX = 0;
 		placerMismatchY = 0;
 
-		// Move along as we pan the touch
-		screen.onPointerMove(this, viewportMouseMove);
-
 		// Stop dragging when pointer is released
-		screen.oncePointerUp(this, viewportMouseUp);
-	}
-
-	/**
-	 * Ran during and at the very end of the pan of the viewport
-	 */
-	function viewportMouseMove(info: TouchInfo) {
-		final xStep = screen.pointerX - this.pointerStartX;
-		final yStep = screen.pointerY - this.pointerStartY;
-		// so far we need this to be set right here so we don't end up doing something silly
-		drag = xStep != 0 || yStep != 0;
-
-		switch (guiScene.modeSelector.barMode) {
-			case "edit":
-				// Check for minimum amount of movement before drag is declared
-				if (drag) {
-					drag = true;
-// TODO dragging happens elsewhere
-				}
-			case _:
-				// ignore undefined drag
-		}
+		this.oncePointerUp(this, viewportMouseUp);
 	}
 
 	/**
@@ -213,43 +187,36 @@ class Viewport extends Scene {
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
 				// place action
-				// for drag - what do we do - should we fill with keys on drag?
-				if (!drag) {
-					// TODO determine actually selected keyboard unit:
-					final device = 0;
-					final keyboardUnit = keyson.units[device];
-					final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
-					// TODO if there is a way to have a saner default legend?
-					final legend = shape;
-					// TODO calculate proper shaper size and offset:
-					final placerMismatchX = 1 / 2;
-					final placerMismatchY = 1 / 2;
-					final x = placer.x / unit - placerMismatchX;
-					final y = placer.y / unit - placerMismatchY;
-					final gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
-					final gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
-					final key = keyboardUnit.addKey(shape, [x, y], legend);
-					final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
-					keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
-					keycap.onPointerDown(keycap, (t: TouchInfo) -> {
-						keyMouseDown(t, keycap);
-					});
-					this.workSurface.add(keycap);
-				}
+				// TODO determine actually selected keyboard unit:
+				final device = 0;
+				final keyboardUnit = keyson.units[device];
+				final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
+				// TODO if there is a way to have a saner default legend?
+				final legend = shape;
+				// TODO calculate proper shaper size and offset:
+				final placerMismatchX = 1 / 2;
+				final placerMismatchY = 1 / 2;
+				final x = placer.x / unit - placerMismatchX;
+				final y = placer.y / unit - placerMismatchY;
+				final gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
+				final gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
+				final key = keyboardUnit.addKey(shape, [x, y], legend);
+				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
+				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
+				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
+					keyMouseDown(t, keycap);
+				});
+				this.workSurface.add(keycap);
 			case "edit":
-				if (!drag) {
-					// click on empty should toggle select (thus deselect) everything
-					for (i in 0...selectedKeys.length)
-						selectedKeys[i].select();
-					// and dump the selection
-					selectedKeys = [];
-				}
+				// click on empty should toggle select (thus deselect) everything
+				for (i in 0...selectedKeys.length)
+					selectedKeys[i].select();
+				// and dump the selection
+				selectedKeys = [];
 			case _:
 				// TODO either pan or start selection RoundedRectangle();
 				StatusBar.error('Panning available only in edit mode.');
 		}
-		// depending on mode
-		screen.offPointerMove(viewportMouseMove);
 	}
 
 	/**
@@ -259,7 +226,6 @@ class Viewport extends Scene {
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
 		this.selectedKey = keycap;
-		drag = false;
 
 		// store current mouse position
 		this.pointerStartX = screen.pointerX;
@@ -314,25 +280,16 @@ class Viewport extends Scene {
 	function keyMouseMove(info: TouchInfo) {
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
-			// just ignore drag
-			case "edit":
+			case _:
 				// there is a special case where the last selected element gets deselected and dragged
-				if (selectedKeys.length > 0) {
+				if (selectedKeys.length > 0 && !deselection && selectedKeys.length > 0) {
 					final xStep = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) - selectedKeys[0].x;
 					final yStep = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) - selectedKeys[0].y;
-					if (xStep != 0 || yStep != 0)
-						drag = true;
-					if (!deselection) {
-						if (selectedKeys.length > 0) {
-							for (key in selectedKeys) {
-								key.x += xStep;
-								key.y += yStep;
-							}
-						}
+					for (key in selectedKeys) {
+						key.x += xStep;
+						key.y += yStep;
 					}
 				}
-			case _:
-				// just ignore undefined actions
 		}
 	}
 
@@ -356,10 +313,9 @@ class Viewport extends Scene {
 					final x = (selectedKeys[0].x - keyPosStartX) / unit;
 					final y = (selectedKeys[0].y - keyPosStartY) / unit;
 					// only if at least x or y is non zero
-					// it was a valid drag
 					// that didn't result in deselection
 					// and we have actual keys to move at all
-					if (x != 0 || y != 0 && drag && !deselection && selectedKeys.length > 0) {
+					if (x != 0 || y != 0 && !deselection && selectedKeys.length > 0) {
 						queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
 						if (selectedKeys.length == 1) {
 							// deselect if single element was just dragged
@@ -368,7 +324,7 @@ class Viewport extends Scene {
 						}
 					}
 				}
-			case _:
+			default:
 				// undefined gets ignored
 		}
 
