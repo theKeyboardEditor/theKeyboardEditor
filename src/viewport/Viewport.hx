@@ -196,9 +196,8 @@ class Viewport extends Scene {
 		final xStep = this.viewportStartX + screen.pointerX - this.pointerStartX;
 		final yStep = this.viewportStartY + screen.pointerY - this.pointerStartY;
 		// so far we need this to be set right here so we don't end up doing something silly
-		if (xStep != 0 || yStep != 0) {
-			drag = true;
-		}
+		drag = xStep != 0 || yStep != 0;
+
 		switch (guiScene.modeSelector.barMode) {
 			case "edit":
 				// Check for minimum amount of movement before drag is declared
