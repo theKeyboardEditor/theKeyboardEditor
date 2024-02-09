@@ -33,12 +33,6 @@ class Viewport extends Scene {
 	// Movement variables
 	inline static final keyboardSpeed: Int = 35;
 
-	/**
-	 * For dragging of the viewport
-	 */
-	var viewportStartX: Float = 0.0;
-	var viewportStartY: Float = 0.0;
-
 	var pointerStartX: Float = 0.0;
 	var pointerStartY: Float = 0.0;
 
@@ -72,9 +66,12 @@ class Viewport extends Scene {
 	 */
 	public function inputCreate() {
 		// Here we account only for events that happen over this Viewport
-		this.onPointerDown(this, viewportMouseDown);
+		screen.onPointerDown(this, viewportMouseDown);
 	}
+
 	public function inputUpdate(delta: Float) {
+// TODO add key actions here:
+/*
 		if (inputMap.pressed(PAN_UP)) {
 			this.y += keyboardSpeed;
 		}
@@ -87,6 +84,7 @@ class Viewport extends Scene {
 		if (inputMap.pressed(PAN_RIGHT)) {
 			this.x -= keyboardSpeed;
 		}
+*/
 	}
 
 	/**
@@ -140,8 +138,8 @@ class Viewport extends Scene {
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		placer.x = coggify(screen.pointerX - screenX - this.x + placerMismatchX, placingStep);
-		placer.y = coggify(screen.pointerY - screenY - this.y + placerMismatchY, placingStep);
+		placer.x = coggify(screen.pointerX - screenX + placerMismatchX, placingStep);
+		placer.y = coggify(screen.pointerY - screenY + placerMismatchY, placingStep);
 		StatusBar.pos(placer.x / unit, placer.y / unit);
 	}
 
@@ -171,8 +169,6 @@ class Viewport extends Scene {
 	 * Called from any viewport and any click on the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		this.viewportStartX = this.x;
-		this.viewportStartY = this.y;
 		drag = false;
 
 		// Store current mouse position
@@ -193,8 +189,8 @@ class Viewport extends Scene {
 	 * Ran during and at the very end of the pan of the viewport
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-		final xStep = this.viewportStartX + screen.pointerX - this.pointerStartX;
-		final yStep = this.viewportStartY + screen.pointerY - this.pointerStartY;
+		final xStep = screen.pointerX - this.pointerStartX;
+		final yStep = screen.pointerY - this.pointerStartY;
 		// so far we need this to be set right here so we don't end up doing something silly
 		drag = xStep != 0 || yStep != 0;
 
@@ -203,8 +199,7 @@ class Viewport extends Scene {
 				// Check for minimum amount of movement before drag is declared
 				if (drag) {
 					drag = true;
-					this.x = xStep;
-					this.y = yStep;
+// TODO dragging happens elsewhere
 				}
 			case _:
 				// ignore undefined drag
@@ -294,8 +289,8 @@ class Viewport extends Scene {
 				}
 
 				// placer is usually referenced to mouse cursor, but while we move that's offset
-				placerMismatchX = keyPosStartX - pointerStartX + screenX + this.x + selectedKey.width / 2;
-				placerMismatchY = keyPosStartY - pointerStartY + screenY + this.y + selectedKey.height / 2;
+				placerMismatchX = keyPosStartX + screenX + selectedKey.width / 2;
+				placerMismatchY = keyPosStartY + screenY + selectedKey.height / 2;
 
 				placerMismatchX += switch (selectedKey.sourceKey.shape) {
 					case "BAE": -75;
