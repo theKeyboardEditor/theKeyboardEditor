@@ -195,12 +195,14 @@ class Viewport extends Scene {
 	function viewportMouseMove(info: TouchInfo) {
 		final xStep = this.viewportStartX + screen.pointerX - this.pointerStartX;
 		final yStep = this.viewportStartY + screen.pointerY - this.pointerStartY;
+		// so far we need this to be set right here so we don't end up doing something silly
+		if (xStep != 0 || yStep != 0) {
+			drag = true;
+		}
 		switch (guiScene.modeSelector.barMode) {
-			case "place":
-			// just ignore drag
 			case "edit":
 				// Check for minimum amount of movement before drag is declared
-				if (xStep != 0 || yStep != 0) {
+				if (drag) {
 					drag = true;
 					this.x = xStep;
 					this.y = yStep;
@@ -217,9 +219,8 @@ class Viewport extends Scene {
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
 				// place action
-				if (x != 0 || y != 0) {
-					// for drag - what do we do - should we fill with keys on drag?
-				} else {
+				// for drag - what do we do - should we fill with keys on drag?
+				if (!drag) {
 					// TODO determine actually selected keyboard unit:
 					final device = 0;
 					final keyboardUnit = keyson.units[device];
@@ -243,7 +244,7 @@ class Viewport extends Scene {
 				}
 			case "edit":
 				if (!drag) {
-					// click on empty should deselect everything
+					// click on empty should toggle select (thus deselect) everything
 					for (i in 0...selectedKeys.length)
 						selectedKeys[i].select();
 					// and dump the selection
