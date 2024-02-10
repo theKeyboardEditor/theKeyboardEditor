@@ -144,6 +144,20 @@ class Keyboard {
 		return key;
 	}
 
+	public function pushKey(pushee: Key) {
+		this.keys.push(pushee);
+		this.keys.sort(function(a,
+				b) return (Std.int((a.position[0] + 128 * a.position[1]) * 25) - Std.int((b.position[0] + 128 * b.position[1]) * 25)));
+		var i: Int = 0;
+		// sort out ids
+		this.keys = [
+			for (k in this.keys) {
+				k.id = i++;
+				k;
+			}
+		];
+	}
+
 	public function removeKeyById(id: Int) {
 		var i: Int = 0;
 		this.keys = [

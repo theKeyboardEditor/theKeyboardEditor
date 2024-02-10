@@ -18,6 +18,8 @@ class Viewport extends Scene {
 	public var barMode: String; // acces to active mode from gui.modeSelector.barMode
 	public final queue = new ActionQueue();
 
+	// TODO make cout, copy & paste actions for this
+
 	/**
 	 * This is where we map all of the different events to specific keys
 	 * See Input.hx file for more details
@@ -27,7 +29,7 @@ class Viewport extends Scene {
 	/**
 	 * Ceramic elements
 	 */
-	var workSurface: Visual;
+	public var workSurface: Visual;
 	var placer: Placer;
 
 	// Movement variables
@@ -56,6 +58,9 @@ class Viewport extends Scene {
 	// Size of a key
 	public var unit: Float = 100;
 
+	// Viewport scale (default is 1.00 for 100%)
+	public var viewScale: Float = 1.0;
+
 	inline static final placingStep: Float = Std.int(100 / 4);
 
 	// GLOBAL SCENE
@@ -68,9 +73,8 @@ class Viewport extends Scene {
 		this.onPointerDown(this, viewportMouseDown);
 	}
 	public function inputUpdate(delta: Float) {
-		if (!active) {
+		if (!active)
 			return;
-		}
 
 		if (inputMap.pressed(PAN_UP)) {
 			workSurface.y += keyboardSpeed;
@@ -84,6 +88,11 @@ class Viewport extends Scene {
 		if (inputMap.pressed(PAN_RIGHT)) {
 			workSurface.x -= keyboardSpeed;
 		}
+		if (inputMap.pressed(DELETE_SELECTED)) {
+			// TODO delete selected
+			StatusBar.inform('Delete key detected!');
+			queue.push(new actions.DeleteKeys(this, selectedKeys));
+		}
 	}
 
 	/**
@@ -94,8 +103,8 @@ class Viewport extends Scene {
 		this.add(workSurface);
 
 		var grid = new Grid();
-		grid.primaryStep(unit);
-		grid.subStep(placingStep);
+		grid.primaryStep(unit * viewScale);
+		grid.subStep(placingStep * viewScale);
 		this.size(grid.width, grid.height);
 
 		var gridFilter = new ceramic.Filter();
@@ -107,9 +116,10 @@ class Viewport extends Scene {
 		gridFilter.render();
 
 		placer = new Placer();
-		placer.piecesSize = unit; // the pieces are not scaled
-		placer.size(unit, unit);
-		placer.anchor(.5, .5);
+		placer.piecesSize = unit * viewScale; // the pieces are not scaled
+		placer.size(unit * viewScale, unit * viewScale);
+		// anchor has to be aligned to the top left edge or placing is off!
+		placer.anchor(0, 0);
 		placer.depth = 10;
 		this.add(placer);
 
@@ -138,9 +148,48 @@ class Viewport extends Scene {
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		placer.x = coggify(screen.pointerX - screenX + placerMismatchX, placingStep);
-		placer.y = coggify(screen.pointerY - screenY + placerMismatchY, placingStep);
-		StatusBar.pos(placer.x / unit, placer.y / unit);
+		switch (guiScene.modeSelector.barMode) {
+			case "place":
+				placerMismatchX = 0;
+				placerMismatchY = 0;
+				placer.visible = true;
+				final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
+				final gapX = Std.int((keyson.units[0].keyStep[Axis.X]
+					- keyson.units[0].capSize[Axis.X]) / keyson.units[0].keyStep[Axis.X] * unit * viewScale);
+				final gapY = Std.int((keyson.units[0].keyStep[Axis.Y]
+					- keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
+				switch shape {
+					case "ISO":
+						placer.size(1.50 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+					case "ISO Inverted":
+						placer.size(1.50 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+					case "BAE":
+						placerMismatchX = 0.75;
+						placer.size(2.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+					case "BAE Inverted":
+						placer.size(2.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+					case "XT_2U":
+						placerMismatchX = 1;
+						placer.size(2.00 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+					case "AEK":
+						placerMismatchX = 0;
+						placer.size(1.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+					default:
+						if (Math.isNaN(Std.parseFloat(shape)) == false) { // aka it is a number
+							if (shape.split(' ').indexOf("Vertical") != -1)
+								placer.size(unit * viewScale - gapX, unit * viewScale * Std.parseFloat(shape) - gapY);
+							else
+								placer.size(unit * viewScale * Std.parseFloat(shape) - gapX, unit * viewScale - gapY);
+						}
+				}
+				placerMismatchX = coggify(placer.width / unit / viewScale / 2, .25);
+				placerMismatchY = coggify(placer.height / unit / viewScale / 2, .25);
+				placer.x = coggify(screen.pointerX - screenX - placerMismatchX * unit * viewScale, placingStep);
+				placer.y = coggify(screen.pointerY - screenY - placerMismatchY * unit * viewScale, placingStep);
+				StatusBar.pos(placer.x / unit * viewScale, placer.y / unit * viewScale);
+			default:
+				placer.visible = false;
+		}
 	}
 
 	/**
@@ -149,12 +198,14 @@ class Viewport extends Scene {
 	function parseInKeyboard(keyboard: Keyson): Visual {
 		final workKeyboard = new Visual();
 		for (keyboardUnit in keyboard.units) {
-			final gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
-			final gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
+			final gapX = Std.int((keyboardUnit.keyStep[Axis.X]
+				- keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
+			final gapY = Std.int((keyboardUnit.keyStep[Axis.Y]
+				- keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 
 			for (key in keyboardUnit.keys) {
-				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
-				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
+				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
+				keycap.pos(unit * viewScale * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 					keyMouseDown(t, keycap);
 				});
@@ -164,6 +215,7 @@ class Viewport extends Scene {
 		return workKeyboard;
 	}
 	// APPLYING DESIGN
+	// SURFACE ACTIONS
 
 	/**
 	 * Called from any viewport and any click on the start of the drag
@@ -173,15 +225,12 @@ class Viewport extends Scene {
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 
-		placerMismatchX = 0;
-		placerMismatchY = 0;
-
 		// Stop dragging when pointer is released
 		this.oncePointerUp(this, viewportMouseUp);
 	}
 
 	/**
-	 * finished the pan make a return
+	 * react only once the button press is over
 	 */
 	function viewportMouseUp(info: TouchInfo) {
 		switch (guiScene.modeSelector.barMode) {
@@ -194,15 +243,21 @@ class Viewport extends Scene {
 				// TODO if there is a way to have a saner default legend?
 				final legend = shape;
 				// TODO calculate proper shaper size and offset:
-				final placerMismatchX = 1 / 2;
-				final placerMismatchY = 1 / 2;
-				final x = placer.x / unit - placerMismatchX;
-				final y = placer.y / unit - placerMismatchY;
-				final gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
-				final gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
+				var y = placer.y / unit * viewScale;
+				var x = placer.x / unit * viewScale;
+				switch shape {
+					case "BAE":
+						x += 0.75;
+					case "XT_2U":
+						x += 1;
+				}
+				final gapX = Std.int((keyboardUnit.keyStep[Axis.X]
+					- keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
+				final gapY = Std.int((keyboardUnit.keyStep[Axis.Y]
+					- keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 				final key = keyboardUnit.addKey(shape, [x, y], legend);
-				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, keyboardUnit.keysColor);
-				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
+				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
+				keycap.pos(unit * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 					keyMouseDown(t, keycap);
 				});
@@ -218,6 +273,7 @@ class Viewport extends Scene {
 				StatusBar.error('Panning available only in edit mode.');
 		}
 	}
+	// KEY ACTIONS
 
 	/**
 	 * This gets called only if clicked on a key on the worksurface!
@@ -249,20 +305,10 @@ class Viewport extends Scene {
 
 				// TODO infer the selection size and apply it to the placer:
 				if (selectedKeys.length > 0) {
-					placer.size(selectedKeys[0].width, selectedKeys[0].height);
+					placer.visible = false;
 				} else {
-					placer.size(selectedKey.width, selectedKey.height);
+					placer.visible = true;
 				}
-
-				// placer is usually referenced to mouse cursor, but while we move that's offset
-				placerMismatchX = keyPosStartX + screenX + selectedKey.width / 2;
-				placerMismatchY = keyPosStartY + screenY + selectedKey.height / 2;
-
-				placerMismatchX += switch (selectedKey.sourceKey.shape) {
-					case "BAE": -75;
-					case "XT_2U": -100;
-					default: 0;
-				};
 			case _:
 				// just ignore undefined actions for now
 		}
@@ -298,9 +344,11 @@ class Viewport extends Scene {
 	 */
 	function keyMouseUp(info: TouchInfo) {
 		switch (guiScene.modeSelector.barMode) {
+			case "place":
+				placer.visible = true;
 			case "edit":
 				// Restore placer to default size
-				placer.size(unit, unit);
+				placer.size(unit * viewScale, unit * viewScale);
 				placerMismatchX = 0;
 				placerMismatchY = 0;
 
@@ -310,8 +358,8 @@ class Viewport extends Scene {
 					 * If the previous first member gets deselected the array will change pos()
 					 * TODO: how can we know which remaining key will not move the array's position?
 					 */
-					final x = (selectedKeys[0].x - keyPosStartX) / unit;
-					final y = (selectedKeys[0].y - keyPosStartY) / unit;
+					final x = (selectedKeys[0].x - keyPosStartX) / unit * viewScale;
+					final y = (selectedKeys[0].y - keyPosStartY) / unit * viewScale;
 					// only if at least x or y is non zero
 					// that didn't result in deselection
 					// and we have actual keys to move at all
