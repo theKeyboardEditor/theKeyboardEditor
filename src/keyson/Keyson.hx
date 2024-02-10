@@ -118,42 +118,22 @@ class Keyboard {
 		this.keys = [];
 	}
 
-	public function addKey(shape: String, pos: Array<Float>, leg: String): Key {
-		// calculate a new ID
+	public function createKey(shape: String, pos: Array<Float>, legend: String): Key {
 		var uid = this.keys.length;
-		// define a new key:
-		var key = new Key(uid, shape, pos, leg);
-		// append the new key to the end of the array
-		this.keys.push(key);
-		// TODO use our sortKeys() function here
-		// now sort for Y and X coordinates:
-		// to get Y placement take precedence we will premultiply Y by 128
-		// naively (assuming no keyboard will ever have more than 128 keys in one row)
-		// the difference resolution is 25/100 (a hundredth of a quarter)
-		this.keys.sort(function(a,
-				b) return (Std.int((a.position[0] + 128 * a.position[1]) * 25) - Std.int((b.position[0] + 128 * b.position[1]) * 25)));
-		var i: Int = 0;
-		// sort out ids
-		this.keys = [
-			for (k in this.keys) {
-				k.id = i++;
-				k;
-			}
-		];
-		// trace(keys);
+		var key = new Key(uid, shape, pos, legend);
+		pushKey(key);
 		return key;
 	}
 
 	public function pushKey(pushee: Key) {
 		this.keys.push(pushee);
-		this.keys.sort(function(a,
-				b) return (Std.int((a.position[0] + 128 * a.position[1]) * 25) - Std.int((b.position[0] + 128 * b.position[1]) * 25)));
-		var i: Int = 0;
-		// sort out ids
+		sortKeys();
+	}
+
+	public function removeKey(deletee: Key) {
 		this.keys = [
-			for (k in this.keys) {
-				k.id = i++;
-				k;
+			for (key in this.keys.filter(key -> key != deletee)) {
+				key;
 			}
 		];
 	}
@@ -168,30 +148,18 @@ class Keyboard {
 		];
 	}
 
-	public function removeKey(deletee: Key) {
-		this.keys = [
-			for (key in this.keys.filter(key -> key != deletee)) {
-				key;
-			}
-		];
-	}
+	public function sortKeys() {
+		this.keys.sort((a, b) -> {
+			return (Std.int((a.position[0] + 128 * a.position[1]) * 25) - Std.int((b.position[0] + 128 * b.position[1]) * 25));
+		});
 
-	public inline function sortKeys() {
-		// sort for Y and X coordinates:
-		// to get Y placement take precedence we will premultiply Y by 128
-		// naively (assuming no keyboard will ever have more than 128 keys in one row)
-		// the difference resolution is 25/100 (a hundredth of a quarter)
-		this.keys.sort(function(a,
-				b) return (Std.int((a.position[0] + 128 * a.position[1]) * 25) - Std.int((b.position[0] + 128 * b.position[1]) * 25)));
 		var i: Int = 0;
-		// sort out ids
 		this.keys = [
 			for (k in this.keys) {
 				k.id = i++;
 				k;
 			}
 		];
-		// trace(keys);
 	}
 }
 

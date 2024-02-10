@@ -77,9 +77,9 @@ class KLE {
 					}
 					// trace(s, "/", legend);
 					if (shape == "ISO") // special case - for one reason or the other it renders 0.25U off to the right
-						key = keyson.units[0].addKey(shape, [x - 0.25, y], legend)
+						key = keyson.units[0].createKey(shape, [x - 0.25, y], legend)
 					else
-						key = keyson.units[0].addKey(shape, [x, y], legend);
+						key = keyson.units[0].createKey(shape, [x, y], legend);
 					key.keysColor = keysColor;
 					key.legends[0].legendColor = legendColor;
 					key.legends[0].legendSize = legendSize;
