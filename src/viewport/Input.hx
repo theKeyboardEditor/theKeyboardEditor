@@ -7,6 +7,14 @@ enum abstract ViewportInput(Int) {
 	final PAN_DOWN;
 	final PAN_LEFT;
 	final PAN_RIGHT;
+	final ZOOM_IN;
+	final ZOOM_OUT;
+	final UNDO;
+	final REDO;
+	final DELETE_SELECTED;
+	final COPY;
+	final CUT;
+	final PASTE;
 }
 
 class Input extends InputMap<ViewportInput> {
@@ -24,5 +32,8 @@ class Input extends InputMap<ViewportInput> {
 		this.bindScanCode(PAN_DOWN, KEY_S);
 		this.bindScanCode(PAN_LEFT, KEY_A);
 		this.bindScanCode(PAN_RIGHT, KEY_D);
+
+		this.bindScanCode(DELETE_SELECTED, BACKSPACE);
+		this.bindScanCode(DELETE_SELECTED, DELETE);
 	}
 }

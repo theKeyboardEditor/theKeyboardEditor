@@ -18,23 +18,23 @@ class DeleteKeys extends Action {
 		// TODO is here any difference with act and redo?
 
 		for (member in deleted) {
-			for (unit in viewport.keyson.units) {
+			for (u in this.viewport.keyson.units) {
 				// clear keyson:
-				this.viewport.keyson.units[unit].removeKey(member.sourceKey);
+				u.removeKey(member.sourceKey);
 				// clear Ceramic:
-				this.viewport.workKeyboard.dispose(member);
+				this.viewport.workSurface.remove(member);
 			}
 		}
-		super.act();
+		super.act(type);
 	}
 
 	override public function undo() {
 		for (member in deleted) {
-			for (unit in viewport.keyson.units) {
+			for (u in this.viewport.keyson.units) {
 				// recreate keyson:
-				this.viewport.keyson.units[unit].addKey(member.sourceKey);
+				u.pushKey(member.sourceKey);
 				// recreate Ceramic:
-				this.viewport.workKeyboard.add(member);
+				this.viewport.workSurface.add(member);
 			}
 		}
 	}

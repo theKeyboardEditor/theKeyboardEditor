@@ -29,9 +29,6 @@ class EnterShapedKey extends KeyRenderer {
 	static inline var topOffset: Float = (100 / 8) * 2;
 	static inline var roundedCorner: Float = (100 / 1 / 8);
 
-	var signumR: Array<Int>;
-	var signumT: Array<Int>;
-	var signumB: Array<Int>;
 	var offsetL: Float;
 	var offsetR: Float;
 	var offsetT: Float;
