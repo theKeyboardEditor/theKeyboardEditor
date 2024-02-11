@@ -301,7 +301,7 @@ class Viewport extends Scene {
 				// move and select keys
 				if (selectedKey.border.visible) {
 					// is selected: (by using select we take care of pivot too!)
-					selectedKey.select();
+					selectedKey.deselect();
 					selectedKeys.remove(selectedKey);
 					// we just had a deselect, allowing drag leads to problems.
 					deselection = true;
@@ -393,7 +393,7 @@ class Viewport extends Scene {
 	public function clearSelection(deep: Bool) {
 		//
 		for (i in 0...selectedKeys.length)
-			selectedKeys[i].select();
+			selectedKeys[i].deselect();
 		if (deep)
 			selectedKeys = [];
 	}

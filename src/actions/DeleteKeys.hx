@@ -19,8 +19,6 @@ class DeleteKeys extends Action {
 		for (member in deletees) {
 			// clear keyson:
 			this.device.removeKey(member.sourceKey);
-			// toggle selection status:
-			member.select();
 			// clear Ceramic:
 			this.viewport.workSurface.remove(member);
 		}
