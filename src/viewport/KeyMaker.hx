@@ -185,7 +185,7 @@ class KeyMaker {
 	}
 
 	static function getKeyShadow(color: Color): Color {
-		color.lightnessHSLuv -= 0.15;
+		color.lightnessHSLuv -= 0.12;
 		return color;
 	}
 }

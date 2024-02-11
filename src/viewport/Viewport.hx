@@ -50,6 +50,8 @@ class Viewport extends Scene {
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
+	public var workDevice: Int = 0; // this will be set externally
+	var keyboardUnit: keyson.Keyboard;
 	var selectedKey: KeyRenderer; // still needed across few functions -.-'
 	var selectedKeys: Array<KeyRenderer> = []; // still needed across few functions -.-'
 	var deselection: Bool = false; // is a deselect event resulting in a drag
@@ -57,6 +59,9 @@ class Viewport extends Scene {
 	// Constants
 	// Size of a key
 	public var unit: Float = 100;
+	// gap around the keycap in U/100
+	public var gapX: Int;
+	public var gapY: Int;
 
 	// Viewport scale (default is 1.00 for 100%)
 	public var viewScale: Float = 1.0;
@@ -89,9 +94,19 @@ class Viewport extends Scene {
 			workSurface.x -= keyboardSpeed;
 		}
 		if (inputMap.pressed(DELETE_SELECTED)) {
-			// TODO delete selected
-			StatusBar.inform('Delete key detected!');
-			queue.push(new actions.DeleteKeys(this, selectedKeys));
+			// TODO determine actually selected keyboard unit:
+			if (selectedKeys.length > 0) {
+				// ignore any faux allarms
+				keyboardUnit = keyson.units[workDevice];
+				StatusBar.inform('Delete key detected!');
+				// they remain selected and it's eery! D:
+				for (i in 0...selectedKeys.length)
+					selectedKeys[i].select();
+				queue.push(new actions.DeleteKeys(this, keyboardUnit, selectedKeys));
+				selectedKeys = [];
+			}
+			// we'll just pretend there are no rebounces on delete key ;)
+			// (but there are 2-3!)
 		}
 	}
 
@@ -154,10 +169,8 @@ class Viewport extends Scene {
 				placerMismatchY = 0;
 				placer.visible = true;
 				final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
-				final gapX = Std.int((keyson.units[0].keyStep[Axis.X]
-					- keyson.units[0].capSize[Axis.X]) / keyson.units[0].keyStep[Axis.X] * unit * viewScale);
-				final gapY = Std.int((keyson.units[0].keyStep[Axis.Y]
-					- keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
+				gapX = Std.int((keyson.units[0].keyStep[Axis.X] - keyson.units[0].capSize[Axis.X]) / keyson.units[0].keyStep[Axis.X] * unit * viewScale);
+				gapY = Std.int((keyson.units[0].keyStep[Axis.Y] - keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
 				switch shape {
 					case "ISO":
 						placer.size(1.50 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
@@ -198,9 +211,9 @@ class Viewport extends Scene {
 	function parseInKeyboard(keyboard: Keyson): Visual {
 		final workKeyboard = new Visual();
 		for (keyboardUnit in keyboard.units) {
-			final gapX = Std.int((keyboardUnit.keyStep[Axis.X]
+			gapX = Std.int((keyboardUnit.keyStep[Axis.X]
 				- keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
-			final gapY = Std.int((keyboardUnit.keyStep[Axis.Y]
+			gapY = Std.int((keyboardUnit.keyStep[Axis.Y]
 				- keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 
 			for (key in keyboardUnit.keys) {
@@ -237,8 +250,7 @@ class Viewport extends Scene {
 			case "place":
 				// place action
 				// TODO determine actually selected keyboard unit:
-				final device = 0;
-				final keyboardUnit = keyson.units[device];
+				keyboardUnit = keyson.units[workDevice];
 				final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
 				// TODO if there is a way to have a saner default legend?
 				final legend = shape;
@@ -251,17 +263,19 @@ class Viewport extends Scene {
 					case "XT_2U":
 						x += 1;
 				}
-				final gapX = Std.int((keyboardUnit.keyStep[Axis.X]
+				gapX = Std.int((keyboardUnit.keyStep[Axis.X]
 					- keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
-				final gapY = Std.int((keyboardUnit.keyStep[Axis.Y]
+				gapY = Std.int((keyboardUnit.keyStep[Axis.Y]
 					- keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
-				final key = keyboardUnit.createKey(shape, [x, y], legend);
-				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
-				keycap.pos(unit * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
-				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
-					keyMouseDown(t, keycap);
-				});
-				this.workSurface.add(keycap);
+				// action to place the key
+				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
+//				final key = keyboardUnit.createKey(shape, [x, y], legend);
+//				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
+//				keycap.pos(unit * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
+//				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
+//					keyMouseDown(t, keycap);
+//				});
+//				this.workSurface.add(keycap);
 			case "edit":
 				// click on empty should toggle select (thus deselect) everything
 				for (i in 0...selectedKeys.length)
@@ -278,7 +292,8 @@ class Viewport extends Scene {
 	/**
 	 * This gets called only if clicked on a key on the worksurface!
 	 */
-	function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
+	// because we create keys in actions we need this accesible (thus public) from there
+	public function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
 		this.selectedKey = keycap;
