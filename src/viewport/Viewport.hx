@@ -389,7 +389,6 @@ class Viewport extends Scene {
 		// The touch is already over, now cleanup and retur from there
 		screen.offPointerMove(keyMouseMove);
 	}
-
 	public function clearSelection(deep: Bool) {
 		for (i in 0...selectedKeys.length)
 			selectedKeys[i].deselect();
@@ -402,9 +401,9 @@ class Viewport extends Scene {
 			keyboardUnit = keyson.units[workDevice];
 			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeys));
 		}
-		// we'll just pretend there are no rebounces on delete key ;)
 		StatusBar.inform('Copy action detected.');
 	}
+
 	public function cut() {
 		if (selectedKeys.length > 0) {
 			keyboardUnit = keyson.units[workDevice];
@@ -414,9 +413,9 @@ class Viewport extends Scene {
 			// delayed selection clearing
 			selectedKeys = [];
 		}
-		// we'll just pretend there are no rebounces on delete key ;)
 		StatusBar.inform('Cut action detected.');
 	}
+
 	public function paste() {
 		StatusBar.inform('Paste action detected.');
 	}
