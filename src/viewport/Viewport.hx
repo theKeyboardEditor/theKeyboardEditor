@@ -391,7 +391,6 @@ class Viewport extends Scene {
 	}
 
 	public function clearSelection(deep: Bool) {
-		//
 		for (i in 0...selectedKeys.length)
 			selectedKeys[i].deselect();
 		if (deep)
