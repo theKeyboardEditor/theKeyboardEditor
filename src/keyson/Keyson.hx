@@ -121,15 +121,22 @@ class Keyboard {
 	public function createKey(shape: String, pos: Array<Float>, legend: String): Key {
 		var uid = this.keys.length;
 		var key = new Key(uid, shape, pos, legend);
-		pushKey(key);
+		insertKey(key);
 		return key;
 	}
 
-	public function pushKey(pushee: Key) {
-		this.keys.push(pushee);
+	/*
+	 *  insert a keyson key and put it in it's place by position and id
+	 */
+	public function insertKey(insertee: Key) {
+		this.keys.push(insertee);
 		sortKeys();
+		return insertee;
 	}
 
+	/*
+	 *  remove key by keyson reference
+	 */
 	public function removeKey(deletee: Key) {
 		this.keys = [
 			for (key in this.keys.filter(key -> key != deletee)) {
@@ -148,11 +155,16 @@ class Keyboard {
 		];
 	}
 
+	/*
+	 *  sort keyson by position and steamroll the ids
+	 */
 	public function sortKeys() {
+		// first order all keys by X and Y position
 		this.keys.sort((a, b) -> {
 			return (Std.int((a.position[0] + 128 * a.position[1]) * 25) - Std.int((b.position[0] + 128 * b.position[1]) * 25));
 		});
 
+		// next adjust the id to reflect just that
 		var i: Int = 0;
 		this.keys = [
 			for (k in this.keys) {
