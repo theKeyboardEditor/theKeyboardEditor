@@ -24,6 +24,6 @@ class StatusBar {
 	public static function pos(x: Float, y: Float) {
 		if (element == null)
 			return;
-		element.findComponent("pos").text = 'cursor pos: $x x $y';
+		element.findComponent("pos").text = 'cursor pos: $x x $y [clp:${CopyBuffer.selectedObjects.length}]';
 	}
 }

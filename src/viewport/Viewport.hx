@@ -204,6 +204,7 @@ class Viewport extends Scene {
 			default:
 				placer.visible = false;
 		}
+		StatusBar.pos(placer.x, placer.y);
 	}
 
 	/**
@@ -266,13 +267,6 @@ class Viewport extends Scene {
 				gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
-			//				final key = keyboardUnit.createKey(shape, [x, y], legend);
-			//				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
-			//				keycap.pos(unit * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
-			//				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
-			//					keyMouseDown(t, keycap);
-			//				});
-			//				this.workSurface.add(keycap);
 			case "edit":
 				// click on empty should toggle select (thus deselect) everything
 				// and dump the selection
@@ -368,8 +362,8 @@ class Viewport extends Scene {
 					 * If the previous first member gets deselected the array will change pos()
 					 * TODO: how can we know which remaining key will not move the array's position?
 					 */
-					final x = (selectedKeys[0].x - keyPosStartX) / unit * viewScale;
-					final y = (selectedKeys[0].y - keyPosStartY) / unit * viewScale;
+					var x = (selectedKeys[0].x - keyPosStartX) / unit * viewScale;
+					var y = (selectedKeys[0].y - keyPosStartY) / unit * viewScale;
 					// only if at least x or y is non zero
 					// that didn't result in deselection
 					// and we have actual keys to move at all
@@ -398,6 +392,8 @@ class Viewport extends Scene {
 
 	public function copy() {
 		if (selectedKeys.length > 0) {
+			CopyBuffer.selectedObjects = [];
+			// copy into a clean buffer
 			keyboardUnit = keyson.units[workDevice];
 			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeys));
 		}
@@ -406,6 +402,8 @@ class Viewport extends Scene {
 
 	public function cut() {
 		if (selectedKeys.length > 0) {
+			CopyBuffer.selectedObjects = [];
+			// cut into a clean buffer
 			keyboardUnit = keyson.units[workDevice];
 			// they remain selected after cutting away and it's eery! D:
 			clearSelection(false);
@@ -417,6 +415,13 @@ class Viewport extends Scene {
 	}
 
 	public function paste() {
+		if (CopyBuffer.selectedObjects.length > 0) {
+			// TODO make a offset from the sotred data somehow
+			var y = placer.y / unit * viewScale;
+			var x = placer.x / unit * viewScale;
+			keyboardUnit = keyson.units[workDevice];
+			queue.push(new actions.EditPaste(this, keyboardUnit, x, y));
+		}
 		StatusBar.inform('Paste action detected.');
 	}
 }

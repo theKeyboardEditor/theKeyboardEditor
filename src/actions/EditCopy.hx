@@ -2,9 +2,8 @@ package actions;
 
 import viewport.Viewport;
 import keyson.Keyson;
-import CopyBuffer;
 
-class EditCut extends Action {
+class EditCopy extends Action {
 	final viewport: Viewport;
 	final device: keyson.Keyboard; // the receiving unit
 	var copyees: Array<KeyRenderer>;
@@ -19,11 +18,12 @@ class EditCut extends Action {
 	override public function act(type: ActionType) {
 		// take in the selection to the editBuffer
 		CopyBuffer.selectedObjects = copyees.copy();
+		trace('Copy: ${CopyBuffer.selectedObjects}');
 		super.act(type);
 	}
 
 	override public function undo() {
 		// clear the editBuffer
-		CopyBuffer.selectedObjects = [];
+		super.undo();
 	}
 }

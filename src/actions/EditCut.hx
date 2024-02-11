@@ -2,7 +2,6 @@ package actions;
 
 import viewport.Viewport;
 import keyson.Keyson;
-import CopyBuffer;
 
 class EditCut extends Action {
 	final viewport: Viewport;
@@ -26,6 +25,7 @@ class EditCut extends Action {
 			// clear Ceramic:
 			this.viewport.workSurface.remove(member);
 		}
+		trace('Cut: ${CopyBuffer.selectedObjects}');
 		super.act(type);
 	}
 
@@ -38,6 +38,6 @@ class EditCut extends Action {
 			this.viewport.workSurface.add(member);
 		}
 		// clear the editBuffer
-		CopyBuffer.selectedObjects = [];
+		super.undo();
 	}
 }
