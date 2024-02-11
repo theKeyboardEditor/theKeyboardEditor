@@ -396,4 +396,14 @@ class Viewport extends Scene {
 		if (deep)
 			selectedKeys = [];
 	}
+
+	public function copy() {
+		StatusBar.inform('Copy action detected.');
+	}
+	public function cut() {
+		StatusBar.inform('Cut action detected.');
+	}
+	public function paste() {
+		StatusBar.inform('Paste action detected.');
+	}
 }
