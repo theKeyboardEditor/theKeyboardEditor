@@ -98,8 +98,7 @@ class Viewport extends Scene {
 			if (selectedKeys.length > 0) {
 				// ignore any faux allarms
 				keyboardUnit = keyson.units[workDevice];
-				StatusBar.inform('Delete key detected!');
-				// they remain selected and it's eery! D:
+				// they remain selected after deletion and it's eery! D:
 				for (i in 0...selectedKeys.length)
 					selectedKeys[i].select();
 				queue.push(new actions.DeleteKeys(this, keyboardUnit, selectedKeys));
