@@ -79,19 +79,18 @@ class MainScene extends Scene {
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Y)], () -> {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
 		});
-		/*
-			keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_C)], () -> {
-				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.edit.copy();
-			});
 
-			keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_X)], () -> {
-				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.edit.cut();
-			});
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_C)], () -> {
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.copy();
+		});
 
-			keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_V)], () -> {
-				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.edit.paste();
-			});
-		 */
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_X)], () -> {
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.cut();
+		});
+
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_V)], () -> {
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.paste();
+		});
 	}
 
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
