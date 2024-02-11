@@ -398,9 +398,23 @@ class Viewport extends Scene {
 	}
 
 	public function copy() {
+		if (selectedKeys.length > 0) {
+			keyboardUnit = keyson.units[workDevice];
+			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeys));
+		}
+		// we'll just pretend there are no rebounces on delete key ;)
 		StatusBar.inform('Copy action detected.');
 	}
 	public function cut() {
+		if (selectedKeys.length > 0) {
+			keyboardUnit = keyson.units[workDevice];
+			// they remain selected after cutting away and it's eery! D:
+			clearSelection(false);
+			queue.push(new actions.EditCut(this, keyboardUnit, selectedKeys));
+			// delayed selection clearing
+			selectedKeys = [];
+		}
+		// we'll just pretend there are no rebounces on delete key ;)
 		StatusBar.inform('Cut action detected.');
 	}
 	public function paste() {
