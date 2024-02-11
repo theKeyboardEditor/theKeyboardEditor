@@ -99,9 +99,9 @@ class Viewport extends Scene {
 				// ignore any faux allarms
 				keyboardUnit = keyson.units[workDevice];
 				// they remain selected after deletion and it's eery! D:
-				for (i in 0...selectedKeys.length)
-					selectedKeys[i].select();
+				clearSelection(false);
 				queue.push(new actions.DeleteKeys(this, keyboardUnit, selectedKeys));
+				// delayed selection clearing
 				selectedKeys = [];
 			}
 			// we'll just pretend there are no rebounces on delete key ;)
@@ -275,10 +275,8 @@ class Viewport extends Scene {
 			//				this.workSurface.add(keycap);
 			case "edit":
 				// click on empty should toggle select (thus deselect) everything
-				for (i in 0...selectedKeys.length)
-					selectedKeys[i].select();
 				// and dump the selection
-				selectedKeys = [];
+				clearSelection(true);
 			case _:
 				// TODO either pan or start selection RoundedRectangle();
 				StatusBar.error('Panning available only in edit mode.');
@@ -390,5 +388,13 @@ class Viewport extends Scene {
 
 		// The touch is already over, now cleanup and retur from there
 		screen.offPointerMove(keyMouseMove);
+	}
+
+	public function clearSelection(deep: Bool) {
+		//
+		for (i in 0...selectedKeys.length)
+			selectedKeys[i].select();
+		if (deep)
+			selectedKeys = [];
 	}
 }
