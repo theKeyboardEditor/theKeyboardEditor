@@ -16,7 +16,7 @@ class DeleteKeys extends Action {
 	}
 
 	override public function act(type: ActionType) {
-			for (member in deletees) {
+		for (member in deletees) {
 			// clear keyson:
 			this.device.removeKey(member.sourceKey);
 			// toggle selection status:

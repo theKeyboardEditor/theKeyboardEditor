@@ -169,8 +169,10 @@ class Viewport extends Scene {
 				placerMismatchY = 0;
 				placer.visible = true;
 				final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
-				gapX = Std.int((keyson.units[0].keyStep[Axis.X] - keyson.units[0].capSize[Axis.X]) / keyson.units[0].keyStep[Axis.X] * unit * viewScale);
-				gapY = Std.int((keyson.units[0].keyStep[Axis.Y] - keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
+				gapX = Std.int((keyson.units[0].keyStep[Axis.X]
+					- keyson.units[0].capSize[Axis.X]) / keyson.units[0].keyStep[Axis.X] * unit * viewScale);
+				gapY = Std.int((keyson.units[0].keyStep[Axis.Y]
+					- keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
 				switch shape {
 					case "ISO":
 						placer.size(1.50 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
@@ -211,10 +213,8 @@ class Viewport extends Scene {
 	function parseInKeyboard(keyboard: Keyson): Visual {
 		final workKeyboard = new Visual();
 		for (keyboardUnit in keyboard.units) {
-			gapX = Std.int((keyboardUnit.keyStep[Axis.X]
-				- keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
-			gapY = Std.int((keyboardUnit.keyStep[Axis.Y]
-				- keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
+			gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
+			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 
 			for (key in keyboardUnit.keys) {
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
@@ -263,19 +263,17 @@ class Viewport extends Scene {
 					case "XT_2U":
 						x += 1;
 				}
-				gapX = Std.int((keyboardUnit.keyStep[Axis.X]
-					- keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
-				gapY = Std.int((keyboardUnit.keyStep[Axis.Y]
-					- keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
+				gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
+				gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
-//				final key = keyboardUnit.createKey(shape, [x, y], legend);
-//				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
-//				keycap.pos(unit * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
-//				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
-//					keyMouseDown(t, keycap);
-//				});
-//				this.workSurface.add(keycap);
+			//				final key = keyboardUnit.createKey(shape, [x, y], legend);
+			//				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
+			//				keycap.pos(unit * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
+			//				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
+			//					keyMouseDown(t, keycap);
+			//				});
+			//				this.workSurface.add(keycap);
 			case "edit":
 				// click on empty should toggle select (thus deselect) everything
 				for (i in 0...selectedKeys.length)

@@ -33,7 +33,8 @@ class PlaceKey extends Action {
 			this.key = device.insertKey(this.placed.sourceKey);
 		}
 		// Draw and place the key
-		final keycap: KeyRenderer = KeyMaker.createKey(this.device, key, this.viewport.unit, this.viewport.gapX, this.viewport.gapY, this.device.keysColor);
+		final keycap: KeyRenderer = KeyMaker.createKey(this.device, key, this.viewport.unit, this.viewport.gapX, this.viewport.gapY,
+			this.device.keysColor);
 		keycap.pos(this.viewport.unit * this.key.position[Axis.X], this.viewport.unit * this.key.position[Axis.Y]);
 		this.viewport.workSurface.add(keycap);
 		keycap.onPointerDown(keycap, (t: TouchInfo) -> {
@@ -44,14 +45,14 @@ class PlaceKey extends Action {
 	}
 
 	override public function undo() {
-			for (key in device.keys) {
-				if (placed.sourceKey == key) {
-					// clear keyson:
-					this.device.removeKey(placed.sourceKey);
-					// clear Ceramic:
-					this.viewport.workSurface.remove(placed);
-				}
+		for (key in device.keys) {
+			if (placed.sourceKey == key) {
+				// clear keyson:
+				this.device.removeKey(placed.sourceKey);
+				// clear Ceramic:
+				this.viewport.workSurface.remove(placed);
 			}
+		}
 		super.undo();
 	}
 }
