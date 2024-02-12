@@ -7,27 +7,6 @@ import haxe.ui.events.UIEvent;
 
 @xml('
 <button-bar direction="vertical" styleName="modeSelector">
-<style>
-	.modeSelector {
-	width: 64px;
-	height: 100%;
-	background-color: #282828;
-	}
-	.modeSelector button {
-	width: 64px;
-	height: 64px;
-	}
-	.modeSelector button:down {
-	border-left: 3px solid $accent-color;
-	}
-	.menu-item-picker {
-	background-color: #1d2021;
-	border: none;
-	}
-	.item-picker-container {
-	border: none;
-	}
-</style>
 	<menu-item-picker id="picker" showText="false" showIcon="false" width="64px" panelWidth="200" animatable="false" verticalAlign="center">
         <item-renderer id="itemPickerRenderer">
             <image resource="icons/kebab-dropdown" horizontalAlign="center" />

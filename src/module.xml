@@ -1,13 +1,13 @@
 <module id="haxeui-core" priority="-2">
 	<resources>
-		<resource path="assets/" prefix="themes" />
+		<resource path="../../assets" prefix="themes" />
 	</resources>
     <components>
          <class package="ui" />
     </components>
     <themes>
         <keyboard-editor-theme parent="dark">
-			<style resource="themes/main.css" />
+			<style resource="themes/styles.css" />
 			<var name="normal-text-color" value="#fcfcfc" />
 			<var name="hover-text-color" value="#fcfcfc" />
 			<var name="down-text-color" value="#fcfcfc" />
