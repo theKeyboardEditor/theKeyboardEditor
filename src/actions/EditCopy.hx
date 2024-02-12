@@ -16,14 +16,17 @@ class EditCopy extends Action {
 	}
 
 	override public function act(type: ActionType) {
-		// take in the selection to the editBuffer
-		CopyBuffer.selectedObjects = copyees.copy();
-		trace('Copy: ${CopyBuffer.selectedObjects}');
+		// take in the selection to the empty editBuffer:
+		CopyBuffer.selectedObjects.keys = [
+			for (shape in copyees) {
+				shape.sourceKey;
+			}
+		];
+		CopyBuffer.selectedObjects.sortKeys();
 		super.act(type);
 	}
 
 	override public function undo() {
-		// clear the editBuffer
 		super.undo();
 	}
 }

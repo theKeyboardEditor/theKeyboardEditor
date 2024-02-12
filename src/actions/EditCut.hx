@@ -17,7 +17,12 @@ class EditCut extends Action {
 
 	override public function act(type: ActionType) {
 		// take in the selection to the editBuffer
-		CopyBuffer.selectedObjects = cutees.copy();
+		CopyBuffer.selectedObjects.keys = [
+			for (shape in cutees) {
+				shape.sourceKey;
+			}
+		];
+		CopyBuffer.selectedObjects.sortKeys();
 		// remove the selection from the workSurface:
 		for (member in cutees) {
 			// clear keyson:
@@ -25,7 +30,6 @@ class EditCut extends Action {
 			// clear Ceramic:
 			this.viewport.workSurface.remove(member);
 		}
-		trace('Cut: ${CopyBuffer.selectedObjects}');
 		super.act(type);
 	}
 
@@ -37,7 +41,6 @@ class EditCut extends Action {
 			// recreate Ceramic:
 			this.viewport.workSurface.add(member);
 		}
-		// clear the editBuffer
 		super.undo();
 	}
 }

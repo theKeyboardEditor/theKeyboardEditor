@@ -51,7 +51,8 @@ class Viewport extends Scene {
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
 	public var workDevice: Int = 0; // this will be set externally
-	var keyboardUnit: keyson.Keyboard;
+	public var keyboardUnit: keyson.Keyboard;
+
 	var selectedKey: KeyRenderer; // still needed across few functions -.-'
 	var selectedKeys: Array<KeyRenderer> = []; // still needed across few functions -.-'
 	var deselection: Bool = false; // is a deselect event resulting in a drag
@@ -392,7 +393,8 @@ class Viewport extends Scene {
 
 	public function copy() {
 		if (selectedKeys.length > 0) {
-			CopyBuffer.selectedObjects = [];
+			CopyBuffer.selectedObjects = new Keyboard();
+			// TODO initialize said keyboard with current unit's data
 			// copy into a clean buffer
 			keyboardUnit = keyson.units[workDevice];
 			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeys));
@@ -402,10 +404,10 @@ class Viewport extends Scene {
 
 	public function cut() {
 		if (selectedKeys.length > 0) {
-			CopyBuffer.selectedObjects = [];
+			CopyBuffer.selectedObjects = new Keyboard();
+			// TODO initialize said keyboard with current unit's data
 			// cut into a clean buffer
 			keyboardUnit = keyson.units[workDevice];
-			// they remain selected after cutting away and it's eery! D:
 			clearSelection(false);
 			queue.push(new actions.EditCut(this, keyboardUnit, selectedKeys));
 			// delayed selection clearing
@@ -415,7 +417,7 @@ class Viewport extends Scene {
 	}
 
 	public function paste() {
-		if (CopyBuffer.selectedObjects.length > 0) {
+		if (CopyBuffer.selectedObjects.keys.length > 0) {
 			// TODO make a offset from the sotred data somehow
 			var y = placer.y / unit * viewScale;
 			var x = placer.x / unit * viewScale;
