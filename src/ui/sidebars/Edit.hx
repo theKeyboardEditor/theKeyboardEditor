@@ -15,11 +15,11 @@ import haxe.ui.events.MouseEvent;
 				<button text="Redo" id="edit-redo" icon="icons/redo" width="64px" height="64px" iconPosition="top" tooltip="Redo last action"/>
 			</hbox>
 			<hbox horizontalAlign="center">
-				<button text="Copy" icon="icons/copy" width="64px" height="64px" iconPosition="top" tooltip="Copy selected to buffer"/>
-				<button text="Paste" icon="icons/paste" width="64px" height="64px" iconPosition="top" tooltip="Paste selected from buffer"/>
+				<button text="Copy" id="edit-copy" icon="icons/copy" width="64px" height="64px" iconPosition="top" tooltip="Copy selected to buffer"/>
+				<button text="Paste" id="edit-paste" icon="icons/paste" width="64px" height="64px" iconPosition="top" tooltip="Paste selected from buffer"/>
 			</hbox>
 			<hbox horizontalAlign="center">
-				<button text="Cut" icon="icons/cut" width="133px" height="64px" iconPosition="top" tooltip="Cut selected to buffer"/>
+				<button text="Cut" id="edit-cut" icon="icons/cut" width="133px" height="64px" iconPosition="top" tooltip="Cut selected to buffer"/>
 			</hbox>
 		</vbox>
 	</scrollview>
@@ -36,5 +36,20 @@ class Edit extends VBox {
 	@:bind(editRedo, MouseEvent.CLICK)
 	function redo(_) {
 		(cast tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
+	}
+
+	@:bind(editCopy, MouseEvent.CLICK)
+	function copy(_) {
+		(cast tabs.selectedPage: ui.ViewportContainer).display.copy();
+	}
+
+	@:bind(editCut, MouseEvent.CLICK)
+	function cut(_) {
+		(cast tabs.selectedPage: ui.ViewportContainer).display.cut();
+	}
+
+	@:bind(editPaste, MouseEvent.CLICK)
+	function paste(_) {
+		(cast tabs.selectedPage: ui.ViewportContainer).display.paste();
 	}
 }
