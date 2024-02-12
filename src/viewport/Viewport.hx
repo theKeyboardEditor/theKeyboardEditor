@@ -371,8 +371,8 @@ class Viewport extends Scene {
 					if (x != 0 || y != 0 && !deselection && selectedKeys.length > 0) {
 						queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
 						if (selectedKeys.length == 1) {
-							// deselect if single element was just dragged
-							selectedKey.select();
+							// deselect only if single element was just dragged
+							selectedKey.deselect();
 							selectedKeys.remove(selectedKey);
 						}
 					}
@@ -392,6 +392,7 @@ class Viewport extends Scene {
 	}
 
 	public function copy() {
+		trace('selection: ${selectedKeys.length}');
 		if (selectedKeys.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
 			// TODO initialize said keyboard with current unit's data
@@ -403,6 +404,7 @@ class Viewport extends Scene {
 	}
 
 	public function cut() {
+		trace('selection: ${selectedKeys.length}');
 		if (selectedKeys.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
 			// TODO initialize said keyboard with current unit's data
