@@ -41,7 +41,6 @@ class EditPaste extends Action {
 			viewport.workSurface.add(keycap);
 			this.device.sortKeys();
 		}
-		trace('Paste: ${CopyBuffer.selectedObjects.keys.length}');
 		super.act(type);
 	}
 
