@@ -88,9 +88,6 @@
             "name": "innerLight.frag"
         },
         {
-            "name": "main.css"
-        },
-        {
             "name": "msdf.frag"
         },
         {
@@ -116,6 +113,9 @@
         },
         {
             "name": "RobotoMedium.png"
+        },
+        {
+            "name": "styles.css"
         },
         {
             "name": "svg/EditIcons.svg"
