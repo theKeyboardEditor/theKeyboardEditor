@@ -81,14 +81,17 @@ class MainScene extends Scene {
 		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_C)], () -> {
+			trace('copy');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.copy();
 		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_X)], () -> {
+			trace('cut');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.cut();
 		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_V)], () -> {
+			trace('paste');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.paste();
 		});
 	}
