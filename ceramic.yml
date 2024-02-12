@@ -66,3 +66,4 @@ app:
   defines:
     - ceramic_no_skip
     - message.reporting: pretty
+    - no_filter_root
