@@ -69,7 +69,7 @@ class Color {
 }
 
 /** Keyboard:
-	** Each of a Split keyboard's rulerUnits with a numpad and a joypad (4 sub rulerUnits)
+	** Each of a Split keyboard's devices with a numpad and a joypad (4 sub rulerUnits)
 	** Each of wo halves wirelessly connected to a host via bluetooth
 	** Or just a common single unit keyboard
 **/
@@ -175,8 +175,9 @@ class Keyboard {
 	}
 }
 
-/** The actual tactile unit of interaction
-**/
+/**
+ * The actual tactile unit of interaction
+ */
 class Key {
 	public var id: Int;
 	public var position: Array<Float>;
