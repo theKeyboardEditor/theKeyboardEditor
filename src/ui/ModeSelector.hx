@@ -33,7 +33,7 @@ class ModeSelector extends VerticalButtonBar {
 	public var store: ceramic.PersistentData;
 	public var mainScene: MainScene;
 	public var guiScene: UI;
-	public var barMode: String; // for viewport processes
+	public var barMode: Mode;
 
 	@:bind(this, UIEvent.CHANGE)
 	function onSelection(_: UIEvent) {
@@ -43,22 +43,22 @@ class ModeSelector extends VerticalButtonBar {
 		StatusBar.inform('Selected mode:[${this.barMode}]');
 	}
 
-	public function switchMode(id: String): Box {
+	public function switchMode(id: Mode): Box {
 		this.barMode = id;
 		return switch (id) {
-			case "place":
+			case Place:
 				new ui.sidebars.Place();
-			case "edit":
+			case Edit:
 				var edit = new ui.sidebars.Edit();
 				edit.tabs = guiScene.tabs;
 				edit;
-			case "unit":
+			case Unit:
 				ComponentBuilder.fromFile("ui/sidebars/unit.xml");
-			case "legend":
+			case Legend:
 				ComponentBuilder.fromFile("ui/sidebars/legend.xml");
-			case "keyboard":
+			case Keyboard:
 				ComponentBuilder.fromFile("ui/sidebars/keyboard.xml");
-			case "palette":
+			case Palette:
 				new ui.sidebars.Palette((cast guiScene.tabs.selectedPage: ViewportContainer).display);
 			default:
 				ComponentBuilder.fromFile('ui/sidebars/void.xml');

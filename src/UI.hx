@@ -98,6 +98,6 @@ class UI extends haxe.ui.containers.VBox {
 	function tabSwitch(e: UIEvent) {
 		if (sidebar.id == null)
 			return;
-		this.sidebar = modeSelector.switchMode(modeSelector.barMode ?? "place");
+		this.sidebar = modeSelector.switchMode(modeSelector.barMode ?? Place);
 	}
 }
