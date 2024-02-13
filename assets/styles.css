@@ -10,6 +10,7 @@
 .modeSelector button:down {
 	border-left: 3px solid $accent-color;
 } 
+
 .menu-item-picker {
 	background-color: #1d2021;
 	border: none;
