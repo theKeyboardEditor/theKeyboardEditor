@@ -37,6 +37,8 @@ class ModeSelector extends VerticalButtonBar {
 
 	@:bind(this, UIEvent.CHANGE)
 	function onSelection(_: UIEvent) {
+		if (barMode == selectedButton.id)
+			return;
 		this.guiScene.sidebar = switchMode(selectedButton.id);
 		StatusBar.inform('Selected mode:[${this.barMode}]');
 	}
@@ -82,9 +84,9 @@ class ModeSelector extends VerticalButtonBar {
 					mainScene.openViewport(keyson.Keyson.parse(body));
 				});
 			case "save":
-				this.mainScene.save(cast(guiScene.tabs.selectedPage, ui.ViewportContainer).display.keyson, store);
+				this.mainScene.save((cast guiScene.tabs.selectedPage: ui.ViewportContainer).display.keyson, store);
 			case "download":
-				final keyson = cast(guiScene.tabs.selectedPage, ui.ViewportContainer).display.keyson;
+				final keyson = (cast guiScene.tabs.selectedPage: ui.ViewportContainer).display.keyson;
 				FileDialog.download(haxe.Json.stringify(keyson, "\t"), keyson.name, "application/json");
 			case "import":
 				final dialog = new FileDialog();

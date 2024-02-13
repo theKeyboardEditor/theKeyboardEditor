@@ -5,6 +5,7 @@ import haxe.ui.ComponentBuilder;
 import haxe.ui.containers.TabView;
 import haxe.ui.containers.Box;
 import haxe.ui.containers.HBox;
+import haxe.ui.events.UIEvent;
 
 using StringTools;
 
@@ -91,5 +92,12 @@ class UI extends haxe.ui.containers.VBox {
 		overlay.addComponent(welcome);
 
 		return overlay;
+	}
+
+	@:bind(tabs, UIEvent.CHANGE)
+	function tabSwitch(e: UIEvent) {
+		if (sidebar.id == null)
+			return;
+		this.sidebar = modeSelector.switchMode(modeSelector.barMode ?? "place");
 	}
 }
