@@ -142,7 +142,7 @@ class Viewport extends Scene {
 
 		selectionBox = new SelectionBox();
 		this.selectionBox.depth = 600;
-		this.selectionBox.visible= false;
+		this.selectionBox.visible = false;
 		this.add(selectionBox);
 
 		inputCreate();
@@ -252,10 +252,10 @@ class Viewport extends Scene {
 		var y = placer.y / unit / viewScale;
 		var x = placer.x / unit / viewScale;
 
-		//draw a rectangle:
+		// draw a rectangle:
 		this.selectionBox.visible = true;
-		this.selectionBox.pos (screen.pointerX - screenX, screen.pointerY - screenY);
-//		this.selectionBox.size(screen.pointerX - this.pointerStartX, screen.pointerY - this.pointerStartY);
+		this.selectionBox.pos(screen.pointerX - screenX, screen.pointerY - screenY);
+		//		this.selectionBox.size(screen.pointerX - this.pointerStartX, screen.pointerY - this.pointerStartY);
 
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, viewportMouseMove);
@@ -263,25 +263,24 @@ class Viewport extends Scene {
 		// Stop dragging when pointer is released
 		this.oncePointerUp(this, viewportMouseUp);
 	}
-
 	/*
 	 * update for the duration of the drag
 	 */
 	function viewportMouseMove(info: TouchInfo) {
 		// update the drag rectangle
-			this.selectionBox.pos (this.pointerStartX - screenX, this.pointerStartY  - screenY);
-		if (screen.pointerX - this.pointerStartX > 0 ) {
+		this.selectionBox.pos(this.pointerStartX - screenX, this.pointerStartY - screenY);
+		if (screen.pointerX - this.pointerStartX > 0) {
 			this.selectionBox.x = this.pointerStartX - screenX;
 			this.selectionBox.width = screen.pointerX - this.pointerStartX;
 		} else {
-			this.selectionBox.x = screen.pointerX  - screenX ;
+			this.selectionBox.x = screen.pointerX - screenX;
 			this.selectionBox.width = this.pointerStartX - screen.pointerX;
 		}
-		if (screen.pointerY - this.pointerStartY > 0 ) {
+		if (screen.pointerY - this.pointerStartY > 0) {
 			this.selectionBox.y = this.pointerStartY - screenY;
 			this.selectionBox.height = screen.pointerY - this.pointerStartY;
 		} else {
-			this.selectionBox.y = screen.pointerY  - screenY ;
+			this.selectionBox.y = screen.pointerY - screenY;
 			this.selectionBox.height = this.pointerStartY - screen.pointerY;
 		}
 	}
@@ -317,14 +316,13 @@ class Viewport extends Scene {
 				//
 				clearSelection(true);
 				this.selectionBox.visible = false;
-				// TODO calculate encircled shapes and select them
+			// TODO calculate encircled shapes and select them
 
 			case _:
 				// TODO either pan or start selection RoundedRectangle();
 				StatusBar.error('Panning available only in edit mode.');
 		}
 	}
-
 	// KEY ACTIONS
 
 	/**

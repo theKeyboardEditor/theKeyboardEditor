@@ -39,25 +39,29 @@ class SelectionBox extends Visual {
 		contentDirty = true;
 		return height;
 	}
+
 	override public function new() {
 		contentDirty = true;
 		super();
 	}
 
 	override public function computeContent() {
-		if (height == 0 || width == 0) return;
+		if (height == 0 || width == 0)
+			return;
 
 		r = roundedCorners;
 		if (height < width) {
-			if (height < roundedCorners * 2) r = height / 2;
+			if (height < roundedCorners * 2)
+				r = height / 2;
 		} else {
-			if (width < roundedCorners * 2)  r = width / 2;
+			if (width < roundedCorners * 2)
+				r = width / 2;
 		}
 
 		// all content is to be replaced from scratch
 		this.clear();
 
-		//NOTICE: the outline is within the rounded rectangle shape!
+		// NOTICE: the outline is within the rounded rectangle shape!
 		this.r1 = new Arc();
 		this.r1.pos(r, r);
 		this.r1.radius = r;
@@ -108,7 +112,7 @@ class SelectionBox extends Visual {
 
 		this.b1 = new Quad();
 		this.b1.pos(r, 0);
-		this.b1.size(this.width-r*2, outline);
+		this.b1.size(this.width - r * 2, outline);
 		this.b1.color = outlineColor; // sweetie-16 red (UI theme 2ndary accent color!)
 		this.b1.alpha = 1;
 		this.b1.depth = 4;
@@ -116,7 +120,7 @@ class SelectionBox extends Visual {
 
 		this.b2 = new Quad();
 		this.b2.pos(r, this.height - outline / 1);
-		this.b2.size(this.width-r*2, outline);
+		this.b2.size(this.width - r * 2, outline);
 		this.b2.color = outlineColor; // sweetie-16 red (UI theme 2ndary accent color!)
 		this.b2.alpha = 1;
 		this.b2.depth = 4;
@@ -145,7 +149,7 @@ class SelectionBox extends Visual {
 		this.fill.color = fillColor;
 		this.fill.depth = 0;
 		this.fill.pos(0, 0);
-		this.fill.alpha = (fillColor>>24)/256;
+		this.fill.alpha = (fillColor >> 24) / 256;
 		this.add(this.fill);
 
 		super.computeContent();
