@@ -86,19 +86,19 @@ class Viewport extends Scene {
 
 		if (inputMap.pressed(PAN_UP)) {
 			this.y += keyboardSpeed;
-//			workSurface.y += keyboardSpeed;
+			//			workSurface.y += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_DOWN)) {
 			this.y -= keyboardSpeed;
-//			workSurface.y -= keyboardSpeed;
+			//			workSurface.y -= keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_LEFT)) {
 			this.x += keyboardSpeed;
-//			workSurface.x += keyboardSpeed;
+			//			workSurface.x += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_RIGHT)) {
 			this.x -= keyboardSpeed;
-//			workSurface.x -= keyboardSpeed;
+			//			workSurface.x -= keyboardSpeed;
 		}
 		if (inputMap.pressed(DELETE_SELECTED)) {
 			// TODO determine actually selected keyboard unit:
@@ -240,7 +240,6 @@ class Viewport extends Scene {
 		return workKeyboard;
 	}
 	// APPLYING DESIGN
-
 	// SURFACE ACTIONS
 
 	/**
@@ -320,31 +319,30 @@ class Viewport extends Scene {
 				// and dump the selection
 				clearSelection(true);
 				this.selectionBox.visible = false;
-					final boxX = this.selectionBox.x;
-					final boxY = this.selectionBox.y;
-					final boxW = this.selectionBox.width;
-					final boxH = this.selectionBox.height;
+				final boxX = this.selectionBox.x;
+				final boxY = this.selectionBox.y;
+				final boxW = this.selectionBox.width;
+				final boxH = this.selectionBox.height;
 				// TODO calculate encircled shapes and select them
 				for (k in keyson.units[workDevice].keys) {
 					final keyX = keyBody(k)[0];
 					final keyY = keyBody(k)[1];
 					final keyW = keyBody(k)[2];
 					final keyH = keyBody(k)[3];
-					if ( keyX > boxX && keyX + keyW < boxX + boxW &&
-						 keyY > boxY && keyY + keyH < boxY + boxH) {
-							final i:Array<KeyRenderer> = Reflect.getProperty(workSurface,'children');
-							for (q in i) {
-//								if ( Reflect.getProperty(q,'sourceKey') == k ) {
-								if ( q.sourceKey == k ) {
-									trace ('key ${k.legends[0].legend} selected!');
-									//TODO this ends in error but i need to call this to get it selected?
-									q.select();
-									// by using .unshift() instead of .push() the last added member is on index 0
-									selectedKeys.unshift(q);
-									deselection = false;
-								}
-							 }
-						 }
+					if (keyX > boxX && keyX + keyW < boxX + boxW && keyY > boxY && keyY + keyH < boxY + boxH) {
+						final i: Array<KeyRenderer> = Reflect.getProperty(workSurface, 'children');
+						for (q in i) {
+							//								if ( Reflect.getProperty(q,'sourceKey') == k ) {
+							if (q.sourceKey == k) {
+								trace('key ${k.legends[0].legend} selected!');
+								// TODO this ends in error but i need to call this to get it selected?
+								q.select();
+								// by using .unshift() instead of .push() the last added member is on index 0
+								selectedKeys.unshift(q);
+								deselection = false;
+							}
+						}
+					}
 				}
 			case _:
 				// TODO either pan or start selection RoundedRectangle();
@@ -503,7 +501,7 @@ class Viewport extends Scene {
 		StatusBar.inform('Paste action detected.');
 	}
 
-	function keyBody(k: keyson.Key):Array<Float> {
+	function keyBody(k: keyson.Key): Array<Float> {
 		var y: Float = k.position[Axis.Y] * this.unit;
 		var x: Float = k.position[Axis.X] * this.unit;
 		var width: Float = 1.0 * this.unit;
