@@ -50,11 +50,9 @@ class SelectionBox extends Visual {
 			return;
 
 		r = roundedCorners;
-		if (height < width) {
-			if (height < roundedCorners * 2)
+		if (height < width && height < roundedCorners * 2) {
 				r = height / 2;
-		} else {
-			if (width < roundedCorners * 2)
+		} else if (width < roundedCorners * 2) {
 				r = width / 2;
 		}
 
