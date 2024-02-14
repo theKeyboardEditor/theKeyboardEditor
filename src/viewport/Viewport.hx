@@ -319,7 +319,6 @@ class Viewport extends Scene {
 				// just any click on empty should clear selection of everything
 				// and dump the selection
 				clearSelection(true);
-				 trace (Reflect.fields(this.workSurface.children));
 				this.selectionBox.visible = false;
 					final boxX = this.selectionBox.x;
 					final boxY = this.selectionBox.y;
@@ -333,11 +332,17 @@ class Viewport extends Scene {
 					final keyH = keyBody(k)[3];
 					if ( keyX > boxX && keyX + keyW < boxX + boxW &&
 						 keyY > boxY && keyY + keyH < boxY + boxH) {
-							 for (q in workSurface.children) {
-								 if ( Reflect.field(q,'sourceKey') == k )
-									 trace ('key ${k.legends[0].legend} selected!');
-									 //TOOD this ends in error but i need to call this to get it selected?
-//									 q.select();
+							final i:Array<KeyRenderer> = Reflect.getProperty(workSurface,'children');
+							for (q in i) {
+//								if ( Reflect.getProperty(q,'sourceKey') == k ) {
+								if ( q.sourceKey == k ) {
+									trace ('key ${k.legends[0].legend} selected!');
+									//TODO this ends in error but i need to call this to get it selected?
+									q.select();
+									// by using .unshift() instead of .push() the last added member is on index 0
+									selectedKeys.unshift(q);
+									deselection = false;
+								}
 							 }
 						 }
 				}
