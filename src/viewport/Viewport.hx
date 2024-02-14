@@ -313,7 +313,6 @@ class Viewport extends Scene {
 			case "edit":
 				// just any click on empty should clear selection of everything
 				// and dump the selection
-				//
 				clearSelection(true);
 				this.selectionBox.visible = false;
 			// TODO calculate encircled shapes and select them
