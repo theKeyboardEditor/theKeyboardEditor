@@ -85,16 +85,20 @@ class Viewport extends Scene {
 			return;
 
 		if (inputMap.pressed(PAN_UP)) {
-			workSurface.y += keyboardSpeed;
+			this.y += keyboardSpeed;
+//			workSurface.y += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_DOWN)) {
-			workSurface.y -= keyboardSpeed;
+			this.y -= keyboardSpeed;
+//			workSurface.y -= keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_LEFT)) {
-			workSurface.x += keyboardSpeed;
+			this.x += keyboardSpeed;
+//			workSurface.x += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_RIGHT)) {
-			workSurface.x -= keyboardSpeed;
+			this.x -= keyboardSpeed;
+//			workSurface.x -= keyboardSpeed;
 		}
 		if (inputMap.pressed(DELETE_SELECTED)) {
 			// TODO determine actually selected keyboard unit:
@@ -129,7 +133,7 @@ class Viewport extends Scene {
 		gridFilter.autoRender = false;
 		gridFilter.size(grid.width, grid.height);
 		gridFilter.content.add(grid);
-		workSurface.add(gridFilter);
+		this.add(gridFilter);
 		gridFilter.render();
 
 		placer = new Placer();
@@ -315,9 +319,28 @@ class Viewport extends Scene {
 				// just any click on empty should clear selection of everything
 				// and dump the selection
 				clearSelection(true);
+				 trace (Reflect.fields(this.workSurface.children));
 				this.selectionBox.visible = false;
-			// TODO calculate encircled shapes and select them
-
+					final boxX = this.selectionBox.x;
+					final boxY = this.selectionBox.y;
+					final boxW = this.selectionBox.width;
+					final boxH = this.selectionBox.height;
+				// TODO calculate encircled shapes and select them
+				for (k in keyson.units[workDevice].keys) {
+					final keyX = keyBody(k)[0];
+					final keyY = keyBody(k)[1];
+					final keyW = keyBody(k)[2];
+					final keyH = keyBody(k)[3];
+					if ( keyX > boxX && keyX + keyW < boxX + boxW &&
+						 keyY > boxY && keyY + keyH < boxY + boxH) {
+							 for (q in workSurface.children) {
+								 if ( Reflect.field(q,'sourceKey') == k )
+									 trace ('key ${k.legends[0].legend} selected!');
+									 //TOOD this ends in error but i need to call this to get it selected?
+//									 q.select();
+							 }
+						 }
+				}
 			case _:
 				// TODO either pan or start selection RoundedRectangle();
 				StatusBar.error('Panning available only in edit mode.');
@@ -473,5 +496,50 @@ class Viewport extends Scene {
 			queue.push(new actions.EditPaste(this, keyboardUnit, x, y));
 		}
 		StatusBar.inform('Paste action detected.');
+	}
+
+	function keyBody(k: keyson.Key):Array<Float> {
+		var y: Float = k.position[Axis.Y] * this.unit;
+		var x: Float = k.position[Axis.X] * this.unit;
+		var width: Float = 1.0 * this.unit;
+		var height: Float = 1.0 * this.unit;
+		switch k.shape {
+			case "BAE":
+				x -= 0.75 * this.unit;
+			case "XT_2U":
+				x -= 1 * this.unit;
+		}
+		switch k.shape {
+			case "ISO":
+				width = 1.50 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "ISO Inverted":
+				width = 1.50 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "BAE":
+				width = 2.25 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "BAE Inverted":
+				width = 2.25 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "XT_2U":
+				width = 2.00 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "AEK":
+				width = 1.25 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			default:
+				if (Math.isNaN(Std.parseFloat(k.shape)) == false) { // aka it is a number
+					if (k.shape.split(' ').indexOf("Vertical") != -1) {
+						width = unit * viewScale - gapX;
+						height = unit * viewScale * Std.parseFloat(k.shape) - gapY;
+					} else {
+						width = unit * viewScale * Std.parseFloat(k.shape) - gapX;
+						height = unit * viewScale - gapY;
+					}
+				}
+		}
+
+		return [x, y, width, height];
 	}
 }
