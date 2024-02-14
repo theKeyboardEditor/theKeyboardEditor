@@ -3,6 +3,7 @@ package viewport;
 import ceramic.Visual;
 import ceramic.Scene;
 import ceramic.TouchInfo;
+import ceramic.RoundedRect;
 import keyson.Axis;
 import keyson.Keyson;
 
@@ -31,6 +32,7 @@ class Viewport extends Scene {
 	 */
 	public var workSurface: Visual;
 	var placer: Placer;
+	var selectionBox: SelectionBox;
 
 	// Movement variables
 	inline static final keyboardSpeed: Int = 35;
@@ -138,6 +140,11 @@ class Viewport extends Scene {
 		placer.depth = 10;
 		this.add(placer);
 
+		selectionBox = new SelectionBox();
+		this.selectionBox.depth = 600;
+		this.selectionBox.visible = false;
+		this.add(selectionBox);
+
 		inputCreate();
 	}
 
@@ -239,8 +246,43 @@ class Viewport extends Scene {
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 
+		// since we have pressed emty space we start drawing a selection rectangle:
+		placer.x = coggify(screen.pointerX - screenX - placerMismatchX * unit * viewScale, placingStep);
+		placer.y = coggify(screen.pointerY - screenY - placerMismatchY * unit * viewScale, placingStep);
+		var y = placer.y / unit / viewScale;
+		var x = placer.x / unit / viewScale;
+
+		// draw a rectangle:
+		this.selectionBox.visible = true;
+		this.selectionBox.pos(screen.pointerX - screenX, screen.pointerY - screenY);
+		//		this.selectionBox.size(screen.pointerX - this.pointerStartX, screen.pointerY - this.pointerStartY);
+
+		// Try move along as we pan the touch
+		screen.onPointerMove(this, viewportMouseMove);
+
 		// Stop dragging when pointer is released
 		this.oncePointerUp(this, viewportMouseUp);
+	}
+	/*
+	 * update for the duration of the drag
+	 */
+	function viewportMouseMove(info: TouchInfo) {
+		// update the drag rectangle
+		this.selectionBox.pos(this.pointerStartX - screenX, this.pointerStartY - screenY);
+		if (screen.pointerX - this.pointerStartX > 0) {
+			this.selectionBox.x = this.pointerStartX - screenX;
+			this.selectionBox.width = screen.pointerX - this.pointerStartX;
+		} else {
+			this.selectionBox.x = screen.pointerX - screenX;
+			this.selectionBox.width = this.pointerStartX - screen.pointerX;
+		}
+		if (screen.pointerY - this.pointerStartY > 0) {
+			this.selectionBox.y = this.pointerStartY - screenY;
+			this.selectionBox.height = screen.pointerY - this.pointerStartY;
+		} else {
+			this.selectionBox.y = screen.pointerY - screenY;
+			this.selectionBox.height = this.pointerStartY - screen.pointerY;
+		}
 	}
 
 	/**
@@ -256,8 +298,8 @@ class Viewport extends Scene {
 				// TODO if there is a way to have a saner default legend?
 				final legend = shape;
 				// TODO calculate proper shaper size and offset:
-				var y = placer.y / unit * viewScale;
-				var x = placer.x / unit * viewScale;
+				var y = placer.y / unit / viewScale;
+				var x = placer.x / unit / viewScale;
 				switch shape {
 					case "BAE":
 						x += 0.75;
@@ -269,9 +311,12 @@ class Viewport extends Scene {
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
 			case "edit":
-				// click on empty should toggle select (thus deselect) everything
+				// just any click on empty should clear selection of everything
 				// and dump the selection
 				clearSelection(true);
+				this.selectionBox.visible = false;
+			// TODO calculate encircled shapes and select them
+
 			case _:
 				// TODO either pan or start selection RoundedRectangle();
 				StatusBar.error('Panning available only in edit mode.');
