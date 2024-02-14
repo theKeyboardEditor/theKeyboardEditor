@@ -236,6 +236,7 @@ class Viewport extends Scene {
 		return workKeyboard;
 	}
 	// APPLYING DESIGN
+
 	// SURFACE ACTIONS
 
 	/**
