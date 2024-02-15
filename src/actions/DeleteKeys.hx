@@ -20,7 +20,7 @@ class DeleteKeys extends Action {
 			// clear keyson:
 			this.device.removeKey(member.sourceKey);
 			// clear Ceramic:
-			this.viewport.workSurface.remove(member);
+			this.viewport.keycapSet.remove(member);
 		}
 		super.act(type);
 	}
@@ -30,7 +30,7 @@ class DeleteKeys extends Action {
 			// recreate keyson:
 			this.device.insertKey(member.sourceKey);
 			// recreate Ceramic:
-			this.viewport.workSurface.add(member);
+			this.viewport.keycapSet.add(member);
 		}
 	}
 }

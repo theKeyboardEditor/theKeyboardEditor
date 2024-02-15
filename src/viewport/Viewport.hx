@@ -30,7 +30,7 @@ class Viewport extends Scene {
 	/**
 	 * Ceramic elements
 	 */
-	public var workSurface: Visual;
+	public var keycapSet: Visual;
 	var placer: Placer;
 	var selectionBox: SelectionBox;
 
@@ -86,19 +86,19 @@ class Viewport extends Scene {
 
 		if (inputMap.pressed(PAN_UP)) {
 			this.y += keyboardSpeed;
-			//			workSurface.y += keyboardSpeed;
+			//			keycapSet.y += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_DOWN)) {
 			this.y -= keyboardSpeed;
-			//			workSurface.y -= keyboardSpeed;
+			//			keycapSet.y -= keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_LEFT)) {
 			this.x += keyboardSpeed;
-			//			workSurface.x += keyboardSpeed;
+			//			keycapSet.x += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_RIGHT)) {
 			this.x -= keyboardSpeed;
-			//			workSurface.x -= keyboardSpeed;
+			//			keycapSet.x -= keyboardSpeed;
 		}
 		if (inputMap.pressed(DELETE_SELECTED)) {
 			// TODO determine actually selected keyboard unit:
@@ -120,8 +120,8 @@ class Viewport extends Scene {
 	 * Initializes the scene
 	 */
 	override public function create() {
-		workSurface = parseInKeyboard(keyson);
-		this.add(workSurface);
+		keycapSet = parseInKeyboard(keyson);
+		this.add(keycapSet);
 
 		var grid = new Grid();
 		grid.primaryStep(unit * viewScale);
@@ -220,10 +220,10 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Called only once to parse in the keyboard into the workSurface
+	 * Called only once to parse in the keyboard into the keycapSet
 	 */
 	function parseInKeyboard(keyboard: Keyson): Visual {
-		final workKeyboard = new Visual();
+		final workingSet = new Visual();
 		for (keyboardUnit in keyboard.units) {
 			gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
 			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
@@ -234,10 +234,10 @@ class Viewport extends Scene {
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 					keyMouseDown(t, keycap);
 				});
-				workKeyboard.add(keycap);
+				workingSet.add(keycap);
 			}
 		}
-		return workKeyboard;
+		return workingSet;
 	}
 	// APPLYING DESIGN
 	// SURFACE ACTIONS
@@ -330,7 +330,7 @@ class Viewport extends Scene {
 					final keyW = keyBody(k)[2];
 					final keyH = keyBody(k)[3];
 					if (keyX > boxX && keyX + keyW < boxX + boxW && keyY > boxY && keyY + keyH < boxY + boxH) {
-						final i: Array<KeyRenderer> = Reflect.getProperty(workSurface, 'children');
+						final i: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
 						for (q in i) {
 							//								if ( Reflect.getProperty(q,'sourceKey') == k ) {
 							if (q.sourceKey == k) {

@@ -66,9 +66,9 @@ class MainScene extends Scene {
 		});
 
 		// Toggle overlay (i.e welcome screen)
-		// gui.viewport.display.paused = true;
+		// gui.workSurface.display.paused = true;
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
-			// gui.viewport.display.paused = !gui.viewport.display.paused;
+			// gui.workSurface.display.paused = !gui.workSurface.display.paused;
 			gui.overlay.hidden = !gui.overlay.hidden;
 		});
 
@@ -110,16 +110,16 @@ class MainScene extends Scene {
 	}
 
 	public function openViewport(keyboard: keyson.Keyson) {
-		var viewport = new viewport.Viewport();
-		viewport.keyson = keyboard;
+		var workSurface = new viewport.Viewport();
+		workSurface.keyson = keyboard;
 
 		var container = new ui.ViewportContainer();
 		container.styleString = "width: 100%; height: 100%; background-color: #282828;";
 		container.text = keyboard.name;
-		container.display = viewport;
+		container.display = workSurface;
 
 		gui.tabs.addComponent(container);
-		//		viewport.mainScene = this;
-		viewport.guiScene = gui;
+		//		workSurface.mainScene = this;
+		workSurface.guiScene = gui;
 	}
 }

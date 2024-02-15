@@ -36,7 +36,7 @@ class PlaceKey extends Action {
 		final keycap: KeyRenderer = KeyMaker.createKey(this.device, key, this.viewport.unit, this.viewport.gapX, this.viewport.gapY,
 			this.device.keysColor);
 		keycap.pos(this.viewport.unit * this.key.position[Axis.X], this.viewport.unit * this.key.position[Axis.Y]);
-		this.viewport.workSurface.add(keycap);
+		this.viewport.keycapSet.add(keycap);
 		keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 			this.viewport.keyMouseDown(t, keycap);
 		});
@@ -50,7 +50,7 @@ class PlaceKey extends Action {
 				// clear keyson:
 				this.device.removeKey(placed.sourceKey);
 				// clear Ceramic:
-				this.viewport.workSurface.remove(placed);
+				this.viewport.keycapSet.remove(placed);
 			}
 		}
 		super.undo();

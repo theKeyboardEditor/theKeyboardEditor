@@ -38,17 +38,17 @@ class EditPaste extends Action {
 			keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 				viewport.keyMouseDown(t, keycap);
 			});
-			viewport.workSurface.add(keycap);
+			viewport.keycapSet.add(keycap);
 			this.device.sortKeys();
 		}
 		super.act(type);
 	}
 
 	override public function undo() {
-		// clear by the recorded workSurface shapes:
+		// clear by the recorded keycapSet shapes:
 		for (member in shapes) {
 			this.device.removeKey(member.sourceKey);
-			this.viewport.workSurface.remove(member);
+			this.viewport.keycapSet.remove(member);
 		}
 		CopyBuffer.selectedObjects.keys = [];
 		super.undo();
