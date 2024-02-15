@@ -210,8 +210,8 @@ class Viewport extends Scene {
 				}
 				placerMismatchX = coggify(placer.width / unit / viewScale / 2, .25);
 				placerMismatchY = coggify(placer.height / unit / viewScale / 2, .25);
-				placer.x = coggify(screen.pointerX - screenX - placerMismatchX * unit * viewScale, placingStep);
-				placer.y = coggify(screen.pointerY - screenY - placerMismatchY * unit * viewScale, placingStep);
+				placer.x = coggify(screen.pointerX - screenX - this.x - placerMismatchX * unit * viewScale, placingStep);
+				placer.y = coggify(screen.pointerY - screenY - this.y - placerMismatchY * unit * viewScale, placingStep);
 				StatusBar.pos(placer.x / unit * viewScale, placer.y / unit * viewScale);
 			default:
 				placer.visible = false;
@@ -251,15 +251,14 @@ class Viewport extends Scene {
 		this.pointerStartY = screen.pointerY;
 
 		// since we have pressed emty space we start drawing a selection rectangle:
-		placer.x = coggify(screen.pointerX - screenX - placerMismatchX * unit * viewScale, placingStep);
-		placer.y = coggify(screen.pointerY - screenY - placerMismatchY * unit * viewScale, placingStep);
+		placer.x = coggify(screen.pointerX - screenX - this.x - placerMismatchX * unit * viewScale, placingStep);
+		placer.y = coggify(screen.pointerY - screenY - this.y - placerMismatchY * unit * viewScale, placingStep);
 		var y = placer.y / unit / viewScale;
 		var x = placer.x / unit / viewScale;
 
 		// draw a rectangle:
 		this.selectionBox.visible = true;
-		this.selectionBox.pos(screen.pointerX - screenX, screen.pointerY - screenY);
-		//		this.selectionBox.size(screen.pointerX - this.pointerStartX, screen.pointerY - this.pointerStartY);
+		this.selectionBox.pos(screen.pointerX - screenX - this.x, screen.pointerY - screenY - this.y);
 
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, viewportMouseMove);
@@ -272,19 +271,19 @@ class Viewport extends Scene {
 	 */
 	function viewportMouseMove(info: TouchInfo) {
 		// update the drag rectangle
-		this.selectionBox.pos(this.pointerStartX - screenX, this.pointerStartY - screenY);
+		this.selectionBox.pos(this.pointerStartX - screenX - this.x, this.pointerStartY - screenY - this.y);
 		if (screen.pointerX - this.pointerStartX > 0) {
-			this.selectionBox.x = this.pointerStartX - screenX;
+			this.selectionBox.x = this.pointerStartX - screenX - this.x;
 			this.selectionBox.width = screen.pointerX - this.pointerStartX;
 		} else {
-			this.selectionBox.x = screen.pointerX - screenX;
+			this.selectionBox.x = screen.pointerX - screenX - this.x;
 			this.selectionBox.width = this.pointerStartX - screen.pointerX;
 		}
 		if (screen.pointerY - this.pointerStartY > 0) {
-			this.selectionBox.y = this.pointerStartY - screenY;
+			this.selectionBox.y = this.pointerStartY - screenY - this.y;
 			this.selectionBox.height = screen.pointerY - this.pointerStartY;
 		} else {
-			this.selectionBox.y = screen.pointerY - screenY;
+			this.selectionBox.y = screen.pointerY - screenY - this.y;
 			this.selectionBox.height = this.pointerStartY - screen.pointerY;
 		}
 	}
