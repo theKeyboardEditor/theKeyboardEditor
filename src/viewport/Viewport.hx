@@ -12,7 +12,7 @@ class Viewport extends Scene {
 	 * The keyson being renderered
 	 */
 	public var keyson: keyson.Keyson;
-	public var screenX: Float = 0;
+	public var screenX: Float = 0; // position on screen
 	public var screenY: Float = 0;
 	//	public var mainScene: MainScene;
 	public var guiScene: UI;
@@ -67,7 +67,7 @@ class Viewport extends Scene {
 	public var gapY: Int;
 
 	// Viewport scale (default is 1.00 for 100%)
-	public var viewScale: Float = 1.0;
+	public var viewScale: Float = 1.0; // tracking of the view scale
 
 	inline static final placingStep: Float = Std.int(100 / 4);
 
@@ -86,29 +86,25 @@ class Viewport extends Scene {
 
 		if (inputMap.pressed(PAN_UP)) {
 			this.y += keyboardSpeed;
-			//			keycapSet.y += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_DOWN)) {
 			this.y -= keyboardSpeed;
-			//			keycapSet.y -= keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_LEFT)) {
 			this.x += keyboardSpeed;
-			//			keycapSet.x += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_RIGHT)) {
 			this.x -= keyboardSpeed;
-			//			keycapSet.x -= keyboardSpeed;
 		}
 		if (inputMap.pressed(ZOOM_IN)) {
-			this.scaleX += keyboardSpeed/1000;
-			this.scaleY += keyboardSpeed/1000;
-			//			keycapSet.x -= keyboardSpeed;
+			this.scaleX = Math.min(2.0, this.scaleX + keyboardSpeed/1000);
+			this.scaleY = this.scaleX;
+			viewScale = this.scaleX;
 		}
 		if (inputMap.pressed(ZOOM_OUT)) {
-			this.scaleX -= keyboardSpeed/1000;
-			this.scaleY -= keyboardSpeed/1000;
-			//			keycapSet.x -= keyboardSpeed;
+			this.scaleX = Math.max(0.25, this.scaleX - keyboardSpeed/1000);
+			this.scaleY = this.scaleX;
+			viewScale = this.scaleX;
 		}
 		if (inputMap.pressed(DELETE_SELECTED)) {
 			// TODO determine actually selected keyboard unit:
@@ -196,32 +192,32 @@ class Viewport extends Scene {
 					- keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
 				switch shape {
 					case "ISO":
-						placer.size(1.50 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.50 * unit - gapX, 2.00 * unit * viewScale - gapY);
 					case "ISO Inverted":
-						placer.size(1.50 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.50 * unit - gapX, 2.00 * unit * viewScale - gapY);
 					case "BAE":
 						placerMismatchX = 0.75;
-						placer.size(2.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.25 * unit - gapX, 2.00 * unit * viewScale - gapY);
 					case "BAE Inverted":
-						placer.size(2.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.25 * unit - gapX, 2.00 * unit * viewScale - gapY);
 					case "XT_2U":
 						placerMismatchX = 1;
-						placer.size(2.00 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.00 * unit - gapX, 2.00 * unit * viewScale - gapY);
 					case "AEK":
 						placerMismatchX = 0;
-						placer.size(1.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.25 * unit - gapX, 2.00 * unit * viewScale - gapY);
 					default:
 						if (Math.isNaN(Std.parseFloat(shape)) == false) { // aka it is a number
 							if (shape.split(' ').indexOf("Vertical") != -1)
-								placer.size(unit * viewScale - gapX, unit * viewScale * Std.parseFloat(shape) - gapY);
+								placer.size(unit - gapX, unit * Std.parseFloat(shape) - gapY);
 							else
-								placer.size(unit * viewScale * Std.parseFloat(shape) - gapX, unit * viewScale - gapY);
+								placer.size(unit * Std.parseFloat(shape) - gapX, unit - gapY);
 						}
 				}
-				placerMismatchX = coggify(placer.width / unit / viewScale / 2, .25);
-				placerMismatchY = coggify(placer.height / unit / viewScale / 2, .25);
-				placer.x = coggify(screen.pointerX - screenX - this.x - placerMismatchX * unit * viewScale, placingStep);
-				placer.y = coggify(screen.pointerY - screenY - this.y - placerMismatchY * unit * viewScale, placingStep);
+				placerMismatchX = coggify(placer.width / unit / 2, .25 / viewScale); // FIXME no idea why this works
+				placerMismatchY = coggify(placer.height / unit / 2, .25 / viewScale);
+				placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
+				placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
 				StatusBar.pos(placer.x / unit * viewScale, placer.y / unit * viewScale);
 			default:
 				placer.visible = false;
@@ -235,12 +231,12 @@ class Viewport extends Scene {
 	function parseInKeyboard(keyboard: Keyson): Visual {
 		final workingSet = new Visual();
 		for (keyboardUnit in keyboard.units) {
-			gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
-			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
+			gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
+			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
 
 			for (key in keyboardUnit.keys) {
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
-				keycap.pos(unit * viewScale * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
+				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 					keyMouseDown(t, keycap);
 				});
@@ -266,10 +262,10 @@ class Viewport extends Scene {
 		}
 
 		// since we have pressed emty space we start drawing a selection rectangle:
-		placer.x = coggify(screen.pointerX - screenX - this.x - placerMismatchX * unit * viewScale, placingStep);
-		placer.y = coggify(screen.pointerY - screenY - this.y - placerMismatchY * unit * viewScale, placingStep);
-		var y = placer.y / unit / viewScale;
-		var x = placer.x / unit / viewScale;
+		placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
+		placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
+		var y = placer.y / unit * viewScale;
+		var x = placer.x / unit * viewScale;
 
 		// draw a rectangle:
 		this.selectionBox.visible = true;
@@ -288,18 +284,18 @@ class Viewport extends Scene {
 		// update the drag rectangle
 		this.selectionBox.pos(this.pointerStartX - screenX - this.x, this.pointerStartY - screenY - this.y);
 		if (screen.pointerX - this.pointerStartX > 0) {
-			this.selectionBox.x = this.pointerStartX - screenX - this.x;
-			this.selectionBox.width = screen.pointerX - this.pointerStartX;
+			this.selectionBox.x = (this.pointerStartX - screenX - this.x) / viewScale;
+			this.selectionBox.width = (screen.pointerX - this.pointerStartX) / viewScale;
 		} else {
-			this.selectionBox.x = screen.pointerX - screenX - this.x;
-			this.selectionBox.width = this.pointerStartX - screen.pointerX;
+			this.selectionBox.x = (screen.pointerX - screenX - this.x) / viewScale;
+			this.selectionBox.width = (this.pointerStartX - screen.pointerX) / viewScale;
 		}
 		if (screen.pointerY - this.pointerStartY > 0) {
-			this.selectionBox.y = this.pointerStartY - screenY - this.y;
-			this.selectionBox.height = screen.pointerY - this.pointerStartY;
+			this.selectionBox.y = (this.pointerStartY - screenY - this.y) / viewScale;
+			this.selectionBox.height = (screen.pointerY - this.pointerStartY) / viewScale;
 		} else {
-			this.selectionBox.y = screen.pointerY - screenY - this.y;
-			this.selectionBox.height = this.pointerStartY - screen.pointerY;
+			this.selectionBox.y = (screen.pointerY - screenY - this.y) / viewScale;
+			this.selectionBox.height = (this.pointerStartY - screen.pointerY) / viewScale;
 		}
 	}
 
