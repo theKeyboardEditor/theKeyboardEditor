@@ -12,7 +12,7 @@ class Viewport extends Scene {
 	 * The keyson being renderered
 	 */
 	public var keyson: keyson.Keyson;
-	public var screenX: Float = 0;
+	public var screenX: Float = 0; // position on screen
 	public var screenY: Float = 0;
 	//	public var mainScene: MainScene;
 	public var guiScene: UI;
@@ -30,7 +30,7 @@ class Viewport extends Scene {
 	/**
 	 * Ceramic elements
 	 */
-	public var workSurface: Visual;
+	public var keycapSet: Visual;
 	var placer: Placer;
 	var selectionBox: SelectionBox;
 
@@ -67,7 +67,7 @@ class Viewport extends Scene {
 	public var gapY: Int;
 
 	// Viewport scale (default is 1.00 for 100%)
-	public var viewScale: Float = 1.0;
+	public var viewScale: Float = 1.0; // tracking of the view scale
 
 	inline static final placingStep: Float = Std.int(100 / 4);
 
@@ -85,16 +85,26 @@ class Viewport extends Scene {
 			return;
 
 		if (inputMap.pressed(PAN_UP)) {
-			workSurface.y += keyboardSpeed;
+			this.y += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_DOWN)) {
-			workSurface.y -= keyboardSpeed;
+			this.y -= keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_LEFT)) {
-			workSurface.x += keyboardSpeed;
+			this.x += keyboardSpeed;
 		}
 		if (inputMap.pressed(PAN_RIGHT)) {
-			workSurface.x -= keyboardSpeed;
+			this.x -= keyboardSpeed;
+		}
+		if (inputMap.pressed(ZOOM_IN)) {
+			this.scaleX = Math.min(2.0, this.scaleX + keyboardSpeed / 1000);
+			this.scaleY = this.scaleX;
+			viewScale = this.scaleX;
+		}
+		if (inputMap.pressed(ZOOM_OUT)) {
+			this.scaleX = Math.max(0.25, this.scaleX - keyboardSpeed / 1000);
+			this.scaleY = this.scaleX;
+			viewScale = this.scaleX;
 		}
 		if (inputMap.pressed(DELETE_SELECTED)) {
 			// TODO determine actually selected keyboard unit:
@@ -116,8 +126,8 @@ class Viewport extends Scene {
 	 * Initializes the scene
 	 */
 	override public function create() {
-		workSurface = parseInKeyboard(keyson);
-		this.add(workSurface);
+		keycapSet = parseInKeyboard(keyson);
+		this.add(keycapSet);
 
 		var grid = new Grid();
 		grid.primaryStep(unit * viewScale);
@@ -129,7 +139,7 @@ class Viewport extends Scene {
 		gridFilter.autoRender = false;
 		gridFilter.size(grid.width, grid.height);
 		gridFilter.content.add(grid);
-		workSurface.add(gridFilter);
+		this.add(gridFilter);
 		gridFilter.render();
 
 		placer = new Placer();
@@ -172,6 +182,7 @@ class Viewport extends Scene {
 	function placerUpdate() {
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
+				this.selectionBox.visible = false;
 				placerMismatchX = 0;
 				placerMismatchY = 0;
 				placer.visible = true;
@@ -182,32 +193,32 @@ class Viewport extends Scene {
 					- keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
 				switch shape {
 					case "ISO":
-						placer.size(1.50 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.50 * unit - gapX, 2.00 * unit - gapY);
 					case "ISO Inverted":
-						placer.size(1.50 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.50 * unit - gapX, 2.00 * unit - gapY);
 					case "BAE":
 						placerMismatchX = 0.75;
-						placer.size(2.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.25 * unit - gapX, 2.00 * unit - gapY);
 					case "BAE Inverted":
-						placer.size(2.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.25 * unit - gapX, 2.00 * unit - gapY);
 					case "XT_2U":
 						placerMismatchX = 1;
-						placer.size(2.00 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.00 * unit - gapX, 2.00 * unit - gapY);
 					case "AEK":
 						placerMismatchX = 0;
-						placer.size(1.25 * unit * viewScale - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.25 * unit - gapX, 2.00 * unit - gapY);
 					default:
 						if (Math.isNaN(Std.parseFloat(shape)) == false) { // aka it is a number
 							if (shape.split(' ').indexOf("Vertical") != -1)
-								placer.size(unit * viewScale - gapX, unit * viewScale * Std.parseFloat(shape) - gapY);
+								placer.size(unit - gapX, unit * Std.parseFloat(shape) - gapY);
 							else
-								placer.size(unit * viewScale * Std.parseFloat(shape) - gapX, unit * viewScale - gapY);
+								placer.size(unit * Std.parseFloat(shape) - gapX, unit - gapY);
 						}
 				}
-				placerMismatchX = coggify(placer.width / unit / viewScale / 2, .25);
-				placerMismatchY = coggify(placer.height / unit / viewScale / 2, .25);
-				placer.x = coggify(screen.pointerX - screenX - placerMismatchX * unit * viewScale, placingStep);
-				placer.y = coggify(screen.pointerY - screenY - placerMismatchY * unit * viewScale, placingStep);
+				placerMismatchX = coggify(placer.width / unit / 2 * viewScale, .25);
+				placerMismatchY = coggify(placer.height / unit / 2 * viewScale, .25);
+				placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
+				placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
 				StatusBar.pos(placer.x / unit * viewScale, placer.y / unit * viewScale);
 			default:
 				placer.visible = false;
@@ -216,24 +227,24 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Called only once to parse in the keyboard into the workSurface
+	 * Called only once to parse in the keyboard into the keycapSet
 	 */
 	function parseInKeyboard(keyboard: Keyson): Visual {
-		final workKeyboard = new Visual();
+		final workingSet = new Visual();
 		for (keyboardUnit in keyboard.units) {
-			gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
-			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
+			gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit);
+			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
 
 			for (key in keyboardUnit.keys) {
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
-				keycap.pos(unit * viewScale * key.position[Axis.X], unit * viewScale * key.position[Axis.Y]);
+				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 					keyMouseDown(t, keycap);
 				});
-				workKeyboard.add(keycap);
+				workingSet.add(keycap);
 			}
 		}
-		return workKeyboard;
+		return workingSet;
 	}
 	// APPLYING DESIGN
 	// SURFACE ACTIONS
@@ -245,17 +256,22 @@ class Viewport extends Scene {
 		// Store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
+		if (info.buttonId == 1)
+			return; // return on MMB (we ignore wheel press too)
+		if (info.buttonId == 2) { // RMB
+			// TODO call & process a "right click" menu otherwise ignore it here
+			return;
+		}
 
 		// since we have pressed emty space we start drawing a selection rectangle:
-		placer.x = coggify(screen.pointerX - screenX - placerMismatchX * unit * viewScale, placingStep);
-		placer.y = coggify(screen.pointerY - screenY - placerMismatchY * unit * viewScale, placingStep);
-		var y = placer.y / unit / viewScale;
-		var x = placer.x / unit / viewScale;
+		placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
+		placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
+		var y = placer.y / unit * viewScale;
+		var x = placer.x / unit * viewScale;
 
 		// draw a rectangle:
 		this.selectionBox.visible = true;
-		this.selectionBox.pos(screen.pointerX - screenX, screen.pointerY - screenY);
-		//		this.selectionBox.size(screen.pointerX - this.pointerStartX, screen.pointerY - this.pointerStartY);
+		this.selectionBox.pos(screen.pointerX - screenX - this.x, screen.pointerY - screenY - this.y);
 
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, viewportMouseMove);
@@ -268,20 +284,20 @@ class Viewport extends Scene {
 	 */
 	function viewportMouseMove(info: TouchInfo) {
 		// update the drag rectangle
-		this.selectionBox.pos(this.pointerStartX - screenX, this.pointerStartY - screenY);
+		this.selectionBox.pos(this.pointerStartX - screenX - this.x, this.pointerStartY - screenY - this.y);
 		if (screen.pointerX - this.pointerStartX > 0) {
-			this.selectionBox.x = this.pointerStartX - screenX;
-			this.selectionBox.width = screen.pointerX - this.pointerStartX;
+			this.selectionBox.x = (this.pointerStartX - screenX - this.x) / viewScale;
+			this.selectionBox.width = (screen.pointerX - this.pointerStartX) / viewScale;
 		} else {
-			this.selectionBox.x = screen.pointerX - screenX;
-			this.selectionBox.width = this.pointerStartX - screen.pointerX;
+			this.selectionBox.x = (screen.pointerX - screenX - this.x) / viewScale;
+			this.selectionBox.width = (this.pointerStartX - screen.pointerX) / viewScale;
 		}
 		if (screen.pointerY - this.pointerStartY > 0) {
-			this.selectionBox.y = this.pointerStartY - screenY;
-			this.selectionBox.height = screen.pointerY - this.pointerStartY;
+			this.selectionBox.y = (this.pointerStartY - screenY - this.y) / viewScale;
+			this.selectionBox.height = (screen.pointerY - this.pointerStartY) / viewScale;
 		} else {
-			this.selectionBox.y = screen.pointerY - screenY;
-			this.selectionBox.height = this.pointerStartY - screen.pointerY;
+			this.selectionBox.y = (screen.pointerY - screenY - this.y) / viewScale;
+			this.selectionBox.height = (this.pointerStartY - screen.pointerY) / viewScale;
 		}
 	}
 
@@ -289,6 +305,7 @@ class Viewport extends Scene {
 	 * react only once the button press is over
 	 */
 	function viewportMouseUp(info: TouchInfo) {
+		this.selectionBox.visible = false;
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
 				// place action
@@ -298,8 +315,8 @@ class Viewport extends Scene {
 				// TODO if there is a way to have a saner default legend?
 				final legend = shape;
 				// TODO calculate proper shaper size and offset:
-				var y = placer.y / unit / viewScale;
-				var x = placer.x / unit / viewScale;
+				var y = placer.y / unit;
+				var x = placer.x / unit;
 				switch shape {
 					case "BAE":
 						x += 0.75;
@@ -315,8 +332,31 @@ class Viewport extends Scene {
 				// and dump the selection
 				clearSelection(true);
 				this.selectionBox.visible = false;
-			// TODO calculate encircled shapes and select them
-
+				final boxX = this.selectionBox.x;
+				final boxY = this.selectionBox.y;
+				final boxW = this.selectionBox.width;
+				final boxH = this.selectionBox.height;
+				// TODO calculate encircled shapes and select them
+				for (k in keyson.units[workDevice].keys) {
+					final keyX = keyBody(k)[0];
+					final keyY = keyBody(k)[1];
+					final keyW = keyBody(k)[2];
+					final keyH = keyBody(k)[3];
+					if (keyX > boxX && keyX + keyW < boxX + boxW && keyY > boxY && keyY + keyH < boxY + boxH) {
+						final i: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+						for (q in i) {
+							//								if ( Reflect.getProperty(q,'sourceKey') == k ) {
+							if (q.sourceKey == k) {
+								trace('key ${k.legends[0].legend} selected!');
+								// TODO this ends in error but i need to call this to get it selected?
+								q.select();
+								// by using .unshift() instead of .push() the last added member is on index 0
+								selectedKeys.unshift(q);
+								deselection = false;
+							}
+						}
+					}
+				}
 			case _:
 				// TODO either pan or start selection RoundedRectangle();
 				StatusBar.error('Panning available only in edit mode.');
@@ -379,8 +419,8 @@ class Viewport extends Scene {
 			case _:
 				// there is a special case where the last selected element gets deselected and dragged
 				if (selectedKeys.length > 0 && !deselection && selectedKeys.length > 0) {
-					final xStep = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) - selectedKeys[0].x;
-					final yStep = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) - selectedKeys[0].y;
+					final xStep = coggify((keyPosStartX + screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeys[0].x;
+					final yStep = coggify((keyPosStartY + screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeys[0].y;
 					for (key in selectedKeys) {
 						key.x += xStep;
 						key.y += yStep;
@@ -472,5 +512,50 @@ class Viewport extends Scene {
 			queue.push(new actions.EditPaste(this, keyboardUnit, x, y));
 		}
 		StatusBar.inform('Paste action detected.');
+	}
+
+	function keyBody(k: keyson.Key): Array<Float> {
+		var y: Float = k.position[Axis.Y] * this.unit;
+		var x: Float = k.position[Axis.X] * this.unit;
+		var width: Float = 1.0 * this.unit;
+		var height: Float = 1.0 * this.unit;
+		switch k.shape {
+			case "BAE":
+				x -= 0.75 * this.unit;
+			case "XT_2U":
+				x -= 1 * this.unit;
+		}
+		switch k.shape {
+			case "ISO":
+				width = 1.50 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "ISO Inverted":
+				width = 1.50 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "BAE":
+				width = 2.25 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "BAE Inverted":
+				width = 2.25 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "XT_2U":
+				width = 2.00 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			case "AEK":
+				width = 1.25 * unit * viewScale - gapX;
+				height = 2.00 * unit * viewScale - gapY;
+			default:
+				if (Math.isNaN(Std.parseFloat(k.shape)) == false) { // aka it is a number
+					if (k.shape.split(' ').indexOf("Vertical") != -1) {
+						width = unit - gapX;
+						height = unit * Std.parseFloat(k.shape) - gapY;
+					} else {
+						width = unit * Std.parseFloat(k.shape) - gapX;
+						height = unit - gapY;
+					}
+				}
+		}
+
+		return [x, y, width, height];
 	}
 }

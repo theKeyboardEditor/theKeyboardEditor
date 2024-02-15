@@ -23,12 +23,12 @@ class EditCut extends Action {
 			}
 		];
 		CopyBuffer.selectedObjects.sortKeys();
-		// remove the selection from the workSurface:
+		// remove the selection from the keycapSet:
 		for (member in cutees) {
 			// clear keyson:
 			this.device.removeKey(member.sourceKey);
 			// clear Ceramic:
-			this.viewport.workSurface.remove(member);
+			this.viewport.keycapSet.remove(member);
 		}
 		super.act(type);
 	}
@@ -39,7 +39,7 @@ class EditCut extends Action {
 			// recreate keyson:
 			this.device.insertKey(member.sourceKey);
 			// recreate Ceramic:
-			this.viewport.workSurface.add(member);
+			this.viewport.keycapSet.add(member);
 		}
 		super.undo();
 	}
