@@ -24,15 +24,13 @@ class EditPaste extends Action {
 	};
 
 	override public function act(type: ActionType) {
-		/*if (type != Redo) {
-				// is there any difference?
-			} else {
-		 */ // we already store the key object on redo
-		for (key in CopyBuffer.selectedObjects.keys) {
+		final cloner = new cloner.Cloner();
+		final selectedKeys = cloner.clone(CopyBuffer.selectedObjects);
+		for (key in selectedKeys.keys) {
 			// add to keyson:
 			this.device.insertKey(key);
 			// TODO recreate shapes:
-			final keycap: KeyRenderer = KeyMaker.createKey(CopyBuffer.selectedObjects, key, viewport.unit, viewport.gapX, viewport.gapY,
+			final keycap: KeyRenderer = KeyMaker.createKey(selectedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
 				viewport.keyboardUnit.keysColor);
 			keycap.pos(viewport.unit * key.position[Axis.X], viewport.unit * key.position[Axis.Y]);
 			keycap.onPointerDown(keycap, (t: TouchInfo) -> {

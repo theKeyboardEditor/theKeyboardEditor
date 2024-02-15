@@ -3,7 +3,6 @@ package viewport;
 import ceramic.Visual;
 import ceramic.Scene;
 import ceramic.TouchInfo;
-import ceramic.RoundedRect;
 import keyson.Axis;
 import keyson.Keyson;
 

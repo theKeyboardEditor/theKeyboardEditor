@@ -1,7 +1,6 @@
 package;
 
 import ceramic.Entity;
-import ceramic.Timer;
 import ceramic.InitSettings;
 import ceramic.Preloader;
 import haxe.ui.Toolkit;
