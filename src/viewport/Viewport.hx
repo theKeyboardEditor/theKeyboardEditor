@@ -97,12 +97,12 @@ class Viewport extends Scene {
 			this.x -= keyboardSpeed;
 		}
 		if (inputMap.pressed(ZOOM_IN)) {
-			this.scaleX = Math.min(2.0, this.scaleX + keyboardSpeed/1000);
+			this.scaleX = Math.min(2.0, this.scaleX + keyboardSpeed / 1000);
 			this.scaleY = this.scaleX;
 			viewScale = this.scaleX;
 		}
 		if (inputMap.pressed(ZOOM_OUT)) {
-			this.scaleX = Math.max(0.25, this.scaleX - keyboardSpeed/1000);
+			this.scaleX = Math.max(0.25, this.scaleX - keyboardSpeed / 1000);
 			this.scaleY = this.scaleX;
 			viewScale = this.scaleX;
 		}
@@ -256,8 +256,9 @@ class Viewport extends Scene {
 		// Store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
-		if (info.buttonId == 1 ) return; // return on MMB (we ignore wheel press too)
-		if (info.buttonId == 2 ) { // RMB
+		if (info.buttonId == 1)
+			return; // return on MMB (we ignore wheel press too)
+		if (info.buttonId == 2) { // RMB
 			// TODO call & process a "right click" menu otherwise ignore it here
 			return;
 		}
