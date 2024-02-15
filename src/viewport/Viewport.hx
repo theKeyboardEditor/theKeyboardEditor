@@ -419,8 +419,8 @@ class Viewport extends Scene {
 			case _:
 				// there is a special case where the last selected element gets deselected and dragged
 				if (selectedKeys.length > 0 && !deselection && selectedKeys.length > 0) {
-					final xStep = coggify((keyPosStartX + screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeys[0].x;
-					final yStep = coggify((keyPosStartY + screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeys[0].y;
+					final xStep = coggify(keyPosStartX + (screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeys[0].x;
+					final yStep = coggify(keyPosStartY + (screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeys[0].y;
 					for (key in selectedKeys) {
 						key.x += xStep;
 						key.y += yStep;
