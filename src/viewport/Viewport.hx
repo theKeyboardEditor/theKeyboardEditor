@@ -249,6 +249,11 @@ class Viewport extends Scene {
 		// Store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
+		if (info.buttonId == 1 ) return; // return on MMB (we ignore wheel press too)
+		if (info.buttonId == 2 ) { // RMB
+			// TODO call & process a "right click" menu otherwise ignore it here
+			return;
+		}
 
 		// since we have pressed emty space we start drawing a selection rectangle:
 		placer.x = coggify(screen.pointerX - screenX - this.x - placerMismatchX * unit * viewScale, placingStep);
@@ -292,6 +297,7 @@ class Viewport extends Scene {
 	 * react only once the button press is over
 	 */
 	function viewportMouseUp(info: TouchInfo) {
+		this.selectionBox.visible = false;
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
 				// place action
