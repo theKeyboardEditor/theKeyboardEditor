@@ -100,6 +100,16 @@ class Viewport extends Scene {
 			this.x -= keyboardSpeed;
 			//			keycapSet.x -= keyboardSpeed;
 		}
+		if (inputMap.pressed(ZOOM_IN)) {
+			this.scaleX += keyboardSpeed/1000;
+			this.scaleY += keyboardSpeed/1000;
+			//			keycapSet.x -= keyboardSpeed;
+		}
+		if (inputMap.pressed(ZOOM_OUT)) {
+			this.scaleX -= keyboardSpeed/1000;
+			this.scaleY -= keyboardSpeed/1000;
+			//			keycapSet.x -= keyboardSpeed;
+		}
 		if (inputMap.pressed(DELETE_SELECTED)) {
 			// TODO determine actually selected keyboard unit:
 			if (selectedKeys.length > 0) {

@@ -35,5 +35,8 @@ class Input extends InputMap<ViewportInput> {
 
 		this.bindScanCode(DELETE_SELECTED, BACKSPACE);
 		this.bindScanCode(DELETE_SELECTED, DELETE);
+
+		this.bindScanCode(ZOOM_IN, EQUALS);
+		this.bindScanCode(ZOOM_OUT, MINUS);
 	}
 }
