@@ -182,6 +182,7 @@ class Viewport extends Scene {
 	function placerUpdate() {
 		switch (guiScene.modeSelector.barMode) {
 			case "place":
+				this.selectionBox.visible = false;
 				placerMismatchX = 0;
 				placerMismatchY = 0;
 				placer.visible = true;
@@ -192,20 +193,20 @@ class Viewport extends Scene {
 					- keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
 				switch shape {
 					case "ISO":
-						placer.size(1.50 * unit - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.50 * unit - gapX, 2.00 * unit - gapY);
 					case "ISO Inverted":
-						placer.size(1.50 * unit - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.50 * unit - gapX, 2.00 * unit - gapY);
 					case "BAE":
 						placerMismatchX = 0.75;
-						placer.size(2.25 * unit - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.25 * unit - gapX, 2.00 * unit - gapY);
 					case "BAE Inverted":
-						placer.size(2.25 * unit - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.25 * unit - gapX, 2.00 * unit - gapY);
 					case "XT_2U":
 						placerMismatchX = 1;
-						placer.size(2.00 * unit - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(2.00 * unit - gapX, 2.00 * unit - gapY);
 					case "AEK":
 						placerMismatchX = 0;
-						placer.size(1.25 * unit - gapX, 2.00 * unit * viewScale - gapY);
+						placer.size(1.25 * unit - gapX, 2.00 * unit - gapY);
 					default:
 						if (Math.isNaN(Std.parseFloat(shape)) == false) { // aka it is a number
 							if (shape.split(' ').indexOf("Vertical") != -1)
@@ -214,8 +215,8 @@ class Viewport extends Scene {
 								placer.size(unit * Std.parseFloat(shape) - gapX, unit - gapY);
 						}
 				}
-				placerMismatchX = coggify(placer.width / unit / 2, .25 / viewScale); // FIXME no idea why this works
-				placerMismatchY = coggify(placer.height / unit / 2, .25 / viewScale);
+				placerMismatchX = coggify(placer.width / unit / 2 * viewScale, .25);
+				placerMismatchY = coggify(placer.height / unit / 2 * viewScale, .25);
 				placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
 				placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
 				StatusBar.pos(placer.x / unit * viewScale, placer.y / unit * viewScale);
@@ -313,8 +314,8 @@ class Viewport extends Scene {
 				// TODO if there is a way to have a saner default legend?
 				final legend = shape;
 				// TODO calculate proper shaper size and offset:
-				var y = placer.y / unit / viewScale;
-				var x = placer.x / unit / viewScale;
+				var y = placer.y / unit;
+				var x = placer.x / unit;
 				switch shape {
 					case "BAE":
 						x += 0.75;
@@ -417,8 +418,8 @@ class Viewport extends Scene {
 			case _:
 				// there is a special case where the last selected element gets deselected and dragged
 				if (selectedKeys.length > 0 && !deselection && selectedKeys.length > 0) {
-					final xStep = coggify(keyPosStartX + screen.pointerX - pointerStartX, placingStep) - selectedKeys[0].x;
-					final yStep = coggify(keyPosStartY + screen.pointerY - pointerStartY, placingStep) - selectedKeys[0].y;
+					final xStep = coggify((keyPosStartX + screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeys[0].x;
+					final yStep = coggify((keyPosStartY + screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeys[0].y;
 					for (key in selectedKeys) {
 						key.x += xStep;
 						key.y += yStep;
@@ -545,11 +546,11 @@ class Viewport extends Scene {
 			default:
 				if (Math.isNaN(Std.parseFloat(k.shape)) == false) { // aka it is a number
 					if (k.shape.split(' ').indexOf("Vertical") != -1) {
-						width = unit * viewScale - gapX;
-						height = unit * viewScale * Std.parseFloat(k.shape) - gapY;
+						width = unit - gapX;
+						height = unit * Std.parseFloat(k.shape) - gapY;
 					} else {
-						width = unit * viewScale * Std.parseFloat(k.shape) - gapX;
-						height = unit * viewScale - gapY;
+						width = unit * Std.parseFloat(k.shape) - gapX;
+						height = unit - gapY;
 					}
 				}
 		}
