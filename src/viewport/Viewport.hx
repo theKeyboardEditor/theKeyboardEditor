@@ -258,7 +258,7 @@ class Viewport extends Scene {
 			return;
 		}
 
-		// since we have pressed epmty space we start drawing a selection rectangle:
+		// since we have pressed empty space we start drawing a selection rectangle:
 		placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
 		placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
 		var y = placer.y / unit * viewScale;
@@ -402,8 +402,7 @@ class Viewport extends Scene {
 			case "place":
 			case _:
 				// there is a special case where the last selected element gets deselected and dragged
-				// why we have two "selectedKeys.length > 0" here?
-				if (selectedKeys.length > 0 && !deselection && selectedKeys.length > 0) {
+				if (selectedKeys.length > 0 && !deselection) {
 					final xStep = coggify(keyPosStartX + (screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeys[0].x;
 					final yStep = coggify(keyPosStartY + (screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeys[0].y;
 					for (key in selectedKeys) {
@@ -491,9 +490,10 @@ class Viewport extends Scene {
 		}
 		StatusBar.inform('Paste action detected.');
 	}
-/*
- * Return a key's position and size in units of U/100
- */
+
+	/**
+	 * Return a key's position and size in units of U/100
+	 */
 	function keyBody(k: keyson.Key): ceramic.Rect {
 		var y: Float = k.position[Axis.Y] * this.unit;
 		var x: Float = k.position[Axis.X] * this.unit;
