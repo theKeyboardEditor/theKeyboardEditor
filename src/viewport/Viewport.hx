@@ -539,7 +539,6 @@ class Viewport extends Scene {
 					}
 				}
 		}
-		// why we return an object when we merely need abstarct numbers only?
 		return new ceramic.Rect(x, y, width, height);
 	}
 }
