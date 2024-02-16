@@ -258,7 +258,7 @@ class Viewport extends Scene {
 			return;
 		}
 
-		// since we have pressed emty space we start drawing a selection rectangle:
+		// since we have pressed empty space we start drawing a selection rectangle:
 		placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
 		placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
 		var y = placer.y / unit * viewScale;
@@ -280,6 +280,7 @@ class Viewport extends Scene {
 	function viewportMouseMove(info: TouchInfo) {
 		// update the drag rectangle
 		this.selectionBox.pos(this.pointerStartX - screenX - this.x, this.pointerStartY - screenY - this.y);
+		// for the rounded rectangles to render right we can't have negative size - so we change from where we draw it here
 		if (screen.pointerX - this.pointerStartX > 0) {
 			this.selectionBox.x = (this.pointerStartX - screenX - this.x) / viewScale;
 			this.selectionBox.width = (screen.pointerX - this.pointerStartX) / viewScale;
@@ -335,6 +336,7 @@ class Viewport extends Scene {
 
 				// TODO calculate encircled shapes and select them
 				for (k in keyson.units[currentUnit].keys) {
+					// calculate position and size of a body:
 					final body = keyBody(k);
 					final keyX = body.x;
 					final keyY = body.y;
@@ -400,7 +402,7 @@ class Viewport extends Scene {
 			case "place":
 			case _:
 				// there is a special case where the last selected element gets deselected and dragged
-				if (selectedKeys.length > 0 && !deselection && selectedKeys.length > 0) {
+				if (selectedKeys.length > 0 && !deselection) {
 					final xStep = coggify(keyPosStartX + (screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeys[0].x;
 					final yStep = coggify(keyPosStartY + (screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeys[0].y;
 					for (key in selectedKeys) {
@@ -489,6 +491,9 @@ class Viewport extends Scene {
 		StatusBar.inform('Paste action detected.');
 	}
 
+	/**
+	 * Return a key's position and size in units of U/100
+	 */
 	function keyBody(k: keyson.Key): ceramic.Rect {
 		var y: Float = k.position[Axis.Y] * this.unit;
 		var x: Float = k.position[Axis.X] * this.unit;
@@ -534,7 +539,6 @@ class Viewport extends Scene {
 					}
 				}
 		}
-
 		return new ceramic.Rect(x, y, width, height);
 	}
 }
