@@ -335,10 +335,11 @@ class Viewport extends Scene {
 
 				// TODO calculate encircled shapes and select them
 				for (k in keyson.units[currentUnit].keys) {
-					final keyX = keyBody(k)[0];
-					final keyY = keyBody(k)[1];
-					final keyWidth = keyBody(k)[2];
-					final keyHeight = keyBody(k)[3];
+					final body = keyBody(k);
+					final keyX = body.x;
+					final keyY = body.y;
+					final keyWidth = body.width;
+					final keyHeight = body.height;
 
 					if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
 						final keysInBox: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
@@ -488,7 +489,7 @@ class Viewport extends Scene {
 		StatusBar.inform('Paste action detected.');
 	}
 
-	function keyBody(k: keyson.Key): Array<Float> {
+	function keyBody(k: keyson.Key): ceramic.Rect {
 		var y: Float = k.position[Axis.Y] * this.unit;
 		var x: Float = k.position[Axis.X] * this.unit;
 		var width: Float = 1.0 * this.unit;
@@ -523,7 +524,7 @@ class Viewport extends Scene {
 				width = 1.25 * unit * viewScale - gapX;
 				height = 2.00 * unit * viewScale - gapY;
 			default:
-				if (Math.isNaN(Std.parseFloat(k.shape)) == false) { // aka it is a number
+				if (Math.isNaN(Std.parseFloat(k.shape)) == false) {
 					if (k.shape.split(' ').indexOf("Vertical") != -1) {
 						width = unit - gapX;
 						height = unit * Std.parseFloat(k.shape) - gapY;
@@ -534,6 +535,6 @@ class Viewport extends Scene {
 				}
 		}
 
-		return [x, y, width, height];
+		return new ceramic.Rect(x, y, width, height);
 	}
 }
