@@ -16,7 +16,7 @@ import haxe.ui.components.Button;
 	<label text="Selected:" />
 	<hbox height="20%" horizontalAlign="center">
 		<box style="background-color: #282828" width="128px" height="128px" horizontalAlign="center" verticalAlign="bottom">
-			<button text="Palette: Sweetie-16" width="100%" height="100%" horizontalAlign="center" verticalAlign="center" style="background-color: #73EFF7; color: #0c0c0c;" tooltip="Click to change palette (WIP)"/>
+			<button id="unit-color" text="Palette: Sweetie-16" width="100%" height="100%" horizontalAlign="center" verticalAlign="center" style="background-color: #73EFF7; color: #0c0c0c;" tooltip="Click to change palette (WIP)"/>
 		</box>
 	</hbox>
 </vbox>
