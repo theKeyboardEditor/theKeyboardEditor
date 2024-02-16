@@ -49,6 +49,9 @@
             "name": "header.png"
         },
         {
+            "name": "icons/color-mode.png"
+        },
+        {
             "name": "icons/copy.png"
         },
         {
@@ -65,9 +68,6 @@
         },
         {
             "name": "icons/legend-mode.png"
-        },
-        {
-            "name": "icons/palette-mode.png"
         },
         {
             "name": "icons/paste.png"
