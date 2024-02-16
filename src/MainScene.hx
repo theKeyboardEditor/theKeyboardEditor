@@ -19,7 +19,7 @@ class MainScene extends Scene {
 		assets.add(Images.ICONS__UNIT_MODE);
 		assets.add(Images.ICONS__LEGEND_MODE);
 		assets.add(Images.ICONS__KEYBOARD_MODE);
-		assets.add(Images.ICONS__PALETTE_MODE);
+		assets.add(Images.ICONS__COLOR_MODE);
 		// MISC ICONS
 		assets.add(Images.ICONS__KEBAB_DROPDOWN);
 		assets.add(Images.ICONS__UNDO);
@@ -110,16 +110,15 @@ class MainScene extends Scene {
 	}
 
 	public function openViewport(keyboard: keyson.Keyson) {
-		var workSurface = new viewport.Viewport();
-		workSurface.keyson = keyboard;
+		var viewport = new viewport.Viewport();
+		viewport.keyson = keyboard;
 
 		var container = new ui.ViewportContainer();
 		container.styleString = "width: 100%; height: 100%; background-color: #282828;";
 		container.text = keyboard.name;
-		container.display = workSurface;
+		container.display = viewport;
 
 		gui.tabs.addComponent(container);
-		//		workSurface.mainScene = this;
-		workSurface.guiScene = gui;
+		viewport.guiScene = gui;
 	}
 }

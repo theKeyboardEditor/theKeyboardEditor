@@ -21,12 +21,12 @@ import haxe.ui.events.UIEvent;
         </data>
     </menu-item-picker>
 
-    <button id="place" text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
-    <button id="edit" text="Edit" icon="icons/edit-mode" width="32px" height="32px" iconPosition="top" />
-    <button id="unit" text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
-    <button id="legend" text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
-    <button id="keyboard" text="Keyboard" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
-    <button id="palette" text="Palette" icon="icons/palette-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="place-mode" text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="edit-mode" text="Edit" icon="icons/edit-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="unit-mode" text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="legend-mode" text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="color-mode" text="Color" icon="icons/color-mode" width="32px" height="32px" iconPosition="top" />
+    <button id="present-mode" text="Present" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
 </button-bar>
 ')
 class ModeSelector extends VerticalButtonBar {
@@ -56,10 +56,10 @@ class ModeSelector extends VerticalButtonBar {
 				ComponentBuilder.fromFile("ui/sidebars/unit.xml");
 			case Legend:
 				ComponentBuilder.fromFile("ui/sidebars/legend.xml");
-			case Keyboard:
-				ComponentBuilder.fromFile("ui/sidebars/keyboard.xml");
-			case Palette:
-				new ui.sidebars.Palette((cast guiScene.tabs.selectedPage: ViewportContainer).display);
+			case Color:
+				new ui.sidebars.Color((cast guiScene.tabs.selectedPage: ViewportContainer).display);
+			case Present:
+				ComponentBuilder.fromFile("ui/sidebars/present.xml");
 			default:
 				ComponentBuilder.fromFile('ui/sidebars/void.xml');
 		};

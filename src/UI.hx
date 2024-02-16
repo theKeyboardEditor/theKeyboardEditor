@@ -52,7 +52,7 @@ class UI extends haxe.ui.containers.VBox {
 
 			// This is the default sidebar
 			// Note to future developers: when sidebar is set it automatically gets added
-			this.sidebar = modeSelector.switchMode("place");
+			this.sidebar = modeSelector.switchMode(Place);
 		}
 		middle.addComponent(leftBox);
 		middle.addComponent(tabs);

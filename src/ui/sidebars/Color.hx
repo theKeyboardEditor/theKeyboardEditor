@@ -4,7 +4,7 @@ import haxe.ui.containers.VBox;
 import haxe.ui.components.Button;
 
 @xml('
-<vbox id="palette-sidebar" width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
+<vbox id="color-sidebar" width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
 	<label text="Colors:" />
 	<hbox height="80%" width="156px" horizontalAlign="center" verticalAlign="center">
 		<scrollview width="153px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
@@ -21,7 +21,7 @@ import haxe.ui.components.Button;
 	</hbox>
 </vbox>
 ')
-class Palette extends VBox {
+class Color extends VBox {
 	public var columns: Int = 4;
 
 	public function new(viewport: viewport.Viewport) {

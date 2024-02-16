@@ -13,12 +13,9 @@ class Viewport extends Scene {
 	public var keyson: keyson.Keyson;
 	public var screenX: Float = 0; // position on screen
 	public var screenY: Float = 0;
-	//	public var mainScene: MainScene;
-	public var guiScene: UI;
-	public var barMode: String; // acces to active mode from gui.modeSelector.barMode
-	public final queue = new ActionQueue();
 
-	// TODO make cout, copy & paste actions for this
+	public var guiScene: UI;
+	public final queue = new ActionQueue();
 
 	/**
 	 * This is where we map all of the different events to specific keys
@@ -51,11 +48,10 @@ class Viewport extends Scene {
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
-	public var workDevice: Int = 0; // this will be set externally
+	public var currentUnit: Int = 0;
 	public var keyboardUnit: keyson.Keyboard;
 
-	var selectedKey: KeyRenderer; // still needed across few functions -.-'
-	var selectedKeys: Array<KeyRenderer> = []; // still needed across few functions -.-'
+	var selectedKeys: Array<KeyRenderer> = [];
 	var deselection: Bool = false; // is a deselect event resulting in a drag
 
 	// Constants
@@ -109,7 +105,7 @@ class Viewport extends Scene {
 			// TODO determine actually selected keyboard unit:
 			if (selectedKeys.length > 0) {
 				// ignore any faux allarms
-				keyboardUnit = keyson.units[workDevice];
+				keyboardUnit = keyson.units[currentUnit];
 				// they remain selected after deletion and it's eery! D:
 				clearSelection(false);
 				queue.push(new actions.DeleteKeys(this, keyboardUnit, selectedKeys));
@@ -180,7 +176,7 @@ class Viewport extends Scene {
 	 */
 	function placerUpdate() {
 		switch (guiScene.modeSelector.barMode) {
-			case "place":
+			case Place:
 				this.selectionBox.visible = false;
 				placerMismatchX = 0;
 				placerMismatchY = 0;
@@ -306,10 +302,10 @@ class Viewport extends Scene {
 	function viewportMouseUp(info: TouchInfo) {
 		this.selectionBox.visible = false;
 		switch (guiScene.modeSelector.barMode) {
-			case "place":
+			case Place:
 				// place action
 				// TODO determine actually selected keyboard unit:
-				keyboardUnit = keyson.units[workDevice];
+				keyboardUnit = keyson.units[currentUnit];
 				final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
 				// TODO if there is a way to have a saner default legend?
 				final legend = shape;
@@ -326,80 +322,66 @@ class Viewport extends Scene {
 				gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
-			case "edit":
+			case Edit:
 				// just any click on empty should clear selection of everything
 				// and dump the selection
 				clearSelection(true);
 				this.selectionBox.visible = false;
+
 				final boxX = this.selectionBox.x;
 				final boxY = this.selectionBox.y;
-				final boxW = this.selectionBox.width;
-				final boxH = this.selectionBox.height;
+				final boxWidth = this.selectionBox.width;
+				final boxHeight = this.selectionBox.height;
+
 				// TODO calculate encircled shapes and select them
-				for (k in keyson.units[workDevice].keys) {
+				for (k in keyson.units[currentUnit].keys) {
 					final keyX = keyBody(k)[0];
 					final keyY = keyBody(k)[1];
-					final keyW = keyBody(k)[2];
-					final keyH = keyBody(k)[3];
-					if (keyX > boxX && keyX + keyW < boxX + boxW && keyY > boxY && keyY + keyH < boxY + boxH) {
-						final i: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
-						for (q in i) {
-							//								if ( Reflect.getProperty(q,'sourceKey') == k ) {
-							if (q.sourceKey == k) {
-								trace('key ${k.legends[0].legend} selected!');
-								// TODO this ends in error but i need to call this to get it selected?
-								q.select();
-								// by using .unshift() instead of .push() the last added member is on index 0
-								selectedKeys.unshift(q);
+					final keyWidth = keyBody(k)[2];
+					final keyHeight = keyBody(k)[3];
+
+					if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
+						final keysInBox: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+						for (key in keysInBox) {
+							if (key.sourceKey == k) {
+								key.select();
+								selectedKeys.unshift(key);
 								deselection = false;
 							}
 						}
 					}
 				}
-			case _:
-				// TODO either pan or start selection RoundedRectangle();
-				StatusBar.error('Panning available only in edit mode.');
+			default:
 		}
 	}
 	// KEY ACTIONS
 
 	/**
 	 * This gets called only if clicked on a key on the worksurface!
+	 * because we create keys in actions we need this accesible (thus public) from there
 	 */
-	// because we create keys in actions we need this accesible (thus public) from there
 	public function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
-		this.selectedKey = keycap;
 
-		// store current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
+
 		switch (guiScene.modeSelector.barMode) {
-			case "edit":
+			case Edit:
 				// move and select keys
-				if (selectedKey.border.visible) {
-					// is selected: (by using select we take care of pivot too!)
-					selectedKey.deselect();
-					selectedKeys.remove(selectedKey);
-					// we just had a deselect, allowing drag leads to problems.
+				if (keycap.border.visible) {
+					keycap.deselect();
+					selectedKeys.remove(keycap);
 					deselection = true;
 				} else {
-					// wasn't selected:
-					selectedKey.select();
-					// by using .unshift() instead of .push() the last added member is on index 0
-					selectedKeys.unshift(selectedKey);
+					keycap.select();
+					selectedKeys.unshift(keycap);
 					deselection = false;
 				}
 
-				// TODO infer the selection size and apply it to the placer:
-				if (selectedKeys.length > 0) {
-					placer.visible = false;
-				} else {
-					placer.visible = true;
-				}
-			case _:
-				// just ignore undefined actions for now
+				placer.visible = selectedKeys.length < 0;
+			default:
 		}
 
 		// Try move along as we pan the touch
@@ -449,20 +431,17 @@ class Viewport extends Scene {
 					 */
 					var x = (selectedKeys[0].x - keyPosStartX) / unit * viewScale;
 					var y = (selectedKeys[0].y - keyPosStartY) / unit * viewScale;
-					// only if at least x or y is non zero
-					// that didn't result in deselection
-					// and we have actual keys to move at all
+					// only if at least x or y is non zero that didn't result in deselection and we have actual keys to move at all
 					if (x != 0 || y != 0 && !deselection && selectedKeys.length > 0) {
 						queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
+						// deselect only if single element was just dragged
 						if (selectedKeys.length == 1) {
-							// deselect only if single element was just dragged
-							selectedKey.deselect();
-							selectedKeys.remove(selectedKey);
+							selectedKeys[0].deselect();
+							selectedKeys.remove(selectedKeys[0]);
 						}
 					}
 				}
 			default:
-				// undefined gets ignored
 		}
 
 		// The touch is already over, now cleanup and retur from there
@@ -481,22 +460,18 @@ class Viewport extends Scene {
 			CopyBuffer.selectedObjects = new Keyboard();
 			// TODO initialize said keyboard with current unit's data
 			// copy into a clean buffer
-			keyboardUnit = keyson.units[workDevice];
+			keyboardUnit = keyson.units[currentUnit];
 			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeys));
 		}
 		StatusBar.inform('Copy action detected.');
 	}
 
 	public function cut() {
-		trace('selection: ${selectedKeys.length}');
 		if (selectedKeys.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
-			// TODO initialize said keyboard with current unit's data
-			// cut into a clean buffer
-			keyboardUnit = keyson.units[workDevice];
+			keyboardUnit = keyson.units[currentUnit];
 			clearSelection(false);
 			queue.push(new actions.EditCut(this, keyboardUnit, selectedKeys));
-			// delayed selection clearing
 			selectedKeys = [];
 		}
 		StatusBar.inform('Cut action detected.');
@@ -504,10 +479,10 @@ class Viewport extends Scene {
 
 	public function paste() {
 		if (CopyBuffer.selectedObjects.keys.length > 0) {
-			// TODO make a offset from the sotred data somehow
+			// TODO make a offset from the stored data somehow
 			var y = placer.y / unit * viewScale;
 			var x = placer.x / unit * viewScale;
-			keyboardUnit = keyson.units[workDevice];
+			keyboardUnit = keyson.units[currentUnit];
 			queue.push(new actions.EditPaste(this, keyboardUnit, x, y));
 		}
 		StatusBar.inform('Paste action detected.');
@@ -518,12 +493,16 @@ class Viewport extends Scene {
 		var x: Float = k.position[Axis.X] * this.unit;
 		var width: Float = 1.0 * this.unit;
 		var height: Float = 1.0 * this.unit;
-		switch k.shape {
+
+		x -= switch k.shape {
 			case "BAE":
-				x -= 0.75 * this.unit;
+				0.75 * this.unit;
 			case "XT_2U":
-				x -= 1 * this.unit;
+				1 * this.unit;
+			default:
+				0;
 		}
+
 		switch k.shape {
 			case "ISO":
 				width = 1.50 * unit * viewScale - gapX;
