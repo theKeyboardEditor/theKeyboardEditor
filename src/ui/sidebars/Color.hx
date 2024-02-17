@@ -23,25 +23,27 @@ import haxe.ui.events.UIEvent;
 </vbox>
 ')
 class Color extends VBox {
-	var palette: keyson.Keyson.Palette;
-
 	public function new(viewport: viewport.Viewport) {
 		super();
 
-		palette = viewport.keyson?.colorTable;
+		var palette = viewport.keyson?.colorTable;
 		for (color in palette.swatches ?? []) {
 			var button = new Button();
 			button.id = color.name;
 			button.tooltip = color.name;
 			button.width = button.height = 128 / 4;
 			button.styleString = 'background-color: #${color.value.substring(4)};';
+			button.onClick = e -> {
+				final value = palette.fromName(button.id).value;
+				trace(e.shiftKey);
+				if (e.shiftKey) {
+					trace("Test");
+					preview.legendColor = Std.parseInt('0x${value.substring(4)}');
+				} else {
+					preview.bodyColor = Std.parseInt('0x${value.substring(4)}');
+				}
+			};
 			colors.addComponent(button);
 		}
-	}
-
-	@:bind(colors, UIEvent.CHANGE)
-	function onSelected(_) {
-		final value = palette.fromName(colors.selectedButton.id).value;
-		preview.bodyColor = Std.parseInt('0x${value.substring(4)}');
 	}
 }
