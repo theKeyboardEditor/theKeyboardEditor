@@ -56,6 +56,12 @@ class Palette {
 		this.size = 1; // amount of colors
 		this.swatches = [new Color("BLACK", "0x00000000")]; // the names are for humans only
 	}
+
+	public function fromName(name: String): Color {
+		return swatches.filter((i) -> {
+			i.name == name;
+		})[0];
+	}
 }
 
 class Color {

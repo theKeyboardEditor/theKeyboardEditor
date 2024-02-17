@@ -1,7 +1,6 @@
 package actions;
 
 import viewport.Viewport;
-import viewport.KeyMaker;
 import ceramic.TouchInfo;
 import keyson.Keyson;
 import keyson.Axis;
@@ -31,7 +30,7 @@ class EditPaste extends Action {
 			this.device.insertKey(key);
 			// TODO recreate shapes:
 			final keycap: KeyRenderer = KeyMaker.createKey(selectedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
-				viewport.keyboardUnit.keysColor);
+				Std.parseInt(viewport.keyboardUnit.keysColor));
 			keycap.pos(viewport.unit * key.position[Axis.X], viewport.unit * key.position[Axis.Y]);
 			keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 				viewport.keyMouseDown(t, keycap);

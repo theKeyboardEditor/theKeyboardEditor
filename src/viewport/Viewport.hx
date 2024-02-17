@@ -231,7 +231,8 @@ class Viewport extends Scene {
 			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
 
 			for (key in keyboardUnit.keys) {
-				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY, keyboardUnit.keysColor);
+				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY,
+					Std.parseInt(keyboardUnit.keysColor));
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 					keyMouseDown(t, keycap);

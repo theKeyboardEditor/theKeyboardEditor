@@ -1,6 +1,8 @@
-package viewport;
+package;
 
 import keyson.Axis;
+import keyson.Keyson.Keyboard;
+import keyson.Keyson.Key;
 import ceramic.Color;
 
 /*
@@ -9,8 +11,7 @@ import ceramic.Color;
  */
 class KeyMaker {
 	// create a complete key with all its belonging features
-	public static function createKey(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Float, gapX: Int, gapY: Int,
-			color: String): KeyRenderer {
+	public static function createKey(keyboard: Keyboard, k: Key, unit: Float, gapX: Int, gapY: Int, ?color: Color): KeyRenderer {
 		var key: KeyRenderer;
 
 		var width: Float;
@@ -30,7 +31,7 @@ class KeyMaker {
 		var offsetSouthY: Float = 0;
 
 		// we convert the values into actual ceramic color
-		final keyColor: Color = Std.parseInt(k.keysColor) ?? Std.parseInt(color) ?? Color.WHITE;
+		final keyColor: Color = Std.parseInt(k.keysColor) ?? color ?? Color.WHITE;
 		final keyShadow: Color = getKeyShadow(keyColor);
 
 		for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
@@ -141,10 +142,9 @@ class KeyMaker {
 			key = enterShaped;
 		}
 
-		// here we populate the legends (see function below)
-		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit); // it is another Visual
+		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit);
 		for (l in keyLegends) {
-			key.add(l.create()); // adding it to the key visual
+			key.add(l.create());
 		}
 
 		return key;
@@ -184,8 +184,8 @@ class KeyMaker {
 		return keyLegends;
 	}
 
-	static function getKeyShadow(color: Color): Color {
-		color.lightnessHSLuv -= 0.12;
+	public static function getKeyShadow(color: Color): Color {
+		color.lightnessHSLuv -= 0.15;
 		return color;
 	}
 }
