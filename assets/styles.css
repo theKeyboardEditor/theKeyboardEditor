@@ -22,3 +22,7 @@
 .palette-sidebar button:down {
 	border: 2px solid $accent-color;
 }
+
+.colors button:down {
+	border: 3px solid $accent-color;
+} 
