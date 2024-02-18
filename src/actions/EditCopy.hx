@@ -16,10 +16,12 @@ class EditCopy extends Action {
 	}
 
 	override public function act(type: ActionType) {
+		final cloner = new cloner.Cloner();
 		// take in the selection to the empty editBuffer:
 		CopyBuffer.selectedObjects.keys = [
 			for (shape in copyees) {
-				shape.sourceKey;
+				// severe ties to the originals:
+				cloner.clone(shape.sourceKey);
 			}
 		];
 		CopyBuffer.selectedObjects.sortKeys();

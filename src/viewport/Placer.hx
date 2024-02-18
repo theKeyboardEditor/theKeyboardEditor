@@ -38,7 +38,8 @@ class Placer extends Visual {
 	}
 
 	override public function new() {
-		this.color = 0x6D3C4BC5; // UI theme accent color!
+		this.color = 0x2D3C4BC5; // UI theme accent color!
+		this.alpha = (this.color >> 24) / 256; // respect alpha?
 		contentDirty = true;
 		super();
 	}

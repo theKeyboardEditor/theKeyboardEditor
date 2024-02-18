@@ -495,6 +495,32 @@ class Viewport extends Scene {
 		StatusBar.inform('Paste action detected.');
 	}
 
+	//TODO select all
+
+	/**
+	 * Return the size of selected units in U/100
+	 */
+
+	function selectedBodies(set: Array<keyson.Key>) {
+		var extremeX: Float = 0;
+		var extremeY: Float = 0;
+		var extremeW: Float = 0;
+		var extremeH: Float = 0;
+
+		for (member in set) {
+			final body = keyBody(member);
+			// extreme left most coodrinate:
+			extremeX = Math.min( extremeX, body.x );
+			// extreme top most
+			extremeY = Math.min( extremeY, body.y );
+			// extremem right most
+			extremeW = Math.max( extremeW, body.x + body.width );
+			// extreme bottom most
+			extremeH = Math.max( extremeH, body.y + body.height );
+		}
+		return new ceramic.Rect(extremeX, extremeY, extremeX - extremeW, extremeY - extremeH);
+	}
+
 	/**
 	 * Return a key's position and size in units of U/100
 	 */
