@@ -8,7 +8,7 @@ import keyson.Axis;
 class EditPaste extends Action {
 	final viewport: Viewport;
 	final device: keyson.Keyboard; // the receiving unit
-	final shapes: Array<KeyRenderer>; // the receiving unit
+	var clonedKeys:  keyson.Keyboard; // we store data in here
 	final x: Float; // in 1U keyson units
 	final y: Float;
 
@@ -19,38 +19,42 @@ class EditPaste extends Action {
 		// TODO make this x and y be offsets for the whole ordeal
 		this.x = x;
 		this.y = y;
-		this.shapes = [];
 	};
 
 	override public function act(type: ActionType) {
 		final cloner = new cloner.Cloner();
 		// severe any entanglement with the buffer and placed elements:
-		final selectedKeys = cloner.clone(CopyBuffer.selectedObjects);
-		this.shapes = selectedKeys;
-		for (key in selectedKeys.keys) {
+		// this can't be final we store information for undo here
+		clonedKeys = cloner.clone(CopyBuffer.selectedObjects);
+		for (key in clonedKeys.keys) {
 			// add to keyson:
 			this.device.insertKey(key);
 			// TODO recreate shapes:
-			final keycap: KeyRenderer = KeyMaker.createKey(selectedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
+			final keycap: KeyRenderer = KeyMaker.createKey(clonedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
 				Std.parseInt(viewport.keyboardUnit.keysColor));
 			keycap.pos(viewport.unit * key.position[Axis.X], viewport.unit * key.position[Axis.Y]);
 			keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 				viewport.keyMouseDown(t, keycap);
 			});
 			viewport.keycapSet.add(keycap);
-			this.device.sortKeys();
 		}
+		this.device.sortKeys();
 		super.act(type);
 	}
 
 	override public function undo() {
 		// clear by the recorded keycapSet shapes:
-		for (member in shapes.keys) {
+		for (member in clonedKeys.keys) {
 			//FIXME since we broke entanglement by clone we need compare per unit now
-			this.device.removeKey(member.sourceKey);
-			this.viewport.keycapSet.remove(member);
+			final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
+			for (keycap in keysOnUnit) {
+				if (keycap.sourceKey == member) {
+					this.device.removeKey(member);
+					this.viewport.keycapSet.remove(keycap);
+				}
+			}
+
 		}
-		CopyBuffer.selectedObjects.keys = [];
 		super.undo();
 	}
 }
