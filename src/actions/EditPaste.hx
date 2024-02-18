@@ -24,6 +24,7 @@ class EditPaste extends Action {
 
 	override public function act(type: ActionType) {
 		final cloner = new cloner.Cloner();
+		// severe any entanglement with the buffer and placed elements:
 		final selectedKeys = cloner.clone(CopyBuffer.selectedObjects);
 		for (key in selectedKeys.keys) {
 			// add to keyson:

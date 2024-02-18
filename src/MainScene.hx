@@ -44,6 +44,7 @@ class MainScene extends Scene {
 		this.gui = new UI(this, store);
 
 		// Render keys
+		//TODO abandon this and make welcome screen work eventually
 		openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
 		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
 
@@ -52,7 +53,7 @@ class MainScene extends Scene {
 			gui.welcome.findComponent("project-list").addComponent(new ui.Project(key));
 		}
 
-		// TODO: can we make picking "New" uncover the welcome screen eveon on a running session
+		// TODO: can we make picking "New" uncover the welcome screen even on a running session?
 		// TODO: inhibit all worksurface actions for the while GUI is displayed
 		Screen.instance.addComponent(gui);
 		Screen.instance.addComponent(gui.overlay);
@@ -63,6 +64,11 @@ class MainScene extends Scene {
 		// Saving
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
 			save((cast gui.tabs.selectedPage: ui.ViewportContainer).display.keyson, store);
+		});
+
+		// Downloading
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_D)], () -> {
+			download((cast gui.tabs.selectedPage: ui.ViewportContainer).display.keyson);
 		});
 
 		// Toggle overlay (i.e welcome screen)
@@ -94,8 +100,23 @@ class MainScene extends Scene {
 			trace('paste');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.paste();
 		});
+		//TODO fix shift key press breaking this calls
+		//TODO implement:
+		/**
+		 * Shift+Ctrl z - undo all
+		 * Shift+Ctrl y - redo all
+		 * Shift+Ctrl w - close all buffers
+		 * Shift+Ctrl a - select everything
+		 * Shift+Ctrl s - save all files
+		 * Shift+Ctrl d - download all files (web)
+		 * Shift+Ctrl
+		 *
+		 */
 	}
-
+	public function download(keyboard: keyson.Keyson) {
+		FileDialog.download(haxe.Json.stringify(keyboard, "\t"), keyboard.name, "application/json");
+		StatusBar.inform("Download has been sent");
+	}
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
 		/*
 		 * TODO: Compress using hxPako or similar - logo
