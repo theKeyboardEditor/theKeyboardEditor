@@ -26,6 +26,7 @@ class EditPaste extends Action {
 		final cloner = new cloner.Cloner();
 		// severe any entanglement with the buffer and placed elements:
 		final selectedKeys = cloner.clone(CopyBuffer.selectedObjects);
+		this.shapes = selectedKeys;
 		for (key in selectedKeys.keys) {
 			// add to keyson:
 			this.device.insertKey(key);
@@ -44,7 +45,7 @@ class EditPaste extends Action {
 
 	override public function undo() {
 		// clear by the recorded keycapSet shapes:
-		for (member in shapes) {
+		for (member in shapes.keys) {
 			//FIXME since we broke entanglement by clone we need compare per unit now
 			this.device.removeKey(member.sourceKey);
 			this.viewport.keycapSet.remove(member);
