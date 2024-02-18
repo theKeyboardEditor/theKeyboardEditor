@@ -53,7 +53,6 @@ class EditPaste extends Action {
 					this.viewport.keycapSet.remove(keycap);
 				}
 			}
-
 		}
 		super.undo();
 	}
