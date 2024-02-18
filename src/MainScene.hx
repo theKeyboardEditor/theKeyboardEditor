@@ -86,6 +86,18 @@ class MainScene extends Scene {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
 		});
 
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
+			trace('select all');
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.selectEverything();
+		});
+/*
+		//TODO make shift+Ctrl+A bound here:
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
+			trace('deselect all');
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.clearSelection();
+		});
+*/
+
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_C)], () -> {
 			trace('copy');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.copy();

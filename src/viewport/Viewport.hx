@@ -51,7 +51,7 @@ class Viewport extends Scene {
 	public var currentUnit: Int = 0;
 	public var keyboardUnit: keyson.Keyboard;
 
-	var selectedKeys: Array<KeyRenderer> = [];
+	var selectedKeycaps: Array<KeyRenderer> = [];
 	var deselection: Bool = false; // is a deselect event resulting in a drag
 
 	// Constants
@@ -103,14 +103,14 @@ class Viewport extends Scene {
 		}
 		if (inputMap.pressed(DELETE_SELECTED)) {
 			// TODO determine actually selected keyboard unit:
-			if (selectedKeys.length > 0) {
+			if (selectedKeycaps.length > 0) {
 				// ignore any faux allarms
 				keyboardUnit = keyson.units[currentUnit];
 				// they remain selected after deletion and it's eery! D:
 				clearSelection(false);
-				queue.push(new actions.DeleteKeys(this, keyboardUnit, selectedKeys));
+				queue.push(new actions.DeleteKeys(this, keyboardUnit, selectedKeycaps));
 				// delayed selection clearing
-				selectedKeys = [];
+				selectedKeycaps = [];
 			}
 			// we'll just pretend there are no rebounces on delete key ;)
 			// (but there are 2-3!)
@@ -345,11 +345,11 @@ class Viewport extends Scene {
 					final keyHeight = body.height;
 
 					if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-						final keysInBox: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
-						for (key in keysInBox) {
+						final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+						for (key in keysOnUnit) {
 							if (key.sourceKey == k) {
 								key.select();
-								selectedKeys.unshift(key);
+								selectedKeycaps.unshift(key);
 								deselection = false;
 							}
 						}
@@ -376,15 +376,16 @@ class Viewport extends Scene {
 				// move and select keys
 				if (keycap.border.visible) {
 					keycap.deselect();
-					selectedKeys.remove(keycap);
+					selectedKeycaps.remove(keycap);
 					deselection = true;
 				} else {
 					keycap.select();
-					selectedKeys.unshift(keycap);
+					// push to the opposite end of .push();
+					selectedKeycaps.unshift(keycap);
 					deselection = false;
 				}
 
-				placer.visible = selectedKeys.length < 0;
+				placer.visible = selectedKeycaps.length < 0;
 			default:
 		}
 
@@ -403,10 +404,10 @@ class Viewport extends Scene {
 			case Place:
 			default:
 				// there is a special case where the last selected element gets deselected and dragged
-				if (selectedKeys.length > 0 && !deselection) {
-					final xStep = coggify(keyPosStartX + (screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeys[0].x;
-					final yStep = coggify(keyPosStartY + (screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeys[0].y;
-					for (key in selectedKeys) {
+				if (selectedKeycaps.length > 0 && !deselection) {
+					final xStep = coggify(keyPosStartX + (screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeycaps[0].x;
+					final yStep = coggify(keyPosStartY + (screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeycaps[0].y;
+					for (key in selectedKeycaps) {
 						key.x += xStep;
 						key.y += yStep;
 					}
@@ -428,20 +429,20 @@ class Viewport extends Scene {
 				placerMismatchY = 0;
 
 				// Actually execute the move of the selection
-				if (selectedKeys.length > 0) {
+				if (selectedKeycaps.length > 0) {
 					/**
 					 * If the previous first member gets deselected the array will change pos()
 					 * TODO: how can we know which remaining key will not move the array's position?
 					 */
-					var x = (selectedKeys[0].x - keyPosStartX) / unit * viewScale;
-					var y = (selectedKeys[0].y - keyPosStartY) / unit * viewScale;
+					var x = (selectedKeycaps[0].x - keyPosStartX) / unit * viewScale;
+					var y = (selectedKeycaps[0].y - keyPosStartY) / unit * viewScale;
 					// only if at least x or y is non zero that didn't result in deselection and we have actual keys to move at all
-					if (x != 0 || y != 0 && !deselection && selectedKeys.length > 0) {
-						queue.push(new actions.MoveKeys(this, selectedKeys, x, y));
+					if (x != 0 || y != 0 && !deselection && selectedKeycaps.length > 0) {
+						queue.push(new actions.MoveKeys(this, selectedKeycaps, x, y));
 						// deselect only if single element was just dragged
-						if (selectedKeys.length == 1) {
-							selectedKeys[0].deselect();
-							selectedKeys.remove(selectedKeys[0]);
+						if (selectedKeycaps.length == 1) {
+							selectedKeycaps[0].deselect();
+							selectedKeycaps.remove(selectedKeycaps[0]);
 						}
 					}
 				}
@@ -456,31 +457,40 @@ class Viewport extends Scene {
 		screen.offPointerMove(keyMouseMove);
 	}
 	public function clearSelection(deep: Bool) {
-		for (i in 0...selectedKeys.length)
-			selectedKeys[i].deselect();
+		for (i in 0...selectedKeycaps.length)
+			selectedKeycaps[i].deselect();
 		if (deep)
-			selectedKeys = [];
+			selectedKeycaps = [];
+	}
+
+	public function selectEverything() {
+			selectedKeycaps = [];
+			final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+		for (keycap in keysOnUnit) {
+			selectedKeycaps.unshift(keycap);
+			keycap.select();
+		}
 	}
 
 	public function copy() {
-		trace('selection: ${selectedKeys.length}');
-		if (selectedKeys.length > 0) {
+		trace('selection: ${selectedKeycaps.length}');
+		if (selectedKeycaps.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
 			// TODO initialize said keyboard with current unit's data
 			// copy into a clean buffer
 			keyboardUnit = keyson.units[currentUnit];
-			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeys));
+			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeycaps));
 		}
 		StatusBar.inform('Copy action detected.');
 	}
 
 	public function cut() {
-		if (selectedKeys.length > 0) {
+		if (selectedKeycaps.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
 			keyboardUnit = keyson.units[currentUnit];
 			clearSelection(false);
-			queue.push(new actions.EditCut(this, keyboardUnit, selectedKeys));
-			selectedKeys = [];
+			queue.push(new actions.EditCut(this, keyboardUnit, selectedKeycaps));
+			selectedKeycaps = [];
 		}
 		StatusBar.inform('Cut action detected.');
 	}
