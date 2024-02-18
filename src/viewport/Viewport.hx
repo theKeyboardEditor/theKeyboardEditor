@@ -323,7 +323,7 @@ class Viewport extends Scene {
 				gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
-			case Edit:
+			case Edit | Unit  | Color | Present:
 				// just any click on empty should clear selection of everything
 				// and dump the selection
 				clearSelection(true);
@@ -371,7 +371,7 @@ class Viewport extends Scene {
 		this.pointerStartY = screen.pointerY;
 
 		switch (guiScene.modeSelector.barMode) {
-			case Edit:
+			case Edit | Unit  | Color | Present:
 				// move and select keys
 				if (keycap.border.visible) {
 					keycap.deselect();
@@ -399,8 +399,8 @@ class Viewport extends Scene {
 	 */
 	function keyMouseMove(info: TouchInfo) {
 		switch (guiScene.modeSelector.barMode) {
-			case "place":
-			case _:
+			case Place:
+			default:
 				// there is a special case where the last selected element gets deselected and dragged
 				if (selectedKeys.length > 0 && !deselection) {
 					final xStep = coggify(keyPosStartX + (screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeys[0].x;
@@ -418,9 +418,9 @@ class Viewport extends Scene {
 	 */
 	function keyMouseUp(info: TouchInfo) {
 		switch (guiScene.modeSelector.barMode) {
-			case "place":
+			case Place:
 				placer.visible = true;
-			case "edit":
+			case Edit | Unit  | Color | Present:
 				// Restore placer to default size
 				placer.size(unit * viewScale, unit * viewScale);
 				placerMismatchX = 0;
@@ -445,9 +445,13 @@ class Viewport extends Scene {
 					}
 				}
 			default:
+				placer.size(unit * viewScale, unit * viewScale);
+				placerMismatchX = 0;
+				placerMismatchY = 0;
+				placer.visible = false;
 		}
 
-		// The touch is already over, now cleanup and retur from there
+		// The touch is already over, now cleanup and return from there
 		screen.offPointerMove(keyMouseMove);
 	}
 	public function clearSelection(deep: Bool) {
