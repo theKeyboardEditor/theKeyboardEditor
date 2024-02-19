@@ -35,7 +35,6 @@ class Color extends VBox {
 			button.styleString = 'background-color: #${color.value.substring(4)};';
 			button.onClick = e -> {
 				final value = palette.fromName(button.id).value;
-				trace(e.shiftKey);
 				if (e.shiftKey) {
 					trace("Test");
 					preview.legendColor = Std.parseInt('0x${value.substring(4)}');

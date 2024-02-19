@@ -181,7 +181,7 @@ class Viewport extends Scene {
 				placerMismatchX = 0;
 				placerMismatchY = 0;
 				placer.visible = true;
-				final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
+				final shape = if (CopyBuffer.designatedKey != null) CopyBuffer.designatedKey else "1U";
 				gapX = Std.int((keyson.units[0].keyStep[Axis.X]
 					- keyson.units[0].capSize[Axis.X]) / keyson.units[0].keyStep[Axis.X] * unit * viewScale);
 				gapY = Std.int((keyson.units[0].keyStep[Axis.Y]
@@ -308,7 +308,7 @@ class Viewport extends Scene {
 				// place action
 				// TODO determine actually selected keyboard unit:
 				keyboardUnit = keyson.units[currentUnit];
-				final shape = if (CopyBuffer.selectedKey != null) CopyBuffer.selectedKey else "1U";
+				final shape = if (CopyBuffer.designatedKey != null) CopyBuffer.designatedKey else "1U";
 				// TODO if there is a way to have a saner default legend?
 				final legend = shape;
 				// TODO calculate proper shaper size and offset:
@@ -384,7 +384,7 @@ class Viewport extends Scene {
 					selectedKeycaps.unshift(keycap);
 					deselection = false;
 				}
-
+				// show placer only if -1 (non existent?)
 				placer.visible = selectedKeycaps.length < 0;
 			default:
 		}
