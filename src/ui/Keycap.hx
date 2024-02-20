@@ -24,26 +24,27 @@ class Keycap extends Box {
 		clipper.transparent = true;
 		keycap.clip = clipper;
 
+		final shape = keycap.legends;
+		trace('trace: ',shape[0].content);
+		trace('trace: ',StringTools.hex(shape[0].color,8));
+
 		this.add(keycap);
 		this.add(clipper);
 	}
 
 	function set_bodyColor(color: Color) {
 		this.bodyColor = color;
+		final shape = keycap.legends;
+		//trace('trace: ',shape[0].content); // string
+		//trace('trace: ',StringTools.hex(shape[0].color,8)); // color
 		this.keycap.topColor = bodyColor + 0xff000000;
 		this.keycap.bottomColor = KeyMaker.getKeyShadow(keycap.topColor);
 		return this.bodyColor;
 	}
 
 	function set_legendColor(color: Color) {
-		this.legendColor = color;
-		if (this.legendColor == this.bodyColor)
-		this.legendColor = 0xffffffff - color;
-		final shape = this.keycap.children;
-		trace(Reflect.fields(shape));
-		Reflect.setField(shape, "color", legendColor + 0xff000000);
-		Reflect.setField(shape, "color", 0xff000000);
-//		this.keycap.legends[0].legendColor = legendColor + 0xff000000;
+		//this.keycap.legends[0].color = 0xffef7fff ^ Std.int(color);
+		this.keycap.legends[0].color = 0xff000000 + color;
 		trace("Legend color changing");
 		return this.legendColor;
 	}

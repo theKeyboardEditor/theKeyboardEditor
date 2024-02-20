@@ -1,8 +1,8 @@
 package;
 
 class KeyRenderer extends ceramic.Visual {
-	@content public var topColor: Int = 0xffFCFCFC;
-	@content public var bottomColor: Int = 0xFFCCCCCC;
+	@content public var topColor: ceramic.Color = 0xffFCFCFC;
+	@content public var bottomColor: ceramic.Color = 0xFFCCCCCC;
 	@content public var legends: Array<LegendRenderer>;
 
 	public var border: ceramic.Border;
@@ -21,6 +21,7 @@ class KeyRenderer extends ceramic.Visual {
 	}
 	override public function computeContent() {
 		for (l in legends) {
+			trace('legend color: ${StringTools.hex(l.color,8)}');
 			l.depth = 50;
 			this.add(l);
 		}

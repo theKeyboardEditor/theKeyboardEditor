@@ -5,7 +5,7 @@ import ceramic.Visual;
 import ceramic.Text;
 
 class LegendRenderer extends Visual {
-	@content public var color: Color = 0xffFF0000; // gray default
+	@content public var color: Int = 0xffFF0000; // gray default
 	//	public var legendFont: String;  // TODO custom fonts
 	@content public var fontSize: Float;
 	@content public var content: String = '|Empty|';
@@ -15,7 +15,7 @@ class LegendRenderer extends Visual {
 	public var topY: Float = (100 / 8) * .25; // North top vs E/W ratio
 
 	override public function computeContent() {
-
+		this.clear();
 		final legend = new Text();
 		legend.content = this.content;
 		// TODO use custom font
