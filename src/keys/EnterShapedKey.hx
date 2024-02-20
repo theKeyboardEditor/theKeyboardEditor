@@ -38,6 +38,7 @@ class EnterShapedKey extends KeyRenderer {
 	var localHeight: Float;
 
 	override public function computeContent() {
+		this.clear();
 		this.offsetB = heightSouth - heightNorth;
 		this.offsetL = widthSouth - widthNorth;
 

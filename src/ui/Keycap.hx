@@ -36,7 +36,15 @@ class Keycap extends Box {
 	}
 
 	function set_legendColor(color: Color) {
-		trace("Legend color changing is not implemented");
-		return color;
+		this.legendColor = color;
+		if (this.legendColor == this.bodyColor)
+		this.legendColor = 0xffffffff - color;
+		final shape = this.keycap.children;
+		trace(Reflect.fields(shape));
+		Reflect.setField(shape, "color", legendColor + 0xff000000);
+		Reflect.setField(shape, "color", 0xff000000);
+//		this.keycap.legends[0].legendColor = legendColor + 0xff000000;
+		trace("Legend color changing");
+		return this.legendColor;
 	}
 }
