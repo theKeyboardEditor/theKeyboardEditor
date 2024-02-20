@@ -45,7 +45,6 @@ class Keycap extends Box {
 	function set_legendColor(color: Color) {
 		// this.keycap.legends[0].color = 0xffef7fff ^ Std.int(color);
 		this.keycap.legends[0].color = 0xff000000 + color;
-		trace("Legend color changing");
 		return this.legendColor;
 	}
 }

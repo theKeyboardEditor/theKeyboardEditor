@@ -22,7 +22,6 @@ class KeyRenderer extends ceramic.Visual {
 
 	override public function computeContent() {
 		for (l in legends) {
-			trace('legend color: ${StringTools.hex(l.color, 8)}');
 			l.depth = 50;
 			this.add(l);
 		}
