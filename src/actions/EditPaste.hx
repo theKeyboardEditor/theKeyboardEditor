@@ -8,7 +8,7 @@ import keyson.Axis;
 class EditPaste extends Action {
 	final viewport: Viewport;
 	final device: keyson.Keyboard; // the receiving unit
-	var clonedKeys:  keyson.Keyboard; // we store data in here
+	var clonedKeys: keyson.Keyboard; // we store data in here
 	final x: Float; // in 1U keyson units
 	final y: Float;
 
@@ -45,7 +45,7 @@ class EditPaste extends Action {
 	override public function undo() {
 		// clear by the recorded keycapSet shapes:
 		for (member in clonedKeys.keys) {
-			//FIXME since we broke entanglement by clone we need compare per unit now
+			// FIXME since we broke entanglement by clone we need compare per unit now
 			final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
 			for (keycap in keysOnUnit) {
 				if (keycap.sourceKey == member) {

@@ -27,11 +27,11 @@ class Input extends InputMap<ViewportInput> {
 		this.bindKeyCode(PAN_LEFT, LEFT);
 		this.bindKeyCode(PAN_RIGHT, RIGHT);
 
-		//TODO make this not interfere with ctrl+ keycodes
-//		this.bindScanCode(PAN_UP, KEY_W);
-//		this.bindScanCode(PAN_DOWN, KEY_S);
-//		this.bindScanCode(PAN_LEFT, KEY_A);
-//		this.bindScanCode(PAN_RIGHT, KEY_D);
+		// TODO make this not interfere with ctrl+ keycodes
+		//		this.bindScanCode(PAN_UP, KEY_W);
+		//		this.bindScanCode(PAN_DOWN, KEY_S);
+		//		this.bindScanCode(PAN_LEFT, KEY_A);
+		//		this.bindScanCode(PAN_RIGHT, KEY_D);
 
 		this.bindScanCode(DELETE_SELECTED, BACKSPACE);
 		this.bindScanCode(DELETE_SELECTED, DELETE);
