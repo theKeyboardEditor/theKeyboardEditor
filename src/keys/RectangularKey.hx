@@ -16,6 +16,7 @@ class RectangularKey extends KeyRenderer {
 	final roundedCorner: Float = 100 / 8;
 
 	override public function computeContent() {
+		// this.clear();
 		this.border = new Border();
 		this.border.pos(0, 0);
 		this.border.size(this.width, this.height);

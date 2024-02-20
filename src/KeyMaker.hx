@@ -6,13 +6,13 @@ import keyson.Keyson.Key;
 import ceramic.Color;
 
 /*
- * Here we convert the shape-string into an actual key shape and bestow the legend(s) upon it :^]
+ * Here we convert the shape-string into an actual keyShape shape and bestow the legend(s) upon it :^]
  *
  */
 class KeyMaker {
-	// create a complete key with all its belonging features
+	// create a complete keyShape with all its belonging features
 	public static function createKey(keyboard: Keyboard, k: Key, unit: Float, gapX: Int, gapY: Int, ?color: Color): KeyRenderer {
-		var key: KeyRenderer;
+		var keyShape: KeyRenderer;
 
 		var width: Float;
 		var height: Float;
@@ -81,7 +81,7 @@ class KeyMaker {
 				// VERTICAL
 				width = unit - gapX;
 				height = unit * keySize - gapY;
-				if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped key!
+				if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped keyShape!
 					stepped = Std.parseFloat(k.shape.split('Stepped')[1]) * unit + gapX;
 					if (stepped < 0) {
 						// NEGATIVE
@@ -96,7 +96,7 @@ class KeyMaker {
 			} else {
 				width = unit * keySize - gapX;
 				height = unit - gapY;
-				if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped key!
+				if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped keyShape!
 					// STEPPED
 					stepped = Std.parseFloat(k.shape.split('Stepped')[1]) * unit + gapX;
 					if (stepped < 0) {
@@ -110,7 +110,7 @@ class KeyMaker {
 					stepHeight = unit - gapY;
 				}
 			}
-			if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped key!
+			if (k.shape.split(' ').indexOf("Stepped") != -1) { // it's a stepped keyShape!
 				var stepedKey = new keys.SteppedKey();
 				stepedKey.size(width, height);
 				stepedKey.stepWidth = stepWidth;
@@ -121,13 +121,13 @@ class KeyMaker {
 				stepedKey.topColor = keyColor;
 				stepedKey.bottomColor = keyShadow;
 				stepedKey.sourceKey = k;
-				key = stepedKey;
+				keyShape = stepedKey;
 			} else {
-				key = new keys.RectangularKey();
-				key.size(width, height);
-				key.topColor = keyColor;
-				key.bottomColor = keyShadow;
-				key.sourceKey = k;
+				keyShape = new keys.RectangularKey();
+				keyShape.size(width, height);
+				keyShape.topColor = keyColor;
+				keyShape.bottomColor = keyShadow;
+				keyShape.sourceKey = k;
 			}
 		} else { // non '<number>U' cases:
 			var enterShaped = new keys.EnterShapedKey();
@@ -139,15 +139,12 @@ class KeyMaker {
 			enterShaped.bottomColor = keyShadow;
 			enterShaped.shape = k.shape;
 			enterShaped.sourceKey = k;
-			key = enterShaped;
+			keyShape = enterShaped;
 		}
-
 		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit);
-		for (l in keyLegends) {
-			key.add(l.create());
-		}
+		keyShape.legends = keyLegends;
 
-		return key;
+		return keyShape;
 	}
 
 	// create all legends on a key
@@ -159,7 +156,9 @@ class KeyMaker {
 		for (l in k.legends) { // we can have many labels!
 			// default to GRAY if undefined
 			var legendColor = Std.parseInt(l.legendColor) ?? Std.parseInt(keyboard.legendColor) ?? Color.GRAY;
-			var symbol = new LegendRenderer(l.legend, legendColor);
+			var symbol = new LegendRenderer();
+			symbol.content = l.legend;
+			symbol.color = legendColor;
 			// is the legend position set specifically?
 			if (l.legendPosition != null) { // yes we account for individual adjustment too!
 				legendOffsetX = l.legendPosition[Axis.X] + keyboard.legendPosition[Axis.X];
@@ -175,12 +174,11 @@ class KeyMaker {
 				symbol.fontSize = keyboard.keyboardFontSize;
 			}
 
-			symbol.depth = 10; // make sure labels render on top
 			symbol.pos(legendOffsetX + symbol.topX, legendOffsetY + symbol.topY); // relative to the key shape
+			symbol.depth = 50; // make sure labels render on top
 
 			keyLegends.push(symbol);
 		}
-
 		return keyLegends;
 	}
 

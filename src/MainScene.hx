@@ -44,7 +44,7 @@ class MainScene extends Scene {
 		this.gui = new UI(this, store);
 
 		// Render keys
-		//TODO abandon this and make welcome screen work eventually
+		// TODO abandon this and make welcome screen work eventually
 		openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
 		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
 
@@ -90,13 +90,13 @@ class MainScene extends Scene {
 			trace('select all');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.selectEverything();
 		});
-/*
-		//TODO make shift+Ctrl+A bound here:
-		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
-			trace('deselect all');
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.clearSelection();
-		});
-*/
+		/*
+			//TODO make shift+Ctrl+A bound here:
+			keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
+				trace('deselect all');
+				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.clearSelection();
+			});
+		 */
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_C)], () -> {
 			trace('copy');
@@ -112,8 +112,8 @@ class MainScene extends Scene {
 			trace('paste');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.paste();
 		});
-		//TODO fix shift key press breaking this calls
-		//TODO implement:
+		// TODO fix shift key press breaking this calls
+		// TODO implement:
 		/**
 		 * Shift+Ctrl z - undo all
 		 * Shift+Ctrl y - redo all
@@ -125,10 +125,12 @@ class MainScene extends Scene {
 		 *
 		 */
 	}
+
 	public function download(keyboard: keyson.Keyson) {
 		FileDialog.download(haxe.Json.stringify(keyboard, "\t"), keyboard.name, "application/json");
 		StatusBar.inform("Download has been sent");
 	}
+
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
 		/*
 		 * TODO: Compress using hxPako or similar - logo

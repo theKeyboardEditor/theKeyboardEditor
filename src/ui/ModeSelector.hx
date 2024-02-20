@@ -87,8 +87,8 @@ class ModeSelector extends VerticalButtonBar {
 				this.mainScene.save((cast guiScene.tabs.selectedPage: ui.ViewportContainer).display.keyson, store);
 			case "download":
 				this.mainScene.download((cast guiScene.tabs.selectedPage: ui.ViewportContainer).display.keyson);
-//				final keyson = (cast guiScene.tabs.selectedPage: ui.ViewportContainer).display.keyson;
-//				FileDialog.download(haxe.Json.stringify(keyson, "\t"), keyson.name, "application/json");
+			//				final keyson = (cast guiScene.tabs.selectedPage: ui.ViewportContainer).display.keyson;
+			//				FileDialog.download(haxe.Json.stringify(keyson, "\t"), keyson.name, "application/json");
 			case "import":
 				final dialog = new FileDialog();
 				dialog.openJson("KLE Json File");
@@ -102,7 +102,7 @@ class ModeSelector extends VerticalButtonBar {
 					}
 					dialog.showDialog();
 				});
-			//TODO about and help
+			// TODO about and help
 			default:
 				StatusBar.error("Unimplemented action");
 		}

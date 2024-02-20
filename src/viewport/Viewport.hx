@@ -324,7 +324,7 @@ class Viewport extends Scene {
 				gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
-			case Edit | Unit  | Color | Present:
+			case Edit | Unit | Color | Present:
 				// just any click on empty should clear selection of everything
 				// and dump the selection
 				clearSelection(true);
@@ -372,7 +372,7 @@ class Viewport extends Scene {
 		this.pointerStartY = screen.pointerY;
 
 		switch (guiScene.modeSelector.barMode) {
-			case Edit | Unit  | Color | Present:
+			case Edit | Unit | Color | Present:
 				// move and select keys
 				if (keycap.border.visible) {
 					keycap.deselect();
@@ -422,7 +422,7 @@ class Viewport extends Scene {
 		switch (guiScene.modeSelector.barMode) {
 			case Place:
 				placer.visible = true;
-			case Edit | Unit  | Color | Present:
+			case Edit | Unit | Color | Present:
 				// Restore placer to default size
 				placer.size(unit * viewScale, unit * viewScale);
 				placerMismatchX = 0;
@@ -464,8 +464,8 @@ class Viewport extends Scene {
 	}
 
 	public function selectEverything() {
-			selectedKeycaps = [];
-			final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+		selectedKeycaps = [];
+		final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
 		for (keycap in keysOnUnit) {
 			selectedKeycaps.unshift(keycap);
 			keycap.select();
@@ -506,12 +506,11 @@ class Viewport extends Scene {
 		StatusBar.inform('Paste action detected.');
 	}
 
-	//TODO select all
+	// TODO select all
 
 	/**
 	 * Return the size of selected units in U/100
 	 */
-
 	function selectedBodies(set: Array<keyson.Key>) {
 		var extremeX: Float = 0;
 		var extremeY: Float = 0;
@@ -521,13 +520,13 @@ class Viewport extends Scene {
 		for (member in set) {
 			final body = keyBody(member);
 			// extreme left most coodrinate:
-			extremeX = Math.min( extremeX, body.x );
+			extremeX = Math.min(extremeX, body.x);
 			// extreme top most
-			extremeY = Math.min( extremeY, body.y );
+			extremeY = Math.min(extremeY, body.y);
 			// extremem right most
-			extremeW = Math.max( extremeW, body.x + body.width );
+			extremeW = Math.max(extremeW, body.x + body.width);
 			// extreme bottom most
-			extremeH = Math.max( extremeH, body.y + body.height );
+			extremeH = Math.max(extremeH, body.y + body.height);
 		}
 		return new ceramic.Rect(extremeX, extremeY, extremeX - extremeW, extremeY - extremeH);
 	}

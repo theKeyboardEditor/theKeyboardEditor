@@ -36,11 +36,15 @@ class Color extends VBox {
 			button.onClick = e -> {
 				final value = palette.fromName(button.id).value;
 				if (e.shiftKey) {
-					trace("Test");
+					// FIXME shift event never stops
+					e.cancel();
+					trace("Is shift still pressed?");
 					preview.legendColor = Std.parseInt('0x${value.substring(4)}');
 				} else {
 					preview.bodyColor = Std.parseInt('0x${value.substring(4)}');
 				}
+				// FIXME how do we end shift?
+				return;
 			};
 			colors.addComponent(button);
 		}
