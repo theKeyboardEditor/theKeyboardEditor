@@ -314,12 +314,6 @@ class Viewport extends Scene {
 				// TODO calculate proper shaper size and offset:
 				var y = placer.y / unit;
 				var x = placer.x / unit;
-				switch shape {
-					case "BAE":
-						x += 0.75;
-					case "XT_2U":
-						x += 1;
-				}
 				gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
 				gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 				// action to place the key
@@ -335,7 +329,6 @@ class Viewport extends Scene {
 				final boxWidth = this.selectionBox.width;
 				final boxHeight = this.selectionBox.height;
 
-				// TODO calculate encircled shapes and select them
 				for (k in keyson.units[currentUnit].keys) {
 					// calculate position and size of a body:
 					final body = keyBody(k);
@@ -397,7 +390,7 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Called during key movement
+	 * Called during key movement (mouse key down)
 	 */
 	function keyMouseMove(info: TouchInfo) {
 		switch (guiScene.modeSelector.barMode) {
@@ -430,10 +423,6 @@ class Viewport extends Scene {
 
 				// Actually execute the move of the selection
 				if (selectedKeycaps.length > 0) {
-					/**
-					 * If the previous first member gets deselected the array will change pos()
-					 * TODO: how can we know which remaining key will not move the array's position?
-					 */
 					var x = (selectedKeycaps[0].x - keyPosStartX) / unit * viewScale;
 					var y = (selectedKeycaps[0].y - keyPosStartY) / unit * viewScale;
 					// only if at least x or y is non zero that didn't result in deselection and we have actual keys to move at all
@@ -463,6 +452,7 @@ class Viewport extends Scene {
 			selectedKeycaps = [];
 	}
 
+	// select all
 	public function selectEverything() {
 		selectedKeycaps = [];
 		final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
@@ -470,10 +460,10 @@ class Viewport extends Scene {
 			selectedKeycaps.unshift(keycap);
 			keycap.select();
 		}
+		// the result is stored in selectedKeycaps
 	}
 
 	public function copy() {
-		trace('selection: ${selectedKeycaps.length}');
 		if (selectedKeycaps.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
 			// TODO initialize said keyboard with current unit's data
@@ -481,7 +471,7 @@ class Viewport extends Scene {
 			keyboardUnit = keyson.units[currentUnit];
 			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeycaps));
 		}
-		StatusBar.inform('Copy action detected.');
+		StatusBar.inform('Copy action.');
 	}
 
 	public function cut() {
@@ -492,7 +482,7 @@ class Viewport extends Scene {
 			queue.push(new actions.EditCut(this, keyboardUnit, selectedKeycaps));
 			selectedKeycaps = [];
 		}
-		StatusBar.inform('Cut action detected.');
+		StatusBar.inform('Cut action.');
 	}
 
 	public function paste() {
@@ -503,13 +493,46 @@ class Viewport extends Scene {
 			keyboardUnit = keyson.units[currentUnit];
 			queue.push(new actions.EditPaste(this, keyboardUnit, x, y));
 		}
-		StatusBar.inform('Paste action detected.');
+		StatusBar.inform('Paste action.');
 	}
 
-	// TODO select all
+	public function colorSelectedKeys(color: ceramic.Color) {
+		if (selectedKeycaps.length > 0) {
+			for (member in selectedKeycaps) {
+				setBodyColor(member, color);
+			}
+		}
+		StatusBar.inform('Colored ${selectedKeycaps.length} keycaps into [${color}].');
+	}
+
+	public function colorSelectedKeyLegends(color: ceramic.Color) {
+		if (selectedKeycaps.length > 0) {
+			for (member in selectedKeycaps) {
+				setAllLegendsColor(member, color);
+			}
+		}
+		StatusBar.inform('Colored ${selectedKeycaps.length} keycaps into [${color}].');
+	}
+
+	function setBodyColor(k: KeyRenderer, color: Int) {
+		k.sourceKey.keysColor = '${0xff000000 + color}';
+		k.topColor = Std.parseInt(k.sourceKey.keysColor);
+		k.bottomColor = KeyMaker.getKeyShadow(Std.parseInt(k.sourceKey.keysColor));
+	}
+
+	function setAllLegendsColor(k: KeyRenderer, color: Int) {
+		for (eachLegend in 0...k.legends.length)
+			setLegendColor(k, eachLegend, color);
+	}
+
+	// yet to be used for singled out legend coloring
+	function setLegendColor(k: KeyRenderer, legend: Int, color: Int) {
+		k.sourceKey.legends[legend].legendColor = '${0xff000000 + color}';
+		k.legends[legend].color = Std.parseInt(k.sourceKey.legends[legend].legendColor);
+	}
 
 	/**
-	 * Return the size of selected units in U/100
+	 * Return the size of selected units in U/100 (for zooming)
 	 */
 	function selectedBodies(set: Array<keyson.Key>) {
 		var extremeX: Float = 0;

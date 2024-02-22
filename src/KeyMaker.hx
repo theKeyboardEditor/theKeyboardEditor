@@ -56,6 +56,7 @@ class KeyMaker {
 						heightNorth = 2.00 * unit - gapY;
 						widthSouth = 2.25 * unit - gapX;
 						heightSouth = 1.00 * unit - gapY;
+						offsetSouthX = -0.75 * unit - gapY;
 					case "BAE Inverted":
 						// Inverted BAE
 						widthNorth = 2.25 * unit - gapX;
@@ -67,6 +68,7 @@ class KeyMaker {
 						heightNorth = 2.00 * unit - gapY;
 						widthSouth = 2.00 * unit - gapX;
 						heightSouth = 1.00 * unit - gapY;
+						offsetSouthX = -1.00 * unit - gapY;
 					case "AEK":
 						widthNorth = 1.25 * unit - gapX;
 						heightNorth = 1.00 * unit - gapY;
@@ -138,6 +140,8 @@ class KeyMaker {
 			enterShaped.topColor = keyColor;
 			enterShaped.bottomColor = keyShadow;
 			enterShaped.shape = k.shape;
+			if (offsetSouthX != null)
+				enterShaped.offsetSouthX = offsetSouthX;
 			enterShaped.sourceKey = k;
 			keyShape = enterShaped;
 		}

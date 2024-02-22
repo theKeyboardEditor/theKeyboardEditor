@@ -1,13 +1,13 @@
 package;
 
 class KeyRenderer extends ceramic.Visual {
-	@content public var topColor: ceramic.Color = 0xffFCFCFC;
-	@content public var bottomColor: ceramic.Color = 0xFFCCCCCC;
+	@content public var topColor: ceramic.Color;
+	@content public var bottomColor: ceramic.Color;
 	@content public var legends: Array<LegendRenderer>;
 
 	public var border: ceramic.Border;
-	public var pivot: viewport.Pivot;
-	public var sourceKey: keyson.Keyson.Key;
+	@content public var pivot: viewport.Pivot;
+	@content public var sourceKey: keyson.Keyson.Key;
 
 	public function select() {
 		border.visible = true;
@@ -21,6 +21,7 @@ class KeyRenderer extends ceramic.Visual {
 	}
 
 	override public function computeContent() {
+		// TODO recreate legends after color change
 		for (l in legends) {
 			l.depth = 50;
 			this.add(l);

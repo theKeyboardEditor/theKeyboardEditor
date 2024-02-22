@@ -12,11 +12,21 @@ class RectangularKey extends KeyRenderer {
 	 */
 	var topX: Float = 100 / 8;
 	var topY: Float = (100 / 8) * 0.25;
-	final topOffset: Float = (100 / 8) * 2;
-	final roundedCorner: Float = 100 / 8;
+
+	static inline var topOffset: Float = (100 / 8) * 2;
+	static inline var roundedCorner: Float = 100 / 8;
+
+	var top: RoundedRect;
+	var bottom: RoundedRect;
+	var selected: Bool = false;
 
 	override public function computeContent() {
-		// this.clear();
+		// on recompute we clear old obsolete shapes
+		if (this.border != null) {
+			if (this.selected != null)
+				this.selected = this.border.visible;
+			this.border.destroy();
+		}
 		this.border = new Border();
 		this.border.pos(0, 0);
 		this.border.size(this.width, this.height);
@@ -24,23 +34,29 @@ class RectangularKey extends KeyRenderer {
 		this.border.borderPosition = MIDDLE;
 		this.border.borderSize = 2;
 		this.border.depth = 4;
-		this.border.visible = false;
+		this.border.visible = this.selected;
 		this.add(this.border);
 
+		if (this.pivot != null)
+			this.pivot.destroy();
 		this.pivot = new Pivot();
 		this.pivot.pos(0, 0);
 		this.pivot.depth = 500; // ueber alles o/
-		this.pivot.visible = false;
+		this.pivot.visible = this.selected;
 		this.add(this.pivot);
 
+		if (this.top != null)
+			this.top.destroy();
 		final top = new RoundedRect();
-		top.size(width - this.topOffset, height - this.topOffset);
+		top.size(width - topOffset, height - topOffset);
 		top.radius(roundedCorner);
 		top.color = topColor;
 		top.depth = 5;
 		top.pos(topX, topY);
 		this.add(top);
 
+		if (this.bottom != null)
+			this.bottom.destroy();
 		final bottom = new RoundedRect();
 		bottom.size(width, height);
 		bottom.radius(roundedCorner);
