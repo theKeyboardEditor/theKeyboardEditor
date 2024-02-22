@@ -34,9 +34,6 @@ class Keycap extends Box {
 
 	function set_bodyColor(color: Color) {
 		this.bodyColor = color;
-		final shape = keycap.legends;
-		// trace('trace: ',shape[0].content); // string
-		// trace('trace: ',StringTools.hex(shape[0].color,8)); // color
 		this.keycap.topColor = bodyColor + 0xff000000;
 		this.keycap.bottomColor = KeyMaker.getKeyShadow(keycap.topColor);
 		return this.bodyColor;

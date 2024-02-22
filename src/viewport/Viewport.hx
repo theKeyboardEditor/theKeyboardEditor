@@ -355,6 +355,7 @@ class Viewport extends Scene {
 						}
 					}
 				}
+				trace('rectangle select: ${selectedKeycaps.length} keys');
 			default:
 		}
 	}
@@ -457,6 +458,7 @@ class Viewport extends Scene {
 		screen.offPointerMove(keyMouseMove);
 	}
 	public function clearSelection(deep: Bool) {
+		trace('deselecting ${selectedKeycaps.length} keycaps');
 		for (i in 0...selectedKeycaps.length)
 			selectedKeycaps[i].deselect();
 		if (deep)
@@ -473,7 +475,6 @@ class Viewport extends Scene {
 	}
 
 	public function copy() {
-		trace('selection: ${selectedKeycaps.length}');
 		if (selectedKeycaps.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
 			// TODO initialize said keyboard with current unit's data
@@ -506,10 +507,47 @@ class Viewport extends Scene {
 		StatusBar.inform('Paste action detected.');
 	}
 
+	public function colorSelectedKeys(color: ceramic.Color) {
+		if (selectedKeycaps.length > 0) {
+			for (member in selectedKeycaps) {
+				setBodyColor(member,color);
+			}
+		}
+		StatusBar.inform('Colored ${selectedKeycaps.length} keycaps into [${color}].');
+	}
+
+	public function colorSelectedKeyLegends(color: ceramic.Color) {
+		if (selectedKeycaps.length > 0) {
+			for (member in selectedKeycaps) {
+				setAllLegendsColor(member,color);
+			}
+		}
+		StatusBar.inform('Colored ${selectedKeycaps.length} keycaps into [${color}].');
+	}
+
+	function setBodyColor(k: KeyRenderer, color: Int) {
+		k.topColor = 0xff000000 + color;
+		k.bottomColor = KeyMaker.getKeyShadow(k.topColor);
+		//TODO affect keyson too
+	}
+
+	function setAllLegendsColor(k: KeyRenderer, color: Int) {
+		for (eachLegend in k.legends) {
+			eachLegend.color = 0xff000000 + color;
+			//TODO affect keyson too
+		}
+	}
+
+	// yet to be used for singled out legend coloring
+	function setLegendColor(k: KeyRenderer, legend: Int, color: Int) {
+		k.legends[legend].color = 0xff000000 + color;
+		//TODO affect keyson too
+	}
+
 	// TODO select all
 
 	/**
-	 * Return the size of selected units in U/100
+	 * Return the size of selected units in U/100 (for zooming)
 	 */
 	function selectedBodies(set: Array<keyson.Key>) {
 		var extremeX: Float = 0;
