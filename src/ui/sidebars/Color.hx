@@ -36,11 +36,10 @@ class Color extends VBox {
 			button.onClick = e -> {
 				final value = palette.fromName(button.id).value;
 				if (e.shiftKey) {
-					trace("Is shift still pressed?");
-					preview.legendColor = Std.parseInt('0x${value.substring(4)}');
-					viewport.colorSelectedKeys(Std.parseInt('0x${value.substring(4)}'));
+					// preview.legendColor = Std.parseInt('0x${value.substring(4)}');
+					viewport.colorSelectedKeyLegends(Std.parseInt('0x${value.substring(4)}'));
 				} else {
-					preview.bodyColor = Std.parseInt('0x${value.substring(4)}');
+					// preview.bodyColor = Std.parseInt('0x${value.substring(4)}');
 					viewport.colorSelectedKeys(Std.parseInt('0x${value.substring(4)}'));
 				}
 			};

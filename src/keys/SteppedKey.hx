@@ -16,10 +16,20 @@ class SteppedKey extends KeyRenderer {
 
 	@content var topX: Float = 100 / 8; // TODO make this be actual units of 1U!
 	@content var topY: Float = (100 / 8) * 0.25;
-	final topOffset: Float = (100 / 8) * 2;
-	final roundedCorner: Float = 100 / 8;
+	var topOffset: Float = (100 / 8) * 2;
+	var roundedCorner: Float = 100 / 8;
+	var top: RoundedRect;
+	var sides: RoundedRect;
+	var stepTop: RoundedRect;
+	var bottom: RoundedRect;
+	var selected: Bool = false;
 
 	override public function computeContent() {
+		if (this.border != null) {
+			if (this.selected != null)
+				this.selected = this.border.visible;
+			this.border.destroy();
+		}
 		this.border = new Border();
 		this.border.pos(0, 0);
 		this.border.size(this.width, this.height);
@@ -27,47 +37,57 @@ class SteppedKey extends KeyRenderer {
 		this.border.borderPosition = MIDDLE;
 		this.border.borderSize = 2;
 		this.border.depth = 4;
-		this.border.visible = false;
+		this.border.visible = this.selected;
 		this.add(this.border);
 
+		if (this.pivot != null)
+			this.pivot.destroy();
 		this.pivot = new Pivot();
 		this.pivot.pos(0, 0);
 		this.pivot.depth = 500; // ueber alles o/
-		this.pivot.visible = false;
+		this.pivot.visible = this.selected;
 		this.add(this.pivot);
 
-		final top = new RoundedRect();
-		top.size(Std.int(this.stepWidth - this.topOffset), Std.int(this.stepHeight - this.topOffset));
-		top.radius(roundedCorner);
-		top.color = topColor;
-		top.depth = 5;
-		top.pos(this.stepOffsetX + topX, this.stepOffsetY + topY);
-		this.add(top);
+		if (this.top != null)
+			this.top.destroy();
+		this.top = new RoundedRect();
+		this.top.size(Std.int(this.stepWidth - this.topOffset), Std.int(this.stepHeight - this.topOffset));
+		this.top.radius(roundedCorner);
+		this.top.color = topColor;
+		this.top.depth = 5;
+		this.top.pos(this.stepOffsetX + topX, this.stepOffsetY + topY);
+		this.add(this.top);
 
-		final sides = new RoundedRect();
-		sides.size(Std.int(this.stepWidth - topX / 4), Std.int(this.stepHeight - topX / 4));
-		sides.radius(roundedCorner);
-		sides.color = bottomColor;
-		sides.depth = 4;
-		sides.pos(this.stepOffsetX + topX / 4, this.stepOffsetY + topY / 4);
-		this.add(sides);
+		if (this.sides != null)
+			this.sides.destroy();
+		this.sides = new RoundedRect();
+		this.sides.size(Std.int(this.stepWidth - topX / 4), Std.int(this.stepHeight - topX / 4));
+		this.sides.radius(roundedCorner);
+		this.sides.color = bottomColor;
+		this.sides.depth = 4;
+		this.sides.pos(this.stepOffsetX + topX / 4, this.stepOffsetY + topY / 4);
+		this.add(this.sides);
 
-		final stepTop = new RoundedRect();
-		stepTop.size(Std.int(width - this.topOffset / 4), Std.int(height - this.topOffset / 4));
-		stepTop.radius(roundedCorner);
-		stepTop.color = topColor;
-		stepTop.depth = 1;
-		stepTop.pos(this.topX / 4, this.topY / 4);
-		this.add(stepTop);
+		if (this.stepTop != null)
+			this.stepTop.destroy();
+		this.stepTop = new RoundedRect();
+		this.stepTop.size(Std.int(width - this.topOffset / 4), Std.int(height - this.topOffset / 4));
+		this.stepTop.radius(roundedCorner);
+		this.stepTop.color = topColor;
+		this.stepTop.depth = 1;
+		this.stepTop.pos(this.topX / 4, this.topY / 4);
+		this.add(this.stepTop);
 
 		// same as rectangular key
-		final bottom = new RoundedRect();
-		bottom.size(Std.int(width), Std.int(height));
-		bottom.radius(roundedCorner);
-		bottom.color = bottomColor;
-		bottom.depth = 0;
-		bottom.pos(0, 0);
-		this.add(bottom);
+		if (this.bottom != null)
+			this.bottom.destroy();
+		this.bottom = new RoundedRect();
+		this.bottom.size(Std.int(width), Std.int(height));
+		this.bottom.radius(roundedCorner);
+		this.bottom.color = bottomColor;
+		this.bottom.depth = 0;
+		this.bottom.pos(0, 0);
+		this.add(this.bottom);
 
 		super.computeContent();
 	}

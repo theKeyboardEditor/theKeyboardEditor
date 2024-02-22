@@ -15,6 +15,7 @@ class EnterShapedKey extends KeyRenderer {
 	// South is the closer member of the piar
 	@content public var widthSouth: Float;
 	@content public var heightSouth: Float;
+	@content public var offsetSouthX: Float;
 	// Segments can be 1...many (10 or below is sane)
 	@content public var segments: Int = 10;
 
@@ -29,6 +30,8 @@ class EnterShapedKey extends KeyRenderer {
 	static inline var topOffset: Float = (100 / 8) * 2;
 	static inline var roundedCorner: Float = (100 / 1 / 8);
 
+	var selected: Bool = false;
+
 	var offsetL: Float;
 	var offsetR: Float;
 	var offsetT: Float;
@@ -38,18 +41,21 @@ class EnterShapedKey extends KeyRenderer {
 	var localHeight: Float;
 
 	override public function computeContent() {
-		this.clear();
 		this.offsetB = heightSouth - heightNorth;
 		this.offsetL = widthSouth - widthNorth;
 
 		// TODO  There is still some oddity to fix with BEA and XT_2U
+		if (this.border != null) {
+			if (this.selected != null)
+				this.selected = this.border.visible;
+			this.border.destroy();
+		}
 		this.border = new Border();
 
 		if (this.shape == 'BAE' || this.shape == 'XT_2U') {
 			this.width = widthSouth;
-		} else {
-			this.border.pos(0, 0);
 		}
+		this.border.pos(0, 0);
 
 		if (this.heightNorth > this.heightSouth) { // north element is the narrow one?
 			if (this.widthNorth > this.widthSouth) {
@@ -69,29 +75,35 @@ class EnterShapedKey extends KeyRenderer {
 		this.border.borderPosition = MIDDLE;
 		this.border.borderSize = 2;
 		this.border.depth = 4;
-		this.border.visible = false;
+		this.border.visible = this.selected;
 		this.add(this.border);
 
+		if (this.pivot != null)
+			this.pivot.destroy();
 		this.pivot = new Pivot();
 		this.pivot.pos(0, 0);
 		this.pivot.depth = 500; // ueber alles o/
-		this.pivot.visible = false;
+		this.pivot.visible = this.selected;
 		this.add(this.pivot);
 
-		top = enterShape(widthNorth - topOffset, heightNorth - topOffset, widthSouth - topOffset, heightSouth - topOffset, topColor, topX,
-			topY);
-		top.depth = 5;
-		this.add(top);
+		if (this.top != null)
+			this.top.destroy();
+		this.top = enterShape(widthNorth - topOffset, heightNorth - topOffset, widthSouth - topOffset, heightSouth - topOffset, topColor,
+			topX, topY);
+		this.top.depth = 5;
+		this.add(this.top);
 
-		bottom = enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bottomColor, 0.0, 0.0);
-		bottom.depth = 0;
+		if (this.bottom != null)
+			this.bottom.destroy();
+		this.bottom = enterShape(widthNorth, heightNorth, widthSouth, heightSouth, bottomColor, 0.0, 0.0);
+		this.bottom.depth = 0;
 		this.add(this.bottom);
 
 		if (this.shape == 'BAE' || this.shape == 'XT_2U') {
 			// all this swing is to get the shape to align right
-			top.x = (widthSouth - widthNorth);
-			bottom.x = (widthSouth - widthNorth);
-			this.x -= (widthSouth - widthNorth);
+			this.top.x = (widthSouth - widthNorth);
+			this.bottom.x = (widthSouth - widthNorth);
+			// this.x -= (widthSouth - widthNorth);
 			// TODO align the pivot too
 		}
 
@@ -265,10 +277,9 @@ class EnterShapedKey extends KeyRenderer {
 			}
 		}
 
-		var shape = new Shape();
-		shape.color = color;
-		shape.points = points;
-
-		return shape;
+		var form = new Shape();
+		form.color = color;
+		form.points = points;
+		return form;
 	}
 }
