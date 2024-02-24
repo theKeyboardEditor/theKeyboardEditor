@@ -4,13 +4,14 @@ import viewport.Viewport;
 import keyson.Keyson;
 import keyson.Axis;
 
-class ColorBody extends Action {
+class ColorLegend extends Action {
 	final viewport: Viewport;
-	var coloredKeys:  keyson.Keyboard; // we store data in here
+	var coloredKeyLegends:  keyson.Keyboard; // we store data in here
+	final legendIndex: Int;
 	var colorees:  Array<KeyRenderer>; // we access keys thru this
 	final color: ceramic.Color; // in 1U keyson units
 
-	override public function new(viewport: Viewport, colorees: Array<KeyRenderer>, color: ceramic.AlphaColor) {
+	override public function new(viewport: Viewport, colorees: Array<KeyRenderer>, legendIndex: Int, color: ceramic.AlphaColor) {
 		super();
 		this.viewport = viewport;
 		this.colorees = colorees;
@@ -26,31 +27,29 @@ class ColorBody extends Action {
 			for (member in colorees) {
 				tempKeyboard.insertKey(member.sourceKey);
 			}
-			coloredKeys = cloner.clone(tempKeyboard);
+			coloredKeyLegends = cloner.clone(tempKeyboard);
 			// we use this to preserve only color attributes for undo
 		}
 		for (k in this.colorees) {
 			// add to keyson:
-			k.sourceKey.keysColor = '${this.color}';
+			k.sourceKey.legends[legendIndex].legendColor = '${this.color}';
 			// the ceramic on screen representation object
-			k.topColor = Std.parseInt(k.sourceKey.keysColor);
-			k.bottomColor = KeyMaker.getKeyShadow(Std.parseInt(k.sourceKey.keysColor));
+			k.legends[legendIndex].color = Std.parseInt(k.sourceKey.legends[legendIndex].legendColor);
 		}
 		super.act(type);
 	}
 
 	override public function undo() {
 		// restore by the recorded keycapSet shapes:
-		for (member in this.coloredKeys.keys) {
+		for (member in this.coloredKeyLegends.keys) {
 			for (k in this.colorees) {
 				if (k.sourceKey.legends[0].legend == member.legends[0].legend ) {
-					if (member.keysColor != null) {
-						k.sourceKey.keysColor = member.keysColor;
+					if (member.legends[eachLegend].legendColor != null) {
+						k.sourceKey.legends[legendIndex].legendColor = member.legends[legendIndex].legendColor;
 					} else { // it's undefined, so it's default
-						k.sourceKey.keysColor = this.viewport.keyson.units[this.viewport.currentUnit].keysColor;
+						k.sourceKey.legends[legendIndex].legendColor = this.viewport.keyson.units[this.viewport.currentUnit].legendColor;
 					}
-					k.topColor = Std.parseInt(k.sourceKey.keysColor);
-					k.bottomColor = KeyMaker.getKeyShadow(Std.parseInt(k.sourceKey.keysColor));
+					k.legends[legendIndex].color = Std.parseInt(k.sourceKey.legends[legendIndex].legendColor);
 				}
 			}
 		}
