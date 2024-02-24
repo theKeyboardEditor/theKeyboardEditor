@@ -6,8 +6,8 @@ import keyson.Axis;
 
 class ColorLegends extends Action {
 	final viewport: Viewport;
-	var coloredKeyLegends:  keyson.Keyboard; // we store data in here
-	var colorees:  Array<KeyRenderer>; // we access keys thru this
+	var coloredKeyLegends: keyson.Keyboard; // we store data in here
+	var colorees: Array<KeyRenderer>; // we access keys thru this
 	final color: ceramic.Color; // in 1U keyson units
 
 	override public function new(viewport: Viewport, colorees: Array<KeyRenderer>, color: ceramic.AlphaColor) {
@@ -44,7 +44,7 @@ class ColorLegends extends Action {
 		// restore by the recorded keycapSet shapes:
 		for (member in this.coloredKeyLegends.keys) {
 			for (k in this.colorees) {
-				if (k.sourceKey.legends[0].legend == member.legends[0].legend ) {
+				if (k.sourceKey.legends[0].legend == member.legends[0].legend) {
 					for (eachLegend in 0...k.legends.length) {
 						if (member.legends[eachLegend].legendColor != null) {
 							k.sourceKey.legends[eachLegend].legendColor = member.legends[eachLegend].legendColor;

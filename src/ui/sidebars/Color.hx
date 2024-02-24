@@ -41,17 +41,17 @@ class Color extends VBox {
 			button.text = ""; // reset text
 			// TODO one day make show only used colors switch here
 			final value = new ceramic.Color(Std.parseInt('0x${color.value.substring(4)}'));
-			if ( bodiesPresent(workSurface, value) ) {
+			if (bodiesPresent(workSurface, value)) {
 				button.text = "B"; // body color present
-				if ( legendsPresent(workSurface, value) )
+				if (legendsPresent(workSurface, value))
 					button.text = "LB"; // legend too
 			} else { // no body color
-			if ( bodiesPresent(workSurface, value) )
-				button.text = "L"; // legend only
+				if (bodiesPresent(workSurface, value))
+					button.text = "L"; // legend only
 			}
 			button.width = button.height = 128 / 4;
 			// determine how light is a color:
-			if ( value.lightness >= 0.500 ) {
+			if (value.lightness >= 0.500) {
 				// lighter than half the value
 				button.styleString = 'background-color: #${color.value.substring(4)}; color: #00000F;';
 			} else {
@@ -76,7 +76,7 @@ class Color extends VBox {
 	private function bodiesPresent(workSurface: viewport.Viewport, color: ceramic.AlphaColor) {
 		final keySet = workSurface.keyson?.units[workSurface.currentUnit].keys;
 		var result: Bool = false;
-		for ( k in keySet) {
+		for (k in keySet) {
 			if ('0x${StringTools.hex(Std.parseInt(k.keysColor))}' == color.toString()) {
 				result = true;
 				break;
@@ -96,7 +96,7 @@ class Color extends VBox {
 					break;
 				}
 				if (result)
-				break;
+					break;
 			}
 		}
 		return result;
