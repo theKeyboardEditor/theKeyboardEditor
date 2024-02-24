@@ -5,21 +5,21 @@ import keyson.Axis;
 
 class MoveKeys extends Action {
 	final viewport: Viewport;
-	var moved: Array<KeyRenderer>;
+	var movees: Array<KeyRenderer>;
 	// in the sense of keyson 1U units
 	final deltaX: Float;
 	final deltaY: Float;
 
-	override public function new(viewport: Viewport, moved: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {
+	override public function new(viewport: Viewport, movees: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {
 		super();
 		this.viewport = viewport;
-		this.moved = moved.copy();
+		this.movees = movees.copy();
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 	}
 
 	override public function act(type: ActionType) {
-		for (member in moved) {
+		for (member in movees) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {
@@ -37,7 +37,7 @@ class MoveKeys extends Action {
 	}
 
 	override public function undo() {
-		for (member in moved) {
+		for (member in movees) {
 			for (unit in viewport.keyson.units) {
 				for (key in unit.keys) {
 					if (member.sourceKey == key) {

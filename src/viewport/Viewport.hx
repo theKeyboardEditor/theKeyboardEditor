@@ -496,40 +496,22 @@ class Viewport extends Scene {
 		StatusBar.inform('Paste action.');
 	}
 
+	// TODO make actions for the actions undo queue
 	public function colorSelectedKeys(color: ceramic.Color) {
 		if (selectedKeycaps.length > 0) {
-			for (member in selectedKeycaps) {
-				setBodyColor(member, color);
-			}
+			queue.push(new actions.ColorBody(this, selectedKeycaps, color));
 		}
 		StatusBar.inform('Colored ${selectedKeycaps.length} keycaps into [${color}].');
 	}
 
 	public function colorSelectedKeyLegends(color: ceramic.Color) {
 		if (selectedKeycaps.length > 0) {
-			for (member in selectedKeycaps) {
-				setAllLegendsColor(member, color);
-			}
+			queue.push(new actions.ColorLegends(this, selectedKeycaps, color));
 		}
 		StatusBar.inform('Colored ${selectedKeycaps.length} keycaps into [${color}].');
 	}
 
-	function setBodyColor(k: KeyRenderer, color: Int) {
-		k.sourceKey.keysColor = '${0xff000000 + color}';
-		k.topColor = Std.parseInt(k.sourceKey.keysColor);
-		k.bottomColor = KeyMaker.getKeyShadow(Std.parseInt(k.sourceKey.keysColor));
-	}
-
-	function setAllLegendsColor(k: KeyRenderer, color: Int) {
-		for (eachLegend in 0...k.legends.length)
-			setLegendColor(k, eachLegend, color);
-	}
-
-	// yet to be used for singled out legend coloring
-	function setLegendColor(k: KeyRenderer, legend: Int, color: Int) {
-		k.sourceKey.legends[legend].legendColor = '${0xff000000 + color}';
-		k.legends[legend].color = Std.parseInt(k.sourceKey.legends[legend].legendColor);
-	}
+	// TODO color single appointed legend on a single key
 
 	/**
 	 * Return the size of selected units in U/100 (for zooming)
