@@ -29,7 +29,7 @@ class EditPaste extends Action {
 		for (key in clonedKeys.keys) {
 			// add to keyson:
 			this.device.insertKey(key);
-			// TODO recreate shapes:
+			// recreate shapes:
 			final keycap: KeyRenderer = KeyMaker.createKey(clonedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
 				Std.parseInt(viewport.keyboardUnit.keysColor));
 			keycap.pos(viewport.unit * key.position[Axis.X], viewport.unit * key.position[Axis.Y]);
@@ -45,7 +45,7 @@ class EditPaste extends Action {
 	override public function undo() {
 		// clear by the recorded keycapSet shapes:
 		for (member in clonedKeys.keys) {
-			// FIXME since we broke entanglement by clone we need compare per unit now
+			// since we broke entanglement by clone we need compare per unit now
 			final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
 			for (keycap in keysOnUnit) {
 				if (keycap.sourceKey == member) {
