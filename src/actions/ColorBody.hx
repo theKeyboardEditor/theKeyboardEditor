@@ -31,10 +31,10 @@ class ColorBody extends Action {
 		}
 		for (k in this.colorees) {
 			// add to keyson:
-			k.sourceKey.keysColor = '${this.color}';
+			k.sourceKey.color = '${this.color}';
 			// the ceramic on screen representation object
-			k.topColor = Std.parseInt(k.sourceKey.keysColor);
-			k.bottomColor = KeyMaker.getKeyShadow(Std.parseInt(k.sourceKey.keysColor));
+			k.topColor = Std.parseInt(k.sourceKey.color);
+			k.bottomColor = KeyMaker.getKeyShadow(Std.parseInt(k.sourceKey.color));
 		}
 		super.act(type);
 	}
@@ -44,13 +44,13 @@ class ColorBody extends Action {
 		for (member in this.coloredKeys.keys) {
 			for (k in this.colorees) {
 				if (k.sourceKey.legends[0].legend == member.legends[0].legend) {
-					if (member.keysColor != null) {
-						k.sourceKey.keysColor = member.keysColor;
+					if (member.color != null) {
+						k.sourceKey.color = member.color;
 					} else { // it's undefined, so it's default
-						k.sourceKey.keysColor = this.viewport.keyson.units[this.viewport.currentUnit].keysColor;
+						k.sourceKey.color = this.viewport.keyson.units[this.viewport.currentUnit].defaults.keyColor;
 					}
-					k.topColor = Std.parseInt(k.sourceKey.keysColor);
-					k.bottomColor = KeyMaker.getKeyShadow(Std.parseInt(k.sourceKey.keysColor));
+					k.topColor = Std.parseInt(k.sourceKey.color);
+					k.bottomColor = KeyMaker.getKeyShadow(Std.parseInt(k.sourceKey.color));
 				}
 			}
 		}

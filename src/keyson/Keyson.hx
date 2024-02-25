@@ -12,8 +12,8 @@ class Keyson {
 	public var name: String;
 	public var author: String;
 	public var license: String;
-	public var comment: String;
-	public var palettes: Array<Palette> = [];
+	@:optional public var comment: String;
+	@:optional public var palettes: Array<Palette> = [];
 	public var units: Array<Keyboard> = [];
 
 	@:jignored public static var tabulation: String = "	"; // keyson output indentation
@@ -29,7 +29,15 @@ class Keyson {
 
 	public static function parse(data: String) {
 		final parser = new json2object.JsonParser<Keyson>();
-		return parser.fromJson(data);
+		final keyson = parser.fromJson(data);
+		for (err in parser.errors) {
+			#if ceramic
+				log.error(err);
+			#else
+				trace(err);
+			#end
+		}
+		return keyson;
 	}
 
 	public static function encode(object: Keyson) {
@@ -41,28 +49,25 @@ class Palette {
 	/**
 	 * Name of the palette
 	 */
-	public var name: String;
+	public var name: String = "unknown";
 
 	/**
 	 * Source of the palette
 	 */
-	public var url: String;
-	public var colorMatchingProfile: String;
+	@:optional public var url: String = "unknown";
+	@:optional public var colorMatchingProfile: ColorMatchingProfile = Generic;
 
 	/**
 	 * Amount of colors
 	 */
-	public var size: Int;
+	public var size: Int = 1;
 
 	/**
 	 * List of colors
 	 */
 	public var swatches: Array<Color>;
+
 	public function new() {
-		this.name = "unknown";
-		this.url = "unknown";
-		this.colorMatchingProfile = "none";
-		this.size = 1;
 		this.swatches = [new Color("BLACK", "0x00000000")]; // the names are for humans only
 	}
 
@@ -90,48 +95,26 @@ class Color {
  */
 class Keyboard {
 	public var id: Int;
-	public var designator: String;
-	public var keyStep: Array<Float>;
-	public var stabilizerType: String;
-	public var switchType: String;
-	public var capSize: Array<Float>; // in rulerUnits of measurement
-	public var rulerUnits: String; // units of real world measurement
-	public var caseColor: String; // it is a binary value
-	public var keysColor: String; // it is a binary value
-	public var labelSizeUnits: String; // "px,pc,mm,thou,U/100"
-	public var keyboardFont: String;
-	public var keyboardFontSize: Float;
-	public var legendColor: String; // it is a binary value
-	public var legendPosition: Array<Float>;
-	public var profile: String;
-	public var keySculpt: String;
-	public var position: Array<Float>; // case/element position
-	public var angle: Array<Float>; // maybe one day we will be 3D
-	public var relativeRotationCenter: Array<Float>; // case center offset
-	public var size: Int; // number of keys/elements
-	public var keys: Array<Key>;
+	@:optional public var defaults: Defaults;
+	@:optional public var designator: String = "default";
+	@:optional public var keyStep: Array<Float> = [19.05, 19.05];
+	@:optional public var stabilizerType: String = "";
+	@:optional public var switchType: String = "";
+	@:optional public var capSize: Array<Float> = [18.5, 18.5];
+	@:optional public var rulerUnits: String = "mm";
+	@:optional public var caseColor: String = "0xFFFCFCFC";
+	@:optional public var legendSizeUnits: String = "U/100";
+	@:optional public var keyboardFont: String = "default";
+	@:optional public var keyboardFontSize: Float = 24.0;
+	@:optional public var profile: Profile = OEM;
+	@:optional public var keySculpt: String = "R3";
+	@:optional public var position: Array<Float> = [0.0, 0.0];
+	@:optional public var angle: Array<Float> = [0, 0];
+	@:optional public var relativeRotationCenter: Array<Float> = [];
+	@:optional public var size: Int = 0;
+	@:optional public var keys: Array<Key> = [];
 
-	public function new() { // empty default keyboard
-		this.designator = "default"; // "Master", "Slave", "Numpad" ...
-		this.keyStep = [19.05, 19.05];
-		this.stabilizerType = "";
-		this.switchType = "";
-		this.capSize = [18.5, 18.5]; // some usually expected values
-		this.rulerUnits = "mm"; // important!
-		this.caseColor = "0xFFFCFCFC"; // shadow of withe
-		this.keysColor = "0xFFFFFFFF"; // blinding withe
-		this.labelSizeUnits = "U/100"; // "px,pc,mm,thou,U/100"
-		this.keyboardFont = '|Empty|'; // placeholder
-		this.keyboardFontSize = 24.0; // somewhat sane default
-		this.legendColor = "0xFF000000"; // we default to black
-		this.legendPosition = [0.0, 0.0];
-		this.profile = "OEM";
-		this.keySculpt = "R3";
-		this.position = [0.0, 0.0]; // placement of the unit
-		this.angle = [0, 0, 0]; //  rotation around the anchor point
-		this.size = 0; // initial number of keys/elements
-		this.keys = [];
-	}
+	public function new() {}
 
 	public function createKey(shape: String, pos: Array<Float>, legend: String): Key {
 		var uid = this.keys.length;
@@ -173,12 +156,12 @@ class Keyboard {
 	 * Sort keyson by position and steamroll the ids
 	 */
 	public function sortKeys() {
-		// first order all keys by X and Y position
+		// First order all keys by X and Y position
 		this.keys.sort((a, b) -> {
 			return (Std.int((a.position[0] + 128 * a.position[1]) * 25) - Std.int((b.position[0] + 128 * b.position[1]) * 25));
 		});
 
-		// next adjust the id to reflect just that
+		// Next adjust the id to reflect just that
 		var i: Int = 0;
 		this.keys = [
 			for (k in this.keys) {
@@ -195,56 +178,65 @@ class Keyboard {
 class Key {
 	public var id: Int;
 	public var position: Array<Float>;
-	public var stabilizer: String;
-	public var angle: Float;
 	public var shape: String;
-	public var legendPosition: String;
-	public var relativeRotationCenter: Array<Float>;
-	public var features: Array<String>;
-	public var steppedTop: Float;
-	public var homingFeature: String;
-	public var keysColor: String;
-	public var spacerSize: Array<Float>;
-	public var amountOfLegends: Int;
-	public var legends: Array<KeyLegend>;
+	@:optional public var stabilizer: String = "";
+	@:optional public var angle: Float = 0.0;
+	@:optional public var relativeRotationCenter: Array<Float> = [0, 0];
+	@:optional public var features: Array<String> = [];
+	@:optional public var homingFeature: HomingFeature = None;
+	@:optional public var color: String = "0xFFFFFFFF";
+	@:optional public var spacerSize: Array<Float>;
+	@:optional public var amountOfLegends: Int = 0;
+	@:optional public var legends: Array<KeyLegend> = [];
 
 	public function new(id: Int, shape: String, position: Array<Float>, legend: String) {
-		this.id = id; // unique key ID
-		this.position = position; // place on the unit
-		//		this.stabilizer = "None"; // "None","2U","2.25U","2.75U","6.25U","7.25U",(Custom Bar)"125.5"
-		//		this.angle = 0.0;
-		this.shape = shape; // "1U","2U","2U vertical","1.25U","1.5U","1.75U","2.25U","2.75U","ISO","BAE","6.25U","7.25U","3U","0.75U"
-		//		this.relativeRotationCenter = [0.0, 0.0];
-		//		this.features = []; // "Stepped","Window","Homing","Spacer","Comment","Shadow","LED","OLED","LCD","Encoder","Trackpoint","Trackpad"
-		//		this.steppedTop = 0.0; // by it's size we reconstruct the type
-		//		this.homingFeature = ""; // "Bar", "Dot", "Sculpt"
-		//		this.spacerSize = [0.0, 0.0]; // in units of U (1 x 2 U)
-		this.keysColor = "0xFFFFFFFF";
-		this.amountOfLegends = 1;
-		this.legends = [];
-
+		this.id = id;
+		this.position = position;
+		// "1U","2U","2U vertical","1.25U","1.5U","1.75U","2.25U","2.75U","ISO","BAE","6.25U","7.25U","3U","0.75U"
+		this.shape = shape; 
 		this.legends.push(new KeyLegend(legend));
+		this.amountOfLegends = legends.length;
 	}
 
 	public function addLegend(legend: String, position: Array<Float>) {
-		var newLegend = new KeyLegend(legend);
+		legends.push(new KeyLegend(legend));
 	}
 }
 
+class Defaults {
+	@:optional public var keyColor: String = "0xFF808080";
+	@:optional public var legendPosition: Array<Float> = [5.0, 5.0];
+	@:optional public var legendColor: String = "0xFF00000f";
+}
+
+enum abstract Profile(String) from String {
+	// OEM is default
+	final OEM;
+	final Cherry;
+	final XDA;
+	final Choc;
+	final MBK;
+	final WRK;
+	final Laptop;
+	final Flat;
+	final SA;
+	final DSA;
+}
+
+enum abstract ColorMatchingProfile(String) from String {
+	final Generic;
+}
 /**
  * The sign/symbol on the unit
  */
 class KeyLegend {
-	public var legend: String;
-	public var legendSize: Float;
-	public var legendColor: String;
-	public var legendPosition: Array<Float>;
+	public var legend: String = "";
+	@:optional public var legendSize: Float = 24.0;
+	@:optional public var color: String = "0xFF00000f";
+	@:optional public var position: Array<Float> = [5.0, 5.0];
 
 	public function new(legend: String) {
-		this.legend = legend; // the ordered content
-		this.legendSize = 24.0; // sane default
-		this.legendColor = "0xFF00000f";
-		this.legendPosition = [5.0, 5.0];
+		this.legend = legend;
 	}
 }
 // Various key position features/replacements and their respective properties:
@@ -254,25 +246,24 @@ class LEDFeature {
 }
 
 class EncoderFeature {
-	public var diameter: Float; // in unit size
-	public var barrelSize: Float; // height/length in rulerUnits size
-	public var profile: String; // "Round" "Curled" "Ribbed"
-	public var type: String; // axis:"Upright" "Barrel X" "Barrel Y"
+	public var diameter: Float = 0.0; // in unit size
+	public var barrelSize: Float = 0.0; // height/length in rulerUnits size
+	public var profile: String = ""; // "Round" "Curled" "Ribbed"
+	public var type: String = ""; // axis:"Upright" "Barrel X" "Barrel Y"
 
-	public function new() {
-		diameter = 0.0;
-		barrelSize = 0.0;
-		profile = "";
-		type = "";
-	}
+	public function new() {}
 }
 
 class TrackpointFeature {
-	public var diameter: Float;
-	public var profile: String; // "Round","Square"
+	public var diameter: Float = 0.0;
+	public var profile: String = "Round"; // "Round","Square"
 
-	public function new() {
-		diameter = 0.0;
-		profile = "";
-	}
+	public function new() {}
+}
+
+enum abstract HomingFeature(String) from String {
+	final None;
+	final Bar;
+	final Dot;
+	final Scoop;
 }

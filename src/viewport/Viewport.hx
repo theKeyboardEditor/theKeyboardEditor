@@ -232,7 +232,7 @@ class Viewport extends Scene {
 
 			for (key in keyboardUnit.keys) {
 				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY,
-					Std.parseInt(keyboardUnit.keysColor));
+					Std.parseInt(keyboardUnit.defaults.keyColor));
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 					keyMouseDown(t, keycap);

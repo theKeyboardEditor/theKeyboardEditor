@@ -33,11 +33,10 @@ class Color extends VBox {
 		super();
 		final palette = viewport.keyson?.palettes[0];
 
-		// TODO show the active unit's default colors
-		final defBodyColor = viewport.keyson?.units[viewport.currentUnit].keysColor;
-		final defLegendColor = viewport.keyson?.units[viewport.currentUnit].legendColor;
+		final defBodyColor = viewport.keyson?.units[viewport.currentUnit].defaults.keyColor;
+		final defLegendColor = viewport.keyson?.units[viewport.currentUnit].defaults.legendColor;
 
-		preview.legendColor = Std.parseInt('${defLegendColor}');
+		preview.color = Std.parseInt('${defLegendColor}');
 		preview.bodyColor = Std.parseInt('${defBodyColor}');
 		preview.tooltip = 'Click for default colors.';
 
@@ -68,7 +67,7 @@ class Color extends VBox {
 			button.onClick = e -> {
 				final value = palette.fromName(button.id).value;
 				if (e.shiftKey) {
-					// preview.legendColor = Std.parseInt('0x${value.substring(4)}');
+					// preview.color = Std.parseInt('0x${value.substring(4)}');
 					viewport.colorSelectedKeyLegends(Std.parseInt('0x${value.substring(4)}'));
 				} else {
 					// preview.bodyColor = Std.parseInt('0x${value.substring(4)}');
@@ -84,9 +83,10 @@ class Color extends VBox {
 	function bodiesPresent(viewport: viewport.Viewport, color: ceramic.AlphaColor) {
 		final keySet = viewport.keyson?.units[viewport.currentUnit].keys;
 		for (k in keySet) {
-			return '0x${StringTools.hex(Std.parseInt(k.keysColor))}' == color.toString();
+			if ('0x${StringTools.hex(Std.parseInt(k.color))}' == color.toString())
+				return true;
 		}
-		return true;
+		return false;
 	}
 
 	// Returns true if there is a THIS colored one or more legends in selection
@@ -94,7 +94,8 @@ class Color extends VBox {
 		final keySet = viewport.keyson?.units[viewport.currentUnit].keys;
 		for (k in keySet) {
 			for (l in k.legends) {
-				return '0x${StringTools.hex(Std.parseInt(l.legendColor))}' == color.toString();
+				if ('0x${StringTools.hex(Std.parseInt(l.color))}' == color.toString())
+					return true;
 			}
 		}
 		return false;

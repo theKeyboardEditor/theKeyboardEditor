@@ -21,7 +21,6 @@ class KeyRenderer extends ceramic.Visual {
 	}
 
 	override public function computeContent() {
-		// TODO recreate legends after color change
 		for (l in legends) {
 			l.depth = 50;
 			this.add(l);

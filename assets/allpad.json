@@ -6,7 +6,7 @@
 	"palettes": [{
 		"name": "Kids Crayons 16",
 		"url": "https://some.site.org",
-		"colorMatchingProfile": "generic",
+		"colorMatchingProfile": "Generic",
 		"size": 16,
 		"swatches": [
 			{
@@ -78,6 +78,9 @@
 	"units": [
 		{
 			"id": 0,
+			"defaults": {
+				"legendPosition": [5.12, 0]
+			},
 			"designator": "Allpad",
 			"keyStep": [
 				19,
@@ -91,18 +94,15 @@
 			],
 			"rulerUnits": "mm",
 			"caseColor": "gray",
-			"keysColor": "0xFF808080",
-			"labelSizeUnits": null,
+			"legendSizeUnits": null,
 			"keyboardFont": "sans",
 			"keyboardFontSize": 24,
-			"legendColor": "0xFF800080",
-			"legendPosition": [
+			"position": [
 				5.12,
 				5.12
 			],
 			"profile": "OEM",
 			"keySculpt": "R3",
-			"position": null,
 			"angle": null,
 			"relativeRotationCenter": null,
 			"size": 22,
@@ -116,20 +116,18 @@
 					"stabilizer": "2U",
 					"angle": 0,
 					"shape": "2U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-256",
+					"color": "-256",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "2U",
 							"legendSize": 0,
-							"legendColor": "-8388608",
-							"legendPosition": null
+							"color": "-8388608",
+							"position": null
 						}
 					]
 				},
@@ -142,20 +140,18 @@
 					"stabilizer": "2U",
 					"angle": 0,
 					"shape": "XT_2U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "XT 2U",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": [
+							"color": null,
+							"position": [
 								5.12,
 								80
 							]
@@ -171,20 +167,18 @@
 					"stabilizer": "2U",
 					"angle": 0,
 					"shape": "BAE Inverted",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-256",
+					"color": "-256",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "BAE \nInverted",
 							"legendSize": 0,
-							"legendColor": "-8388608",
-							"legendPosition": [
+							"color": "-8388608",
+							"position": [
 								5.12,
 								70
 							]
@@ -200,20 +194,18 @@
 					"stabilizer": "2U",
 					"angle": 0,
 					"shape": "ISO",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "ISO",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": [
+							"color": null,
+							"position": [
 								30.75,
 								80
 							]
@@ -229,20 +221,18 @@
 					"stabilizer": "2U",
 					"angle": 0,
 					"shape": "ISO Inverted",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "ISO \nInverted",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": [
+							"color": null,
+							"position": [
 								5.12,
 								70
 							]
@@ -258,20 +248,18 @@
 					"stabilizer": "2U",
 					"angle": 0,
 					"shape": "BAE",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "BAE",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": [
+							"color": null,
+							"position": [
 								5.12,
 								80
 							]
@@ -287,20 +275,18 @@
 					"stabilizer": "2U",
 					"angle": 0,
 					"shape": "3U Vertical",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-1",
+					"color": "-1",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "3U Vertical",
 							"legendSize": 0,
-							"legendColor": "-8355712",
-							"legendPosition": [
+							"color": "-8355712",
+							"position": [
 								5.12,
 								120
 							]
@@ -316,20 +302,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "2U Vertical",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-256",
+					"color": "-256",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "2U Vertical",
 							"legendSize": 0,
-							"legendColor": "-8388608",
-							"legendPosition": [
+							"color": "-8388608",
+							"position": [
 								5.12,
 								80
 							]
@@ -345,20 +329,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "1U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "1U",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": null
+							"color": null,
+							"position": null
 						}
 					]
 				},
@@ -371,20 +353,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "1.25U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-16711936",
+					"color": "-16711936",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "1.25U",
 							"legendSize": 0,
-							"legendColor": "-256",
-							"legendPosition": null
+							"color": "-256",
+							"position": null
 						}
 					]
 				},
@@ -397,20 +377,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "1.5U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "1.5U",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": null
+							"color": null,
+							"position": null
 						}
 					]
 				},
@@ -423,20 +401,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "0.75U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "0.75U",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": null
+							"color": null,
+							"position": null
 						}
 					]
 				},
@@ -449,20 +425,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "2.25U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-8388608",
+					"color": "-8388608",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "2.25U",
 							"legendSize": 0,
-							"legendColor": "-256",
-							"legendPosition": null
+							"color": "-256",
+							"position": null
 						}
 					]
 				},
@@ -475,20 +449,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "2.75U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-8388608",
+					"color": "-8388608",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "2.75U",
 							"legendSize": 0,
-							"legendColor": "-256",
-							"legendPosition": null
+							"color": "-256",
+							"position": null
 						}
 					]
 				},
@@ -501,20 +473,18 @@
 					"stabilizer": "2.75U",
 					"angle": 0,
 					"shape": "3U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-16711936",
+					"color": "-16711936",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "3U",
 							"legendSize": 0,
-							"legendColor": "-256",
-							"legendPosition": null
+							"color": "-256",
+							"position": null
 						}
 					]
 				},
@@ -527,20 +497,18 @@
 					"stabilizer": "6.25U",
 					"angle": 0,
 					"shape": "6.5U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-12566464",
+					"color": "-12566464",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "6.5",
 							"legendSize": 0,
-							"legendColor": "-8355712",
-							"legendPosition": null
+							"color": "-8355712",
+							"position": null
 						}
 					]
 				},
@@ -553,20 +521,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "1.75U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "1.75U",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": null
+							"color": null,
+							"position": null
 						}
 					]
 				},
@@ -579,20 +545,18 @@
 					"stabilizer": "6.25U",
 					"angle": 0,
 					"shape": "6.25U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-12566464",
+					"color": "-12566464",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "6.25U",
 							"legendSize": 0,
-							"legendColor": "-8355712",
-							"legendPosition": null
+							"color": "-8355712",
+							"position": null
 						}
 					]
 				},
@@ -605,20 +569,18 @@
 					"stabilizer": "2.25U",
 					"angle": 0,
 					"shape": "2.5U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-8388608",
+					"color": "-8388608",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "2.5U",
 							"legendSize": 0,
-							"legendColor": "-256",
-							"legendPosition": null
+							"color": "-256",
+							"position": null
 						}
 					]
 				},
@@ -631,20 +593,18 @@
 					"stabilizer": "7U",
 					"angle": 0,
 					"shape": "7U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-12566464",
+					"color": "-12566464",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "7U",
 							"legendSize": 0,
-							"legendColor": "-8355712",
-							"legendPosition": null
+							"color": "-8355712",
+							"position": null
 						}
 					]
 				},
@@ -657,20 +617,18 @@
 					"stabilizer": "7U",
 					"angle": 0,
 					"shape": "10U",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-12566464",
+					"color": "-12566464",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "10U (Big Ass Space)",
 							"legendSize": 0,
-							"legendColor": "-8355712",
-							"legendPosition": null
+							"color": "-8355712",
+							"position": null
 						}
 					]
 				},
@@ -683,20 +641,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "1.75U Stepped 1.5",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": null,
+					"color": null,
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "CAPS 3800",
 							"legendSize": 0,
-							"legendColor": null,
-							"legendPosition": null
+							"color": null,
+							"position": null
 						}
 					]
 				},
@@ -709,20 +665,18 @@
 					"stabilizer": null,
 					"angle": 0,
 					"shape": "1.75U Stepped -1.5",
-					"legendPosition": null,
 					"relativeRotationCenter": null,
 					"features": null,
-					"steppedTop": 0,
 					"homingFeature": null,
-					"keysColor": "-16711936",
+					"color": "-16711936",
 					"spacerSize": null,
 					"amountOfLegends": 0,
 					"legends": [
 						{
 							"legend": "0083 SPAC",
 							"legendSize": 0,
-							"legendColor": "-256",
-							"legendPosition": null
+							"color": "-256",
+							"position": null
 						}
 					]
 				}

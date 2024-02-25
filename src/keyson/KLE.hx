@@ -4,9 +4,44 @@ using StringTools;
 using haxe.io.Bytes;
 
 class KLE {
+	public static final legendSanitizers: Map<String, String> = [
+		"<BR>" => "\n",
+		"<br>" => "\n",
+		"\n\n\n\n" => "\n",
+		"\n\n\n" => "\n",
+		"\n\n" => "\n",
+		"<b>" => "",
+		"</b>" => "",
+		"<u>" => "",
+		"</u>" => "",
+		"&ndash;" => "-",
+		"&mdash;" => "_",
+		"&nbsp;" => " ",
+		"&#x021d1;" => "⇑",
+		"&#x021d3;" => "⇓",
+		"&#x021d0;" => "⇐",
+		"&#x021d2;" => "⇒",
+		"&uArr;" => "⇑",
+		"&dArr;" => "⇓",
+		"&lArr;" => "⇐",
+		"&rArr;" => "⇒",
+		"&Uarr;" => "⇑",
+		"&Darr;" => "⇓",
+		"&Larr;" => "⇐",
+		"&Rarr;" => "⇒",
+		"&uarr;" => "↑",
+		"&darr;" => "↓",
+		"&larr;" => "←",
+		"&rarr;" => "→",
+		"&crarr;" => "↵"
+	];
+
 	// Converts a json string from Keyboard Layout Editor to Keyson's object format
 	public static function toKeyson(name: String, string: String): Keyson {
 		var keyson = new keyson.Keyson();
+		keyson.name = name;
+		keyson.comment = 'Imported by Keyson.KLE';
+
 		var kle = haxe.Json.parse(string);
 		kle[0];
 
@@ -17,118 +52,115 @@ class KLE {
 		var posY: Float = 0; // legend coordinates
 		var xNext: Float = 1;
 		var shape: String = "1U";
-		var keysColor: String = "0xFFFAFAFA";
+		var bodyColor: String = "0xFFFAFAFA";
 		var legendColor: String = "0xFF000000";
 		var key: Keyson.Key;
-		var legendSize: Float = 20; // see below the default is [3]
-		// HANDY RULER:                 0   1   2   3   4   5   6   7   8   9
+		var legendSize: Float = 20;
 		var fontSizes: Array<Float> = [20, 11, 14, 20, 24, 26, 27, 28, 30, 32];
 
-		keyson.units[0].legendPosition = [6.0, 0.0]; // a default nice looking collective offset
-		// KLE's keyson has really odd fileds and relations?
-		for (row in kle) { // iterate thru rows
-			row[0]; // with calling this we force haxe alow iteration of row
-			x = 0; // reset horizontal key position
-			for (column in row) { // iterate thru keys and gaps and all other stuff
-				if (column.y != null) // if we find a y: pair we add it as vertical row-to row padding
-					y = y + column.y; // effective immediately
-				if (column.x != null) // if we find a x: pair we assume it's key to key padding
-					xNext += column.x; // effective sfter placing the current element
-				if (column is String) { // we check if there is a "legend" in this columanr element
-					var legend: String = Std.string(column); // yes, we take it in
-					// trace("legend:", legend);
+		keyson.units[0].defaults.legendPosition = [6.0, 0.0];
+
+		for (row in kle) {
+			// No clue why this works, but code will break without it
+			row[0];
+			x = 0;
+			for (column in row) {
+				if (column.y != null) {
+					y = y + column.y;
+				}
+
+				if (column.x != null) {
+					xNext += column.x;
+				}
+
+				if (column is String) {
+					var legend: String = Std.string(column);
 					if (legend.contains("</i>")) {
 						var reg: EReg = ~/<i class='.*'><\/i>/;
 						legend = reg.replace(legend, '#');
 					}
-					legend = legend.replace("<BR>", "\n");
-					legend = legend.replace("<br>", "\n");
-					legend = legend.replace("\n\n\n\n", "\n");
-					legend = legend.replace("\n\n\n", "\n");
-					legend = legend.replace("\n\n", "\n");
-					legend = legend.replace("<b>", "");
-					legend = legend.replace("</b>", "");
-					legend = legend.replace("<u>", "");
-					legend = legend.replace("</u>", "");
-					legend = legend.replace("&ndash;", "-");
-					legend = legend.replace("&mdash;", "_");
-					legend = legend.replace("&nbsp;", " ");
-					legend = legend.replace("&#x021d1;", "⇑");
-					legend = legend.replace("&#x021d3;", "⇓");
-					legend = legend.replace("&#x021d0;", "⇐");
-					legend = legend.replace("&#x021d2;", "⇒");
-					legend = legend.replace("&uArr;", "⇑");
-					legend = legend.replace("&dArr;", "⇓");
-					legend = legend.replace("&lArr;", "⇐");
-					legend = legend.replace("&rArr;", "⇒");
-					legend = legend.replace("&Uarr;", "⇑");
-					legend = legend.replace("&Darr;", "⇓");
-					legend = legend.replace("&Larr;", "⇐");
-					legend = legend.replace("&Rarr;", "⇒");
-					legend = legend.replace("&uarr;", "↑");
-					legend = legend.replace("&darr;", "↓");
-					legend = legend.replace("&larr;", "←");
-					legend = legend.replace("&rarr;", "→");
-					legend = legend.replace("&crarr;", "↵");
+					
+					for (key => value in legendSanitizers) {
+						legend = legend.replace(key, value);
+					}
+					
 					var s: String = "";
 					if (legend.contains("&#")) {
 						s = String.fromCharCode(Std.parseInt("" + legend.substring(2 + legend.indexOf("&#"), 6)));
 						legend = legend.substr(0, legend.indexOf("&#")) + s + legend.substr(7 + legend.indexOf("&#"));
 					}
-					// trace(s, "/", legend);
-					if (shape == "ISO") // special case - for one reason or the other it renders 0.25U off to the right
-						key = keyson.units[0].createKey(shape, [x - 0.25, y], legend)
-					else
+
+					// ISO keys need an 0.25U offset to the left
+					if (shape == "ISO") {
+						key = keyson.units[0].createKey(shape, [x - 0.25, y], legend);
+					} else {
 						key = keyson.units[0].createKey(shape, [x, y], legend);
-					key.keysColor = keysColor;
-					key.legends[0].legendColor = legendColor;
+					}
+
+					key.color = bodyColor;
+					key.legends[0].color = legendColor;
 					key.legends[0].legendSize = legendSize;
-					key.legends[0].legendPosition = [posX, posY];
-					// trace('legends: [${key.legends}]');
-					w = 1; // default presumed width (if none is given)
-					shape = "1U"; // presumed shape
-				} else { // no there is no string in this element:
-					w = if (column.w != null) column.w // if we have w: pair we evaluate width
-					else if (column.h != null) column.h else 1; // default is width of 1U
+					key.legends[0].position = [posX, posY];
+
+					// Some presumed defaults
+					w = 1;
+					shape = "1U";
+				} else {
+					w = column.w ?? column.h ?? 1;
+
 					// SHAPES
-					// TODO stepped
-					// TODO actually rotate the rotated keys
-					// ROTATION center seems to overide the current position!
 					x = if (column.rx != null) column.rx else x;
-					y = if (column.ry != null) column.ry + 1 else y; // our running y is preadded by now
-					shape = if (column.w2 != null && column.w2 == 1.5 && column.h == 2) "ISO" else if (column.w2 != null
-						&& column.w2 == 2.25 && column.h == 2) "BAE" else if (column.h != null) Std.string(w) + "U Vertical" else
-						if (column.w != null) Std.string(w)
-						+ "U" else "1U"; // w to shape
-					// trace("shape:",shape);
+					y = if (column.ry != null) column.ry + 1 else y;
+
+					if (column.w2 != null && column.w2 == 1.5 && column.h == 2) {
+						shape = "ISO";
+					} else if (column.w2 != null && column.w2 == 2.25 && column.h == 2) {
+						shape = "BAE";
+					} else if (column.h != null) {
+						shape = Std.string(w) + "U Vertical";
+					} else if (column.w != null) {
+						shape = Std.string(w) + "U";
+					} else {
+						shape = "1U";
+					}
+
 					// COLOR
-					if (column.c != null)
-						keysColor = if (column.c != null) "0xFF" + column.c.split("#")[1] else keysColor;
-					legendColor = if (column.t != null) "0xFF" + column.t.split("#")[1] else legendColor;
-					legendSize = if (column.f != null) legendSize = fontSizes[column.f] else legendSize;
+					if (column.c != null) {
+						bodyColor = "0xFF" + column.c.split("#")[1];
+					}
+					if (column.t != null) {
+						legendColor = "0xFF" + column.t.split("#")[1];
+					}
+					if (column.f != null) {
+						legendSize = fontSizes[column.f];
+					}
+
 					if (column.a != null) {
-						// LEGEND POSITIONS:
-						// bitmask 1 << 0 (0x01) seems to be for X offset to the middle
-						// TODO this should actually be the middle but we don't have centered text just yet
-						posX = if ((column.a & 1 << 0) == 1 << 0) 18 else
-							posX; // so far 22 seems a good middle point (that's 28 actually see above)
+						/**
+						 * LEGEND POSITIONS:
+						 * bitmask 1 << 0 (0x01) seems to be for X offset to the middle
+						 * TODO: this should actually be the middle but we don't have centered text just yet
+						 */
+						if ((column.a & 1 << 0) == 1 << 0) {
+							posX = 18;
+						}
+
 						// bitmask 1 << 1 (0x02) seems to be for X offset to the middle
 						posY = if ((column.a & 1 << 1) == 1 << 1) legendSize * 0.8 else 0;
 					}
-					x--; // we compensate default automatic horizontal stepping for this non key producing element
+					x--;
 				}
-				x = x + xNext; // make horizontal stepping for the next item
+				// Set horizontal stepping for the next item
+				x = x + xNext;
 				if (column.w != null) {
-					xNext = column.w; // accout for item position in the next iteration
+					// Account for item position in the next iteration
+					xNext = column.w; 
 				} else {
 					xNext = 1;
 				}
 			}
-			y++; // make vertical stepping after the row is processed
+			y++;
 		}
-		keyson.name = name;
-		keyson.comment = 'Imported by Keyson.KLE';
-		// return what was converted
 		return keyson;
 	}
 

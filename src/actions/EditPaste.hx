@@ -31,7 +31,7 @@ class EditPaste extends Action {
 			this.device.insertKey(key);
 			// recreate shapes:
 			final keycap: KeyRenderer = KeyMaker.createKey(clonedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
-				Std.parseInt(viewport.keyboardUnit.keysColor));
+				Std.parseInt(viewport.keyboardUnit.defaults.keyColor));
 			keycap.pos(viewport.unit * key.position[Axis.X], viewport.unit * key.position[Axis.Y]);
 			keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 				viewport.keyMouseDown(t, keycap);

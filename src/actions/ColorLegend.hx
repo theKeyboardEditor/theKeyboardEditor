@@ -32,9 +32,9 @@ class ColorLegend extends Action {
 		}
 		for (k in this.colorees) {
 			// add to keyson:
-			k.sourceKey.legends[legendIndex].legendColor = '${this.color}';
+			k.sourceKey.legends[legendIndex].color = '${this.color}';
 			// the ceramic on screen representation object
-			k.legends[legendIndex].color = Std.parseInt(k.sourceKey.legends[legendIndex].legendColor);
+			k.legends[legendIndex].color = Std.parseInt(k.sourceKey.legends[legendIndex].color);
 		}
 		super.act(type);
 	}
@@ -44,12 +44,12 @@ class ColorLegend extends Action {
 		for (member in this.coloredKeyLegends.keys) {
 			for (k in this.colorees) {
 				if (k.sourceKey.legends[0].legend == member.legends[0].legend) {
-					if (member.legends[eachLegend].legendColor != null) {
-						k.sourceKey.legends[legendIndex].legendColor = member.legends[legendIndex].legendColor;
+					if (member.legends[eachLegend].color != null) {
+						k.sourceKey.legends[legendIndex].color = member.legends[legendIndex].color;
 					} else { // it's undefined, so it's default
-						k.sourceKey.legends[legendIndex].legendColor = this.viewport.keyson.units[this.viewport.currentUnit].legendColor;
+						k.sourceKey.legends[legendIndex].color = this.viewport.keyson.units[this.viewport.currentUnit].color;
 					}
-					k.legends[legendIndex].color = Std.parseInt(k.sourceKey.legends[legendIndex].legendColor);
+					k.legends[legendIndex].color = Std.parseInt(k.sourceKey.legends[legendIndex].color);
 				}
 			}
 		}

@@ -6,7 +6,7 @@ import haxe.ui.events.UIEvent;
 
 class Keycap extends Box {
 	public var bodyColor(default, set): Null<Color> = 0xFFFFFF;
-	public var legendColor(default, set): Null<Color> = 0x000000;
+	public var defaultLegendColor(default, set): Null<Color> = 0x000000;
 
 	var keycap: KeyRenderer;
 
@@ -39,8 +39,8 @@ class Keycap extends Box {
 		return this.bodyColor;
 	}
 
-	function set_legendColor(color: Color) {
+	function set_defaultLegendColor(color: Color) {
 		this.keycap.legends[0].color = 0xff000000 + color;
-		return this.legendColor;
+		return this.color;
 	}
 }
