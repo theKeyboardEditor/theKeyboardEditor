@@ -3,7 +3,7 @@
 	"author": "cest73",
 	"license": "MIT",
 	"comment": "Each and every possible key at once",
-	"colorTable": {
+	"palettes": [{
 		"name": "Kids Crayons 16",
 		"url": "https://some.site.org",
 		"colorMatchingProfile": "generic",
@@ -74,7 +74,7 @@
 				"value": "0xFF000080"
 			}
 		]
-	},
+	}],
 	"units": [
 		{
 			"id": 0,
