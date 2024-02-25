@@ -6,7 +6,7 @@
   "palettes": [{
     "name": "Kids Crayons 16",
     "url": "https://some.site.org",
-    "colorMatchingProfile": "generic",
+    "colorMatchingProfile": "Generic",
     "size": 16,
     "swatches": [
       { "name": "black", "value": "0xFF000000" },
@@ -30,6 +30,11 @@
   "units": [
     {
       "id": 0,
+	  "defaults": {
+      	"keyColor": "0xFF808080",
+      	"legendColor": "0xFF800080",
+      	"legendPosition": [5.12, 5.12]
+	  },
       "designator": "BAEpad",
       "keyStep": [19.0, 19.0],
       "stabilizerType": "Alps",
@@ -37,15 +42,11 @@
       "capSize": [18.5, 18.5],
       "rulerUnits": "mm",
       "caseColor": "gray",
-      "keysColor": "0xFF808080",
       "keyboardFont": "sans",
       "legendSizeUnits": "U/100",
       "keyboardFontSize": 24,
-      "legendColor": "0xFF800080",
-      "legendPosition": [5.12, 5.12],
       "profile": "OEM",
       "keySculpt": "R3",
-      "amountOfUnits": 1,
       "size": 1,
       "keys": [
         {

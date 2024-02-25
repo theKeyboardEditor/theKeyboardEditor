@@ -6,7 +6,7 @@
   "palettes": [{
     "name": "Kids Crayons 16",
     "url": "https://some.site.org",
-    "colorMatchingProfile": "generic",
+    "colorMatchingProfile": "Generic",
     "size": 16,
     "swatches": [
       { "name": "black", "value": "0xFF000000" },
@@ -31,27 +31,28 @@
     {
       "id": 0,
       "designator": "Numpad",
+	  "defaults": {
+		  "keyColor": "0xFFFCFCFC",
+		  "legendColor": "0xff606090",
+		  "legendPosition": [5.12, 0]
+	  },
       "keyStep": [19.05, 19.05],
       "stabilizerType": "Cherry",
       "switchType": "Cherry MX/Gateron/Kailh",
       "capSize": [18.5, 18.5],
       "rulerUnits": "mm",
       "caseColor": "white",
-      "keysColor": "0xFFFCFCFC",
       "keyboardFont": "sans",
-      "labelSizeUnits": "U/100",
+      "legendSizeUnits": "U/100",
       "keyboardFontSize": 32,
-      "legendColor": "0xff606090",
-      "legendPosition": [5.12, 0],
       "profile": "XDA",
       "keySculpt": "R3",
-      "amountOfUnits": 1,
       "size": 17,
       "keys": [
         {
           "id": 0,
           "position": [0, 0],
-          "keysColor": "0xFFCCCCAA",
+          "color": "0xFFCCCCAA",
           "shape": "1U",
           "legends": [
             {
@@ -63,7 +64,7 @@
         {
           "id": 1,
           "position": [1, 0],
-          "keysColor": "0xFFCCCCAA",
+          "color": "0xFFCCCCAA",
           "shape": "1U",
           "legends": [
             {
@@ -74,7 +75,7 @@
         {
           "id": 2,
           "position": [2, 0],
-          "keysColor": "0xFFCCCCAA",
+          "color": "0xFFCCCCAA",
           "shape": "1U",
           "legends": [
             {
@@ -85,7 +86,7 @@
         {
           "id": 3,
           "position": [3, 0],
-          "keysColor": "0xFFCCCCAA",
+          "color": "0xFFCCCCAA",
           "shape": "1U",
           "legends": [
             {
@@ -103,8 +104,8 @@
             },
             {
               "legend": "Home",
-              "legendColor": "0xFFCCCCCC",
-              "legendPosition": [5.12, 40],
+              "color": "0xFFCCCCCC",
+              "position": [5.12, 40],
               "legendSize": 24.0
             }
           ]
@@ -119,8 +120,8 @@
             },
             {
               "legend": "^",
-              "legendColor": "0xFFCCCCCC",
-              "legendPosition": [5.12, 40],
+              "color": "0xFFCCCCCC",
+              "position": [5.12, 40],
               "legendSize": 24.0
             }
           ]
@@ -135,8 +136,8 @@
             },
             {
               "legend": "PgUp",
-              "legendColor": "0xFFCCCCCC",
-              "legendPosition": [5.12, 40],
+              "color": "0xFFCCCCCC",
+              "position": [5.12, 40],
               "legendSize": 24.0
             }
           ]
@@ -144,13 +145,13 @@
         {
           "id": 7,
           "position": [3, 1],
-          "keysColor": "0xFFCCCCAA",
+          "color": "0xFFCCCCAA",
           "stabilizer": "2U",
           "shape": "2U Vertical",
           "legends": [
             {
               "legend": "+",
-              "legendPosition": [5.12, 70]
+              "position": [5.12, 70]
             }
           ]
         },
@@ -164,8 +165,8 @@
           },
             {
               "legend": "<",
-              "legendColor": "0xFFCCCCCC",
-              "legendPosition": [5.12, 40],
+              "color": "0xFFCCCCCC",
+              "position": [5.12, 40],
               "legendSize": 24.0
             }
           ]
@@ -174,7 +175,7 @@
           "id": 9,
           "position": [1, 2],
           "shape": "1U",
-          "Features": "Homing",
+          "features": ["Homing"],
           "legends": [
             {
               "legend": "5"
@@ -191,8 +192,8 @@
             },
             {
               "legend": ">",
-              "legendColor": "0xFFCCCCCC",
-              "legendPosition": [5.12, 40],
+              "color": "0xFFCCCCCC",
+              "position": [5.12, 40],
               "legendSize": 24.0
             }
           ]
@@ -207,8 +208,8 @@
             },
             {
               "legend": "End",
-              "legendColor": "0xFFCCCCCC",
-              "legendPosition": [5.12, 40],
+              "color": "0xFFCCCCCC",
+              "position": [5.12, 40],
               "legendSize": 24.0
             }
           ]
@@ -223,8 +224,8 @@
             },
             {
               "legend": "v",
-              "legendColor": "0xFFCCCCCC",
-              "legendPosition": [5.12, 40],
+              "color": "0xFFCCCCCC",
+              "position": [5.12, 40],
               "legendSize": 24.0
             }
           ]
@@ -239,8 +240,8 @@
             },
             {
               "legend": "PgDn",
-              "legendColor": "0xFFCCCCCC",
-              "legendPosition": [5.12, 40],
+              "color": "0xFFCCCCCC",
+              "position": [5.12, 40],
               "legendSize": 24.0
             }
           ]
@@ -248,14 +249,14 @@
         {
           "id": 14,
           "position": [3, 3],
-          "keysColor": "0xFFCCCCAA",
+          "color": "0xFFCCCCAA",
           "stabilizer": "2U",
           "shape": "2U Vertical",
           "legends": [
             {
               "legend": "Enter",
               "legendSize": 24.0,
-              "legendPosition": [5.12, 80]
+              "position": [5.12, 80]
             }
           ]
         },
@@ -270,9 +271,9 @@
             },
             {
               "legend": "Ins",
-              "legendColor": "0xFFCCCCCC",
+              "color": "0xFFCCCCCC",
               "legendSize": 24.0,
-              "legendPosition": [5.12, 40]
+              "position": [5.12, 40]
             }
           ]
         },
@@ -286,9 +287,9 @@
             },
             {
               "legend": "Del",
-              "legendColor": "0xFFCCCCCC",
+              "color": "0xFFCCCCCC",
               "legendSize": 24.0,
-              "legendPosition": [5.12, 40]
+              "position": [5.12, 40]
             }
           ]
         }
