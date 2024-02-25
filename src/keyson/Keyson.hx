@@ -1,9 +1,9 @@
 package keyson;
 
 /**
-	** Conversion from a theKeyboardEditor keyboard design object into JSON string and back
-	**  https://github.com/theKeyboardEditor/keyson
-**/
+ * Conversion from a theKeyboardEditor keyboard design object into JSON string and back
+ * https://github.com/theKeyboardEditor/keyson
+ */
 class Keyson {
 	// the version string for later compatibility tracking:
 	public static var version = "0.1-alpha";
@@ -13,8 +13,8 @@ class Keyson {
 	public var author: String;
 	public var license: String;
 	public var comment: String;
-	public var colorTable: Palette;
-	public var units: Array<Keyboard>;
+	public var palettes: Array<Palette> = [];
+	public var units: Array<Keyboard> = [];
 
 	@:jignored public static var tabulation: String = "	"; // keyson output indentation
 
@@ -23,37 +23,46 @@ class Keyson {
 		author = "unknown";
 		license = "CC";
 		comment = "empty";
-		colorTable = new Palette();
-		units = [new Keyboard()]; // one of keyboard rulerUnits
+		palettes.push(new Palette());
+		units.push(new Keyboard());
 	}
 
-	/** The parser and the encoder
-		** Maybe we move one day to TJSON (tolerant json parser) instead?
-	**/
 	public static function parse(data: String) {
-		var parser = new json2object.JsonParser<Keyson>();
-		var object: Keyson;
-		object = parser.fromJson(data);
-		return object;
+		final parser = new json2object.JsonParser<Keyson>();
+		return parser.fromJson(data);
 	}
+
 	public static function encode(object: Keyson) {
-		var writer = new json2object.JsonWriter<Keyson>();
-		var data = writer.write(object, tabulation);
-		return data;
+		final writer = new json2object.JsonWriter<Keyson>();
+		return writer.write(object, tabulation);
 	}
 }
 class Palette {
+	/**
+	 * Name of the palette
+	 */
 	public var name: String;
+
+	/**
+	 * Source of the palette
+	 */
 	public var url: String;
 	public var colorMatchingProfile: String;
-	public var size: Int;
-	public var swatches: Array<Color>;
 
+	/**
+	 * Amount of colors
+	 */
+	public var size: Int;
+
+	/**
+	 * List of colors
+	 */
+	public var swatches: Array<Color>;
 	public function new() {
 		this.name = "unknown";
 		this.url = "unknown";
 		this.colorMatchingProfile = "none";
-		this.size = 1; // amount of colors
+		this.size = 1;
 		this.swatches = [new Color("BLACK", "0x00000000")]; // the names are for humans only
 	}
 
@@ -74,11 +83,11 @@ class Color {
 	}
 }
 
-/** Keyboard:
-	** Each of a Split keyboard's devices with a numpad and a joypad (4 sub rulerUnits)
-	** Each of wo halves wirelessly connected to a host via bluetooth
-	** Or just a common single unit keyboard
-**/
+/**	
+ * Each of a Split keyboard's devices with a numpad and a joypad (4 sub rulerUnits)
+ * Each of wo halves wirelessly connected to a host via bluetooth
+ * Or just a common single unit keyboard
+ */
 class Keyboard {
 	public var id: Int;
 	public var designator: String;
@@ -131,8 +140,8 @@ class Keyboard {
 		return key;
 	}
 
-	/*
-	 *  insert a keyson key and put it in it's place by position and id
+	/**
+	 * Insert a keyson key and put it in it's place by position and id
 	 */
 	public function insertKey(insertee: Key) {
 		this.keys.push(insertee);
@@ -140,8 +149,8 @@ class Keyboard {
 		return insertee;
 	}
 
-	/*
-	 *  remove key by keyson reference
+	/**
+	 * Remove key by keyson reference
 	 */
 	public function removeKey(deletee: Key) {
 		this.keys = [
@@ -150,7 +159,6 @@ class Keyboard {
 			}
 		];
 	}
-
 	public function removeKeyById(id: Int) {
 		var i: Int = 0;
 		this.keys = [
@@ -161,8 +169,8 @@ class Keyboard {
 		];
 	}
 
-	/*
-	 *  sort keyson by position and steamroll the ids
+	/**
+	 * Sort keyson by position and steamroll the ids
 	 */
 	public function sortKeys() {
 		// first order all keys by X and Y position
@@ -223,10 +231,10 @@ class Key {
 	}
 }
 
-/** The sign/symbol on the unit
-**/
+/**
+ * The sign/symbol on the unit
+ */
 class KeyLegend {
-	// the Keyboard options or here define their own
 	public var legend: String;
 	public var legendSize: Float;
 	public var legendColor: String;
@@ -239,18 +247,12 @@ class KeyLegend {
 		this.legendPosition = [5.0, 5.0];
 	}
 }
-/*
- * Various key position features/replacements and their
- * respective properties:
- */
-// TODO do we want actual separate features or will we mimick them with standard keycap features instead?
+// Various key position features/replacements and their respective properties:
 
-/**
- *  The Actual Keyboard status led
- */
 class LEDFeature {
 	public var diameter: Float; // diameter usually 3.0 or 5.0 mm
 }
+
 class EncoderFeature {
 	public var diameter: Float; // in unit size
 	public var barrelSize: Float; // height/length in rulerUnits size
