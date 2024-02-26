@@ -32,9 +32,9 @@ class Keyson {
 		final keyson = parser.fromJson(data);
 		for (err in parser.errors) {
 			#if ceramic
-				log.error(err);
+			log.error(err);
 			#else
-				trace(err);
+			trace(err);
 			#end
 		}
 		return keyson;
@@ -66,7 +66,6 @@ class Palette {
 	 * List of colors
 	 */
 	public var swatches: Array<Color>;
-
 	public function new() {
 		this.swatches = [new Color("BLACK", "0x00000000")]; // the names are for humans only
 	}
@@ -193,7 +192,7 @@ class Key {
 		this.id = id;
 		this.position = position;
 		// "1U","2U","2U vertical","1.25U","1.5U","1.75U","2.25U","2.75U","ISO","BAE","6.25U","7.25U","3U","0.75U"
-		this.shape = shape; 
+		this.shape = shape;
 		this.legends.push(new KeyLegend(legend));
 		this.amountOfLegends = legends.length;
 	}
@@ -202,7 +201,6 @@ class Key {
 		legends.push(new KeyLegend(legend));
 	}
 }
-
 class Defaults {
 	@:optional public var keyColor: String = "0xFF808080";
 	@:optional public var legendPosition: Array<Float> = [5.0, 5.0];
@@ -226,6 +224,7 @@ enum abstract Profile(String) from String {
 enum abstract ColorMatchingProfile(String) from String {
 	final Generic;
 }
+
 /**
  * The sign/symbol on the unit
  */

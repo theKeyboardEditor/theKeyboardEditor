@@ -4,6 +4,7 @@ using StringTools;
 using haxe.io.Bytes;
 
 class KLE {
+	// @formatter:off
 	public static final legendSanitizers: Map<String, String> = [
 		"<BR>" => "\n",
 		"<br>" => "\n",
@@ -35,7 +36,7 @@ class KLE {
 		"&rarr;" => "→",
 		"&crarr;" => "↵"
 	];
-
+	// @formatter:on
 	// Converts a json string from Keyboard Layout Editor to Keyson's object format
 	public static function toKeyson(name: String, string: String): Keyson {
 		var keyson = new keyson.Keyson();
@@ -79,11 +80,11 @@ class KLE {
 						var reg: EReg = ~/<i class='.*'><\/i>/;
 						legend = reg.replace(legend, '#');
 					}
-					
+
 					for (key => value in legendSanitizers) {
 						legend = legend.replace(key, value);
 					}
-					
+
 					var s: String = "";
 					if (legend.contains("&#")) {
 						s = String.fromCharCode(Std.parseInt("" + legend.substring(2 + legend.indexOf("&#"), 6)));
@@ -154,7 +155,7 @@ class KLE {
 				x = x + xNext;
 				if (column.w != null) {
 					// Account for item position in the next iteration
-					xNext = column.w; 
+					xNext = column.w;
 				} else {
 					xNext = 1;
 				}
