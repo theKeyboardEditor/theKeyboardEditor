@@ -17,14 +17,17 @@ import ceramic.Color;
 </vbox>
 ')
 class Color extends VBox {
+	var viewport: viewport.Viewport;
+
 	public function new(viewport: viewport.Viewport) {
 		super();
+		this.viewport = viewport;
+
 		// Insert all palettes from the current keyson in the dropdown
-		for (palette in viewport.keyson?.palettes) {
-			palettesList.dataSource.add(palette.name);
-			palettesStack.addComponent(new PaletteColorView(palette, viewport));
-		}
 		palettesList.dataSource.add("Import from JSON");
+		for (palette in viewport.keyson?.palettes) {
+			addPalette(palette);
+		}
 
 		// Grab default colors
 		final defaultBodyColor = viewport.keyson?.units[viewport.currentUnit].defaults.keyColor;
@@ -36,6 +39,12 @@ class Color extends VBox {
 		preview.tooltip = 'Click for default colors';
 	}
 
+	inline function addPalette(palette: keyson.Keyson.Palette) {
+		final ds = palettesList.dataSource;
+		ds.insert(ds.size - 1, palette.name);
+		palettesStack.addComponent(new PaletteColorView(palette, viewport));
+	}
+
 	@:bind(palettesList, UIEvent.CHANGE)
 	function onPaletteChange(e: UIEvent) {
 		final value: String = switch (e.value) {
@@ -45,13 +54,17 @@ class Color extends VBox {
 
 		switch (value) {
 			case "Import from JSON":
-				{
-					// doThings();
-				}
+				var dialog = new FileDialog();
+				dialog.openJson("Keyson .JSON to extract palettes from");
+				dialog.onFileLoaded(null, (contents) -> {
+					final palettes = keyson.Keyson.parse(contents).palettes;
+					for (palette in palettes) {
+						addPalette(palette);
+						viewport.keyson?.palettes.push(palette);
+					}
+				});
 			default:
-				{
-					palettesStack.selectedIndex = palettesList.selectedIndex;
-				}
+				palettesStack.selectedIndex = palettesList.selectedIndex;
 		}
 	}
 }
