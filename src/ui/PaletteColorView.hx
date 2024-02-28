@@ -14,11 +14,18 @@ class PaletteColorView extends ScrollView {
 	public function new(palette: keyson.Keyson.Palette, ?viewport: viewport.Viewport) {
 		super();
 
+		// TODO find a way to make this layoutColumns
+		trace('columns: ${((palette.swatches.length >> 7 & 1) * 4) + 4}');
+		//buttonbar.layoutColumns = palette.swatches.length << 5 & 0x0F;
 		for (color in palette.swatches ?? []) {
 			var button = new Button();
 			button.id = color.name;
 			button.tooltip = color.name;
-			button.width = button.height = 128 / 4;
+			if (palette.swatches.length > 127 ) {
+				button.width = button.height = 128 / 8;
+			} else {
+				button.width = button.height = 128 / 4;
+			}
 			button.styleString = 'background-color: #${color.value.substring(4)};';
 
 			if (viewport != null) {
