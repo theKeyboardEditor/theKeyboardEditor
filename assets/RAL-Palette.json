@@ -1,4 +1,4 @@
-{
+
 	"name": "RAL-Palette",
 	"author": "cest73",
 	"license": "MIT",
@@ -7,7 +7,7 @@
 		"name": "RAL",
 		"url": "https://www.easycalculation.com/colorconverter/ral-to-hex-table.php",
 		"colorMatchingProfile": "Generic",
-		"size": "213",
+		"size": 213,
 		"swatches": [
 			{"name": "(RAL1000)Green Beige", "value": "0xFFBEBD7F"},
 			{"name": "(RAL1001)Beige", "value": "0xFFC2B078"},
