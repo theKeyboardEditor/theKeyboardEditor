@@ -88,6 +88,9 @@
             "name": "innerLight.frag"
         },
         {
+            "name": "Kids-Crayons-16-Palette.json"
+        },
+        {
             "name": "msdf.frag"
         },
         {
@@ -109,6 +112,9 @@
             "name": "pixelArt.vert"
         },
         {
+            "name": "RAL-Palette.json"
+        },
+        {
             "name": "RobotoMedium.fnt"
         },
         {
@@ -119,6 +125,9 @@
         },
         {
             "name": "svg/EditIcons.svg"
+        },
+        {
+            "name": "Sweetie-16-Palette.json"
         },
         {
             "name": "textured.frag"
