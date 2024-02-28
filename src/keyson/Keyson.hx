@@ -66,7 +66,7 @@ class Palette {
 	/**
 	 * Amount of colors
 	 */
-	public var size: Int = 1;
+	@:optional public var size: Int = 1;
 
 	/**
 	 * List of colors
