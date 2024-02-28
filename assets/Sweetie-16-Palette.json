@@ -1,0 +1,31 @@
+{
+	"name": "Sweetie-16-Palette",
+	"author": "cest73",
+	"license": "MIT",
+	"comment": "A sample palette",
+	"palettes": [{
+		"name": "sweetie-16",
+		"url": "https://lospec.com/palette-list/sweetie-16",
+		"colorMatchingProfile": "generic",
+		"size": "16",
+		"swatches": [
+			{"name": "black", "value": "0xFF1A1C2C"},
+			{"name": "violet", "value": "0xFF5D275D"},
+			{"name": "red", "value": "0xFFB13E53"},
+			{"name": "orange", "value": "0xFFEF7D57"},
+			{"name": "yellow", "value": "0xFFFFCD75"},
+			{"name": "lime", "value": "0xFFA7F070"},
+			{"name": "green", "value": "0xFF38B764"},
+			{"name": "teal", "value": "0xFF257179"},
+			{"name": "dblue", "value": "0xFF29366F"},
+			{"name": "blue", "value": "0xFF3B5DC9"},
+			{"name": "sky", "value": "0xFF41A6F6"},
+			{"name": "cyan", "value": "0xFF73EFF7"},
+			{"name": "white", "value": "0xFFF4F4F4"},
+			{"name": "lgray", "value": "0xFF94B0C2"},
+			{"name": "gray", "value": "0xFF566C86"},
+			{"name": "dgray", "value": "0xFF333C57"}
+			]
+		}],
+	"units": []
+}
