@@ -540,8 +540,8 @@ class Viewport extends Scene {
 	 * Return a key's position and size in units of U/100
 	 */
 	function keyBody(k: keyson.Key): ceramic.Rect {
-		var y: Float = k.position[Axis.Y] * this.unit;
 		var x: Float = k.position[Axis.X] * this.unit;
+		var y: Float = k.position[Axis.Y] * this.unit;
 		var width: Float = 1.0 * this.unit;
 		var height: Float = 1.0 * this.unit;
 

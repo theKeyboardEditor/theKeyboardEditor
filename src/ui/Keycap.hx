@@ -6,14 +6,14 @@ import haxe.ui.events.UIEvent;
 
 class Keycap extends Box {
 	public var bodyColor(default, set): Null<Color> = 0xFFFFFF;
-	public var defaultLegendColor(default, set): Null<Color> = 0x000000;
+	public var legendColor(default, set): Null<Color> = 0x000000;
 
 	var keycap: KeyRenderer;
 
 	public function new() {
 		super();
 		final key = new keyson.Keyson.Key(0, "1U", [0, 0], "Palette");
-		var keyboard = new keyson.Keyson.Keyboard();
+		final keyboard = new keyson.Keyson.Keyboard();
 
 		// TODO: Change keycap size on resize
 		this.keycap = KeyMaker.createKey(keyboard, key, 125, 1, 1, bodyColor + 0xff000000);
@@ -23,10 +23,6 @@ class Keycap extends Box {
 		clipper.height = keycap.height;
 		clipper.transparent = true;
 		keycap.clip = clipper;
-
-		final shape = keycap.legends;
-		trace('trace: ', shape[0].content);
-		trace('trace: ', StringTools.hex(shape[0].color, 8));
 
 		this.add(keycap);
 		this.add(clipper);
@@ -39,7 +35,7 @@ class Keycap extends Box {
 		return this.bodyColor;
 	}
 
-	function set_defaultLegendColor(color: Color) {
+	function set_legendColor(color: Color) {
 		this.keycap.legends[0].color = 0xff000000 + color;
 		return this.color;
 	}

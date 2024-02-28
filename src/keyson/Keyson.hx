@@ -27,6 +27,12 @@ class Keyson {
 		units.push(new Keyboard());
 	}
 
+	public function findPalettes(name: String): Array<Palette> {
+		return palettes.filter((p) -> {
+			return p.name == name;
+		});
+	}
+
 	public static function parse(data: String) {
 		final parser = new json2object.JsonParser<Keyson>();
 		final keyson = parser.fromJson(data);
@@ -94,7 +100,7 @@ class Color {
  */
 class Keyboard {
 	public var id: Int;
-	@:optional public var defaults: Defaults;
+	@:optional public var defaults: Defaults = new Defaults();
 	@:optional public var designator: String = "default";
 	@:optional public var keyStep: Array<Float> = [19.05, 19.05];
 	@:optional public var stabilizerType: String = "";
@@ -201,10 +207,16 @@ class Key {
 		legends.push(new KeyLegend(legend));
 	}
 }
+@:default(auto)
 class Defaults {
-	@:optional public var keyColor: String = "0xFF808080";
+	@:default("0xFFFCFCFC")
+	@:optional public var keyColor: String = "0xFFFCFCFC";
+	@:default([5.0, 5.0])
 	@:optional public var legendPosition: Array<Float> = [5.0, 5.0];
-	@:optional public var legendColor: String = "0xFF00000f";
+	@:default("0xFF00000F")
+	@:optional public var legendColor: String = "0xFF00000F";
+
+	public function new() {}
 }
 
 enum abstract Profile(String) from String {
