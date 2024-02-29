@@ -15,7 +15,7 @@ class PaletteColorView extends ScrollView {
 		super();
 
 		// TODO find a way to make this layoutColumns
-		trace('columns: ${((palette.swatches.length >> 7 & 1) * 4) + 4}');
+		//trace('columns: ${((palette.swatches.length >> 7 & 1) * 4) + 4}');
 		//buttonbar.layoutColumns = palette.swatches.length << 5 & 0x0F;
 		for (color in palette.swatches ?? []) {
 			var button = new Button();
