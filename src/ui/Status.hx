@@ -1,3 +1,8 @@
+package ui;
+
+import haxe.ui.containers.HBox;
+
+@:xml('
 <hbox styleName="status" width="100%">
 	<style>
 		#container {
@@ -19,3 +24,7 @@
 		<label id="pos" width="25%" horizontalAlign="right" text="cursor pos: 0 x 0" />
 	</box>
 </hbox>
+')
+class Status extends HBox {
+	
+}

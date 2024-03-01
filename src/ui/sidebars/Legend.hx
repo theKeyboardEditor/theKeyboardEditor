@@ -1,3 +1,8 @@
+package ui.sidebars;
+
+import haxe.ui.containers.VBox;
+
+@:xml('
 <vbox width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
 	<label text="Legends:" />
 	<hbox height="100%" width="156px" horizontalAlign="center" verticalAlign="center">
@@ -60,7 +65,7 @@
 							</vbox>
 						</scrollview>
 					</vbox>
-					<vbox id="unit[0]" text="[Numpad]" style="padding: 2px;">>
+					<vbox id="unit-0" text="[Numpad]" style="padding: 2px;">>
 						<scrollview width="140px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
 							<dropdown text="Select a font:">
 								<data>
@@ -109,7 +114,7 @@
 						</scrollview>
 					</vbox>
 					<!-- end of The two default elements every keyboard will have -->
-					<vbox id="legend[0]" text="[Q]" style="padding: 2px;">>
+					<vbox id="legend-0" text="[Q]" style="padding: 2px;">>
 						<scrollview width="140px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
 							<label text="Legend text:" verticalAlign="center" />
 							<textfield width="128" placeholder="Q" />
@@ -160,7 +165,7 @@
 							</vbox>
 						</scrollview>
 					</vbox>
-					<vbox id="legend[1]" text="[|]" style="padding: 2px;">>
+					<vbox id="legend-1" text="[|]" style="padding: 2px;">>
 						<scrollview width="140px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
 							<label text="Legend text:" verticalAlign="center" />
 							<textfield width="128" placeholder="|" />
@@ -216,3 +221,5 @@
 		</scrollview>
 	</hbox>
 </vbox>
+')
+class Legend extends VBox {}

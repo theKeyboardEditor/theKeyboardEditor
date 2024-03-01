@@ -4,6 +4,7 @@
 	</resources>
 	<components>
 		<class package="ui" />
+		<class package="ui.sidebars" />
 	</components>
 	<themes>
 		<keyboard-editor-theme parent="dark">

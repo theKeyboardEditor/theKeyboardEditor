@@ -1,9 +1,9 @@
 package ui.sidebars;
 
+import viewport.Viewport;
 import haxe.ui.containers.VBox;
 import haxe.ui.events.UIEvent;
 import haxe.ui.util.Variant;
-import ceramic.Color;
 
 @xml('
 <vbox id="color-sidebar" width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
@@ -17,16 +17,21 @@ import ceramic.Color;
 </vbox>
 ')
 class Color extends VBox {
-	var viewport: viewport.Viewport;
+	public var viewport(default, set): Viewport;
 
-	public function new(viewport: viewport.Viewport) {
+	public function new(?viewport: Viewport) {
 		super();
-		this.viewport = viewport;
+		if (viewport != null) {
+			this.viewport = viewport;
+		}
+	}
 
+	function set_viewport(viewport: Viewport) {
 		// Insert all palettes from the current keyson in the dropdown
 		palettesList.dataSource.add("Import from JSON");
 		for (palette in viewport.keyson?.palettes) {
 			addPalette(palette);
+			trace(palette);
 		}
 
 		// Grab default colors
@@ -37,6 +42,8 @@ class Color extends VBox {
 		preview.legendColor = Std.parseInt(defaultLegendColor);
 		preview.bodyColor = Std.parseInt(defaultBodyColor);
 		preview.tooltip = 'Click for default colors';
+
+		return viewport;
 	}
 
 	inline function addPalette(palette: keyson.Keyson.Palette) {

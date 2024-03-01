@@ -1,3 +1,8 @@
+package ui.sidebars;
+
+import haxe.ui.containers.VBox;
+
+@:xml('
 <vbox width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
 	<label text="Project:" />
 	<hbox height="75%" width="156px" horizontalAlign="center" verticalAlign="center">
@@ -45,3 +50,5 @@
 		</scrollview>
 	</hbox>
 </vbox>
+')
+class Present extends VBox {}

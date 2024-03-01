@@ -14,7 +14,7 @@ class Viewport extends Scene {
 	public var screenX: Float = 0; // position on screen
 	public var screenY: Float = 0;
 
-	public var guiScene: UI;
+	public var uiRoot: ui.Index;
 	public final queue = new ActionQueue();
 
 	/**
@@ -175,7 +175,7 @@ class Viewport extends Scene {
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		switch (guiScene.modeSelector.barMode) {
+		switch (uiRoot.activeMode) {
 			case Place:
 				this.selectionBox.visible = false;
 				placerMismatchX = 0;
@@ -262,8 +262,6 @@ class Viewport extends Scene {
 		// since we have pressed empty space we start drawing a selection rectangle:
 		placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
 		placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
-		var y = placer.y / unit * viewScale;
-		var x = placer.x / unit * viewScale;
 
 		// draw a rectangle:
 		this.selectionBox.visible = true;
@@ -303,14 +301,12 @@ class Viewport extends Scene {
 	 */
 	function viewportMouseUp(info: TouchInfo) {
 		this.selectionBox.visible = false;
-		switch (guiScene.modeSelector.barMode) {
+		switch (uiRoot.activeMode) {
 			case Place:
 				// place action
 				// TODO determine actually selected keyboard unit:
 				keyboardUnit = keyson.units[currentUnit];
 				final shape = if (CopyBuffer.designatedKey != null) CopyBuffer.designatedKey else "1U";
-				// TODO if there is a way to have a saner default legend?
-				final legend = shape;
 				// TODO calculate proper shaper size and offset:
 				var y = placer.y / unit;
 				var x = placer.x / unit;
@@ -364,7 +360,7 @@ class Viewport extends Scene {
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 
-		switch (guiScene.modeSelector.barMode) {
+		switch (uiRoot.activeMode) {
 			case Edit | Unit | Color | Present:
 				// move and select keys
 				if (keycap.border.visible) {
@@ -393,7 +389,7 @@ class Viewport extends Scene {
 	 * Called during key movement (mouse key down)
 	 */
 	function keyMouseMove(info: TouchInfo) {
-		switch (guiScene.modeSelector.barMode) {
+		switch (uiRoot.activeMode) {
 			case Place:
 			default:
 				// there is a special case where the last selected element gets deselected and dragged
@@ -412,7 +408,7 @@ class Viewport extends Scene {
 	 * Called after the drag (touch/press is released)
 	 */
 	function keyMouseUp(info: TouchInfo) {
-		switch (guiScene.modeSelector.barMode) {
+		switch (uiRoot.activeMode) {
 			case Place:
 				placer.visible = true;
 			case Edit | Unit | Color | Present:

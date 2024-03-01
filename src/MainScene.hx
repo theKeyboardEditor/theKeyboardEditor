@@ -1,12 +1,14 @@
 package;
 
+import ceramic.PersistentData;
 import ceramic.Scene;
 import ceramic.KeyBindings;
 import ceramic.KeyCode;
 import haxe.ui.core.Screen;
 
 class MainScene extends Scene {
-	public var gui: UI;
+	public var gui: ui.Index;
+	public var store: PersistentData;
 
 	/*
 	 * Add any assets you want to load here
@@ -38,10 +40,11 @@ class MainScene extends Scene {
 	 */
 	override function create() {
 		// Grab the stored projects
-		var store = new ceramic.PersistentData("keyboard");
+		this.store = new ceramic.PersistentData("keyboard");
 
 		// Initialize global variables
-		this.gui = new UI(this, store);
+		this.gui = new ui.Index();
+		this.gui.mainScene = this;
 
 		// Render keys
 		// TODO abandon this and make welcome screen work eventually
@@ -50,13 +53,13 @@ class MainScene extends Scene {
 
 		// Add stored projects to list
 		for (key in store.keys()) {
-			gui.welcome.findComponent("project-list").addComponent(new ui.Project(key));
+			//gui.welcome.findComponent("project-list").addComponent(new ui.Project(key));
 		}
 
 		// TODO: can we make picking "New" uncover the welcome screen even on a running session?
 		// TODO: inhibit all worksurface actions for the while GUI is displayed
 		Screen.instance.addComponent(gui);
-		Screen.instance.addComponent(gui.overlay);
+		//Screen.instance.addComponent(gui.overlay);
 
 		// KEYBINDINGS!
 		var keyBindings = new KeyBindings();
@@ -75,7 +78,7 @@ class MainScene extends Scene {
 		// gui.workSurface.display.paused = true;
 		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
 			// gui.workSurface.display.paused = !gui.workSurface.display.paused;
-			gui.overlay.hidden = !gui.overlay.hidden;
+			//gui.overlay.hidden = !gui.overlay.hidden;
 		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
@@ -154,6 +157,7 @@ class MainScene extends Scene {
 		container.display = viewport;
 
 		gui.tabs.addComponent(container);
-		viewport.guiScene = gui;
+		gui.tabs.selectedPage = container;
+		viewport.uiRoot = gui;
 	}
 }
