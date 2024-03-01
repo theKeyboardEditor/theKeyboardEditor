@@ -294,6 +294,36 @@ class Viewport extends Scene {
 			this.selectionBox.y = (screen.pointerY - screenY - this.y) / viewScale;
 			this.selectionBox.height = (this.pointerStartY - screen.pointerY) / viewScale;
 		}
+
+		// only during a selection drag: update selected keys (replace selection)
+		if (this.selectionBox.visible == true) {
+			clearSelection(true);
+			final boxX = this.selectionBox.x;
+			final boxY = this.selectionBox.y;
+			final boxWidth = this.selectionBox.width;
+			final boxHeight = this.selectionBox.height;
+
+			for (k in keyson.units[currentUnit].keys) {
+				// calculate position and size of a body:
+				final body = keyBody(k);
+				final keyX = body.x;
+				final keyY = body.y;
+				final keyWidth = body.width;
+				final keyHeight = body.height;
+
+				if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
+					final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+					for (key in keysOnUnit) {
+						if (key.sourceKey == k) {
+							key.select();
+							selectedKeycaps.unshift(key);
+							deselection = false;
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -316,7 +346,7 @@ class Viewport extends Scene {
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
 			case Edit | Unit | Color | Present:
 				// just any click on empty should clear selection of everything
-				// and dump the selection
+				// and dump the selection ((true) means deep clear)
 				clearSelection(true);
 				this.selectionBox.visible = false;
 
@@ -362,19 +392,21 @@ class Viewport extends Scene {
 
 		switch (uiRoot.activeMode) {
 			case Edit | Unit | Color | Present:
+				// show placer only if -1 (non existent?)
+				// placer.visible = selectedKeycaps.length < 0;
+				placer.visible = false;
 				// move and select keys
+				// TODO stop toggling selection and move to shit add/ctrl remove from selection
 				if (keycap.border.visible) {
 					keycap.deselect();
 					selectedKeycaps.remove(keycap);
 					deselection = true;
 				} else {
 					keycap.select();
-					// push to the opposite end of .push();
+					// push to the opposite end than .push();
 					selectedKeycaps.unshift(keycap);
 					deselection = false;
 				}
-				// show placer only if -1 (non existent?)
-				placer.visible = selectedKeycaps.length < 0;
 			default:
 		}
 
@@ -392,7 +424,7 @@ class Viewport extends Scene {
 		switch (uiRoot.activeMode) {
 			case Place:
 			default:
-				// there is a special case where the last selected element gets deselected and dragged
+				// there is a special case where the last selected element gets deselected and then dragged
 				if (selectedKeycaps.length > 0 && !deselection) {
 					final xStep = coggify(keyPosStartX + (screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeycaps[0].x;
 					final yStep = coggify(keyPosStartY + (screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeycaps[0].y;
@@ -412,16 +444,16 @@ class Viewport extends Scene {
 			case Place:
 				placer.visible = true;
 			case Edit | Unit | Color | Present:
-				// Restore placer to default size
+				// If no Placing then restore placer to default size
 				placer.size(unit * viewScale, unit * viewScale);
 				placerMismatchX = 0;
 				placerMismatchY = 0;
 
-				// Actually execute the move of the selection
+				// Actually begin to execute the move of the selection
 				if (selectedKeycaps.length > 0) {
 					var x = (selectedKeycaps[0].x - keyPosStartX) / unit * viewScale;
 					var y = (selectedKeycaps[0].y - keyPosStartY) / unit * viewScale;
-					// only if at least x or y is non zero that didn't result in deselection and we have actual keys to move at all
+					// only try to move if  x and y is not zero and there was no deselection and we have any selected keys to move at all
 					if (x != 0 || y != 0 && !deselection && selectedKeycaps.length > 0) {
 						queue.push(new actions.MoveKeys(this, selectedKeycaps, x, y));
 						// deselect only if single element was just dragged
@@ -442,6 +474,8 @@ class Viewport extends Scene {
 		screen.offPointerMove(keyMouseMove);
 	}
 	public function clearSelection(deep: Bool) {
+		// deep clear clears the selectedKeycaps too
+		// sometimes this is undesirable hence the switch
 		for (i in 0...selectedKeycaps.length)
 			selectedKeycaps[i].deselect();
 		if (deep)
@@ -457,6 +491,14 @@ class Viewport extends Scene {
 			keycap.select();
 		}
 		// the result is stored in selectedKeycaps
+	}
+
+	public function refreshKeycapSet() {
+		clearSelection(true);
+		// refresh from keyson
+		this.remove(keycapSet);
+		keycapSet = parseInKeyboard(keyson);
+		this.add(keycapSet);
 	}
 
 	public function copy() {
@@ -552,31 +594,35 @@ class Viewport extends Scene {
 
 		switch k.shape {
 			case "ISO":
-				width = 1.50 * unit * viewScale - gapX;
-				height = 2.00 * unit * viewScale - gapY;
+				width = 1.50 * this.unit * viewScale - gapX;
+				height = 2.00 * this.unit * viewScale - gapY;
 			case "ISO Inverted":
-				width = 1.50 * unit * viewScale - gapX;
-				height = 2.00 * unit * viewScale - gapY;
+				width = 1.50 * this.unit * viewScale - gapX;
+				height = 2.00 * this.unit * viewScale - gapY;
 			case "BAE":
-				width = 2.25 * unit * viewScale - gapX;
-				height = 2.00 * unit * viewScale - gapY;
+				// special J shaped key offset
+				x -= 0.75 * this.unit;
+				width = 2.25 * this.unit * viewScale - gapX;
+				height = 2.00 * this.unit * viewScale - gapY;
 			case "BAE Inverted":
-				width = 2.25 * unit * viewScale - gapX;
-				height = 2.00 * unit * viewScale - gapY;
+				width = 2.25 * this.unit * viewScale - gapX;
+				height = 2.00 * this.unit * viewScale - gapY;
 			case "XT_2U":
-				width = 2.00 * unit * viewScale - gapX;
-				height = 2.00 * unit * viewScale - gapY;
+				width = 2.00 * this.unit * viewScale - gapX;
+				height = 2.00 * this.unit * viewScale - gapY;
+				// special J shaped key offset
+				x -= 1 * this.unit;
 			case "AEK":
-				width = 1.25 * unit * viewScale - gapX;
-				height = 2.00 * unit * viewScale - gapY;
+				width = 1.25 * this.unit * viewScale - gapX;
+				height = 2.00 * this.unit * viewScale - gapY;
 			default:
 				if (Math.isNaN(Std.parseFloat(k.shape)) == false) {
 					if (k.shape.split(' ').indexOf("Vertical") != -1) {
-						width = unit - gapX;
-						height = unit * Std.parseFloat(k.shape) - gapY;
+						width = this.unit - gapX;
+						height = this.unit * Std.parseFloat(k.shape) - gapY;
 					} else {
-						width = unit * Std.parseFloat(k.shape) - gapX;
-						height = unit - gapY;
+						width = this.unit * Std.parseFloat(k.shape) - gapX;
+						height = this.unit - gapY;
 					}
 				}
 		}

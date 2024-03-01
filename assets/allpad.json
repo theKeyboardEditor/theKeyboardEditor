@@ -9,70 +9,22 @@
 		"colorMatchingProfile": "Generic",
 		"size": 16,
 		"swatches": [
-			{
-				"name": "black",
-				"value": "0xFF000000"
-			},
-			{
-				"name": "white",
-				"value": "0xFFffffff"
-			},
-			{
-				"name": "red",
-				"value": "0xFFff0000"
-			},
-			{
-				"name": "lime",
-				"value": "0xFF00ff00"
-			},
-			{
-				"name": "blue",
-				"value": "0xFF0000ff"
-			},
-			{
-				"name": "yellow",
-				"value": "0xFFffff00"
-			},
-			{
-				"name": "cyan",
-				"value": "0xFF00ffff"
-			},
-			{
-				"name": "magenta",
-				"value": "0xFFff00ff"
-			},
-			{
-				"name": "silver",
-				"value": "0xFF808080"
-			},
-			{
-				"name": "gray",
-				"value": "0xFF404040"
-			},
-			{
-				"name": "maroon",
-				"value": "0xFF800000"
-			},
-			{
-				"name": "olive",
-				"value": "0xFF808000"
-			},
-			{
-				"name": "green",
-				"value": "0xFF008000"
-			},
-			{
-				"name": "purple",
-				"value": "0xFF800080"
-			},
-			{
-				"name": "teal",
-				"value": "0xFF008080"
-			},
-			{
-				"name": "navy",
-				"value": "0xFF000080"
-			}
+			{ "name": "black", "value": "0xFF000000" },
+			{ "name": "white", "value": "0xFFffffff" },
+			{ "name": "red", "value": "0xFFff0000" },
+			{ "name": "lime", "value": "0xFF00ff00" },
+			{ "name": "blue", "value": "0xFF0000ff" },
+			{ "name": "yellow", "value": "0xFFffff00" },
+			{ "name": "cyan", "value": "0xFF00ffff" },
+			{ "name": "magenta", "value": "0xFFff00ff" },
+			{ "name": "silver", "value": "0xFFCCCCCC" },
+			{ "name": "gray", "value": "0xFF404040" },
+			{ "name": "maroon", "value": "0xFF800000" },
+			{ "name": "olive", "value": "0xFF808000" },
+			{ "name": "green", "value": "0xFF008000" },
+			{ "name": "purple", "value": "0xFF800080" },
+			{ "name": "teal", "value": "0xFF008080" },
+			{ "name": "navy", "value": "0xFF000080" }
 		]
 	}],
 	"units": [

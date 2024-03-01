@@ -89,6 +89,11 @@ class MainScene extends Scene {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
 		});
 
+		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_R)], () -> {
+			trace('refresh');
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.refreshKeycapSet();
+		});
+
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
 			trace('select all');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.selectEverything();
