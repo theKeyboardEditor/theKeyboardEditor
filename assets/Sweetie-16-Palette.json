@@ -6,8 +6,8 @@
 	"palettes": [{
 		"name": "sweetie-16",
 		"url": "https://lospec.com/palette-list/sweetie-16",
-		"colorMatchingProfile": "generic",
-		"size": "16",
+		"colorMatchingProfile": "Generic",
+		"size": 16,
 		"swatches": [
 			{"name": "black", "value": "0xFF1A1C2C"},
 			{"name": "violet", "value": "0xFF5D275D"},

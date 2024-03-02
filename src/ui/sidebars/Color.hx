@@ -21,8 +21,10 @@ class Color extends VBox {
 
 	public function new(?viewport: Viewport) {
 		super();
+		// FIXME this is always null, why?
 		if (viewport != null) {
 			this.viewport = viewport;
+			trace('new: ',viewport);
 		}
 	}
 
@@ -31,21 +33,26 @@ class Color extends VBox {
 		palettesList.dataSource.add("Import from JSON");
 		for (palette in viewport.keyson?.palettes) {
 			addPalette(palette);
-			trace(palette);
 		}
 
 		// Grab default colors
-		final defaultBodyColor = viewport.keyson?.units[viewport.currentUnit].defaults.keyColor;
-		final defaultLegendColor = viewport.keyson?.units[viewport.currentUnit].defaults.legendColor;
+		final defaultBodyColor = viewport.keyson?.units[viewport.currentUnit].defaults?.keyColor;
+		final defaultLegendColor = viewport.keyson?.units[viewport.currentUnit].defaults?.legendColor;
 
 		// Set the properties of the preview keycap
 		preview.legendColor = Std.parseInt(defaultLegendColor);
 		preview.bodyColor = Std.parseInt(defaultBodyColor);
-		preview.tooltip = 'Click for default colors';
+		preview.tooltip = 'Click to apply default colors';
+		// FIXME why does this work here and no up there in new() ?
+		if (viewport != null) {
+			this.viewport = viewport;
+			trace('set: ',viewport);
+		}
 
 		return viewport;
 	}
 
+	// FIXME why does the list douplicate if no new palette is loaded?
 	inline function addPalette(palette: keyson.Keyson.Palette) {
 		final ds = palettesList.dataSource;
 		ds.insert(ds.size - 1, palette.name);

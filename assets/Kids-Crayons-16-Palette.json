@@ -7,7 +7,7 @@
 		"name": "Kids Crayons 16",
 		"url": "https://some.site.org",
 		"colorMatchingProfile": "Generic",
-		"size": "16",
+		"size": 16,
 		"swatches": [
 			{"name": "black", "value": "0xFF000000" },
 			{"name": "white", "value": "0xFFffffff" },

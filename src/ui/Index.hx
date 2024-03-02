@@ -49,6 +49,7 @@ class Index extends VBox {
 	@:bind(tabs, UIEvent.CHANGE)
 	function onTabChange(_) {
 		colorSidebar.viewport = (cast tabs.selectedPage : ui.ViewportContainer).display;
+		trace('cast: ',colorSidebar.viewport);
 	}
 
 	@:bind(modeSelector.modes, UIEvent.CHANGE)
@@ -59,7 +60,7 @@ class Index extends VBox {
 
 	@:bind(modeSelector.picker, UIEvent.CHANGE)
 	function pickerEvents(event: UIEvent) {
-		switch (event.relatedComponent.id) {                               
+		switch (event.relatedComponent.id) {
 			case "new":
 				final dialog = new ui.dialogs.NewNameDialog();
 				dialog.onDialogClosed = function(_) {
