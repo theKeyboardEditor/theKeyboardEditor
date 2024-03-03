@@ -25,6 +25,4 @@ import haxe.ui.containers.HBox;
 	</box>
 </hbox>
 ')
-class Status extends HBox {
-	
-}
+class Status extends HBox {}

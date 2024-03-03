@@ -323,7 +323,6 @@ class Viewport extends Scene {
 				}
 			}
 		}
-
 	}
 
 	/**

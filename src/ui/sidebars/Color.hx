@@ -24,7 +24,7 @@ class Color extends VBox {
 		// FIXME this is always null, why?
 		if (viewport != null) {
 			this.viewport = viewport;
-			trace('new: ',viewport);
+			trace('new: ', viewport);
 		}
 	}
 
@@ -46,7 +46,7 @@ class Color extends VBox {
 		// FIXME why does this work here and no up there in new() ?
 		if (viewport != null) {
 			this.viewport = viewport;
-			trace('set: ',viewport);
+			trace('set: ', viewport);
 		}
 
 		return viewport;
@@ -54,9 +54,12 @@ class Color extends VBox {
 
 	// FIXME why does the list douplicate if no new palette is loaded?
 	inline function addPalette(palette: keyson.Keyson.Palette) {
+		trace('columns: ${((palette.swatches.length >> 7 & 1) * 4) + 4}');
 		final ds = palettesList.dataSource;
 		ds.insert(ds.size - 1, palette.name);
+		// at 128 (== 2 ^ 7) colors we decrease the swatch size:
 		palettesStack.addComponent(new PaletteColorView(palette, viewport));
+		//trace('columns: 4');
 	}
 
 	@:bind(palettesList, UIEvent.CHANGE)
