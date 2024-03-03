@@ -31,6 +31,9 @@
             "name": "fonts/Roboto-Regular.png"
         },
         {
+            "name": "FREETONE-Palette.json"
+        },
+        {
             "name": "fxaa.frag"
         },
         {
