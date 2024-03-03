@@ -60,18 +60,18 @@ class Color extends VBox {
 		// at 128 (== 2 ^ 7) colors we decrease the swatch size:
 		if (palette.swatches.length < 64) {
 			palettesStack.addComponent(new PaletteColorView4(palette, viewport));
-			trace('columns: 4');
+			//trace('columns: 4');
 		} else if (palette.swatches.length < 160) {
 			palettesStack.addComponent(new PaletteColorView6(palette, viewport));
-			trace('columns: 6');
+			//trace('columns: 6');
 		} else if (palette.swatches.length < 320) {
 			palettesStack.addComponent(new PaletteColorView8(palette, viewport));
-			trace('columns: 8');
+			//trace('columns: 8');
 		} else if (palette.swatches.length < 640) {
 			palettesStack.addComponent(new PaletteColorView12(palette, viewport));
 		} else {
 			palettesStack.addComponent(new PaletteColorView16(palette, viewport));
-			trace('columns: 17');
+			//trace('columns: 17');
 		}
 	}
 
