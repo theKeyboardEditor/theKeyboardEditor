@@ -48,8 +48,8 @@ class Index extends VBox {
 
 	@:bind(tabs, UIEvent.CHANGE)
 	function onTabChange(_) {
-		colorSidebar.viewport = (cast tabs.selectedPage : ui.ViewportContainer).display;
-		trace('cast: ',colorSidebar.viewport);
+		colorSidebar.viewport = (cast tabs.selectedPage: ui.ViewportContainer).display;
+		trace('cast: ', colorSidebar.viewport);
 	}
 
 	@:bind(modeSelector.modes, UIEvent.CHANGE)
@@ -93,7 +93,7 @@ class Index extends VBox {
 					}
 					dialog.showDialog();
 				});
-				// TODO about and help
+			// TODO about and help
 			default:
 				StatusBar.error("Unimplemented action");
 		}

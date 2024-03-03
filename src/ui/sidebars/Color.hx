@@ -24,7 +24,7 @@ class Color extends VBox {
 		// FIXME this is always null, why?
 		if (viewport != null) {
 			this.viewport = viewport;
-			trace('new: ',viewport);
+			trace('new: ', viewport);
 		}
 	}
 
@@ -46,7 +46,7 @@ class Color extends VBox {
 		// FIXME why does this work here and no up there in new() ?
 		if (viewport != null) {
 			this.viewport = viewport;
-			trace('set: ',viewport);
+			trace('set: ', viewport);
 		}
 
 		return viewport;
