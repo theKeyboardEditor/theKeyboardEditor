@@ -54,9 +54,15 @@ class Color extends VBox {
 
 	// FIXME why does the list douplicate if no new palette is loaded?
 	inline function addPalette(palette: keyson.Keyson.Palette) {
+		trace('columns: ${((palette.swatches.length >> 7 & 1) * 4) + 4}');
 		final ds = palettesList.dataSource;
 		ds.insert(ds.size - 1, palette.name);
-		palettesStack.addComponent(new PaletteColorView(palette, viewport));
+		// at 128 (== 2 ^ 7) colors we decrease the swatch size:
+		if (((palette.swatches.length >> 7 & 1) * 4) > 0) {
+			palettesStack.addComponent(new PaletteColorView8(palette, viewport));
+		} else {
+			palettesStack.addComponent(new PaletteColorView4(palette, viewport));
+		}
 	}
 
 	@:bind(palettesList, UIEvent.CHANGE)

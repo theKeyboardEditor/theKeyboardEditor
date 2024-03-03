@@ -3,6 +3,7 @@ package ui;
 import haxe.ui.components.Button;
 import haxe.ui.containers.ScrollView;
 
+//TODO can we make this section be parsed depending on the palette.swatches.length?
 @:xml('
 <scrollview width="100%" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
 	<vbox width="100%" horizontalAlign="center" verticalAlign="center">
@@ -10,23 +11,17 @@ import haxe.ui.containers.ScrollView;
 	</vbox>
 </scrollview>
 ')
-class PaletteColorView extends ScrollView {
+class PaletteColorView4 extends ScrollView {
 	public function new(palette: keyson.Keyson.Palette, ?viewport: viewport.Viewport) {
 		super();
 
 		// TODO find a way to make this layoutColumns
-		trace(Reflect.fields(colors));
-		trace('columns: ${((palette.swatches.length >> 7 & 1) * 4) + 4}');
 		//buttonbar.layoutColumns = palette.swatches.length << 5 & 0x0F;
 		for (color in palette.swatches ?? []) {
 			var button = new Button();
 			button.id = color.name;
 			button.tooltip = color.name;
-			if (palette.swatches.length > 127 ) {
-				button.width = button.height = 128 / 8;
-			} else {
-				button.width = button.height = 128 / 4;
-			}
+			button.width = button.height = 32;
 			button.styleString = 'background-color: #${color.value.substring(4)};';
 
 			if (viewport != null) {
