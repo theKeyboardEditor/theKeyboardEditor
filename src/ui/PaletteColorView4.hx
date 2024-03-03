@@ -23,7 +23,6 @@ class PaletteColorView4 extends ScrollView {
 			button.tooltip = color.name;
 			button.width = button.height = 32;
 			button.styleString = 'background-color: #${color.value.substring(4)};';
-
 			if (viewport != null) {
 				button.onClick = e -> {
 					final value = palette.fromName(button.id).value;
@@ -34,7 +33,6 @@ class PaletteColorView4 extends ScrollView {
 					}
 				};
 			}
-
 			colors.addComponent(button);
 		}
 	}

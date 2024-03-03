@@ -58,10 +58,16 @@ class Color extends VBox {
 		final ds = palettesList.dataSource;
 		ds.insert(ds.size - 1, palette.name);
 		// at 128 (== 2 ^ 7) colors we decrease the swatch size:
-		if (((palette.swatches.length >> 7 & 1) * 4) > 0) {
-			palettesStack.addComponent(new PaletteColorView8(palette, viewport));
-		} else {
+		if (palette.swatches.length < 64) {
 			palettesStack.addComponent(new PaletteColorView4(palette, viewport));
+		} else if (palette.swatches.length < 160) {
+			palettesStack.addComponent(new PaletteColorView6(palette, viewport));
+		} else if (palette.swatches.length < 320) {
+			palettesStack.addComponent(new PaletteColorView8(palette, viewport));
+		} else if (palette.swatches.length < 640) {
+			palettesStack.addComponent(new PaletteColorView12(palette, viewport));
+		} else {
+			palettesStack.addComponent(new PaletteColorView16(palette, viewport));
 		}
 	}
 
