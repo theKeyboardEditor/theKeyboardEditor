@@ -12,16 +12,30 @@ import haxe.ui.containers.ScrollView;
 </scrollview>
 ')
 class PaletteColorView extends ScrollView {
+	var columns(default, set): Int = 4;
+
 	public function new(palette: keyson.Keyson.Palette, ?viewport: viewport.Viewport) {
 		super();
 
-		// TODO find a way to make this layoutColumns
-		// buttonbar.layoutColumns = palette.swatches.length << 5 & 0x0F;
+		// Calculate the amount of columns
+		// TODO: Don't hard code this
+		this.columns = if (palette.swatches.length < 64) {
+			4;
+		} else if (palette.swatches.length < 160) {
+			6;
+		} else if (palette.swatches.length < 320) {
+			8;
+		} else if (palette.swatches.length < 640) {
+			12;
+		} else {
+			16;
+		}
+
 		for (color in palette.swatches ?? []) {
 			var button = new Button();
 			button.id = color.name;
 			button.tooltip = color.name;
-			button.width = button.height = 32;
+			button.width = button.height = 128 / columns;
 			button.styleString = 'background-color: #${color.value.substring(4)};';
 			if (viewport != null) {
 				button.onClick = e -> {
@@ -35,5 +49,11 @@ class PaletteColorView extends ScrollView {
 			}
 			colors.addComponent(button);
 		}
+	}
+
+	function set_columns(columns: Int) {
+		this.columns = columns;
+		(cast colors.layout : haxe.ui.layouts.VerticalGridLayout).columns = columns;
+		return columns;
 	}
 }
