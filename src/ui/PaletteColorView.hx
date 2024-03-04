@@ -18,18 +18,11 @@ class PaletteColorView extends ScrollView {
 		super();
 
 		// Calculate the amount of columns
-		// TODO: Don't hard code this
-		this.columns = if (palette.swatches.length < 64) {
-			4;
-		} else if (palette.swatches.length < 160) {
-			6;
-		} else if (palette.swatches.length < 320) {
-			8;
-		} else if (palette.swatches.length < 640) {
-			12;
-		} else {
-			16;
-		}
+		// TODO: either >> 7 ) << 1) and >> 6 alone works, but which looks better?
+		this.columns = Std.int(Math.min(16, ((palette.swatches.length >> 6) << 0 ) + 4));
+		// above 16 columns it is really questionable if scrolling or hiting the right one is more tedious
+		// we hardcode 16 as the sanity limt here
+		trace ('len: ${palette.swatches.length}/columns: ${columns}');
 
 		for (color in palette.swatches ?? []) {
 			var button = new Button();

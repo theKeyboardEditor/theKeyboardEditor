@@ -30,10 +30,10 @@ class Color extends VBox {
 		this.viewport = viewport;
 
 		// Insert all palettes from the current keyson in the dropdown
-		palettesList.dataSource.add("Import from JSON");
 		for (palette in viewport.keyson?.palettes) {
 			addPalette(palette);
 		}
+		palettesList.dataSource.add("Import from JSON");
 
 		// Grab default colors
 		final defaultBodyColor = viewport.keyson?.units[viewport.currentUnit].defaults?.keyColor;
@@ -43,6 +43,17 @@ class Color extends VBox {
 		preview.legendColor = Std.parseInt(defaultLegendColor);
 		preview.bodyColor = Std.parseInt(defaultBodyColor);
 		preview.tooltip = 'Click to apply default colors';
+		if (viewport != null) {
+			preview.onClick = e -> {
+				// TODO: work only on LMB
+				if (e.shiftKey) {
+					viewport.colorSelectedKeyLegends(Std.parseInt(viewport.keyson?.units[viewport.currentUnit].defaults?.legendColor));
+				} else {
+					viewport.colorSelectedKeys(Std.parseInt(viewport.keyson?.units[viewport.currentUnit].defaults?.keyColor));
+				}
+			};
+		}
+
 
 		return viewport;
 	}
