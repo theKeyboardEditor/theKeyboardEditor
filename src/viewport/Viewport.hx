@@ -177,8 +177,8 @@ class Viewport extends Scene {
 		switch (ui.Index.activeMode) {
 			case Place:
 				this.selectionBox.visible = false;
-				placerMismatchX = 0;
-				placerMismatchY = 0;
+				//placerMismatchX = 0;
+				//placerMismatchY = 0;
 				placer.visible = true;
 				final shape = if (CopyBuffer.designatedKey != null) CopyBuffer.designatedKey else "1U";
 				gapX = Std.int((keyson.units[0].keyStep[Axis.X]

@@ -162,11 +162,11 @@ class KeyMaker {
 		var legendOffsetY: Float;
 
 		for (l in k.legends) {
-			var defaultLegendColor = Std.parseInt(l.color) ?? Std.parseInt(keyboard.defaults.legendColor) ?? Color.GRAY;
+			var currentLegendColor = Std.parseInt(l.color) ?? Std.parseInt(keyboard.defaults.legendColor) ?? Color.GRAY;
 
 			var symbol = new LegendRenderer();
 			symbol.content = l.legend;
-			symbol.color = defaultLegendColor;
+			symbol.color = currentLegendColor;
 
 			if (l.position != null) {
 				legendOffsetX = l.position[Axis.X] + keyboard.defaults.legendPosition[Axis.X];
@@ -175,13 +175,12 @@ class KeyMaker {
 				legendOffsetX = keyboard.defaults.legendPosition[Axis.X];
 				legendOffsetY = keyboard.defaults.legendPosition[Axis.Y];
 			}
-
-			if (l.legendSize != 0) {
+			// if omitted the size equals to null, but we ignore zero too
+			if (l.legendSize != 0 && l.legendSize != null) {
 				symbol.fontSize = l.legendSize;
 			} else {
 				symbol.fontSize = keyboard.keyboardFontSize;
 			}
-
 			symbol.pos(legendOffsetX + symbol.topX, legendOffsetY + symbol.topY);
 			symbol.depth = 50;
 

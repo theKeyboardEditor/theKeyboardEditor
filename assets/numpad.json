@@ -68,7 +68,8 @@
           "shape": "1U",
           "legends": [
             {
-              "legend": "/"
+              "legend": "/",
+              "legendSize": 32.0
             }
           ]
         },
@@ -100,13 +101,13 @@
           "shape": "1U",
           "legends": [
             {
-              "legend": "7"
-            },
-            {
               "legend": "Home",
               "color": "0xFFCCCCCC",
               "position": [5.12, 40],
               "legendSize": 24.0
+            },
+            {
+              "legend": "7"
             }
           ]
         },
