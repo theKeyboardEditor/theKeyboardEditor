@@ -19,19 +19,10 @@
             "name": "blur.vert"
         },
         {
-            "name": "ceramic.png"
-        },
-        {
-            "name": "ceramic@2x.png"
-        },
-        {
             "name": "fonts/Roboto-Regular.fnt"
         },
         {
             "name": "fonts/Roboto-Regular.png"
-        },
-        {
-            "name": "FREETONE-Palette.json"
         },
         {
             "name": "fxaa.frag"
@@ -91,9 +82,6 @@
             "name": "innerLight.frag"
         },
         {
-            "name": "Kids-Crayons-16-Palette.json"
-        },
-        {
             "name": "msdf.frag"
         },
         {
@@ -109,13 +97,22 @@
             "name": "outline.vert"
         },
         {
+            "name": "palettes/FREETONE-Palette.json"
+        },
+        {
+            "name": "palettes/Kids-Crayons-16-Palette.json"
+        },
+        {
+            "name": "palettes/RAL-Palette.json"
+        },
+        {
+            "name": "palettes/Sweetie-16-Palette.json"
+        },
+        {
             "name": "pixelArt.frag"
         },
         {
             "name": "pixelArt.vert"
-        },
-        {
-            "name": "RAL-Palette.json"
         },
         {
             "name": "RobotoMedium.fnt"
@@ -128,9 +125,6 @@
         },
         {
             "name": "svg/EditIcons.svg"
-        },
-        {
-            "name": "Sweetie-16-Palette.json"
         },
         {
             "name": "textured.frag"
