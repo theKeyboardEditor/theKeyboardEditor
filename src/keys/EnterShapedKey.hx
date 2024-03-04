@@ -218,61 +218,51 @@ class EnterShapedKey extends KeyRenderer {
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[pointPairIndex]));
 						points.push(posY + offsetT + offsetB + localRadius * (1 - sine[pointPairIndex]));
-						// trace ('7');
 					}
 				case "N":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localWidth + localRadius * (1 - cosine[segments - pointPairIndex]));
 						points.push(posY + offsetT + offsetB + localHeight + localRadius * (1 - sine[segments - pointPairIndex]));
-						// trace ('N');
 					}
 				case "Z":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[pointPairIndex]));
 						points.push(posY + offsetT + offsetB + localHeight + localRadius * (1 - sine[pointPairIndex]));
-						// trace ('Z');
 					}
 				case "F":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[segments - pointPairIndex] - 1));
 						points.push(posY + offsetT + offsetB + localRadius * (1 - sine[segments - pointPairIndex]));
-						// trace ('F');
 					}
 				case "Y":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[segments - pointPairIndex] - 1));
 						points.push(posY + offsetT + offsetB + localHeight + localRadius * (1 - sine[segments - pointPairIndex]));
-						// trace ('Y');
 					}
 				case "I":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localRadius * (cosine[pointPairIndex] - 1));
 						points.push(posY + offsetT + offsetB + localHeight + localRadius * (1 - sine[pointPairIndex]));
-						// trace ('I');
 					}
 				case "L":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localWidth + localRadius * (cosine[pointPairIndex] - 1));
 						points.push(posY + offsetT + offsetB + localHeight + localRadius * (sine[pointPairIndex] - 1));
-						// trace ('L');
 					}
 				case "V":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localRadius * (cosine[segments - pointPairIndex] - 1));
 						points.push(posY + offsetT + offsetB + localHeight + localRadius * (sine[segments - pointPairIndex] - 1));
-						// trace ('V');
 					}
 				case "J":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localRadius * (1 - cosine[segments - pointPairIndex]));
 						points.push(posY + offsetT + offsetB + localHeight + localRadius * (sine[segments - pointPairIndex] - 1));
-						// trace ('J');
 					}
 				case "D":
 					for (pointPairIndex in 0...segments) {
 						points.push(posX + offsetL + offsetR + localWidth + localRadius * (1 - cosine[pointPairIndex]));
 						points.push(posY + offsetT + offsetB + localHeight + localRadius * (sine[pointPairIndex] - 1));
-						// trace ('D');
 					}
 			}
 		}

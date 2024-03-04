@@ -1,6 +1,7 @@
 package ui;
 
 import haxe.ui.containers.VerticalButtonBar;
+import haxe.ui.events.UIEvent;
 
 @xml('
 <vbox style="spacing: 0">
@@ -27,4 +28,46 @@ import haxe.ui.containers.VerticalButtonBar;
 	</button-bar>
 </vbox>
 ')
-class ModeSelector extends VerticalButtonBar {}
+class ModeSelector extends VerticalButtonBar {
+	public var mainScene: MainScene;
+
+	@:bind(picker, UIEvent.CHANGE)
+	function pickerEvents(event: UIEvent) {
+		switch (event.relatedComponent.id) {
+			case "new":
+				final dialog = new ui.dialogs.NewNameDialog();
+				dialog.onDialogClosed = function(_) {
+					final name = dialog.name.value;
+					if (StringTools.trim(name) == "")
+						return;
+					mainScene.openViewport(new keyson.Keyson(name));
+				}
+				dialog.showDialog();
+			case "open":
+				final dialog = new FileDialog();
+				dialog.openJson("Keyson File");
+				dialog.onFileLoaded(mainScene, (body: String) -> {
+					mainScene.openViewport(keyson.Keyson.parse(body));
+				});
+			case "save":
+				mainScene.save((cast mainScene.gui.tabs.selectedPage: ui.ViewportContainer).display.keyson, mainScene.store);
+			case "download":
+				mainScene.download((cast mainScene.gui.tabs.selectedPage: ui.ViewportContainer).display.keyson);
+			case "import":
+				final dialog = new FileDialog();
+				dialog.openJson("KLE Json File");
+				dialog.onFileLoaded(mainScene, (body: String) -> {
+					var dialog = new ui.dialogs.ImportNameDialog();
+					dialog.onDialogClosed = function(_) {
+						final name = dialog.name.value;
+						if (StringTools.trim(name) == "")
+							return;
+						mainScene.openViewport(keyson.KLE.toKeyson(name, body));
+					}
+					dialog.showDialog();
+				});
+			default:
+				StatusBar.error("Unimplemented action");
+		}
+	}
+}
