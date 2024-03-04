@@ -21,10 +21,8 @@ class Color extends VBox {
 
 	public function new(?viewport: Viewport) {
 		super();
-		// FIXME this is always null, why?
 		if (viewport != null) {
 			this.viewport = viewport;
-			trace('new: ', viewport);
 		}
 	}
 

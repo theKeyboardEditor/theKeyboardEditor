@@ -90,34 +90,28 @@ class MainScene extends Scene {
 		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_R)], () -> {
-			trace('refresh');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.refreshKeycapSet();
 		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
-			trace('select all');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.selectEverything();
 		});
 		/*
 			//TODO make shift+Ctrl+A bound here:
 			keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
-				trace('deselect all');
 				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.clearSelection();
 			});
 		 */
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_C)], () -> {
-			trace('copy');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.copy();
 		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_X)], () -> {
-			trace('cut');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.cut();
 		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_V)], () -> {
-			trace('paste');
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.paste();
 		});
 		// TODO fix shift key press breaking this calls
@@ -167,6 +161,7 @@ class MainScene extends Scene {
 		var sidebars = new ui.SidebarCollection();
 		sidebars.colorSidebar.viewport = viewport;
 		sidebars.editSidebar.viewport = viewport;
+		sidebars.modeSelector.mainScene = this;
 		gui.sidebarsStack.addComponent(sidebars);
 	}
 }
