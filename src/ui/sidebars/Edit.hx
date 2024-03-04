@@ -1,7 +1,6 @@
 package ui.sidebars;
 
 import haxe.ui.containers.VBox;
-import haxe.ui.containers.TabView;
 import haxe.ui.events.MouseEvent;
 
 @xml('
@@ -26,30 +25,30 @@ import haxe.ui.events.MouseEvent;
 </vbox>
 ')
 class Edit extends VBox {
-	public var tabs: TabView;
+	public var viewport: viewport.Viewport;
 
 	@:bind(editUndo, MouseEvent.CLICK)
 	function undo(_) {
-		(cast tabs.selectedPage: ui.ViewportContainer).display.queue.undo();
+		viewport.queue.undo();
 	}
 
 	@:bind(editRedo, MouseEvent.CLICK)
 	function redo(_) {
-		(cast tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
+		viewport.queue.redo();
 	}
 
 	@:bind(editCopy, MouseEvent.CLICK)
 	function copy(_) {
-		(cast tabs.selectedPage: ui.ViewportContainer).display.copy();
+		viewport.copy();
 	}
 
 	@:bind(editCut, MouseEvent.CLICK)
 	function cut(_) {
-		(cast tabs.selectedPage: ui.ViewportContainer).display.cut();
+		viewport.cut();
 	}
 
 	@:bind(editPaste, MouseEvent.CLICK)
 	function paste(_) {
-		(cast tabs.selectedPage: ui.ViewportContainer).display.paste();
+		viewport.paste();
 	}
 }

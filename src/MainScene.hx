@@ -163,6 +163,10 @@ class MainScene extends Scene {
 
 		gui.tabs.addComponent(container);
 		gui.tabs.selectedPage = container;
-		viewport.uiRoot = gui;
+
+		var sidebars = new ui.SidebarCollection();
+		sidebars.colorSidebar.viewport = viewport;
+		sidebars.editSidebar.viewport = viewport;
+		gui.sidebarsStack.addComponent(sidebars);
 	}
 }

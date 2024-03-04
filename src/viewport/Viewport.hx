@@ -14,7 +14,6 @@ class Viewport extends Scene {
 	public var screenX: Float = 0; // position on screen
 	public var screenY: Float = 0;
 
-	public var uiRoot: ui.Index;
 	public final queue = new ActionQueue();
 
 	/**
@@ -175,7 +174,7 @@ class Viewport extends Scene {
 	 * Runs every frame, used to position the placer
 	 */
 	function placerUpdate() {
-		switch (uiRoot.activeMode) {
+		switch (ui.Index.activeMode) {
 			case Place:
 				this.selectionBox.visible = false;
 				placerMismatchX = 0;
@@ -330,7 +329,7 @@ class Viewport extends Scene {
 	 */
 	function viewportMouseUp(info: TouchInfo) {
 		this.selectionBox.visible = false;
-		switch (uiRoot.activeMode) {
+		switch (ui.Index.activeMode) {
 			case Place:
 				// place action
 				// TODO determine actually selected keyboard unit:
@@ -389,7 +388,7 @@ class Viewport extends Scene {
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 
-		switch (uiRoot.activeMode) {
+		switch (ui.Index.activeMode) {
 			case Edit | Unit | Color | Present:
 				// show placer only if -1 (non existent?)
 				// placer.visible = selectedKeycaps.length < 0;
@@ -420,7 +419,7 @@ class Viewport extends Scene {
 	 * Called during key movement (mouse key down)
 	 */
 	function keyMouseMove(info: TouchInfo) {
-		switch (uiRoot.activeMode) {
+		switch (ui.Index.activeMode) {
 			case Place:
 			default:
 				// there is a special case where the last selected element gets deselected and then dragged
@@ -439,7 +438,7 @@ class Viewport extends Scene {
 	 * Called after the drag (touch/press is released)
 	 */
 	function keyMouseUp(info: TouchInfo) {
-		switch (uiRoot.activeMode) {
+		switch (ui.Index.activeMode) {
 			case Place:
 				placer.visible = true;
 			case Edit | Unit | Color | Present:

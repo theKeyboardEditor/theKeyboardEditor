@@ -29,6 +29,8 @@ class Color extends VBox {
 	}
 
 	function set_viewport(viewport: Viewport) {
+		this.viewport = viewport;
+
 		// Insert all palettes from the current keyson in the dropdown
 		palettesList.dataSource.add("Import from JSON");
 		for (palette in viewport.keyson?.palettes) {
@@ -43,23 +45,14 @@ class Color extends VBox {
 		preview.legendColor = Std.parseInt(defaultLegendColor);
 		preview.bodyColor = Std.parseInt(defaultBodyColor);
 		preview.tooltip = 'Click to apply default colors';
-		// FIXME why does this work here and no up there in new() ?
-		if (viewport != null) {
-			this.viewport = viewport;
-			trace('set: ', viewport);
-		}
 
 		return viewport;
 	}
 
-	// FIXME why does the list douplicate if no new palette is loaded?
 	inline function addPalette(palette: keyson.Keyson.Palette) {
-		trace('columns: ${((palette.swatches.length >> 7 & 1) * 4) + 4}');
 		final ds = palettesList.dataSource;
 		ds.insert(ds.size - 1, palette.name);
-		// at 128 (== 2 ^ 7) colors we decrease the swatch size:
 		palettesStack.addComponent(new PaletteColorView(palette, viewport));
-		//trace('columns: 4');
 	}
 
 	@:bind(palettesList, UIEvent.CHANGE)
