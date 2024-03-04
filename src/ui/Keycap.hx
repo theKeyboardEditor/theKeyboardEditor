@@ -9,7 +9,7 @@ class Keycap extends Box {
 	public var legendColor(default, set): Null<Color> = 0x000000;
 	public var key: Null<keyson.Keyson.Key>;
 
-	var keyboard:  keyson.Keyson.Keyboard;
+	var keyboard: keyson.Keyson.Keyboard;
 	var keycap: KeyRenderer;
 
 	public function new() {
@@ -41,5 +41,4 @@ class Keycap extends Box {
 		this.keycap.legends[0].color = 0xff000000 + color;
 		return this.color;
 	}
-
 }

@@ -62,7 +62,6 @@ class Place extends VBox {
 			keys.addComponent(button);
 		}
 		preview.tooltip = 'Click to change keycaps (WIP)';
-
 	}
 
 	function set_viewport(viewport: Viewport) {
@@ -79,5 +78,4 @@ class Place extends VBox {
 		CopyBuffer.designatedKey = keyTypes[keys.selectedButton.id];
 		StatusBar.inform('Selected ${CopyBuffer.designatedKey}');
 	}
-
 }
