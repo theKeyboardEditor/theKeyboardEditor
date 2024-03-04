@@ -19,10 +19,10 @@ class PaletteColorView extends ScrollView {
 
 		// Calculate the amount of columns
 		// TODO: either >> 7 ) << 1) and >> 6 alone works, but which looks better?
-		this.columns = Std.int(Math.min(16, ((palette.swatches.length >> 6) << 0 ) + 4));
+		this.columns = Std.int(Math.min(16, ((palette.swatches.length >> 6) << 0) + 4));
 		// above 16 columns it is really questionable if scrolling or hiting the right one is more tedious
 		// we hardcode 16 as the sanity limt here
-		trace ('len: ${palette.swatches.length}/columns: ${columns}');
+		trace('len: ${palette.swatches.length}/columns: ${columns}');
 
 		for (color in palette.swatches ?? []) {
 			var button = new Button();
@@ -46,7 +46,7 @@ class PaletteColorView extends ScrollView {
 
 	function set_columns(columns: Int) {
 		this.columns = columns;
-		(cast colors.layout : haxe.ui.layouts.VerticalGridLayout).columns = columns;
+		(cast colors.layout: haxe.ui.layouts.VerticalGridLayout).columns = columns;
 		return columns;
 	}
 }

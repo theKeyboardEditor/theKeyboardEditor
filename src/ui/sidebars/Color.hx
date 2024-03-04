@@ -54,7 +54,6 @@ class Color extends VBox {
 			};
 		}
 
-
 		return viewport;
 	}
 
