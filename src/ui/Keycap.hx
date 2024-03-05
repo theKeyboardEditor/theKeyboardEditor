@@ -7,13 +7,15 @@ import haxe.ui.events.UIEvent;
 class Keycap extends Box {
 	public var bodyColor(default, set): Null<Color> = 0xFFFFFF;
 	public var legendColor(default, set): Null<Color> = 0x000000;
+	public var key: Null<keyson.Keyson.Key>;
 
+	var keyboard: keyson.Keyson.Keyboard;
 	var keycap: KeyRenderer;
 
 	public function new() {
 		super();
-		final key = new keyson.Keyson.Key(0, "1U", [0, 0], "Palette");
-		final keyboard = new keyson.Keyson.Keyboard();
+		key = new keyson.Keyson.Key(0, "1U", [0, 0], "Palette");
+		keyboard = new keyson.Keyson.Keyboard();
 
 		// TODO: Change keycap size on resize
 		this.keycap = KeyMaker.createKey(keyboard, key, 125, 1, 1, bodyColor + 0xff000000);

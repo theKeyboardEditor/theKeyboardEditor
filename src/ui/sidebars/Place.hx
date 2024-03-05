@@ -1,5 +1,6 @@
 package ui.sidebars;
 
+import viewport.Viewport;
 import haxe.ui.containers.VBox;
 import haxe.ui.components.Button;
 import haxe.ui.events.UIEvent;
@@ -17,15 +18,14 @@ import haxe.ui.events.UIEvent;
 	<label text="Selected:" />
 	<hbox height="20%" horizontalAlign="center">
 		<box style="background-color: #282828" width="128px" height="128px" horizontalAlign="center" verticalAlign="bottom">
-			<button text="Preview" width="100%" height="100%" horizontalAlign="center" verticalAlign="center" tooltip="Click to change keycap style (WIP)"/>
+			<keycap id="preview" width="100%" height="100%" bodyColor="#00ff00" />
 		</box>
 	</hbox>
 </vbox>
 ')
 class Place extends VBox {
 	// HaxeUI ID => Keyson Shape
-	// TODO make shape and labels different one day
-	static final keyTypes: Map<String, String> = [
+	var keyTypes: Map<String, String> = [
 		"oneU" => "1U",
 		"oneTwentyFiveU" => "1.25U",
 		"oneFiveU" => "1.5U",
@@ -44,16 +44,33 @@ class Place extends VBox {
 		"XT2U" => "XT_2U",
 	];
 
-	override public function new() {
+	public var viewport(default, set): Viewport;
+
+	public function new(?viewport: Viewport) {
 		super();
+		if (viewport != null) {
+			this.viewport = viewport;
+		}
+
+		// TODO make shape and labels different one day
 		for (key => value in keyTypes) {
 			var button = new Button();
 			button.id = key;
 			button.text = value;
 			button.width = button.height = 64;
-			tooltip = 'select $value sized key for placing.';
+			button.tooltip = 'select $value sized key for placing.';
 			keys.addComponent(button);
 		}
+		preview.tooltip = 'Click to change keycaps (WIP)';
+	}
+
+	function set_viewport(viewport: Viewport) {
+		this.viewport = viewport;
+
+		// TODO can't make this to work
+		preview.bodyColor = "#FCFCFC";
+
+		return viewport;
 	}
 
 	@:bind(keys, UIEvent.CHANGE)
