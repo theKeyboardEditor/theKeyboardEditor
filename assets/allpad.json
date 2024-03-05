@@ -77,7 +77,7 @@
 					"legends": [
 						{
 							"legend": "2U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-8388608",
 							"position": null
 						}
@@ -101,7 +101,7 @@
 					"legends": [
 						{
 							"legend": "XT 2U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": [
 								5.12,
@@ -128,7 +128,7 @@
 					"legends": [
 						{
 							"legend": "BAE \nInverted",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-8388608",
 							"position": [
 								5.12,
@@ -155,7 +155,7 @@
 					"legends": [
 						{
 							"legend": "ISO",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": [
 								30.75,
@@ -182,7 +182,7 @@
 					"legends": [
 						{
 							"legend": "ISO \nInverted",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": [
 								5.12,
@@ -209,7 +209,7 @@
 					"legends": [
 						{
 							"legend": "BAE",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": [
 								5.12,
@@ -236,7 +236,7 @@
 					"legends": [
 						{
 							"legend": "3U Vertical",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-8355712",
 							"position": [
 								5.12,
@@ -263,7 +263,7 @@
 					"legends": [
 						{
 							"legend": "2U Vertical",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-8388608",
 							"position": [
 								5.12,
@@ -290,7 +290,7 @@
 					"legends": [
 						{
 							"legend": "1U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": null
 						}
@@ -314,7 +314,7 @@
 					"legends": [
 						{
 							"legend": "1.25U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-256",
 							"position": null
 						}
@@ -338,7 +338,7 @@
 					"legends": [
 						{
 							"legend": "1.5U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": null
 						}
@@ -362,7 +362,7 @@
 					"legends": [
 						{
 							"legend": "0.75U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": null
 						}
@@ -386,7 +386,7 @@
 					"legends": [
 						{
 							"legend": "2.25U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-256",
 							"position": null
 						}
@@ -410,7 +410,7 @@
 					"legends": [
 						{
 							"legend": "2.75U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-256",
 							"position": null
 						}
@@ -434,7 +434,7 @@
 					"legends": [
 						{
 							"legend": "3U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-256",
 							"position": null
 						}
@@ -458,7 +458,7 @@
 					"legends": [
 						{
 							"legend": "6.5",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-8355712",
 							"position": null
 						}
@@ -482,7 +482,7 @@
 					"legends": [
 						{
 							"legend": "1.75U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": null
 						}
@@ -506,7 +506,7 @@
 					"legends": [
 						{
 							"legend": "6.25U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-8355712",
 							"position": null
 						}
@@ -530,7 +530,7 @@
 					"legends": [
 						{
 							"legend": "2.5U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-256",
 							"position": null
 						}
@@ -554,7 +554,7 @@
 					"legends": [
 						{
 							"legend": "7U",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-8355712",
 							"position": null
 						}
@@ -578,7 +578,7 @@
 					"legends": [
 						{
 							"legend": "10U (Big Ass Space)",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-8355712",
 							"position": null
 						}
@@ -602,7 +602,7 @@
 					"legends": [
 						{
 							"legend": "CAPS 3800",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": null,
 							"position": null
 						}
@@ -626,7 +626,7 @@
 					"legends": [
 						{
 							"legend": "0083 SPAC",
-							"legendSize": 0,
+							"legendSize": 24.0,
 							"color": "-256",
 							"position": null
 						}
