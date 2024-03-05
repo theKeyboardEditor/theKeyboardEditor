@@ -3,6 +3,7 @@ package viewport;
 import ceramic.Visual;
 import ceramic.Scene;
 import ceramic.TouchInfo;
+import ceramic.DoubleClick;
 import keyson.Axis;
 import keyson.Keyson;
 
@@ -28,6 +29,9 @@ class Viewport extends Scene {
 	public var keycapSet: Visual;
 	var placer: Placer;
 	var selectionBox: SelectionBox;
+
+	var doubleClick: DoubleClick = null;
+	var didDoubleClick: Bool = false;
 
 	// Movement variables
 	inline static final keyboardSpeed: Int = 35;
@@ -236,6 +240,10 @@ class Viewport extends Scene {
 				keycap.onPointerDown(keycap, (t: TouchInfo) -> {
 					keyMouseDown(t, keycap);
 				});
+				// I have no idea what i'm doing here >:^]
+				final doubleClick = new DoubleClick();
+				doubleClick.onDoubleClick(keycap, handleDoubleClick);
+				keycap.component('doubleClick', doubleClick);
 				workingSet.add(keycap);
 			}
 		}
@@ -376,6 +384,11 @@ class Viewport extends Scene {
 		}
 	}
 	// KEY ACTIONS
+
+	public function handleDoubleClick(): Void {
+		didDoubleClick = true;
+		trace('Doubleclick!');
+	}
 
 	/**
 	 * This gets called only if clicked on a key on the worksurface!
