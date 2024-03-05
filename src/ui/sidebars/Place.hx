@@ -6,7 +6,7 @@ import haxe.ui.components.Button;
 import haxe.ui.events.UIEvent;
 
 @xml('
-<vbox width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
+<vbox id="place-sidebar" width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
 	<label text="Keys:" />
 	<hbox height="80%" width="156px" horizontalAlign="center" verticalAlign="center">
 		<scrollview width="153px" height="100%" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
