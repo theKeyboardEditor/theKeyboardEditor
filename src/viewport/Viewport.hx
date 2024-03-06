@@ -53,6 +53,9 @@ class Viewport extends Scene {
 
 	var selectedKeycaps: Array<KeyRenderer> = [];
 	var deselection: Bool = false; // is a deselect event resulting in a drag
+	var keycapDrag: Bool = false;
+	var worksurfaceDrag: Bool = false;
+	var worksurfaceLMB: Bool = false;
 
 	// Constants
 	// Size of a key
@@ -239,18 +242,21 @@ class Viewport extends Scene {
 				});
 				// I have no idea what i'm doing here >:^]
 				final doubleClick = new DoubleClick();
-				doubleClick.onDoubleClick(keycap, handleDoubleClick);
+				doubleClick.onDoubleClick(keycap, () -> {
+					handleDoubleClick(keycap);
+				});
+				// doubleclick is not a standard component so we need to add it:
 				keycap.component('doubleClick', doubleClick);
 				workingSet.add(keycap);
 			}
 		}
 		return workingSet;
 	}
-	// APPLYING DESIGN
+	// APPLYING DESIGN:
 	// SURFACE ACTIONS
 
 	/**
-	 * Called from any viewport and any click on the start of the drag
+	 * Called from any click or the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
 		// Store current mouse position
@@ -262,14 +268,14 @@ class Viewport extends Scene {
 			// TODO call & process a "right click" menu otherwise ignore it here
 			return;
 		}
-
+		if (info.buttonId == 0)
+			// true only for the while LMB is pressed
+			worksurfaceLMB = true;
 		// since we have pressed empty space we start drawing a selection rectangle:
 		placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
 		placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
 
-		// draw a rectangle:
-		this.selectionBox.visible = true;
-		this.selectionBox.pos(screen.pointerX - screenX - this.x, screen.pointerY - screenY - this.y);
+		this.selectionBox.visible = worksurfaceDrag;
 
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, viewportMouseMove);
@@ -281,8 +287,12 @@ class Viewport extends Scene {
 	 * update for the duration of the drag
 	 */
 	function viewportMouseMove(info: TouchInfo) {
+		// TODO make drag true only certain threshold is reached (2-4 pixels)
+		worksurfaceDrag = worksurfaceLMB;
+		// we start showing on drag
+		this.selectionBox.visible = worksurfaceLMB;
 		// update the drag rectangle
-		this.selectionBox.pos(this.pointerStartX - screenX - this.x, this.pointerStartY - screenY - this.y);
+		this.selectionBox.pos((this.pointerStartX - screenX - this.x) / viewScale, (this.pointerStartY - screenY - this.y) / viewScale);
 		// for the rounded rectangles to render right we can't have negative size - so we change from where we draw it here
 		if (screen.pointerX - this.pointerStartX > 0) {
 			this.selectionBox.x = (this.pointerStartX - screenX - this.x) / viewScale;
@@ -300,7 +310,7 @@ class Viewport extends Scene {
 		}
 
 		// only during a selection drag: update selected keys (replace selection)
-		if (this.selectionBox.visible == true) {
+		if (this.selectionBox.visible == true && worksurfaceDrag && ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
 			clearSelection(true);
 			final boxX = this.selectionBox.x;
 			final boxY = this.selectionBox.y;
@@ -333,6 +343,9 @@ class Viewport extends Scene {
 	 * react only once the button press is over
 	 */
 	function viewportMouseUp(info: TouchInfo) {
+		// the drag is now finished:
+		worksurfaceDrag = false;
+		// hide the selection box
 		this.selectionBox.visible = false;
 		switch (ui.Index.activeMode) {
 			case Place:
@@ -379,11 +392,20 @@ class Viewport extends Scene {
 				}
 			default:
 		}
+		// finish the press
+		worksurfaceLMB = false;
 	}
 	// KEY ACTIONS
 
-	public function handleDoubleClick(): Void {
-		trace('Doubleclick!');
+	public function handleDoubleClick(keycap: KeyRenderer): Void {
+		if (selectedKeycaps.length > 0) {
+			// deselect everything
+			clearSelection(true);
+			this.selectionBox.visible = false;
+		}
+		keycap.select();
+		selectedKeycaps.unshift(keycap);
+		// TODO switch to place mode
 	}
 
 	/**
@@ -391,6 +413,9 @@ class Viewport extends Scene {
 	 * because we create keys in actions we need this accesible (thus public) from there
 	 */
 	public function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
+		// Reset on each begin
+		keycapDrag = false;
+
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
 
@@ -399,21 +424,17 @@ class Viewport extends Scene {
 
 		switch (ui.Index.activeMode) {
 			case Edit | Unit | Color | Present:
-				// show placer only if -1 (non existent?)
-				// placer.visible = selectedKeycaps.length < 0;
 				placer.visible = false;
-				// move and select keys
-				// TODO stop toggling selection and move to shit add/ctrl remove from selection
-				if (keycap.border.visible) {
-					keycap.deselect();
-					selectedKeycaps.remove(keycap);
-					deselection = true;
-				} else {
-					keycap.select();
-					// push to the opposite end than .push();
-					selectedKeycaps.unshift(keycap);
-					deselection = false;
+				// select key
+				if (selectedKeycaps.length > 0 && false) {
+					// deselect everything
+					clearSelection(true);
+					this.selectionBox.visible = false;
 				}
+				keycap.select();
+				// push to the opposite end than .push();
+				selectedKeycaps.unshift(keycap);
+				deselection = false;
 			default:
 		}
 
@@ -428,8 +449,11 @@ class Viewport extends Scene {
 	 * Called during key movement (mouse key down)
 	 */
 	function keyMouseMove(info: TouchInfo) {
+		keycapDrag = true;
+
 		switch (ui.Index.activeMode) {
 			case Place:
+				this.selectionBox.visible = false;
 			default:
 				// there is a special case where the last selected element gets deselected and then dragged
 				if (selectedKeycaps.length > 0 && !deselection) {
