@@ -30,9 +30,6 @@ class Viewport extends Scene {
 	var placer: Placer;
 	var selectionBox: SelectionBox;
 
-	var doubleClick: DoubleClick = null;
-	var didDoubleClick: Bool = false;
-
 	// Movement variables
 	inline static final keyboardSpeed: Int = 35;
 
@@ -386,7 +383,6 @@ class Viewport extends Scene {
 	// KEY ACTIONS
 
 	public function handleDoubleClick(): Void {
-		didDoubleClick = true;
 		trace('Doubleclick!');
 	}
 
