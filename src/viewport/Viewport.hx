@@ -52,10 +52,12 @@ class Viewport extends Scene {
 	public var keyboardUnit: keyson.Keyboard;
 
 	var selectedKeycaps: Array<KeyRenderer> = [];
-	var deselection: Bool = false; // is a deselect event resulting in a drag
+	var inhibitDrag: Bool = false;
 	var keycapDrag: Bool = false;
 	var worksurfaceDrag: Bool = false;
 	var worksurfaceLMB: Bool = false;
+	var shiftPressed: Bool = false;
+	var ctrlPressed: Bool = false;
 
 	// Constants
 	// Size of a key
@@ -118,6 +120,16 @@ class Viewport extends Scene {
 			// we'll just pretend there are no rebounces on delete key ;)
 			// (but there are 2-3!)
 		}
+		if (inputMap.pressed(SHIFT)) {
+			shiftPressed = true;
+		} else {
+			shiftPressed = false;
+		}
+		if (inputMap.pressed(CMD_OR_CTRL)) {
+			ctrlPressed = true;
+		} else {
+			ctrlPressed = false;
+		}
 	}
 
 	/**
@@ -165,6 +177,7 @@ class Viewport extends Scene {
 		inputUpdate(delta);
 		queue.act();
 	}
+
 	// PLACER
 
 	/**
@@ -259,7 +272,7 @@ class Viewport extends Scene {
 	 * Called from any click or the start of the drag
 	 */
 	function viewportMouseDown(info: TouchInfo) {
-		// Store current mouse position
+		// Update stored current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 		if (info.buttonId == 1)
@@ -268,14 +281,13 @@ class Viewport extends Scene {
 			// TODO call & process a "right click" menu otherwise ignore it here
 			return;
 		}
-		if (info.buttonId == 0)
+		if (info.buttonId == 0) {
 			// true only for the while LMB is pressed
 			worksurfaceLMB = true;
-		// since we have pressed empty space we start drawing a selection rectangle:
+		}
+		// since we have pressed over the empty space we start drawing a selection rectangle:
 		placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
 		placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
-
-		this.selectionBox.visible = worksurfaceDrag;
 
 		// Try move along as we pan the touch
 		screen.onPointerMove(this, viewportMouseMove);
@@ -311,7 +323,9 @@ class Viewport extends Scene {
 
 		// only during a selection drag: update selected keys (replace selection)
 		if (this.selectionBox.visible == true && worksurfaceDrag && ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
-			clearSelection(true);
+			if (!shiftPressed) {
+				clearSelection(true);
+				}
 			final boxX = this.selectionBox.x;
 			final boxY = this.selectionBox.y;
 			final boxWidth = this.selectionBox.width;
@@ -331,7 +345,6 @@ class Viewport extends Scene {
 						if (key.sourceKey == k) {
 							key.select();
 							selectedKeycaps.unshift(key);
-							deselection = false;
 						}
 					}
 				}
@@ -361,9 +374,9 @@ class Viewport extends Scene {
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
 			case Edit | Unit | Color | Present:
-				// just any click on empty should clear selection of everything
-				// and dump the selection ((true) means deep clear)
-				clearSelection(true);
+				if (!shiftPressed) {
+					clearSelection(true);
+				}
 				this.selectionBox.visible = false;
 
 				final boxX = this.selectionBox.x;
@@ -385,7 +398,7 @@ class Viewport extends Scene {
 							if (key.sourceKey == k) {
 								key.select();
 								selectedKeycaps.unshift(key);
-								deselection = false;
+								inhibitDrag = false;
 							}
 						}
 					}
@@ -409,12 +422,13 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * This gets called only if clicked on a key on the worksurface!
+	 * This gets called only if clicked over a key on the worksurface!
 	 * because we create keys in actions we need this accesible (thus public) from there
 	 */
 	public function keyMouseDown(info: TouchInfo, keycap: KeyRenderer) {
 		// Reset on each begin
 		keycapDrag = false;
+		placer.visible = (ui.Index.activeMode == Place);
 
 		keyPosStartX = keycap.x;
 		keyPosStartY = keycap.y;
@@ -422,26 +436,35 @@ class Viewport extends Scene {
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 
+		//TODO: make selection on mouseUp
+		//to not mess up selection before move
 		switch (ui.Index.activeMode) {
-			case Edit | Unit | Color | Present:
-				placer.visible = false;
-				// select key
-				if (selectedKeycaps.length > 0 && false) {
-					// deselect everything
-					clearSelection(true);
-					this.selectionBox.visible = false;
+			case Edit | Unit | Color | Legend:
+				this.selectionBox.visible = false;
+				// select
+				if (!ctrlPressed) {
+					if (!shiftPressed) {
+						clearSelection(true);
+					}
+					// this toggling prevents destruction on drag!
+					selectedKeycaps.remove(keycap);
+					//make so the clicked on keycap is the last selected
+					selectedKeycaps.unshift(keycap);
+					keycap.select();
+				} else {
+					// ctrl for deselect
+					selectedKeycaps.remove(keycap);
+					keycap.deselect();
 				}
-				keycap.select();
-				// push to the opposite end than .push();
-				selectedKeycaps.unshift(keycap);
-				deselection = false;
+				inhibitDrag = false;
 			default:
-		}
+				// ignore on Present and Place
+			}
 
-		// Try move along as we pan the touch
+		// Move along as we pan the touch
 		screen.onPointerMove(this, keyMouseMove);
 
-		// Finish the drag along when the pointer is released
+		// Finish the drag when the pointer is released
 		screen.oncePointerUp(this, keyMouseUp);
 	}
 
@@ -452,11 +475,11 @@ class Viewport extends Scene {
 		keycapDrag = true;
 
 		switch (ui.Index.activeMode) {
-			case Place:
-				this.selectionBox.visible = false;
+			case Place | Present:
+				//this.selectionBox.visible = false;
 			default:
 				// there is a special case where the last selected element gets deselected and then dragged
-				if (selectedKeycaps.length > 0 && !deselection) {
+				if (selectedKeycaps.length > 0 && !inhibitDrag) {
 					final xStep = coggify(keyPosStartX + (screen.pointerX - pointerStartX) / viewScale, placingStep) - selectedKeycaps[0].x;
 					final yStep = coggify(keyPosStartY + (screen.pointerY - pointerStartY) / viewScale, placingStep) - selectedKeycaps[0].y;
 					for (key in selectedKeycaps) {
@@ -471,10 +494,11 @@ class Viewport extends Scene {
 	 * Called after the drag (touch/press is released)
 	 */
 	function keyMouseUp(info: TouchInfo) {
+
 		switch (ui.Index.activeMode) {
 			case Place:
 				placer.visible = true;
-			case Edit | Unit | Color | Present:
+			case Edit | Unit | Color | Legend| Present:
 				// If no Placing then restore placer to default size
 				placer.size(unit * viewScale, unit * viewScale);
 				placerMismatchX = 0;
@@ -484,8 +508,8 @@ class Viewport extends Scene {
 				if (selectedKeycaps.length > 0) {
 					var x = (selectedKeycaps[0].x - keyPosStartX) / unit * viewScale;
 					var y = (selectedKeycaps[0].y - keyPosStartY) / unit * viewScale;
-					// only try to move if  x and y is not zero and there was no deselection and we have any selected keys to move at all
-					if (x != 0 || y != 0 && !deselection && selectedKeycaps.length > 0) {
+					// only try to move if  x and y is not zero and there was no inhibitDrag and we have any selected keys to move at all
+					if (x != 0 || y != 0 && !inhibitDrag && selectedKeycaps.length > 0) {
 						queue.push(new actions.MoveKeys(this, selectedKeycaps, x, y));
 						// deselect only if single element was just dragged
 						if (selectedKeycaps.length == 1) {
@@ -527,7 +551,7 @@ class Viewport extends Scene {
 	public function refreshKeycapSet() {
 		clearSelection(true);
 		// refresh from keyson
-		this.remove(keycapSet);
+		this.keycapSet.clear();
 		keycapSet = parseInKeyboard(keyson);
 		this.add(keycapSet);
 	}

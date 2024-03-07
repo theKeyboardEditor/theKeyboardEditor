@@ -15,6 +15,8 @@ enum abstract ViewportInput(Int) {
 	final COPY;
 	final CUT;
 	final PASTE;
+	final SHIFT;
+	final CMD_OR_CTRL;
 }
 
 class Input extends InputMap<ViewportInput> {
@@ -40,5 +42,10 @@ class Input extends InputMap<ViewportInput> {
 		this.bindScanCode(ZOOM_OUT, MINUS);
 		this.bindScanCode(ZOOM_IN, KP_PLUS);
 		this.bindScanCode(ZOOM_OUT, KP_MINUS);
+
+		this.bindScanCode(SHIFT, LSHIFT);
+		this.bindScanCode(SHIFT, RSHIFT);
+		this.bindScanCode(CMD_OR_CTRL, LCTRL);
+		this.bindScanCode(CMD_OR_CTRL, RCTRL);
 	}
 }
