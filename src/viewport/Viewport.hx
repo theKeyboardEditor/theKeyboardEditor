@@ -381,17 +381,6 @@ class Viewport extends Scene {
 	}
 	// KEY ACTIONS
 
-	public function handleDoubleClick(keycap: KeyRenderer): Void {
-		if (selectedKeycaps.length > 0) {
-			// deselect everything
-			clearSelection(true);
-			this.selectionBox.visible = false;
-		}
-		keycap.select();
-		selectedKeycaps.unshift(keycap);
-		// TODO switch to place mode
-	}
-
 	public function clearSelection(deep: Bool) {
 		// deep clear clears the selectedKeycaps too
 		// sometimes this is undesirable hence the switch

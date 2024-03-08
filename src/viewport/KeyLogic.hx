@@ -22,9 +22,7 @@ class KeyLogic extends Entity implements Component {
 
 	function bindAsComponent() {
 		final doubleClick = new ceramic.DoubleClick();
-		doubleClick.onDoubleClick(keycap, () -> {
-			trace("Ran on doubleclick");
-		});
+		doubleClick.onDoubleClick(keycap, handleDoubleClick);
 
 		keycap.onPointerDown(keycap, keyMouseDown);
 	}
@@ -132,5 +130,14 @@ class KeyLogic extends Entity implements Component {
 				}
 			}
 		}
+	}
+
+	public function handleDoubleClick(): Void {
+		if (viewport.selectedKeycaps.length > 0) {
+			viewport.clearSelection(true);
+			viewport.selectionBox.visible = false;
+		}
+		keycap.select();
+		viewport.selectedKeycaps.unshift(keycap);
 	}
 }
