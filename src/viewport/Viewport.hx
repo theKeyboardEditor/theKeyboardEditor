@@ -111,6 +111,10 @@ class Viewport extends Scene {
 			// we'll just pretend there are no rebounces on delete key ;)
 			// (but there are 2-3!)
 		}
+		if (inputMap.pressed(HOME)) {
+			reset();
+		}
+
 	}
 
 	/**
@@ -227,9 +231,10 @@ class Viewport extends Scene {
 			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
 
 			for (key in keyboardUnit.keys) {
-				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit * viewScale, gapX, gapY,
+				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY,
 					Std.parseInt(keyboardUnit.defaults.keyColor));
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
+				// adding all actions to the keycap entity
 				keycap.component('logic', new KeyLogic(this));
 				workingSet.add(keycap);
 			}
@@ -379,7 +384,6 @@ class Viewport extends Scene {
 		// finish the press
 		worksurfaceLMB = false;
 	}
-	// KEY ACTIONS
 
 	public function clearSelection(deep: Bool) {
 		// deep clear clears the selectedKeycaps too
@@ -390,7 +394,7 @@ class Viewport extends Scene {
 			selectedKeycaps = [];
 	}
 
-	// select all
+	// Select all
 	public function selectEverything() {
 		selectedKeycaps = [];
 		final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
@@ -399,6 +403,15 @@ class Viewport extends Scene {
 			keycap.select();
 		}
 		// the result is stored in selectedKeycaps
+	}
+
+	// Reset scale and viewport position
+	public function reset() {
+		this.x = 0;
+		this.y = 0;
+		this.scaleX = 1;
+		this.scaleY = this.scaleX;
+		viewScale = this.scaleX;
 	}
 
 	public function refreshKeycapSet() {
@@ -434,8 +447,8 @@ class Viewport extends Scene {
 	public function paste() {
 		if (CopyBuffer.selectedObjects.keys.length > 0) {
 			// TODO make a offset from the stored data somehow
-			var y = placer.y / unit * viewScale;
-			var x = placer.x / unit * viewScale;
+			var y = placer.y / unit;
+			var x = placer.x / unit;
 			keyboardUnit = keyson.units[currentUnit];
 			queue.push(new actions.EditPaste(this, keyboardUnit, x, y));
 		}
