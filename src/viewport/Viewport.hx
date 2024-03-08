@@ -177,7 +177,6 @@ class Viewport extends Scene {
 		inputUpdate(delta);
 		queue.act();
 	}
-
 	// PLACER
 
 	/**
@@ -325,7 +324,7 @@ class Viewport extends Scene {
 		if (this.selectionBox.visible == true && worksurfaceDrag && ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
 			if (!shiftPressed) {
 				clearSelection(true);
-				}
+			}
 			final boxX = this.selectionBox.x;
 			final boxY = this.selectionBox.y;
 			final boxWidth = this.selectionBox.width;
@@ -436,36 +435,20 @@ class Viewport extends Scene {
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
 
-		//TODO: make selection on mouseUp
-		//to not mess up selection before move
+		// TODO: make selection on mouseUp
+		// to not mess up selection before move
 		switch (ui.Index.activeMode) {
-			case Edit | Unit | Color | Legend:
-				this.selectionBox.visible = false;
-				// select
-				if (!ctrlPressed) {
-					if (!shiftPressed) {
-						clearSelection(true);
-					}
-					// this toggling prevents destruction on drag!
-					selectedKeycaps.remove(keycap);
-					//make so the clicked on keycap is the last selected
-					selectedKeycaps.unshift(keycap);
-					keycap.select();
-				} else {
-					// ctrl for deselect
-					selectedKeycaps.remove(keycap);
-					keycap.deselect();
-				}
-				inhibitDrag = false;
 			default:
 				// ignore on Present and Place
-			}
+		}
 
 		// Move along as we pan the touch
 		screen.onPointerMove(this, keyMouseMove);
 
 		// Finish the drag when the pointer is released
-		screen.oncePointerUp(this, keyMouseUp);
+		screen.oncePointerUp(this, (info) -> {
+			keyMouseUp(info, keycap);
+		});
 	}
 
 	/**
@@ -476,7 +459,7 @@ class Viewport extends Scene {
 
 		switch (ui.Index.activeMode) {
 			case Place | Present:
-				//this.selectionBox.visible = false;
+				// this.selectionBox.visible = false;
 			default:
 				// there is a special case where the last selected element gets deselected and then dragged
 				if (selectedKeycaps.length > 0 && !inhibitDrag) {
@@ -493,12 +476,29 @@ class Viewport extends Scene {
 	/**
 	 * Called after the drag (touch/press is released)
 	 */
-	function keyMouseUp(info: TouchInfo) {
-
+	function keyMouseUp(info: TouchInfo, keycap: KeyRenderer) {
 		switch (ui.Index.activeMode) {
 			case Place:
 				placer.visible = true;
-			case Edit | Unit | Color | Legend| Present:
+			case Edit | Unit | Color | Legend | Present:
+				this.selectionBox.visible = false;
+				// select
+				if (!ctrlPressed) {
+					if (!shiftPressed) {
+						clearSelection(true);
+					}
+					// this toggling prevents destruction on drag!
+					selectedKeycaps.remove(keycap);
+					// make so the clicked on keycap is the last selected
+					selectedKeycaps.unshift(keycap);
+					keycap.select();
+				} else {
+					// ctrl for deselect
+					selectedKeycaps.remove(keycap);
+					keycap.deselect();
+				}
+				inhibitDrag = false;
+
 				// If no Placing then restore placer to default size
 				placer.size(unit * viewScale, unit * viewScale);
 				placerMismatchX = 0;
