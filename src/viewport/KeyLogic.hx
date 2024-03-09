@@ -60,19 +60,25 @@ class KeyLogic extends Entity implements Component {
 	 * Called during key movement (mouse key down)
 	 */
 	function keyMouseMove(info: TouchInfo) {
-		if (threshold != -1 && (Math.abs(screen.pointerX - viewport.pointerStartX) > threshold || Math.abs(screen.pointerY - viewport.pointerStartY) > threshold))
+		if (viewport.threshold != -1
+			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.threshold
+				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.threshold))
 			keycapIsDragged = true;
 		if (ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
-			if (viewport.selectedKeycaps.length > 0 && keycapIsDragged && !viewport.inhibitDrag) {
+			if (viewport.selectedKeycaps.length > 0 && keycapIsDragged && viewport.selectedKeycaps.contains(keycap)) {
 				// note we reference the Array member [0] for move vector!
 				final xStep = Viewport.coggify(keycapPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
-					Viewport.placingStep) - viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x;
+					Viewport.placingStep)
+					- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x;
 				final yStep = Viewport.coggify(keycapPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
-					Viewport.placingStep) - viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y;
+					Viewport.placingStep)
+					- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y;
 				for (key in viewport.selectedKeycaps) {
 					key.x += xStep;
 					key.y += yStep;
 				}
+			} else {
+				// TODO implement selection rectangle if a drag happens off selected keycap
 			}
 		}
 	}
@@ -86,7 +92,6 @@ class KeyLogic extends Entity implements Component {
 				viewport.placer.visible = true;
 			case Edit | Unit | Color | Legend | Present:
 				viewport.selectionBox.visible = false;
-				//viewport.inhibitDrag = false;
 				viewport.placer.size(viewport.unit * viewport.viewScale, viewport.unit * viewport.viewScale);
 				viewport.placerMismatchX = 0;
 				viewport.placerMismatchY = 0;
@@ -98,25 +103,30 @@ class KeyLogic extends Entity implements Component {
 						viewport.selectedKeycaps.remove(keycap);
 						keycap.deselect();
 					} else {
-						if (app.input.keyPressed(LSHIFT) || app.input.keyPressed(RSHIFT)) {
-							// nothing to be done here
-						} else {
+						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
+							// CLEAR if no SHIFT key is pressed
 							viewport.clearSelection(true);
 						}
-						// put last selected keycap to [0] in keycaps
+						// put last selected keycap to position [0] in keycaps
 						viewport.selectedKeycaps.unshift(keycap);
 						keycap.select();
 					}
 				} else {
 					// DRAGGING
-					//  the selected (if any) keys
-					if (viewport.selectedKeycaps.length > 0) {
-						var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x - keycapPosStartX) / viewport.unit * viewport.viewScale;
-						var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y - keycapPosStartY) / viewport.unit * viewport.viewScale;
-						// only try to move if  x and y is not zero and there was no inhibitDrag and we have any selected keys to move at all
-						if (x != 0 || y != 0 && !viewport.inhibitDrag && viewport.selectedKeycaps.length > 0) {
-							viewport.queue.push(new actions.MoveKeys(viewport, viewport.selectedKeycaps, x / viewport.viewScale, y / viewport.viewScale));
+					//  the selected (if any) keys and the dragg event happened on a selected key
+					if (viewport.selectedKeycaps.length > 0 && viewport.selectedKeycaps.contains(keycap)) {
+						var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x
+							- keycapPosStartX) / viewport.unit * viewport.viewScale;
+						var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y
+							- keycapPosStartY) / viewport.unit * viewport.viewScale;
+						// only try to move if  x and y is not zero and we have any selected keys to move at all
+						// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
+						if (viewport.selectedKeycaps.length > 0) {
+							viewport.queue.push(new actions.MoveKeys(viewport, viewport.selectedKeycaps, x / viewport.viewScale,
+								y / viewport.viewScale));
 						}
+					} else {
+						// TODO implement selection rectangle if a drag happens off selected keycap
 					}
 				}
 			default:
@@ -129,7 +139,6 @@ class KeyLogic extends Entity implements Component {
 		// The touch is already over, now cleanup and return from there
 		screen.offPointerMove(keyMouseMove);
 	}
-
 	public function handleDoubleClick(): Void {
 		if (viewport.selectedKeycaps.length > 0) {
 			viewport.clearSelection(true);
@@ -137,6 +146,6 @@ class KeyLogic extends Entity implements Component {
 		}
 		keycap.select();
 		viewport.selectedKeycaps.unshift(keycap);
-		//TODO emit call to switch mode here
+		// TODO emit call to switch mode here
 	}
 }

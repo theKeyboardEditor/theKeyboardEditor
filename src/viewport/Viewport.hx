@@ -45,7 +45,9 @@ class Viewport extends Scene {
 	public var keyboardUnit: keyson.Keyboard;
 
 	public var selectedKeycaps: Array<KeyRenderer> = [];
-	public var inhibitDrag: Bool = false;
+	public var threshold: Float = 2;
+
+	var clickIsDrag = false;
 
 	var worksurfaceDrag: Bool = false;
 	var worksurfaceLMB: Bool = false;
@@ -114,7 +116,6 @@ class Viewport extends Scene {
 		if (inputMap.pressed(HOME)) {
 			reset();
 		}
-
 	}
 
 	/**
@@ -251,6 +252,8 @@ class Viewport extends Scene {
 		// Update stored current mouse position
 		this.pointerStartX = screen.pointerX;
 		this.pointerStartY = screen.pointerY;
+		// reset on every click start
+		worksurfaceDrag = false;
 		if (info.buttonId == 1)
 			return; // return on MMB (we ignore wheel press too)
 		if (info.buttonId == 2) { // RMB
@@ -276,9 +279,11 @@ class Viewport extends Scene {
 	 */
 	function viewportMouseMove(info: TouchInfo) {
 		// TODO make drag true only certain threshold is reached (2-4 pixels)
-		worksurfaceDrag = worksurfaceLMB;
+		if (threshold != -1
+			&& (Math.abs(screen.pointerX - pointerStartX) > threshold || Math.abs(screen.pointerY - pointerStartY) > threshold))
+			worksurfaceDrag = worksurfaceLMB;
 		// we start showing on drag
-		this.selectionBox.visible = worksurfaceLMB;
+		this.selectionBox.visible = worksurfaceDrag;
 		// update the drag rectangle
 		this.selectionBox.pos((this.pointerStartX - screenX - this.x) / viewScale, (this.pointerStartY - screenY - this.y) / viewScale);
 		// for the rounded rectangles to render right we can't have negative size - so we change from where we draw it here
@@ -299,7 +304,7 @@ class Viewport extends Scene {
 
 		// only during a selection drag: update selected keys (replace selection)
 		if (this.selectionBox.visible == true && worksurfaceDrag && ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
-			if (!(app.input.keyPressed(LSHIFT) || app.input.keyPressed(RSHIFT))) {
+			if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 				clearSelection(true);
 			}
 			final boxX = this.selectionBox.x;
@@ -307,6 +312,7 @@ class Viewport extends Scene {
 			final boxWidth = this.selectionBox.width;
 			final boxHeight = this.selectionBox.height;
 
+			// TODO implement CTRL deselection processing
 			for (k in keyson.units[currentUnit].keys) {
 				// calculate position and size of a body:
 				final body = keyBody(k);
@@ -314,7 +320,6 @@ class Viewport extends Scene {
 				final keyY = body.y;
 				final keyWidth = body.width;
 				final keyHeight = body.height;
-
 				if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
 					final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
 					for (key in keysOnUnit) {
@@ -334,8 +339,8 @@ class Viewport extends Scene {
 	function viewportMouseUp(info: TouchInfo) {
 		// the drag is now finished:
 		worksurfaceDrag = false;
-		// hide the selection box
-		this.selectionBox.visible = false;
+		// hide the selection box (always share the fate of a drag event)
+		this.selectionBox.visible = worksurfaceDrag;
 		switch (ui.Index.activeMode) {
 			case Place:
 				// place action
@@ -350,16 +355,16 @@ class Viewport extends Scene {
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
 			case Edit | Unit | Color | Present:
-				if (!(app.input.keyPressed(LSHIFT) || app.input.keyPressed(RSHIFT))) {
+				if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 					clearSelection(true);
 				}
-				this.selectionBox.visible = false;
-
+				// this.selectionBox.visible = false;
 				final boxX = this.selectionBox.x;
 				final boxY = this.selectionBox.y;
 				final boxWidth = this.selectionBox.width;
 				final boxHeight = this.selectionBox.height;
 
+				// TODO implement CTRL deselection processing here
 				for (k in keyson.units[currentUnit].keys) {
 					// calculate position and size of a body:
 					final body = keyBody(k);
@@ -374,7 +379,6 @@ class Viewport extends Scene {
 							if (key.sourceKey == k) {
 								key.select();
 								selectedKeycaps.unshift(key);
-								inhibitDrag = false;
 							}
 						}
 					}
@@ -384,7 +388,6 @@ class Viewport extends Scene {
 		// finish the press
 		worksurfaceLMB = false;
 	}
-
 	public function clearSelection(deep: Bool) {
 		// deep clear clears the selectedKeycaps too
 		// sometimes this is undesirable hence the switch
