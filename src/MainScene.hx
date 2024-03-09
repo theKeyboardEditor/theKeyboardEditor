@@ -68,11 +68,19 @@ class MainScene extends Scene {
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
 			save((cast gui.tabs.selectedPage: ui.ViewportContainer).display.keyson, store);
 		});
+		// TODO save all with SHIFT
 
 		// Downloading
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_D)], () -> {
 			download((cast gui.tabs.selectedPage: ui.ViewportContainer).display.keyson);
 		});
+		// TODO download all with SHIFT
+
+		// TODO close current tab
+		// keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_W)], () -> {
+
+		// TODO close all tabs
+		// keyBindings.bind([SHIFT, CMD_OR_CTRL, KEY(KeyCode.KEY_W)], () -> {
 
 		// Toggle overlay (i.e welcome screen)
 		// gui.workSurface.display.paused = true;
@@ -84,11 +92,19 @@ class MainScene extends Scene {
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.undo();
 		});
-
+		/*// TODO make undoAll()
+			keyBindings.bind([SHIFT, CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
+				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.undoAll();
+			});
+		 */
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Y)], () -> {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
 		});
-
+		/*//TODO make redoAll
+			keyBindings.bind([SHIFT, CMD_OR_CTRL, KEY(KeyCode.KEY_Y)], () -> {
+				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.redoAll();
+			});
+		 */
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_R)], () -> {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.refreshKeycapSet();
 		});
@@ -96,12 +112,10 @@ class MainScene extends Scene {
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.selectEverything();
 		});
-		/*
-			//TODO make shift+Ctrl+A bound here:
-			keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
-				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.clearSelection();
-			});
-		 */
+		// TODO make shift+Ctrl+A bound here:
+		keyBindings.bind([SHIFT, CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
+			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.clearSelection(true);
+		});
 
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_C)], () -> {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.copy();
@@ -114,18 +128,6 @@ class MainScene extends Scene {
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_V)], () -> {
 			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.paste();
 		});
-		// TODO fix shift key press breaking this calls
-		// TODO implement:
-		/**
-		 * Shift+Ctrl z - undo all
-		 * Shift+Ctrl y - redo all
-		 * Shift+Ctrl w - close all buffers
-		 * Shift+Ctrl a - select everything
-		 * Shift+Ctrl s - save all files
-		 * Shift+Ctrl d - download all files (web)
-		 * Shift+Ctrl
-		 *
-		 */
 	}
 
 	public function download(keyboard: keyson.Keyson) {

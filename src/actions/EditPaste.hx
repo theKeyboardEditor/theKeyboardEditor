@@ -1,7 +1,6 @@
 package actions;
 
 import viewport.Viewport;
-import ceramic.TouchInfo;
 import keyson.Keyson;
 import keyson.Axis;
 
@@ -33,9 +32,7 @@ class EditPaste extends Action {
 			final keycap: KeyRenderer = KeyMaker.createKey(clonedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
 				Std.parseInt(viewport.keyboardUnit.defaults.keyColor));
 			keycap.pos(viewport.unit * key.position[Axis.X], viewport.unit * key.position[Axis.Y]);
-			keycap.onPointerDown(keycap, (t: TouchInfo) -> {
-				viewport.keyMouseDown(t, keycap);
-			});
+			keycap.component('logic', new viewport.KeyLogic(viewport));
 			viewport.keycapSet.add(keycap);
 		}
 		this.device.sortKeys();

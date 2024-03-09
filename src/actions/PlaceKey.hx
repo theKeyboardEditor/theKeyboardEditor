@@ -1,7 +1,6 @@
 package actions;
 
 import viewport.Viewport;
-import ceramic.TouchInfo;
 import keyson.Axis;
 import keyson.Keyson;
 
@@ -35,10 +34,8 @@ class PlaceKey extends Action {
 		final keycap: KeyRenderer = KeyMaker.createKey(this.device, key, this.viewport.unit, this.viewport.gapX, this.viewport.gapY,
 			Std.parseInt(this.device.defaults.keyColor));
 		keycap.pos(this.viewport.unit * this.key.position[Axis.X], this.viewport.unit * this.key.position[Axis.Y]);
+		keycap.component('logic', new viewport.KeyLogic(viewport));
 		this.viewport.keycapSet.add(keycap);
-		keycap.onPointerDown(keycap, (t: TouchInfo) -> {
-			this.viewport.keyMouseDown(t, keycap);
-		});
 		this.placed = keycap;
 		super.act(type);
 	}

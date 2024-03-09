@@ -4,6 +4,7 @@ build/
 project/
 out/
 completion.hxml
+build.hxml
 # vim
 [._]*.s[a-v][a-z]
 !*.svg
