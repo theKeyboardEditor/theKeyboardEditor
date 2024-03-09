@@ -45,7 +45,7 @@ class Viewport extends Scene {
 	public var keyboardUnit: keyson.Keyboard;
 
 	public var selectedKeycaps: Array<KeyRenderer> = [];
-	public var threshold: Float = 2;
+	public var threshold: Float = 4;
 
 	var clickIsDrag = false;
 
@@ -478,7 +478,7 @@ class Viewport extends Scene {
 	/**
 	 * Return the size of selected units in U/100 (for zooming)
 	 */
-	function selectedBodies(set: Array<keyson.Key>) {
+	public function selectedBodies(set: Array<keyson.Key>) {
 		var extremeX: Float = 0;
 		var extremeY: Float = 0;
 		var extremeW: Float = 0;
@@ -501,7 +501,7 @@ class Viewport extends Scene {
 	/**
 	 * Return a key's position and size in units of U/100
 	 */
-	function keyBody(k: keyson.Key): ceramic.Rect {
+	public function keyBody(k: keyson.Key): ceramic.Rect {
 		var x: Float = k.position[Axis.X] * this.unit;
 		var y: Float = k.position[Axis.Y] * this.unit;
 		var width: Float = 1.0 * this.unit;

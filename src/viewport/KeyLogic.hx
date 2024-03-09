@@ -64,22 +64,57 @@ class KeyLogic extends Entity implements Component {
 			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.threshold
 				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.threshold))
 			keycapIsDragged = true;
-		if (ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
-			if (viewport.selectedKeycaps.length > 0 && keycapIsDragged && viewport.selectedKeycaps.contains(keycap)) {
-				// note we reference the Array member [0] for move vector!
-				final xStep = Viewport.coggify(keycapPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
-					Viewport.placingStep)
-					- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x;
-				final yStep = Viewport.coggify(keycapPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
-					Viewport.placingStep)
-					- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y;
-				for (key in viewport.selectedKeycaps) {
-					key.x += xStep;
-					key.y += yStep;
+		switch (ui.Index.activeMode) {
+			case Edit | Unit | Color | Legend :
+				// react only on drag event
+				if (keycapIsDragged) {
+					// clicked on a selected keycap?
+					if (viewport.selectedKeycaps.contains(keycap)) {
+						// only ever try drag if any selection exists
+						if (viewport.selectedKeycaps.length > 0) {
+							// note we reference the Array member [0] for move vector!
+							final xStep = Viewport.coggify(keycapPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
+								Viewport.placingStep)
+								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x;
+							final yStep = Viewport.coggify(keycapPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
+								Viewport.placingStep)
+								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y;
+							for (key in viewport.selectedKeycaps) {
+								key.x += xStep;
+								key.y += yStep;
+							}
+						}
+					} else {
+						viewport.selectionBox.visible = keycapIsDragged;
+						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
+							viewport.clearSelection(true);
+						}
+						final boxX = viewport.selectionBox.x;
+						final boxY = viewport.selectionBox.y;
+						final boxWidth = viewport.selectionBox.width;
+						final boxHeight = viewport.selectionBox.height;
+
+						// TODO implement CTRL deselection processing
+						for (k in viewport.keyson.units[viewport.currentUnit].keys) {
+							// calculate position and size of a body:
+							final body = viewport.keyBody(k);
+							final keyX = body.x;
+							final keyY = body.y;
+							final keyWidth = body.width;
+							final keyHeight = body.height;
+							if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
+								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
+								for (key in keysOnUnit) {
+									if (key.sourceKey == k) {
+										key.select();
+										viewport.selectedKeycaps.unshift(key);
+									}
+								}
+							}
+						}
+					}
 				}
-			} else {
-				// TODO implement selection rectangle if a drag happens off selected keycap
-			}
+			default:
 		}
 	}
 
@@ -90,7 +125,7 @@ class KeyLogic extends Entity implements Component {
 		switch (ui.Index.activeMode) {
 			case Place:
 				viewport.placer.visible = true;
-			case Edit | Unit | Color | Legend | Present:
+			case Edit | Unit | Color | Legend :
 				viewport.selectionBox.visible = false;
 				viewport.placer.size(viewport.unit * viewport.viewScale, viewport.unit * viewport.viewScale);
 				viewport.placerMismatchX = 0;
@@ -126,7 +161,34 @@ class KeyLogic extends Entity implements Component {
 								y / viewport.viewScale));
 						}
 					} else {
-						// TODO implement selection rectangle if a drag happens off selected keycap
+						// DRAGGING outside a selected keycap results in a rectangle selection
+						viewport.selectionBox.visible = false;
+						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
+							viewport.clearSelection(true);
+						}
+						final boxX = viewport.selectionBox.x;
+						final boxY = viewport.selectionBox.y;
+						final boxWidth = viewport.selectionBox.width;
+						final boxHeight = viewport.selectionBox.height;
+
+						// TODO implement CTRL deselection processing
+						for (k in viewport.keyson.units[viewport.currentUnit].keys) {
+							// calculate position and size of a body:
+							final body = viewport.keyBody(k);
+							final keyX = body.x;
+							final keyY = body.y;
+							final keyWidth = body.width;
+							final keyHeight = body.height;
+							if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
+								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
+								for (key in keysOnUnit) {
+									if (key.sourceKey == k) {
+										key.select();
+										viewport.selectedKeycaps.unshift(key);
+									}
+								}
+							}
+						}
 					}
 				}
 			default:
