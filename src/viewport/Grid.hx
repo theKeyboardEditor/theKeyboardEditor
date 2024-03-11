@@ -23,6 +23,46 @@ class Grid extends Visual {
 	static inline final thick: Float = 3;
 
 	override public function computeContent() {
+		/**
+		 * The checkers grid model:
+		**/
+		/*function checkers(a: Int,b: Int):Bool {
+				return
+				((a & 1) == 1 && (b & 1) == 0) ||
+				((a & 1) == 0 && (b & 1) == 1);
+			}
+			function liners(a: Int,b: Int):Bool {
+				return
+				((a == 0) && (b & 1) == 1) ||
+				((b == 0) && (a & 1) == 1);
+			}
+			function every(a: Int, b: Int):Bool {
+				return true;
+			}
+			var quad = new Quad();
+			for (xPos in 0...maxStepsX) {
+				for (yPos in 0...maxStepsY) {
+					if (every(xPos,yPos)) {
+						for (subX in 0...Std.int(this.primaryStepX / this.subStepX)) {
+							for (subY in 0...Std.int(this.primaryStepY / this.subStepY)) {
+								if (checkers(subX,subY)) {
+									var quad = new Quad();
+									quad.pos(xPos * primaryStepX + subX * subStepX, yPos * primaryStepY + subY * subStepY);
+									quad.size(subStepX, subStepY);
+									quad.depth = 0;
+									quad.color = color;
+									quad.color.lightnessHSLuv += 0.15;
+									this.add(quad);
+								}
+							}
+						}
+					}
+				}
+			}
+		 */
+		/**
+		 * The plus and dot grid model:
+		**/
 		var quad = new Quad();
 		quad.pos(-3.5, -3.5);
 		quad.size(7, 7);
