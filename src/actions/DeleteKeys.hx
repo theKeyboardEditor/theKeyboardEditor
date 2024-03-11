@@ -27,14 +27,17 @@ class DeleteKeys extends Action {
 	}
 
 	override public function undo() {
+		var i = 0;
 		for (key in deletedKeys) {
 			final recreatedKey = KeyMaker.createKey(this.device, key.sourceKey, this.viewport.unit, this.viewport.gapX, this.viewport.gapY);
 			recreatedKey.pos(this.viewport.unit * key.sourceKey.position[Axis.X], viewport.unit * key.sourceKey.position[Axis.Y]);
 			recreatedKey.component('logic', new viewport.KeyLogic(viewport));
+			deletedKeys[i] = recreatedKey;
 			// recreate keyson:
 			this.device.insertKey(recreatedKey.sourceKey);
 			// recreate Ceramic:
 			this.viewport.keycapSet.add(recreatedKey);
+			i++;
 		}
 	}
 }

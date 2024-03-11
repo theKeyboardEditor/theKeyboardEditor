@@ -17,6 +17,7 @@ class EditCut extends Action {
 	}
 
 	override public function act(type: ActionType) {
+		trace("boo");
 		final cloner = new cloner.Cloner();
 		// take in the selection to the editBuffer
 		CopyBuffer.selectedObjects.keys = [
@@ -27,25 +28,28 @@ class EditCut extends Action {
 		];
 		CopyBuffer.selectedObjects.sortKeys();
 		// remove the selection from the keycapSet:
-		for (member in cutKeys) {
+		for (key in cutKeys) {
 			// clear keyson:
-			this.device.removeKey(member.sourceKey);
+			this.device.removeKey(key.sourceKey);
 			// clear Ceramic:
-			this.viewport.keycapSet.remove(member);
+			key.destroy();
 		}
 		super.act(type);
 	}
 
 	override public function undo() {
 		// restore the cutKeys to the work surface
+		var i = 0;
 		for (key in cutKeys) {
 			final recreatedKey = KeyMaker.createKey(this.device, key.sourceKey, this.viewport.unit, this.viewport.gapX, this.viewport.gapY);
 			recreatedKey.pos(this.viewport.unit * key.sourceKey.position[Axis.X], viewport.unit * key.sourceKey.position[Axis.Y]);
 			recreatedKey.component('logic', new viewport.KeyLogic(viewport));
+			cutKeys[i] = recreatedKey;
 			// recreate keyson:
 			this.device.insertKey(recreatedKey.sourceKey);
 			// recreate Ceramic:
 			this.viewport.keycapSet.add(recreatedKey);
+			i++;
 		}
 		super.undo();
 	}
