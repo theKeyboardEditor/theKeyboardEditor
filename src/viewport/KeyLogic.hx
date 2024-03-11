@@ -16,11 +16,9 @@ class KeyLogic extends Entity implements Component {
 	var keycapPosStartX: Float = 0.0;
 	var keycapPosStartY: Float = 0.0;
 
-	public function new(?viewport: viewport.Viewport) {
+	public function new(viewport: viewport.Viewport) {
 		super();
-		if (viewport != null) {
-			this.viewport = viewport;
-		}
+		this.viewport = viewport;
 	}
 
 	function bindAsComponent() {
@@ -65,7 +63,7 @@ class KeyLogic extends Entity implements Component {
 				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.threshold))
 			keycapIsDragged = true;
 		switch (ui.Index.activeMode) {
-			case Edit | Unit | Color | Legend :
+			case Edit | Unit | Color | Legend:
 				// react only on drag event
 				if (keycapIsDragged) {
 					// clicked on a selected keycap?
@@ -125,7 +123,7 @@ class KeyLogic extends Entity implements Component {
 		switch (ui.Index.activeMode) {
 			case Place:
 				viewport.placer.visible = true;
-			case Edit | Unit | Color | Legend :
+			case Edit | Unit | Color | Legend:
 				viewport.selectionBox.visible = false;
 				viewport.placer.size(viewport.unit * viewport.viewScale, viewport.unit * viewport.viewScale);
 				viewport.placerMismatchX = 0;

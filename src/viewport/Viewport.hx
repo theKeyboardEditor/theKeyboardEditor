@@ -125,18 +125,18 @@ class Viewport extends Scene {
 		keycapSet = parseInKeyboard(keyson);
 		this.add(keycapSet);
 
-		//var grid = new Grid();
-		//grid.primaryStep(unit * viewScale);
-		//grid.subStep(placingStep * viewScale);
-		//this.size(grid.width, grid.height);
+		// var grid = new Grid();
+		// grid.primaryStep(unit * viewScale);
+		// grid.subStep(placingStep * viewScale);
+		// this.size(grid.width, grid.height);
 
-		//var gridFilter = new ceramic.Filter();
-		//gridFilter.explicitRender = true;
-		//gridFilter.autoRender = false;
-		//gridFilter.size(grid.width, grid.height);
-		//gridFilter.content.add(grid);
-		//this.add(gridFilter);
-		//gridFilter.render();
+		// var gridFilter = new ceramic.Filter();
+		// gridFilter.explicitRender = true;
+		// gridFilter.autoRender = false;
+		// gridFilter.size(grid.width, grid.height);
+		// gridFilter.content.add(grid);
+		// this.add(gridFilter);
+		// gridFilter.render();
 
 		placer = new Placer();
 		placer.piecesSize = unit * viewScale; // the pieces are not scaled
@@ -144,6 +144,7 @@ class Viewport extends Scene {
 		// anchor has to be aligned to the top left edge or placing is off!
 		placer.anchor(0, 0);
 		placer.depth = 10;
+		placer.component('logic', new PlacerLogic(this));
 		this.add(placer);
 
 		selectionBox = new SelectionBox();
@@ -158,8 +159,7 @@ class Viewport extends Scene {
 	 * Runs every frame
 	 */
 	override public function update(delta: Float) {
-		// TODO: make this.pasue effective again
-		placerUpdate();
+		// TODO: make this.pause effective again
 		inputUpdate(delta);
 		queue.act();
 	}
@@ -170,56 +170,6 @@ class Viewport extends Scene {
 	 */
 	public static inline function coggify(x: Float, cogs: Float): Float {
 		return x - x % cogs;
-	}
-
-	/**
-	 * Runs every frame, used to position the placer
-	 */
-	function placerUpdate() {
-		switch (ui.Index.activeMode) {
-			case Place:
-				this.selectionBox.visible = false;
-				// placerMismatchX = 0;
-				// placerMismatchY = 0;
-				placer.visible = true;
-				final shape = if (CopyBuffer.designatedKey != null) CopyBuffer.designatedKey else "1U";
-				gapX = Std.int((keyson.units[0].keyStep[Axis.X]
-					- keyson.units[0].capSize[Axis.X]) / keyson.units[0].keyStep[Axis.X] * unit * viewScale);
-				gapY = Std.int((keyson.units[0].keyStep[Axis.Y]
-					- keyson.units[0].capSize[Axis.Y]) / keyson.units[0].keyStep[Axis.Y] * unit * viewScale);
-				switch shape {
-					case "ISO":
-						placer.size(1.50 * unit - gapX, 2.00 * unit - gapY);
-					case "ISO Inverted":
-						placer.size(1.50 * unit - gapX, 2.00 * unit - gapY);
-					case "BAE":
-						placerMismatchX = 0.75;
-						placer.size(2.25 * unit - gapX, 2.00 * unit - gapY);
-					case "BAE Inverted":
-						placer.size(2.25 * unit - gapX, 2.00 * unit - gapY);
-					case "XT_2U":
-						placerMismatchX = 1;
-						placer.size(2.00 * unit - gapX, 2.00 * unit - gapY);
-					case "AEK":
-						placerMismatchX = 0;
-						placer.size(1.25 * unit - gapX, 2.00 * unit - gapY);
-					default:
-						if (Math.isNaN(Std.parseFloat(shape)) == false) { // aka it is a number
-							if (shape.split(' ').indexOf("Vertical") != -1)
-								placer.size(unit - gapX, unit * Std.parseFloat(shape) - gapY);
-							else
-								placer.size(unit * Std.parseFloat(shape) - gapX, unit - gapY);
-						}
-				}
-				placerMismatchX = coggify(placer.width / unit / 2 * viewScale, .25);
-				placerMismatchY = coggify(placer.height / unit / 2 * viewScale, .25);
-				placer.x = coggify((screen.pointerX - screenX - this.x - placerMismatchX * unit) / viewScale, placingStep);
-				placer.y = coggify((screen.pointerY - screenY - this.y - placerMismatchY * unit) / viewScale, placingStep);
-				StatusBar.pos(placer.x / unit * viewScale, placer.y / unit * viewScale);
-			default:
-				placer.visible = false;
-		}
-		StatusBar.pos(placer.x, placer.y);
 	}
 
 	/**
