@@ -125,18 +125,18 @@ class Viewport extends Scene {
 		keycapSet = parseInKeyboard(keyson);
 		this.add(keycapSet);
 
-		// var grid = new Grid();
-		// grid.primaryStep(unit * viewScale);
-		// grid.subStep(placingStep * viewScale);
-		// this.size(grid.width, grid.height);
+		var grid = new Grid();
+		grid.primaryStep(unit * viewScale);
+		grid.subStep(placingStep * viewScale);
+		this.size(grid.width, grid.height);
 
-		// var gridFilter = new ceramic.Filter();
-		// gridFilter.explicitRender = true;
-		// gridFilter.autoRender = false;
-		// gridFilter.size(grid.width, grid.height);
-		// gridFilter.content.add(grid);
-		// this.add(gridFilter);
-		// gridFilter.render();
+		var gridFilter = new ceramic.Filter();
+		gridFilter.explicitRender = true;
+		gridFilter.autoRender = false;
+		gridFilter.size(grid.width, grid.height);
+		gridFilter.content.add(grid);
+		this.add(gridFilter);
+		gridFilter.render();
 
 		placer = new Placer();
 		placer.piecesSize = unit * viewScale; // the pieces are not scaled
