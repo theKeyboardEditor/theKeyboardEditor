@@ -136,13 +136,13 @@ class Viewport extends Scene {
 		grid.size(width, height);
 		this.add(grid);
 
-		//var gridFilter = new ceramic.Filter();
-		//gridFilter.explicitRender = true;
-		//gridFilter.autoRender = false;
-		//gridFilter.size(grid.width, grid.height);
-		//gridFilter.content.add(grid);
-		//this.add(gridFilter);
-		//gridFilter.render();
+		// var gridFilter = new ceramic.Filter();
+		// gridFilter.explicitRender = true;
+		// gridFilter.autoRender = false;
+		// gridFilter.size(grid.width, grid.height);
+		// gridFilter.content.add(grid);
+		// this.add(gridFilter);
+		// gridFilter.render();
 
 		placer = new Placer();
 		placer.piecesSize = unit * viewScale; // the pieces are not scaled

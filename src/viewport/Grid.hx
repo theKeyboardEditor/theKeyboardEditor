@@ -8,14 +8,13 @@ import ceramic.Visual;
 
 @:structInit
 class GridProperties {
-	public var fg:Color = Color.WHITE;
-	public var primaryStepX:Float = 100;
-	public var primaryStepY:Float = 100;
-	public var subStepX:Float = 25;
-	public var subStepY:Float = 25;
-	public var maxStepsX:Int = 48;
-	public var maxStepsY:Int = 12;
-
+	public var fg: Color = Color.WHITE;
+	public var primaryStepX: Float = 100;
+	public var primaryStepY: Float = 100;
+	public var subStepX: Float = 25;
+	public var subStepY: Float = 25;
+	public var maxStepsX: Int = 48;
+	public var maxStepsY: Int = 12;
 }
 
 /**
@@ -23,19 +22,20 @@ class GridProperties {
  * It is comprised of boxes made up of pluses and dots
  */
 class Grid extends Layer {
-	static inline final plusSize:Float = 16;
+	static inline final plusSize: Float = 16;
+
 	var repeat: Repeat;
-	
+
 	override public function new(props: GridProperties) {
 		super();
 		var quad = new Visual();
-		
+
 		var plus = createPlus(props.fg);
 		quad.add(plus);
 
 		var qWidth = 0.0;
 		var horizontalDots = new Visual();
-			for (x in 0...3) {
+		for (x in 0...3) {
 			var dot = createDot(props.fg);
 			dot.x = (x * props.subStepX) + props.subStepX;
 			qWidth += dot.width + props.subStepX;
@@ -56,7 +56,7 @@ class Grid extends Layer {
 		quad.height = qHeight;
 		quad.add(verticalDots);
 
-		//this.add(quad);
+		// this.add(quad);
 		repeat = new Repeat();
 		var texture = new ceramic.RenderTexture(qWidth, qHeight);
 		texture.autoRender = true;
@@ -68,12 +68,12 @@ class Grid extends Layer {
 		});
 	}
 
-	//override public function computeContent() {
+	// override public function computeContent() {
 	//	//repeat.size(width, height);
 	//	super.computeContent();
-	//}
+	// }
 
-	inline function createPlus(fg: Color):Visual {
+	inline function createPlus(fg: Color): Visual {
 		var plus = new Visual();
 		plus.size(plusSize, plusSize);
 
