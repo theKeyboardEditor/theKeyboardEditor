@@ -126,13 +126,14 @@ class Viewport extends Scene {
 		this.add(keycapSet);
 
 		var grid = new Grid({
-			fg: ceramic.Color.RED,
+			// TODO make theme color
+			fg: ceramic.Color.ORANGE,
 			primaryStepX: unit * viewScale,
 			primaryStepY: unit * viewScale,
 			subStepX: placingStep * viewScale,
 			subStepY: placingStep * viewScale
 		});
-		grid.depth = 0;
+		grid.depth = -5;
 		grid.size(width, height);
 		this.add(grid);
 
