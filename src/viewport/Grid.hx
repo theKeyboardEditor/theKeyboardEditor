@@ -23,7 +23,7 @@ class GridProperties {
  */
 class Grid extends Layer {
 	static inline final plusSize: Float = 16;
-	static inline final plusRatio: Float = 1/8;
+	static inline final plusRatio: Float = 1 / 8;
 
 	var repeat: Repeat;
 
@@ -73,7 +73,7 @@ class Grid extends Layer {
 	}
 
 	override public function computeContent() {
-		//repeat.size(width, height);
+		// repeat.size(width, height);
 		super.computeContent();
 	}
 
@@ -90,7 +90,7 @@ class Grid extends Layer {
 		plus.add(plusHorizontal);
 
 		var plusVertical = new Quad();
-		plusVertical.size(plusSize  * plusRatio, plusSize);
+		plusVertical.size(plusSize * plusRatio, plusSize);
 		plusVertical.anchor(0.5, 0.5);
 		plusVertical.depth = 0;
 		plusVertical.color = fg;
