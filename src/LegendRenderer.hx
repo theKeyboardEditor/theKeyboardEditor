@@ -14,8 +14,8 @@ class LegendRenderer extends Visual {
 
 	public var border: ceramic.Border;
 	@content public var pivot: viewport.Pivot;
-	var selected: Bool = false;
 
+	var selected: Bool = false;
 
 	// we are in the 1U = 100 units of scale ratio here:
 	public var topX: Float = (100 / 8);
