@@ -22,10 +22,7 @@ class KeyLogic extends Entity implements Component {
 	}
 
 	function bindAsComponent() {
-		var doubleClick = new ceramic.DoubleClick();
-
-//		doubleClick = new DoubleClick();
-//		doubleClick.onDoubleClick(this, handleDoubleClick);
+		final doubleClick = new ceramic.DoubleClick();
 		doubleClick.onDoubleClick(keycap, handleDoubleClick);
 		keycap.component('doubleClick', doubleClick);
 
@@ -56,6 +53,7 @@ class KeyLogic extends Entity implements Component {
 		screen.oncePointerUp(this, (info) -> {
 			keyMouseUp(info, keycap);
 		});
+		trace('Click on Keycap.');
 	}
 
 	/**
