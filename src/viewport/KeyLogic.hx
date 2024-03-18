@@ -205,5 +205,6 @@ class KeyLogic extends Entity implements Component {
 		// igonre if already in Legend-mode
 		// TODO initiate text entry filed for the keycap that received the click:
 		trace('Doubleclick processed.');
+		viewport.indexGui.switchMode(Legend);
 	}
 }

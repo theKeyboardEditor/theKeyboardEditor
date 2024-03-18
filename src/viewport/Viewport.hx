@@ -15,6 +15,7 @@ class Viewport extends Scene {
 	public var screenY: Float = 0;
 
 	public final queue = new ActionQueue();
+	public var indexGui: Null<ui.Index>;
 
 	/**
 	 * This is where we map all of the different events to specific keys
