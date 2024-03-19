@@ -65,6 +65,7 @@ class LegendRenderer extends Visual {
 		legend.color = this.color;
 		legend.pointSize = this.fontSize;
 		legend.depth = 50;
+		this.size(legend.width, legend.height);
 		this.add(legend);
 
 		super.computeContent();
