@@ -15,6 +15,7 @@ class Viewport extends Scene {
 	public var screenY: Float = 0;
 
 	public final queue = new ActionQueue();
+	public var indexGui: Null<ui.Index>;
 
 	/**
 	 * This is where we map all of the different events to specific keys
@@ -194,13 +195,16 @@ class Viewport extends Scene {
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
 				// adding all actions to the keycap entity
 				keycap.component('logic', new KeyLogic(this));
+				// add actions to each legend here
+				for (legend in keycap.legends) {
+					// TODO make it register mouse clicks
+					legend.component('logic', new LegendLogic(this, keycap));
+				}
 				workingSet.add(keycap);
 			}
 		}
 		return workingSet;
 	}
-	// APPLYING DESIGN:
-	// SURFACE ACTIONS
 
 	/**
 	 * Called from any click or the start of the drag

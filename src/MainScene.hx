@@ -151,6 +151,7 @@ class MainScene extends Scene {
 	public function openViewport(keyboard: keyson.Keyson) {
 		var viewport = new viewport.Viewport();
 		viewport.keyson = keyboard;
+		viewport.indexGui = gui;
 
 		var container = new ui.ViewportContainer();
 		container.styleString = "width: 100%; height: 100%; background-color: #282828;";

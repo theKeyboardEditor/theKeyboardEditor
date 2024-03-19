@@ -7,12 +7,12 @@ import haxe.ui.events.UIEvent;
 <hbox width="224px" height="100%" styleName="left-box">
 	<modeselector id="modeSelector" height="100%" />
 	<stack width="160px" height="100%" id="sidebars">
-		<place />
+		<place id="place-sidebar" />
 		<edit id="edit-sidebar" />
-		<unit />
-		<legend />
+		<unit id="unit-sidebar"/>
+		<legend id="legend-sidebar" />
 		<color id="color-sidebar" />
-		<present />
+		<present id="present-sidebar" />
 	</stack>
 </hbox>
 ')

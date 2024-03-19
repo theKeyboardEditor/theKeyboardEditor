@@ -17,6 +17,11 @@ class Index extends VBox {
 
 	public var mainScene: MainScene;
 
+	public function switchMode(mode: Mode) {
+		var modes = cast(sidebarsStack.getComponentAt(sidebarsStack.selectedIndex), ui.SidebarCollection).modeSelector.modes;
+		modes.selectedButton = modes.findComponent(mode);
+	}
+
 	@:bind(tabs, UIEvent.CHANGE)
 	function onTabChange(_) {
 		sidebarsStack.selectedIndex = tabs.pageIndex;
