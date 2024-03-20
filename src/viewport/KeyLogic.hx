@@ -66,8 +66,8 @@ class KeyLogic extends Entity implements Component {
 			keycapIsDragged = true;
 		switch (ui.Index.activeMode) {
 			case Edit | Unit | Color | Legend:
-				// react only on drag event
-				if (keycapIsDragged) {
+				// react only on drag event and only if not in Legend mode
+				if (keycapIsDragged && (ui.Index.activeMode != Legend) ) {
 					// clicked on a selected keycap?
 					if (viewport.selectedKeycaps.contains(keycap)) {
 						// only ever try drag if any selection exists
@@ -87,7 +87,11 @@ class KeyLogic extends Entity implements Component {
 					} else {
 						viewport.selectionBox.visible = keycapIsDragged;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							if (ui.Index.activeMode == Legend)
+								//clearLegendsSelection(true);
+								viewport.clearSelectedLegends(true);
+							else
+								viewport.clearSelection(true);
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -106,8 +110,16 @@ class KeyLogic extends Entity implements Component {
 								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
-										key.select();
-										viewport.selectedKeycaps.unshift(key);
+										// in Legend mode we only deal with legends
+										if (ui.Index.activeMode == Legend) {
+											for (label in key.legends) {
+												label.select();
+												viewport.selectedKeycapLegends.unshift(label);
+											}
+										} else {
+											key.select();
+											viewport.selectedKeycaps.unshift(key);
+										}
 									}
 								}
 							}
@@ -135,12 +147,16 @@ class KeyLogic extends Entity implements Component {
 				if (!keycapIsDragged) {
 					if (app.input.keyPressed(LCTRL) || app.input.keyPressed(RCTRL)) {
 						// ctrl for deselect
+						for (label in keycap.legends) {
+							label.deselect();
+							viewport.selectedKeycapLegends.remove(label);
+						}
 						viewport.selectedKeycaps.remove(keycap);
 						keycap.deselect();
 					} else {
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							// CLEAR if no SHIFT key is pressed
-							viewport.clearSelection(true);
+							viewport.clearLegendsSelection(true);
 						}
 						// put last selected keycap to position [0] in keycaps
 						viewport.selectedKeycaps.unshift(keycap);
@@ -164,7 +180,11 @@ class KeyLogic extends Entity implements Component {
 						// DRAGGING outside a selected keycap results in a rectangle selection
 						viewport.selectionBox.visible = false;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							if (ui.Index.activeMode == Legend)
+								//clearLegendsSelection(true);
+								viewport.clearSelectedLegends(true);
+							else
+								viewport.clearSelection(true);
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -183,8 +203,15 @@ class KeyLogic extends Entity implements Component {
 								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
-										key.select();
-										viewport.selectedKeycaps.unshift(key);
+										if (ui.Index.activeMode == Legend) {
+											for (label in key.legends) {
+												label.select();
+												viewport.selectedKeycapLegends.unshift(label);
+											}
+										} else {
+											key.select();
+											viewport.selectedKeycaps.unshift(key);
+										}
 									}
 								}
 							}

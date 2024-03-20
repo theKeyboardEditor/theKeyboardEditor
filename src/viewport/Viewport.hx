@@ -235,6 +235,7 @@ class Viewport extends Scene {
 
 		// Stop dragging when pointer is released
 		this.oncePointerUp(this, viewportMouseUp);
+		trace('Click on Deskmat.');
 	}
 	/*
 	 * update for the duration of the drag
@@ -267,7 +268,11 @@ class Viewport extends Scene {
 		// only during a selection drag: update selected keys (replace selection)
 		if (this.selectionBox.visible == true && worksurfaceDrag && ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
 			if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-				clearSelection(true);
+				if (ui.Index.activeMode == Legend)
+					//clearLegendsSelection(true);
+					clearSelectedLegends(true);
+				else
+					clearSelection(true);
 			}
 			final boxX = this.selectionBox.x;
 			final boxY = this.selectionBox.y;
@@ -286,6 +291,10 @@ class Viewport extends Scene {
 					final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
 					for (key in keysOnUnit) {
 						if (key.sourceKey == k) {
+							for (label in key.legends) {
+								label.select();
+								selectedKeycapLegends.unshift(label);
+							}
 							key.select();
 							selectedKeycaps.unshift(key);
 						}
@@ -316,9 +325,13 @@ class Viewport extends Scene {
 				gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
 				// action to place the key
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
-			case Edit | Unit | Color | Present:
+			case Edit | Unit | Color | Present | Legend:
 				if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-					clearSelection(true);
+					if (ui.Index.activeMode == Legend)
+						//clearLegendsSelection(true);
+						clearSelectedLegends(true);
+					else
+						clearSelection(true);
 				}
 				// this.selectionBox.visible = false;
 				final boxX = this.selectionBox.x;
@@ -339,6 +352,10 @@ class Viewport extends Scene {
 						final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
 						for (key in keysOnUnit) {
 							if (key.sourceKey == k) {
+								for (label in key.legends) {
+									label.select();
+									selectedKeycapLegends.unshift(label);
+								}
 								key.select();
 								selectedKeycaps.unshift(key);
 							}
@@ -359,7 +376,7 @@ class Viewport extends Scene {
 			selectedKeycaps = [];
 	}
 
-	// Select all
+	// Select all keycaps
 	public function selectEverything() {
 		selectedKeycaps = [];
 		final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
@@ -368,6 +385,47 @@ class Viewport extends Scene {
 			keycap.select();
 		}
 		// the result is stored in selectedKeycaps
+	}
+
+	// Clear selection and legends
+	public function clearLegendsSelection(deep: Bool) {
+		// deep clear clears the selectedKeycaps too
+		// sometimes this is undesirable hence the switch
+		for (i in 0...selectedKeycaps.length) {
+			for (label in selectedKeycaps[i].legends) {
+				label.deselect();
+			}
+			selectedKeycaps[i].deselect();
+		}
+		if (deep)
+			selectedKeycaps = [];
+			selectedKeycapLegends = [];
+	}
+
+	// Clear selected legends
+	public function clearSelectedLegends(deep: Bool) {
+		// deep clear clears the selectedKeycaps too
+		// sometimes this is undesirable hence the switch
+		for (i in 0...selectedKeycaps.length) {
+			for (label in selectedKeycaps[i].legends) {
+				label.deselect();
+			}
+		}
+		if (deep)
+			selectedKeycapLegends = [];
+	}
+
+	// Select all with legends
+	public function selectLegendsEverything() {
+		selectedKeycaps = [];
+		final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+		for (keycap in keysOnUnit) {
+			selectedKeycaps.unshift(keycap);
+			keycap.select();
+			for (label in keycap.legends) {
+				label.select();
+			}
+		}
 	}
 
 	// Reset scale and viewport position

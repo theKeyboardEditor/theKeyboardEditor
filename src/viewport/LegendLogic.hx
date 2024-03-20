@@ -56,7 +56,7 @@ class LegendLogic extends Entity implements Component {
 		screen.oncePointerUp(this, (info) -> {
 			legendMouseUp(info, legend);
 		});
-		trace(Reflect.fields(legend));
+		trace('Click on Legend.');
 	}
 
 	/**
@@ -91,7 +91,8 @@ class LegendLogic extends Entity implements Component {
 					} else {
 						viewport.selectionBox.visible = legendIsDragged;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							// We don't intentionally deselect keycaps in Legend mode
+							viewport.clearSelectedLegends(true);
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -111,8 +112,12 @@ class LegendLogic extends Entity implements Component {
 								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
-										key.select();
-										viewport.selectedKeycaps.unshift(key);
+										for (label in key.legends) {
+											label.select();
+											viewport.selectedKeycapLegends.unshift(label);
+										}
+										//key.select();
+										//viewport.selectedKeycaps.unshift(key);
 									}
 								}
 							}
@@ -138,15 +143,15 @@ class LegendLogic extends Entity implements Component {
 				if (!legendIsDragged) {
 					if (app.input.keyPressed(LCTRL) || app.input.keyPressed(RCTRL)) {
 						// ctrl for deselect
-						viewport.selectedKeycaps.remove(keycap);
+						viewport.selectedKeycapLegends.remove(legend);
 						legend.deselect();
 					} else {
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							// CLEAR if no SHIFT key is pressed
-							viewport.clearSelection(true);
+							viewport.clearSelectedLegends(true);
 						}
 						// put last selected legend to position [0] in keycaps
-						viewport.selectedKeycaps.unshift(keycap);
+						viewport.selectedKeycapLegends.unshift(legend);
 						legend.select();
 					}
 				} else {
@@ -167,7 +172,7 @@ class LegendLogic extends Entity implements Component {
 						// DRAGGING outside a selected legend results in a rectangle selection
 						viewport.selectionBox.visible = false;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							viewport.clearSelectedLegends(true);
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -186,6 +191,10 @@ class LegendLogic extends Entity implements Component {
 								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
+										for (label in key.legends) {
+											label.select();
+											viewport.selectedKeycapLegends.unshift(label);
+										}
 										key.select();
 										viewport.selectedKeycaps.unshift(key);
 									}
