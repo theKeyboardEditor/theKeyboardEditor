@@ -42,7 +42,6 @@ class LegendRenderer extends Visual {
 		}
 		this.border = new Border();
 		this.border.pos(0, 0);
-		this.border.size(this.width, this.height);
 		this.border.borderColor = 0xFFB13E53; // sweetie-16 red (UI theme 2ndary accent color!)
 		this.border.borderPosition = MIDDLE;
 		this.border.borderSize = 2;
@@ -67,6 +66,8 @@ class LegendRenderer extends Visual {
 		legend.depth = 50;
 		this.size(legend.width, legend.height);
 		this.add(legend);
+		// only once all is set and rendered we give the border a size
+		this.border.size(this.width, this.height);
 
 		super.computeContent();
 	}

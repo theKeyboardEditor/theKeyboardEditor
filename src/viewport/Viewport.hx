@@ -46,6 +46,7 @@ class Viewport extends Scene {
 	public var keyboardUnit: keyson.Keyboard;
 
 	public var selectedKeycaps: Array<KeyRenderer> = [];
+	public var selectedKeycapLegends: Array<LegendRenderer> = [];
 	public var threshold: Float = 4;
 
 	var clickIsDrag = false;

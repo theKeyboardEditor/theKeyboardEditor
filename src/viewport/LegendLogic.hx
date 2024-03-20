@@ -20,6 +20,7 @@ class LegendLogic extends Entity implements Component {
 	public function new(viewport: viewport.Viewport, keycap: KeyRenderer) {
 		super();
 		this.viewport = viewport;
+		// TODO see this keycap does belong to the actual legned that brought us here!
 		this.keycap = keycap;
 	}
 
@@ -55,7 +56,7 @@ class LegendLogic extends Entity implements Component {
 		screen.oncePointerUp(this, (info) -> {
 			legendMouseUp(info, legend);
 		});
-		trace('Click on Legend.');
+		trace(Reflect.fields(legend));
 	}
 
 	/**
@@ -72,20 +73,19 @@ class LegendLogic extends Entity implements Component {
 				if (legendIsDragged) {
 					// clicked on a selected keycap?
 					// TODO find out the right keycap!
-					if (viewport.selectedKeycaps.contains(keycap)) {
+					if ((viewport.selectedKeycaps.contains(keycap)) && (viewport.selectedKeycapLegends.contains(legend))) {
 						// only ever try drag if any selection exists
-						// TODO make this work for legends!
-						if (viewport.selectedKeycaps.length > 0) {
+						if ((viewport.selectedKeycaps.length > 0) && (viewport.selectedKeycapLegends.length > 0)) {
 							// note we reference the Array member [0] for move vector!
-							final xStep = Viewport.coggify(legendPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
-								Viewport.placingStep)
-								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x;
-							final yStep = Viewport.coggify(legendPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
-								Viewport.placingStep)
-								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y;
+							final xStep = (legendPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale)
+								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].x;
+							final yStep = (legendPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale)
+								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].y;
 							for (key in viewport.selectedKeycaps) {
-								key.x += xStep;
-								key.y += yStep;
+								for (label in viewport.selectedKeycapLegends) {
+									label.x += xStep;
+									label.y += yStep;
+								}
 							}
 						}
 					} else {
@@ -101,6 +101,7 @@ class LegendLogic extends Entity implements Component {
 						// TODO implement CTRL deselection processing
 						for (k in viewport.keyson.units[viewport.currentUnit].keys) {
 							// calculate position and size of a body:
+							// TODO make this work for legends!
 							final body = viewport.keyBody(k);
 							final keyX = body.x;
 							final keyY = body.y;
@@ -205,7 +206,7 @@ class LegendLogic extends Entity implements Component {
 	}
 	public function handleDoubleClick(): Void {
 		// TODO initiate text entry filed for the legend that received the click:
-		trace('Doubleclick processed.');
+		trace('Doubleclick on legend (!) processed.');
 		viewport.indexGui.switchMode(Legend);
 	}
 }
