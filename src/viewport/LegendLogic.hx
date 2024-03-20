@@ -165,7 +165,7 @@ class LegendLogic extends Entity implements Component {
 						// only try to move if  x and y is not zero and we have any selected keys to move at all
 						// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
 						if (viewport.selectedKeycaps.length > 0) {
-							viewport.queue.push(new actions.MoveKeys(viewport, viewport.selectedKeycaps, x / viewport.viewScale,
+							viewport.queue.push(new actions.MoveLabels(viewport, viewport.selectedKeycapLegends, x / viewport.viewScale,
 								y / viewport.viewScale));
 						}
 					} else {

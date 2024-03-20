@@ -424,6 +424,7 @@ class Viewport extends Scene {
 			keycap.select();
 			for (label in keycap.legends) {
 				label.select();
+				selectedKeycapLegends.unshift(label);
 			}
 		}
 	}
