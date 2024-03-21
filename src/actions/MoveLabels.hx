@@ -25,8 +25,6 @@ class MoveLabels extends Action {
 				for (key in unit.keys) {
 					for (label in key.legends) {
 						if (member.sourceLegend == label) {
-							// TODO the math is off!
-							trace('Offset: ${this.deltaX}/${this.deltaY}');
 							label.position[Axis.X] += this.deltaX;
 							label.position[Axis.Y] += this.deltaY;
 							if (type == Redo) {
