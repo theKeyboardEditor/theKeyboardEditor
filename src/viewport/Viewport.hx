@@ -269,7 +269,7 @@ class Viewport extends Scene {
 		if (this.selectionBox.visible == true && worksurfaceDrag && ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
 			if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 				if (ui.Index.activeMode == Legend)
-					//clearLegendsSelection(true);
+					// clearLegendsSelection(true);
 					clearSelectedLegends(true);
 				else
 					clearSelection(true);
@@ -328,7 +328,7 @@ class Viewport extends Scene {
 			case Edit | Unit | Color | Present | Legend:
 				if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 					if (ui.Index.activeMode == Legend)
-						//clearLegendsSelection(true);
+						// clearLegendsSelection(true);
 						clearSelectedLegends(true);
 					else
 						clearSelection(true);
@@ -399,7 +399,7 @@ class Viewport extends Scene {
 		}
 		if (deep)
 			selectedKeycaps = [];
-			selectedKeycapLegends = [];
+		selectedKeycapLegends = [];
 	}
 
 	// Clear selected legends

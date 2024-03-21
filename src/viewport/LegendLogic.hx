@@ -77,9 +77,11 @@ class LegendLogic extends Entity implements Component {
 						// only ever try drag if any selection exists
 						if ((viewport.selectedKeycaps.length > 0) && (viewport.selectedKeycapLegends.length > 0)) {
 							// note we reference the Array member [0] for move vector!
-							final xStep = (legendPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale)
+							final xStep = (legendPosStartX
+								+ (screen.pointerX - viewport.pointerStartX) / viewport.viewScale)
 								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].x;
-							final yStep = (legendPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale)
+							final yStep = (legendPosStartY
+								+ (screen.pointerY - viewport.pointerStartY) / viewport.viewScale)
 								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].y;
 							for (key in viewport.selectedKeycaps) {
 								for (label in viewport.selectedKeycapLegends) {
@@ -150,7 +152,7 @@ class LegendLogic extends Entity implements Component {
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							// CLEAR if no SHIFT key is pressed
 							viewport.clearLegendsSelection(true);
-							//viewport.clearSelectedLegends(true);
+							// viewport.clearSelectedLegends(true);
 						}
 						// put last selected legend to position [0] in keycaps
 						viewport.selectedKeycaps.unshift(keycap);
@@ -164,8 +166,10 @@ class LegendLogic extends Entity implements Component {
 						// only ever try drag if any selection exists
 						if ((viewport.selectedKeycaps.length > 0) && (viewport.selectedKeycapLegends.length > 0)) {
 							// note we reference the Array member [0] for move vector!
-							var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].x - legendPosStartX) * viewport.viewScale;
-							var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].y - legendPosStartY) * viewport.viewScale;
+							var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].x
+								- legendPosStartX) * viewport.viewScale;
+							var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].y
+								- legendPosStartY) * viewport.viewScale;
 							// only try to move if  x and y is not zero and we have any selected keys to move at all
 							// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
 							if (viewport.selectedKeycaps.length > 0) {
