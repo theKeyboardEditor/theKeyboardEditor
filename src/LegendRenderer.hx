@@ -11,6 +11,7 @@ class LegendRenderer extends Visual {
 	//	public var legendFont: String;  // TODO custom fonts
 	@content public var fontSize: Float;
 	@content public var content: String = '|Empty|';
+	@content public var sourceLegend: keyson.Keyson.KeyLegend;
 
 	public var border: ceramic.Border;
 	@content public var pivot: viewport.Pivot;

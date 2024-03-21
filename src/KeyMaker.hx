@@ -125,6 +125,7 @@ class KeyMaker {
 				stepedKey.topColor = keyColor;
 				stepedKey.bottomColor = keyShadow;
 				stepedKey.sourceKey = k;
+
 				keyShape = stepedKey;
 			} else {
 				keyShape = new keys.RectangularKey();
@@ -145,6 +146,7 @@ class KeyMaker {
 			if (offsetSouthX != null)
 				enterShaped.offsetSouthX = offsetSouthX;
 			enterShaped.sourceKey = k;
+
 			keyShape = enterShaped;
 		}
 		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit);
@@ -183,6 +185,7 @@ class KeyMaker {
 			}
 			symbol.pos(legendOffsetX + symbol.topX, legendOffsetY + symbol.topY);
 			symbol.depth = 50;
+			symbol.sourceLegend = l;
 
 			keyLegends.push(symbol);
 		}

@@ -166,10 +166,8 @@ class KeyLogic extends Entity implements Component {
 					// DRAGGING
 					//  the selected (if any) keys and the dragg event happened on a selected key
 					if (viewport.selectedKeycaps.length > 0 && viewport.selectedKeycaps.contains(keycap)) {
-						var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x
-							- keycapPosStartX) / viewport.unit * viewport.viewScale;
-						var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y
-							- keycapPosStartY) / viewport.unit * viewport.viewScale;
+						var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x - keycapPosStartX) / viewport.unit * viewport.viewScale;
+						var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y - keycapPosStartY) / viewport.unit * viewport.viewScale;
 						// only try to move if  x and y is not zero and we have any selected keys to move at all
 						// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
 						if (viewport.selectedKeycaps.length > 0) {

@@ -160,17 +160,18 @@ class LegendLogic extends Entity implements Component {
 					}
 				} else {
 					// DRAGGING
-					//  the selected (if any) keys and the dragg event happened on a selected key
-					if (viewport.selectedKeycaps.length > 0 && viewport.selectedKeycaps.contains(keycap)) {
-						var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x
-							- legendPosStartX) / viewport.unit * viewport.viewScale;
-						var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y
-							- legendPosStartY) / viewport.unit * viewport.viewScale;
-						// only try to move if  x and y is not zero and we have any selected keys to move at all
-						// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
-						if (viewport.selectedKeycaps.length > 0) {
-							viewport.queue.push(new actions.MoveLabels(viewport, viewport.selectedKeycapLegends, x / viewport.viewScale,
-								y / viewport.viewScale));
+					if ((viewport.selectedKeycaps.contains(keycap)) && (viewport.selectedKeycapLegends.contains(legend))) {
+						// only ever try drag if any selection exists
+						if ((viewport.selectedKeycaps.length > 0) && (viewport.selectedKeycapLegends.length > 0)) {
+							// note we reference the Array member [0] for move vector!
+							var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].x - legendPosStartX) * viewport.viewScale;
+							var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].y - legendPosStartY) * viewport.viewScale;
+							// only try to move if  x and y is not zero and we have any selected keys to move at all
+							// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
+							if (viewport.selectedKeycaps.length > 0) {
+								viewport.queue.push(new actions.MoveLabels(viewport, viewport.selectedKeycapLegends, x / viewport.viewScale,
+									y / viewport.viewScale));
+							}
 						}
 					} else {
 						// DRAGGING outside a selected legend results in a rectangle selection
