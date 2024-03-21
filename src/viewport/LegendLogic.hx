@@ -116,8 +116,9 @@ class LegendLogic extends Entity implements Component {
 											label.select();
 											viewport.selectedKeycapLegends.unshift(label);
 										}
-										//key.select();
-										//viewport.selectedKeycaps.unshift(key);
+										// Keep all selected legends keycaps selected
+										key.select();
+										viewport.selectedKeycaps.unshift(key);
 									}
 								}
 							}
@@ -148,9 +149,12 @@ class LegendLogic extends Entity implements Component {
 					} else {
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							// CLEAR if no SHIFT key is pressed
-							viewport.clearSelectedLegends(true);
+							viewport.clearLegendsSelection(true);
+							//viewport.clearSelectedLegends(true);
 						}
 						// put last selected legend to position [0] in keycaps
+						viewport.selectedKeycaps.unshift(keycap);
+						keycap.select();
 						viewport.selectedKeycapLegends.unshift(legend);
 						legend.select();
 					}
