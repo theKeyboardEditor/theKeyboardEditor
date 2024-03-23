@@ -85,8 +85,9 @@ class LegendLogic extends Entity implements Component {
 								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].y;
 							for (key in viewport.selectedKeycaps) {
 								for (label in viewport.selectedKeycapLegends) {
-									label.x += xStep;
-									label.y += yStep;
+									//TODO we will move to snap to corners and midways of legend clip container rectangle
+									//label.x += xStep;
+									//label.y += yStep;
 								}
 							}
 						}
@@ -173,8 +174,9 @@ class LegendLogic extends Entity implements Component {
 							// only try to move if  x and y is not zero and we have any selected keys to move at all
 							// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
 							if (viewport.selectedKeycaps.length > 0) {
-								viewport.queue.push(new actions.MoveLabels(viewport, viewport.selectedKeycapLegends, x / viewport.viewScale,
-									y / viewport.viewScale));
+								//TODO we will move to snap to corners and midways of legend clip container rectangle
+								// viewport.queue.push(new actions.MoveLabels(viewport, viewport.selectedKeycapLegends, x / viewport.viewScale,
+									//y / viewport.viewScale));
 							}
 						}
 					} else {
@@ -224,7 +226,7 @@ class LegendLogic extends Entity implements Component {
 	}
 	public function handleDoubleClick(): Void {
 		// TODO initiate text entry filed for the legend that received the click:
-		trace('Doubleclick on legend (!) processed.');
+		trace('Doubleclick on legend processed.');
 		viewport.indexGui.switchMode(Legend);
 	}
 }
