@@ -20,6 +20,7 @@ class LegendLogic extends Entity implements Component {
 	public function new(viewport: viewport.Viewport, keycap: KeyRenderer) {
 		super();
 		this.viewport = viewport;
+		// TODO see this keycap does belong to the actual legned that brought us here!
 		this.keycap = keycap;
 	}
 
@@ -72,26 +73,29 @@ class LegendLogic extends Entity implements Component {
 				if (legendIsDragged) {
 					// clicked on a selected keycap?
 					// TODO find out the right keycap!
-					if (viewport.selectedKeycaps.contains(keycap)) {
+					if ((viewport.selectedKeycaps.contains(keycap)) && (viewport.selectedKeycapLegends.contains(legend))) {
 						// only ever try drag if any selection exists
-						// TODO make this work for legends!
-						if (viewport.selectedKeycaps.length > 0) {
+						if ((viewport.selectedKeycaps.length > 0) && (viewport.selectedKeycapLegends.length > 0)) {
 							// note we reference the Array member [0] for move vector!
-							final xStep = Viewport.coggify(legendPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
-								Viewport.placingStep)
-								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x;
-							final yStep = Viewport.coggify(legendPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
-								Viewport.placingStep)
-								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y;
+							final xStep = (legendPosStartX
+								+ (screen.pointerX - viewport.pointerStartX) / viewport.viewScale)
+								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].x;
+							final yStep = (legendPosStartY
+								+ (screen.pointerY - viewport.pointerStartY) / viewport.viewScale)
+								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].y;
 							for (key in viewport.selectedKeycaps) {
-								key.x += xStep;
-								key.y += yStep;
+								for (label in viewport.selectedKeycapLegends) {
+									//TODO we will move to snap to corners and midways of legend clip container rectangle
+									//label.x += xStep;
+									//label.y += yStep;
+								}
 							}
 						}
 					} else {
 						viewport.selectionBox.visible = legendIsDragged;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							// We don't intentionally deselect keycaps in Legend mode
+							viewport.clearSelectedLegends(true);
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -101,6 +105,7 @@ class LegendLogic extends Entity implements Component {
 						// TODO implement CTRL deselection processing
 						for (k in viewport.keyson.units[viewport.currentUnit].keys) {
 							// calculate position and size of a body:
+							// TODO make this work for legends!
 							final body = viewport.keyBody(k);
 							final keyX = body.x;
 							final keyY = body.y;
@@ -110,6 +115,11 @@ class LegendLogic extends Entity implements Component {
 								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
+										for (label in key.legends) {
+											label.select();
+											viewport.selectedKeycapLegends.unshift(label);
+										}
+										// Keep all selected legends keycaps selected
 										key.select();
 										viewport.selectedKeycaps.unshift(key);
 									}
@@ -137,36 +147,43 @@ class LegendLogic extends Entity implements Component {
 				if (!legendIsDragged) {
 					if (app.input.keyPressed(LCTRL) || app.input.keyPressed(RCTRL)) {
 						// ctrl for deselect
-						viewport.selectedKeycaps.remove(keycap);
+						viewport.selectedKeycapLegends.remove(legend);
 						legend.deselect();
 					} else {
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							// CLEAR if no SHIFT key is pressed
-							viewport.clearSelection(true);
+							viewport.clearLegendsSelection(true);
+							// viewport.clearSelectedLegends(true);
 						}
 						// put last selected legend to position [0] in keycaps
 						viewport.selectedKeycaps.unshift(keycap);
+						keycap.select();
+						viewport.selectedKeycapLegends.unshift(legend);
 						legend.select();
 					}
 				} else {
 					// DRAGGING
-					//  the selected (if any) keys and the dragg event happened on a selected key
-					if (viewport.selectedKeycaps.length > 0 && viewport.selectedKeycaps.contains(keycap)) {
-						var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x
-							- legendPosStartX) / viewport.unit * viewport.viewScale;
-						var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y
-							- legendPosStartY) / viewport.unit * viewport.viewScale;
-						// only try to move if  x and y is not zero and we have any selected keys to move at all
-						// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
-						if (viewport.selectedKeycaps.length > 0) {
-							viewport.queue.push(new actions.MoveKeys(viewport, viewport.selectedKeycaps, x / viewport.viewScale,
-								y / viewport.viewScale));
+					if ((viewport.selectedKeycaps.contains(keycap)) && (viewport.selectedKeycapLegends.contains(legend))) {
+						// only ever try drag if any selection exists
+						if ((viewport.selectedKeycaps.length > 0) && (viewport.selectedKeycapLegends.length > 0)) {
+							// note we reference the Array member [0] for move vector!
+							var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].x
+								- legendPosStartX) * viewport.viewScale;
+							var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].legends[viewport.selectedKeycapLegends.indexOf(legend)].y
+								- legendPosStartY) * viewport.viewScale;
+							// only try to move if  x and y is not zero and we have any selected keys to move at all
+							// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
+							if (viewport.selectedKeycaps.length > 0) {
+								//TODO we will move to snap to corners and midways of legend clip container rectangle
+								// viewport.queue.push(new actions.MoveLabels(viewport, viewport.selectedKeycapLegends, x / viewport.viewScale,
+									//y / viewport.viewScale));
+							}
 						}
 					} else {
 						// DRAGGING outside a selected legend results in a rectangle selection
 						viewport.selectionBox.visible = false;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							viewport.clearSelectedLegends(true);
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -185,6 +202,10 @@ class LegendLogic extends Entity implements Component {
 								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
+										for (label in key.legends) {
+											label.select();
+											viewport.selectedKeycapLegends.unshift(label);
+										}
 										key.select();
 										viewport.selectedKeycaps.unshift(key);
 									}
@@ -205,7 +226,7 @@ class LegendLogic extends Entity implements Component {
 	}
 	public function handleDoubleClick(): Void {
 		// TODO initiate text entry filed for the legend that received the click:
-		trace('Doubleclick processed.');
+		trace('Doubleclick on legend processed.');
 		viewport.indexGui.switchMode(Legend);
 	}
 }
