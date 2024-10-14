@@ -47,6 +47,10 @@
 }
 
 /* Sidebars */
+.left-box {
+	spacing: 0;
+}
+
 #color-sidebar button:down, #place-sidebar button:down {
 	border: 2px solid $accent-color;
 }
