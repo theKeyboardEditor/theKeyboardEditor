@@ -12,7 +12,7 @@ class KeyMaker {
 	/**
 	 * Create a complete keyShape with all its belonging features
 	 */
-	public static function createKey(keyboard: Keyboard, k: Key, unit: Float, gapX: Int, gapY: Int, ?color: Color): KeyRenderer {
+	public static function createKey(keyboard: Keyboard, k: Key, unit: Float, gapX: Int, gapY: Int, ?color: Color): Keycap {
 		var width: Float;
 		var height: Float;
 
@@ -33,7 +33,7 @@ class KeyMaker {
 		final keyColor: Color = Std.parseInt(k.color) ?? color ?? Color.WHITE;
 		final keyShadow: Color = getKeyShadow(keyColor);
 
-		var keyShape: KeyRenderer;
+		var keyShape: Keycap;
 
 		for (t in ["BAE", "ISO", "XT_2U", "AEK"]) { // the special shape cases
 			if (k.shape.split(' ').indexOf(t) != -1) { // if shape found found go here
@@ -147,7 +147,7 @@ class KeyMaker {
 			enterShaped.sourceKey = k;
 			keyShape = enterShaped;
 		}
-		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit);
+		var keyLegends: Array<Legend> = KeyMaker.createLegend(keyboard, k, unit);
 		for (legend in keyLegends) {
 			keyShape.add(legend);
 		}
@@ -159,15 +159,15 @@ class KeyMaker {
 	/**
 	 * Create all legends on a key
 	 */
-	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Float): Array<LegendRenderer> {
-		var keyLegends: Array<LegendRenderer> = [];
+	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Float): Array<Legend> {
+		var keyLegends: Array<Legend> = [];
 		var legendOffsetX: Float;
 		var legendOffsetY: Float;
 
 		for (l in k.legends) {
 			var currentLegendColor = Std.parseInt(l.color) ?? Std.parseInt(keyboard.defaults.legendColor) ?? Color.GRAY;
 
-			var symbol = new LegendRenderer();
+			var symbol = new Legend();
 			symbol.content = l.legend;
 			symbol.color = currentLegendColor;
 

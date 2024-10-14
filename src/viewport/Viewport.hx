@@ -42,13 +42,11 @@ class Viewport extends Scene {
 	/**
 	 * Stuff that upsets logo but fire-h0und refuses to remove
 	 */
-	public var currentUnit: Int = 0;
+	public var focusedUnit: Int = 0;
 	public var keyboardUnit: keyson.Keyboard;
 
-	public var selectedKeycaps: Array<KeyRenderer> = [];
-	public var threshold: Float = 4;
-
-	var clickIsDrag = false;
+	public var selectedKeycaps: Array<Keycap> = [];
+	public var dragThreshold: Float = 4;
 
 	var worksurfaceDrag: Bool = false;
 	var worksurfaceLMB: Bool = false;
@@ -61,7 +59,7 @@ class Viewport extends Scene {
 	public var gapY: Int;
 
 	// Viewport scale (default is 1.00 for 100%)
-	public var viewScale: Float = 1.0; // tracking of the view scale
+	public var viewScale: Float = 1.0;
 
 	public inline static final placingStep: Float = Std.int(100 / 4);
 
@@ -74,6 +72,10 @@ class Viewport extends Scene {
 		// Here we account only for events that happen over this Viewport
 		this.onPointerDown(this, viewportMouseDown);
 	}
+
+	/**
+	 * Ran every frame, checks for input
+	 */
 	public function inputUpdate(delta: Float) {
 		if (!active)
 			return;
@@ -103,16 +105,10 @@ class Viewport extends Scene {
 		if (inputMap.pressed(DELETE_SELECTED)) {
 			// TODO determine actually selected keyboard unit:
 			if (selectedKeycaps.length > 0) {
-				// ignore any faux allarms
-				keyboardUnit = keyson.units[currentUnit];
-				// they remain selected after deletion and it's eery! D:
-				clearSelection(false);
+				keyboardUnit = keyson.units[focusedUnit];
 				queue.push(new actions.DeleteKeys(this, keyboardUnit, selectedKeycaps));
-				// delayed selection clearing
-				selectedKeycaps = [];
+				clearSelection();
 			}
-			// we'll just pretend there are no rebounces on delete key ;)
-			// (but there are 2-3!)
 		}
 		if (inputMap.pressed(HOME)) {
 			reset();
@@ -190,7 +186,7 @@ class Viewport extends Scene {
 			gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit);
 
 			for (key in keyboardUnit.keys) {
-				final keycap: KeyRenderer = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY,
+				final keycap: Keycap = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY,
 					Std.parseInt(keyboardUnit.defaults.keyColor));
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
 				// adding all actions to the keycap entity
@@ -239,9 +235,9 @@ class Viewport extends Scene {
 	 * update for the duration of the drag
 	 */
 	function viewportMouseMove(info: TouchInfo) {
-		// TODO make drag true only certain threshold is reached (2-4 pixels)
-		if (threshold != -1
-			&& (Math.abs(screen.pointerX - pointerStartX) > threshold || Math.abs(screen.pointerY - pointerStartY) > threshold))
+		// TODO make drag true only when certain dragThreshold is reached (2-4 pixels)
+		if (dragThreshold != -1
+			&& (Math.abs(screen.pointerX - pointerStartX) > dragThreshold || Math.abs(screen.pointerY - pointerStartY) > dragThreshold))
 			worksurfaceDrag = worksurfaceLMB;
 		// we start showing on drag
 		this.selectionBox.visible = worksurfaceDrag;
@@ -266,7 +262,7 @@ class Viewport extends Scene {
 		// only during a selection drag: update selected keys (replace selection)
 		if (this.selectionBox.visible == true && worksurfaceDrag && ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
 			if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-				clearSelection(true);
+				clearSelection();
 			}
 			final boxX = this.selectionBox.x;
 			final boxY = this.selectionBox.y;
@@ -274,15 +270,15 @@ class Viewport extends Scene {
 			final boxHeight = this.selectionBox.height;
 
 			// TODO implement CTRL deselection processing
-			for (k in keyson.units[currentUnit].keys) {
+			for (k in keyson.units[focusedUnit].keys) {
 				// calculate position and size of a body:
-				final body = keyBody(k);
+				final body = keyGeometry(k);
 				final keyX = body.x;
 				final keyY = body.y;
 				final keyWidth = body.width;
 				final keyHeight = body.height;
 				if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-					final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+					final keysOnUnit: Array<Keycap> = Reflect.getProperty(keycapSet, 'children');
 					for (key in keysOnUnit) {
 						if (key.sourceKey == k) {
 							key.select();
@@ -306,7 +302,7 @@ class Viewport extends Scene {
 			case Place:
 				// place action
 				// TODO determine actually selected keyboard unit:
-				keyboardUnit = keyson.units[currentUnit];
+				keyboardUnit = keyson.units[focusedUnit];
 				final shape = if (CopyBuffer.designatedKey != null) CopyBuffer.designatedKey else "1U";
 				// TODO calculate proper shaper size and offset:
 				var y = placer.y / unit;
@@ -317,7 +313,7 @@ class Viewport extends Scene {
 				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
 			case Edit | Unit | Color | Present:
 				if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-					clearSelection(true);
+					clearSelection();
 				}
 				// this.selectionBox.visible = false;
 				final boxX = this.selectionBox.x;
@@ -326,16 +322,16 @@ class Viewport extends Scene {
 				final boxHeight = this.selectionBox.height;
 
 				// TODO implement CTRL deselection processing here
-				for (k in keyson.units[currentUnit].keys) {
+				for (k in keyson.units[focusedUnit].keys) {
 					// calculate position and size of a body:
-					final body = keyBody(k);
+					final body = keyGeometry(k);
 					final keyX = body.x;
 					final keyY = body.y;
 					final keyWidth = body.width;
 					final keyHeight = body.height;
 
 					if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-						final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+						final keysOnUnit: Array<Keycap> = Reflect.getProperty(keycapSet, 'children');
 						for (key in keysOnUnit) {
 							if (key.sourceKey == k) {
 								key.select();
@@ -349,24 +345,27 @@ class Viewport extends Scene {
 		// finish the press
 		worksurfaceLMB = false;
 	}
-	public function clearSelection(deep: Bool) {
+
+	/**
+	 * Unselects all
+	 */
+	public function clearSelection() {
 		// deep clear clears the selectedKeycaps too
 		// sometimes this is undesirable hence the switch
-		for (i in 0...selectedKeycaps.length)
+		for (i in 0...selectedKeycaps.length) {
 			selectedKeycaps[i].deselect();
-		if (deep)
-			selectedKeycaps = [];
+		}
+		selectedKeycaps = [];
 	}
 
 	// Select all
-	public function selectEverything() {
-		selectedKeycaps = [];
-		final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(keycapSet, 'children');
+	public function selectAll() {
+		clearSelection();
+		final keysOnUnit: Array<Keycap> = Reflect.getProperty(keycapSet, 'children');
 		for (keycap in keysOnUnit) {
 			selectedKeycaps.unshift(keycap);
 			keycap.select();
 		}
-		// the result is stored in selectedKeycaps
 	}
 
 	// Reset scale and viewport position
@@ -378,20 +377,12 @@ class Viewport extends Scene {
 		viewScale = this.scaleX;
 	}
 
-	public function refreshKeycapSet() {
-		clearSelection(true);
-		// refresh from keyson
-		this.keycapSet.clear();
-		keycapSet = parseInKeyboard(keyson);
-		this.add(keycapSet);
-	}
-
 	public function copy() {
 		if (selectedKeycaps.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
 			// TODO initialize said keyboard with current unit's data
 			// copy into a clean buffer
-			keyboardUnit = keyson.units[currentUnit];
+			keyboardUnit = keyson.units[focusedUnit];
 			queue.push(new actions.EditCopy(this, keyboardUnit, selectedKeycaps));
 		}
 		StatusBar.inform('Copy action.');
@@ -400,26 +391,23 @@ class Viewport extends Scene {
 	public function cut() {
 		if (selectedKeycaps.length > 0) {
 			CopyBuffer.selectedObjects = new Keyboard();
-			keyboardUnit = keyson.units[currentUnit];
-			clearSelection(false);
+			keyboardUnit = keyson.units[focusedUnit];
 			queue.push(new actions.EditCut(this, keyboardUnit, selectedKeycaps));
-			selectedKeycaps = [];
+			clearSelection();
 		}
 		StatusBar.inform('Cut action.');
 	}
 
 	public function paste() {
 		if (CopyBuffer.selectedObjects.keys.length > 0) {
-			// TODO make a offset from the stored data somehow
 			var y = placer.y / unit;
 			var x = placer.x / unit;
-			keyboardUnit = keyson.units[currentUnit];
+			keyboardUnit = keyson.units[focusedUnit];
 			queue.push(new actions.EditPaste(this, keyboardUnit, x, y));
 		}
 		StatusBar.inform('Paste action.');
 	}
 
-	// TODO make actions for the actions undo queue
 	public function colorSelectedKeys(color: ceramic.Color) {
 		if (selectedKeycaps.length > 0) {
 			queue.push(new actions.ColorBody(this, selectedKeycaps, color));
@@ -434,35 +422,10 @@ class Viewport extends Scene {
 		StatusBar.inform('Colored ${selectedKeycaps.length} keycaps into [${color}].');
 	}
 
-	// TODO color single appointed legend on a single key
-
-	/**
-	 * Return the size of selected units in U/100 (for zooming)
-	 */
-	public function selectedBodies(set: Array<keyson.Key>) {
-		var extremeX: Float = 0;
-		var extremeY: Float = 0;
-		var extremeW: Float = 0;
-		var extremeH: Float = 0;
-
-		for (member in set) {
-			final body = keyBody(member);
-			// extreme left most coodrinate:
-			extremeX = Math.min(extremeX, body.x);
-			// extreme top most
-			extremeY = Math.min(extremeY, body.y);
-			// extremem right most
-			extremeW = Math.max(extremeW, body.x + body.width);
-			// extreme bottom most
-			extremeH = Math.max(extremeH, body.y + body.height);
-		}
-		return new ceramic.Rect(extremeX, extremeY, extremeX - extremeW, extremeY - extremeH);
-	}
-
 	/**
 	 * Return a key's position and size in units of U/100
 	 */
-	public function keyBody(k: keyson.Key): ceramic.Rect {
+	public function keyGeometry(k: keyson.Key): ceramic.Rect {
 		var x: Float = k.position[Axis.X] * this.unit;
 		var y: Float = k.position[Axis.Y] * this.unit;
 		var width: Float = 1.0 * this.unit;
@@ -485,10 +448,10 @@ class Viewport extends Scene {
 				width = 1.50 * this.unit * viewScale - gapX;
 				height = 2.00 * this.unit * viewScale - gapY;
 			case "BAE":
-				// special J shaped key offset
-				x -= 0.75 * this.unit;
 				width = 2.25 * this.unit * viewScale - gapX;
 				height = 2.00 * this.unit * viewScale - gapY;
+				// special J shaped key offset
+				x -= 0.75 * this.unit;
 			case "BAE Inverted":
 				width = 2.25 * this.unit * viewScale - gapX;
 				height = 2.00 * this.unit * viewScale - gapY;
@@ -503,9 +466,11 @@ class Viewport extends Scene {
 			default:
 				if (Math.isNaN(Std.parseFloat(k.shape)) == false) {
 					if (k.shape.split(' ').indexOf("Vertical") != -1) {
+						// Handle vertical keycaps
 						width = this.unit - gapX;
 						height = this.unit * Std.parseFloat(k.shape) - gapY;
 					} else {
+						// Normal horizontal keycaps (1U, 6U, etc)
 						width = this.unit * Std.parseFloat(k.shape) - gapX;
 						height = this.unit - gapY;
 					}

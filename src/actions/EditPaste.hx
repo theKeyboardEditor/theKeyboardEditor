@@ -6,16 +6,15 @@ import keyson.Axis;
 
 class EditPaste extends Action {
 	final viewport: Viewport;
-	final device: keyson.Keyboard; // the receiving unit
-	var clonedKeys: keyson.Keyboard; // we store data in here
-	final x: Float; // in 1U keyson units
+	final device: keyson.Keyboard;
+	var clonedKeys: keyson.Keyboard;
+	final x: Float;
 	final y: Float;
 
 	override public function new(viewport: Viewport, device: keyson.Keyboard, x: Float, y: Float) {
 		super();
 		this.viewport = viewport;
 		this.device = device;
-		// TODO make this x and y be offsets for the whole ordeal
 		this.x = x;
 		this.y = y;
 	};
@@ -29,9 +28,9 @@ class EditPaste extends Action {
 			// add to keyson:
 			this.device.insertKey(key);
 			// recreate shapes:
-			final keycap: KeyRenderer = KeyMaker.createKey(clonedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
+			final keycap: Keycap = KeyMaker.createKey(clonedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
 				Std.parseInt(viewport.keyboardUnit.defaults.keyColor));
-			keycap.pos(viewport.unit * key.position[Axis.X], viewport.unit * key.position[Axis.Y]);
+			keycap.pos(viewport.unit * key.position[Axis.X] + x, viewport.unit * key.position[Axis.Y] + y);
 			keycap.component('logic', new viewport.KeyLogic(viewport));
 			viewport.keycapSet.add(keycap);
 		}
@@ -43,7 +42,7 @@ class EditPaste extends Action {
 		// clear by the recorded keycapSet shapes:
 		for (member in clonedKeys.keys) {
 			// since we broke entanglement by clone we need compare per unit now
-			final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
+			final keysOnUnit: Array<Keycap> = Reflect.getProperty(viewport.keycapSet, 'children');
 			for (keycap in keysOnUnit) {
 				if (keycap.sourceKey == member) {
 					this.device.removeKey(member);

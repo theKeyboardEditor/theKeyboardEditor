@@ -4,7 +4,7 @@ import ceramic.Border;
 import ceramic.RoundedRect;
 import viewport.Pivot;
 
-class RectangularKey extends KeyRenderer {
+class RectangularKey extends Keycap {
 	/**
 	 * we are in the 1U = 100 units of scale ratio here:
 	 * this is the preset for OEM/Cherry profile keycaps (

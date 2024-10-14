@@ -42,107 +42,69 @@ class MainScene extends Scene {
 		// Grab the stored projects
 		this.store = new ceramic.PersistentData("keyboard");
 
-		// Initialize global variables
 		this.gui = new ui.Index();
 		this.gui.mainScene = this;
-
-		// Render keys
-		// TODO abandon this and make welcome screen work eventually
-		// openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
-		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
-
-		// Add stored projects to list
-		for (key in store.keys()) {
-			// gui.welcome.findComponent("project-list").addComponent(new ui.Project(key));
-		}
-
-		// TODO: can we make picking "New" uncover the welcome screen even on a running session?
-		// TODO: inhibit all worksurface actions for the while GUI is displayed
 		Screen.instance.addComponent(gui);
-		// Screen.instance.addComponent(gui.overlay);
+
+		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
 
 		// KEYBINDINGS!
 		var keyBindings = new KeyBindings();
+		var selectedPage: ui.ViewportContainer = cast gui.tabs.selectedPage;
 
-		// Saving
+		// Save
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_S)], () -> {
-			save((cast gui.tabs.selectedPage: ui.ViewportContainer).display.keyson, store);
+			save(selectedPage.display.keyson, store);
 		});
-		// TODO save all with SHIFT
 
-		// Downloading
+		// Download
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_D)], () -> {
-			download((cast gui.tabs.selectedPage: ui.ViewportContainer).display.keyson);
-		});
-		// TODO download all with SHIFT
-
-		// TODO close current tab
-		// keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_W)], () -> {
-
-		// TODO close all tabs
-		// keyBindings.bind([SHIFT, CMD_OR_CTRL, KEY(KeyCode.KEY_W)], () -> {
-
-		// Toggle overlay (i.e welcome screen)
-		// gui.workSurface.display.paused = true;
-		keyBindings.bind([KEY(KeyCode.TAB)], () -> {
-			// gui.workSurface.display.paused = !gui.workSurface.display.paused;
-			// gui.overlay.hidden = !gui.overlay.hidden;
+			download(selectedPage.display.keyson);
 		});
 
+		// Undo
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.undo();
+			selectedPage.display.queue.undo();
 		});
-		/*// TODO make undoAll()
-			keyBindings.bind([SHIFT, CMD_OR_CTRL, KEY(KeyCode.KEY_Z)], () -> {
-				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.undoAll();
-			});
-		 */
+
+		// Redo
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_Y)], () -> {
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.redo();
-		});
-		/*//TODO make redoAll
-			keyBindings.bind([SHIFT, CMD_OR_CTRL, KEY(KeyCode.KEY_Y)], () -> {
-				(cast gui.tabs.selectedPage: ui.ViewportContainer).display.queue.redoAll();
-			});
-		 */
-		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_R)], () -> {
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.refreshKeycapSet();
+			selectedPage.display.queue.redo();
 		});
 
+		// Select all
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.selectEverything();
+			selectedPage.display.selectAll();
 		});
-		// TODO make shift+Ctrl+A bound here:
+
+		// Unselect all
 		keyBindings.bind([SHIFT, CMD_OR_CTRL, KEY(KeyCode.KEY_A)], () -> {
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.clearSelection(true);
+			selectedPage.display.clearSelection();
 		});
 
+		// Copy
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_C)], () -> {
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.copy();
+			selectedPage.display.copy();
 		});
 
+		// Cut
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_X)], () -> {
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.cut();
+			selectedPage.display.cut();
 		});
 
+		// Paste
 		keyBindings.bind([CMD_OR_CTRL, KEY(KeyCode.KEY_V)], () -> {
-			(cast gui.tabs.selectedPage: ui.ViewportContainer).display.paste();
+			selectedPage.display.paste();
 		});
 	}
 
 	public function download(keyboard: keyson.Keyson) {
 		FileDialog.download(haxe.Json.stringify(keyboard, "\t"), keyboard.name, "application/json");
-		StatusBar.inform("Download has been sent");
+		StatusBar.inform("Project has been downloaded");
 	}
 
 	public function save(keyboard: keyson.Keyson, store: ceramic.PersistentData) {
-		/*
-		 * TODO: Compress using hxPako or similar - logo
-		 * fire-h0und section:
-		 * (if we compress the files we gain little but lose some of the simplicity when parsing our files)
-		 * ((modern OSes have transparent compression options that makes even those small gains mooth))
-		 * TODO: where we save (dialog) to lacal or remote storage?
-		 */
+		// TODO: Compress during saving. See hxPako. No, it won't overcomplicate parsing as it will be done before that step.
 		store.set(Std.string(keyboard.name), keyboard);
 		store.save();
 		StatusBar.inform("Project has been saved");

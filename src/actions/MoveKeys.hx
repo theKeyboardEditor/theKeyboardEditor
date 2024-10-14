@@ -5,12 +5,12 @@ import keyson.Axis;
 
 class MoveKeys extends Action {
 	final viewport: Viewport;
-	var movees: Array<KeyRenderer>;
+	var movees: Array<Keycap>;
 	// in the sense of keyson 1U units
 	final deltaX: Float;
 	final deltaY: Float;
 
-	override public function new(viewport: Viewport, movees: Array<KeyRenderer>, deltaX: Float, deltaY: Float) {
+	override public function new(viewport: Viewport, movees: Array<Keycap>, deltaX: Float, deltaY: Float) {
 		super();
 		this.viewport = viewport;
 		this.movees = movees.copy();

@@ -22,7 +22,6 @@ class PaletteColorView extends ScrollView {
 		this.columns = Std.int(Math.min(16, ((palette.swatches.length >> 6) << 0) + 4));
 		// above 16 columns it is really questionable if scrolling or hiting the right one is more tedious
 		// we hardcode 16 as the sanity limt here
-		trace('len: ${palette.swatches.length}/columns: ${columns}');
 
 		for (color in palette.swatches ?? []) {
 			var button = new Button();

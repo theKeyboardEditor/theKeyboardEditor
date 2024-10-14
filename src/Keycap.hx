@@ -1,9 +1,9 @@
 package;
 
-class KeyRenderer extends ceramic.Visual {
+class Keycap extends ceramic.Visual {
 	@content public var topColor: ceramic.Color;
 	@content public var bottomColor: ceramic.Color;
-	@content public var legends: Array<LegendRenderer>;
+	@content public var legends: Array<Legend>;
 
 	public var border: ceramic.Border;
 	@content public var pivot: viewport.Pivot;

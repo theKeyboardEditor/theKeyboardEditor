@@ -11,7 +11,7 @@ import haxe.ui.util.Variant;
 	<stack id="palettes-stack" width="156px" height="80%" horizontalAlign="center" verticalAlign="center" />
 	<hbox height="20%" horizontalAlign="center">
 		<box style="background-color: #282828" width="128px" height="128px" horizontalAlign="center" verticalAlign="bottom">
-			<keycap id="preview" width="100%" height="100%" bodyColor="#00ff00" />
+			<keycap-box id="preview" width="100%" height="100%" bodyColor="#00ff00" />
 		</box>
 	</hbox>
 </vbox>
@@ -36,8 +36,8 @@ class Color extends VBox {
 		palettesList.dataSource.add("Import from JSON");
 
 		// Grab default colors
-		final defaultBodyColor = viewport.keyson?.units[viewport.currentUnit].defaults?.keyColor;
-		final defaultLegendColor = viewport.keyson?.units[viewport.currentUnit].defaults?.legendColor;
+		final defaultBodyColor = viewport.keyson?.units[viewport.focusedUnit].defaults?.keyColor;
+		final defaultLegendColor = viewport.keyson?.units[viewport.focusedUnit].defaults?.legendColor;
 
 		// Set the properties of the preview keycap
 		preview.legendColor = Std.parseInt(defaultLegendColor);
@@ -47,9 +47,9 @@ class Color extends VBox {
 			preview.onClick = e -> {
 				// TODO: work only on LMB
 				if (e.shiftKey) {
-					viewport.colorSelectedKeyLegends(Std.parseInt(viewport.keyson?.units[viewport.currentUnit].defaults?.legendColor));
+					viewport.colorSelectedKeyLegends(Std.parseInt(viewport.keyson?.units[viewport.focusedUnit].defaults?.legendColor));
 				} else {
-					viewport.colorSelectedKeys(Std.parseInt(viewport.keyson?.units[viewport.currentUnit].defaults?.keyColor));
+					viewport.colorSelectedKeys(Std.parseInt(viewport.keyson?.units[viewport.focusedUnit].defaults?.keyColor));
 				}
 			};
 		}

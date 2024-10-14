@@ -4,7 +4,7 @@ import ceramic.Border;
 import ceramic.RoundedRect;
 import viewport.Pivot;
 
-class SteppedKey extends KeyRenderer {
+class SteppedKey extends Keycap {
 	/**
 	 * we are in the 1U = 100 units of scale ratio here:
 	 */

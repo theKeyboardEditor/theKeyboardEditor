@@ -18,7 +18,7 @@ import haxe.ui.events.UIEvent;
 	<label text="Selected:" />
 	<hbox height="20%" horizontalAlign="center">
 		<box style="background-color: #282828" width="128px" height="128px" horizontalAlign="center" verticalAlign="bottom">
-			<keycap id="preview" width="100%" height="100%" bodyColor="#00ff00" />
+			<keycap-box id="preview" width="100%" height="100%" bodyColor="#00ff00" />
 		</box>
 	</hbox>
 </vbox>

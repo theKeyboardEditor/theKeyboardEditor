@@ -6,9 +6,9 @@ import keyson.Keyson;
 class EditCopy extends Action {
 	final viewport: Viewport;
 	final device: keyson.Keyboard; // the receiving unit
-	var copyees: Array<KeyRenderer>;
+	var copyees: Array<Keycap>;
 
-	override public function new(viewport: Viewport, device: keyson.Keyboard, copyees: Array<KeyRenderer>) {
+	override public function new(viewport: Viewport, device: keyson.Keyboard, copyees: Array<Keycap>) {
 		super();
 		this.viewport = viewport;
 		this.device = device;

@@ -7,9 +7,9 @@ import keyson.Axis;
 class EditCut extends Action {
 	final viewport: Viewport;
 	final device: keyson.Keyboard; // the receiving unit
-	var cutKeys: Array<KeyRenderer>;
+	var cutKeys: Array<Keycap>;
 
-	override public function new(viewport: Viewport, device: keyson.Keyboard, cutKeys: Array<KeyRenderer>) {
+	override public function new(viewport: Viewport, device: keyson.Keyboard, cutKeys: Array<Keycap>) {
 		super();
 		this.viewport = viewport;
 		this.device = device;
@@ -17,7 +17,6 @@ class EditCut extends Action {
 	}
 
 	override public function act(type: ActionType) {
-		trace("boo");
 		final cloner = new cloner.Cloner();
 		// take in the selection to the editBuffer
 		CopyBuffer.selectedObjects.keys = [

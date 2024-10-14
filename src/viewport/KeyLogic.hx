@@ -5,11 +5,11 @@ import ceramic.Component;
 import ceramic.TouchInfo;
 
 class KeyLogic extends Entity implements Component {
-	@entity var keycap: KeyRenderer;
+	@entity var keycap: Keycap;
 
 	public var viewport: viewport.Viewport;
 	// drag threshold in pixels
-	public var threshold: Float = 2;
+	public var dragThreshold: Float = 2;
 
 	var keycapIsDragged = false;
 	// keycap position before the drag
@@ -53,16 +53,15 @@ class KeyLogic extends Entity implements Component {
 		screen.oncePointerUp(this, (info) -> {
 			keyMouseUp(info, keycap);
 		});
-		trace('Click on Keycap.');
 	}
 
 	/**
 	 * Called during key movement (mouse key down)
 	 */
 	function keyMouseMove(info: TouchInfo) {
-		if (viewport.threshold != -1
-			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.threshold
-				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.threshold))
+		if (viewport.dragThreshold != -1
+			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.dragThreshold
+				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.dragThreshold))
 			keycapIsDragged = true;
 		switch (ui.Index.activeMode) {
 			case Edit | Unit | Color | Legend:
@@ -87,7 +86,7 @@ class KeyLogic extends Entity implements Component {
 					} else {
 						viewport.selectionBox.visible = keycapIsDragged;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							viewport.clearSelection();
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -95,15 +94,15 @@ class KeyLogic extends Entity implements Component {
 						final boxHeight = viewport.selectionBox.height;
 
 						// TODO implement CTRL deselection processing
-						for (k in viewport.keyson.units[viewport.currentUnit].keys) {
+						for (k in viewport.keyson.units[viewport.focusedUnit].keys) {
 							// calculate position and size of a body:
-							final body = viewport.keyBody(k);
+							final body = viewport.keyGeometry(k);
 							final keyX = body.x;
 							final keyY = body.y;
 							final keyWidth = body.width;
 							final keyHeight = body.height;
 							if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
+								final keysOnUnit: Array<Keycap> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
 										key.select();
@@ -121,7 +120,7 @@ class KeyLogic extends Entity implements Component {
 	/**
 	 * Called after the drag (touch/press is released)
 	 */
-	function keyMouseUp(info: TouchInfo, keycap: KeyRenderer) {
+	function keyMouseUp(info: TouchInfo, keycap: Keycap) {
 		switch (ui.Index.activeMode) {
 			case Place:
 				viewport.placer.visible = true;
@@ -140,7 +139,7 @@ class KeyLogic extends Entity implements Component {
 					} else {
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							// CLEAR if no SHIFT key is pressed
-							viewport.clearSelection(true);
+							viewport.clearSelection();
 						}
 						// put last selected keycap to position [0] in keycaps
 						viewport.selectedKeycaps.unshift(keycap);
@@ -164,7 +163,7 @@ class KeyLogic extends Entity implements Component {
 						// DRAGGING outside a selected keycap results in a rectangle selection
 						viewport.selectionBox.visible = false;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							viewport.clearSelection();
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -172,15 +171,15 @@ class KeyLogic extends Entity implements Component {
 						final boxHeight = viewport.selectionBox.height;
 
 						// TODO implement CTRL deselection processing
-						for (k in viewport.keyson.units[viewport.currentUnit].keys) {
+						for (k in viewport.keyson.units[viewport.focusedUnit].keys) {
 							// calculate position and size of a body:
-							final body = viewport.keyBody(k);
+							final body = viewport.keyGeometry(k);
 							final keyX = body.x;
 							final keyY = body.y;
 							final keyWidth = body.width;
 							final keyHeight = body.height;
 							if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
+								final keysOnUnit: Array<Keycap> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
 										key.select();
@@ -205,7 +204,6 @@ class KeyLogic extends Entity implements Component {
 		// TODO immediately switch ui to Legend-mode
 		// igonre if already in Legend-mode
 		// TODO initiate text entry filed for the keycap that received the click:
-		trace('Doubleclick processed.');
 		viewport.indexGui.switchMode(Legend);
 	}
 }

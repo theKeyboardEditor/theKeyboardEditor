@@ -4,13 +4,13 @@ import haxe.ui.util.Color;
 import haxe.ui.containers.Box;
 import haxe.ui.events.UIEvent;
 
-class Keycap extends Box {
+class KeycapBox extends Box {
 	public var bodyColor(default, set): Null<Color> = 0xFFFFFF;
 	public var legendColor(default, set): Null<Color> = 0x000000;
 	public var key: Null<keyson.Keyson.Key>;
 
 	var keyboard: keyson.Keyson.Keyboard;
-	var keycap: KeyRenderer;
+	var keycap: Keycap;
 
 	public function new() {
 		super();

@@ -6,7 +6,7 @@ import ceramic.Visual;
 import ceramic.Text;
 import viewport.Pivot;
 
-class LegendRenderer extends Visual {
+class Legend extends Visual {
 	@content public var color: Int = 0xffFF0000; // gray default
 	//	public var legendFont: String;  // TODO custom fonts
 	@content public var fontSize: Float;

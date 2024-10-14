@@ -7,9 +7,9 @@ import keyson.Axis;
 class DeleteKeys extends Action {
 	final viewport: Viewport;
 	final device: keyson.Keyboard; // the receiving unit
-	var deletedKeys: Array<KeyRenderer>;
+	var deletedKeys: Array<Keycap>;
 
-	override public function new(viewport: Viewport, device: keyson.Keyboard, deletedKeys: Array<KeyRenderer>) {
+	override public function new(viewport: Viewport, device: keyson.Keyboard, deletedKeys: Array<Keycap>) {
 		super();
 		this.viewport = viewport;
 		this.device = device;

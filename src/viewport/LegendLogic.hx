@@ -5,19 +5,19 @@ import ceramic.Component;
 import ceramic.TouchInfo;
 
 class LegendLogic extends Entity implements Component {
-	@entity var legend: LegendRenderer;
+	@entity var legend: Legend;
 
-	public var keycap: KeyRenderer;
+	public var keycap: Keycap;
 	public var viewport: viewport.Viewport;
 	// drag threshold in pixels
-	public var threshold: Float = 2;
+	public var dragThreshold: Float = 2;
 
 	var legendIsDragged = false;
 	// legend position before the drag
 	var legendPosStartX: Float = 0.0;
 	var legendPosStartY: Float = 0.0;
 
-	public function new(viewport: viewport.Viewport, keycap: KeyRenderer) {
+	public function new(viewport: viewport.Viewport, keycap: Keycap) {
 		super();
 		this.viewport = viewport;
 		this.keycap = keycap;
@@ -55,16 +55,15 @@ class LegendLogic extends Entity implements Component {
 		screen.oncePointerUp(this, (info) -> {
 			legendMouseUp(info, legend);
 		});
-		trace('Click on Legend.');
 	}
 
 	/**
 	 * Called during key movement (mouse key down)
 	 */
 	function legendMouseMove(info: TouchInfo) {
-		if (viewport.threshold != -1
-			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.threshold
-				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.threshold))
+		if (viewport.dragThreshold != -1
+			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.dragThreshold
+				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.dragThreshold))
 			legendIsDragged = true;
 		switch (ui.Index.activeMode) {
 			case Legend:
@@ -91,7 +90,7 @@ class LegendLogic extends Entity implements Component {
 					} else {
 						viewport.selectionBox.visible = legendIsDragged;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							viewport.clearSelection();
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -99,15 +98,15 @@ class LegendLogic extends Entity implements Component {
 						final boxHeight = viewport.selectionBox.height;
 
 						// TODO implement CTRL deselection processing
-						for (k in viewport.keyson.units[viewport.currentUnit].keys) {
+						for (k in viewport.keyson.units[viewport.focusedUnit].keys) {
 							// calculate position and size of a body:
-							final body = viewport.keyBody(k);
+							final body = viewport.keyGeometry(k);
 							final keyX = body.x;
 							final keyY = body.y;
 							final keyWidth = body.width;
 							final keyHeight = body.height;
 							if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
+								final keysOnUnit: Array<Keycap> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
 										key.select();
@@ -125,7 +124,7 @@ class LegendLogic extends Entity implements Component {
 	/**
 	 * Called after the drag (touch/press is released)
 	 */
-	function legendMouseUp(info: TouchInfo, legend: LegendRenderer) {
+	function legendMouseUp(info: TouchInfo, legend: Legend) {
 		switch (ui.Index.activeMode) {
 			case Legend:
 				viewport.selectionBox.visible = false;
@@ -142,7 +141,7 @@ class LegendLogic extends Entity implements Component {
 					} else {
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							// CLEAR if no SHIFT key is pressed
-							viewport.clearSelection(true);
+							viewport.clearSelection();
 						}
 						// put last selected legend to position [0] in keycaps
 						viewport.selectedKeycaps.unshift(keycap);
@@ -166,7 +165,7 @@ class LegendLogic extends Entity implements Component {
 						// DRAGGING outside a selected legend results in a rectangle selection
 						viewport.selectionBox.visible = false;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
-							viewport.clearSelection(true);
+							viewport.clearSelection();
 						}
 						final boxX = viewport.selectionBox.x;
 						final boxY = viewport.selectionBox.y;
@@ -174,15 +173,15 @@ class LegendLogic extends Entity implements Component {
 						final boxHeight = viewport.selectionBox.height;
 
 						// TODO implement CTRL deselection processing
-						for (k in viewport.keyson.units[viewport.currentUnit].keys) {
+						for (k in viewport.keyson.units[viewport.focusedUnit].keys) {
 							// calculate position and size of a body:
-							final body = viewport.keyBody(k);
+							final body = viewport.keyGeometry(k);
 							final keyX = body.x;
 							final keyY = body.y;
 							final keyWidth = body.width;
 							final keyHeight = body.height;
 							if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-								final keysOnUnit: Array<KeyRenderer> = Reflect.getProperty(viewport.keycapSet, 'children');
+								final keysOnUnit: Array<Keycap> = Reflect.getProperty(viewport.keycapSet, 'children');
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
 										key.select();
@@ -205,7 +204,6 @@ class LegendLogic extends Entity implements Component {
 	}
 	public function handleDoubleClick(): Void {
 		// TODO initiate text entry filed for the legend that received the click:
-		trace('Doubleclick processed.');
 		viewport.indexGui.switchMode(Legend);
 	}
 }

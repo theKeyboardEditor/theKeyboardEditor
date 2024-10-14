@@ -6,7 +6,7 @@ import keyson.Keyson;
 
 class PlaceKey extends Action {
 	final viewport: Viewport;
-	var placed: KeyRenderer; // it holds all info for undo/redo
+	var placed: Keycap; // it holds all info for undo/redo
 	final shape: String;
 	final device: keyson.Keyboard; // the receiving unit
 	final x: Float; // in 1U keyson units
@@ -31,7 +31,7 @@ class PlaceKey extends Action {
 			this.key = device.insertKey(this.placed.sourceKey);
 		}
 		// Draw and place the key
-		final keycap: KeyRenderer = KeyMaker.createKey(this.device, key, this.viewport.unit, this.viewport.gapX, this.viewport.gapY,
+		final keycap: Keycap = KeyMaker.createKey(this.device, key, this.viewport.unit, this.viewport.gapX, this.viewport.gapY,
 			Std.parseInt(this.device.defaults.keyColor));
 		keycap.pos(this.viewport.unit * this.key.position[Axis.X], this.viewport.unit * this.key.position[Axis.Y]);
 		keycap.component('logic', new viewport.KeyLogic(viewport));

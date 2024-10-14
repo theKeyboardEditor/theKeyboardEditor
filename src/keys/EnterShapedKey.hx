@@ -7,7 +7,7 @@ import viewport.Pivot;
 /**
  * Draws a enter shaped rectangle with nice rounded corners
  */
-class EnterShapedKey extends KeyRenderer {
+class EnterShapedKey extends Keycap {
 	@content public var shape: String;
 	// North is the further away member of the pair
 	@content public var widthNorth: Float;
