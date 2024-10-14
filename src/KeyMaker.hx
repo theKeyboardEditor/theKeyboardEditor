@@ -148,6 +148,9 @@ class KeyMaker {
 			keyShape = enterShaped;
 		}
 		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit);
+		for (legend in keyLegends) {
+			keyShape.add(legend);
+		}
 		keyShape.legends = keyLegends;
 
 		return keyShape;
