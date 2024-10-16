@@ -60,12 +60,12 @@ class PlacerLogic extends Entity implements Component {
 						}
 				}
 
-				placer.x = Viewport.coggify((screen.pointerX
+				placer.x = Viewport.snap((screen.pointerX
 					- viewport.screenX
 					- viewport.x
 					- viewport.placerMismatchX * viewport.unit) / viewport.viewScale,
 					Viewport.placingStep);
-				placer.y = Viewport.coggify((screen.pointerY
+				placer.y = Viewport.snap((screen.pointerY
 					- viewport.screenY
 					- viewport.y
 					- viewport.placerMismatchY * viewport.unit) / viewport.viewScale,
@@ -73,8 +73,8 @@ class PlacerLogic extends Entity implements Component {
 				StatusBar.pos(placer.x / viewport.unit * viewport.viewScale, placer.y / viewport.unit * viewport.viewScale);
 			default:
 				placer.visible = false;
-				viewport.placerMismatchX = Viewport.coggify(placer.width / viewport.unit / 2 * viewport.viewScale, .25);
-				viewport.placerMismatchY = Viewport.coggify(placer.height / viewport.unit / 2 * viewport.viewScale, .25);
+				viewport.placerMismatchX = Viewport.snap(placer.width / viewport.unit / 2 * viewport.viewScale, .25);
+				viewport.placerMismatchY = Viewport.snap(placer.height / viewport.unit / 2 * viewport.viewScale, .25);
 		}
 	}
 }

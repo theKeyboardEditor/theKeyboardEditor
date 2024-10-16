@@ -26,7 +26,7 @@ class EditCut extends Action {
 			}
 		];
 		CopyBuffer.selectedObjects.sortKeys();
-		// remove the selection from the keycapSet:
+		// remove the selection from the keyboard:
 		for (key in cutKeys) {
 			// clear keyson:
 			this.device.removeKey(key.sourceKey);
@@ -47,7 +47,7 @@ class EditCut extends Action {
 			// recreate keyson:
 			this.device.insertKey(recreatedKey.sourceKey);
 			// recreate Ceramic:
-			this.viewport.keycapSet.add(recreatedKey);
+			this.viewport.keyboard.add(recreatedKey);
 			i++;
 		}
 		super.undo();

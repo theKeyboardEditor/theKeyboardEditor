@@ -32,21 +32,20 @@ class EditPaste extends Action {
 				Std.parseInt(viewport.keyboardUnit.defaults.keyColor));
 			keycap.pos(viewport.unit * key.position[Axis.X] + x, viewport.unit * key.position[Axis.Y] + y);
 			keycap.component('logic', new viewport.KeyLogic(viewport));
-			viewport.keycapSet.add(keycap);
+			viewport.keyboard.add(keycap);
 		}
 		this.device.sortKeys();
 		super.act(type);
 	}
 
 	override public function undo() {
-		// clear by the recorded keycapSet shapes:
+		// clear by the recorded keyboard shapes:
 		for (member in clonedKeys.keys) {
-			// since we broke entanglement by clone we need compare per unit now
-			final keysOnUnit: Array<Keycap> = Reflect.getProperty(viewport.keycapSet, 'children');
+			final keysOnUnit: Array<Keycap> = cast viewport.keyboard.children;
 			for (keycap in keysOnUnit) {
 				if (keycap.sourceKey == member) {
 					this.device.removeKey(member);
-					this.viewport.keycapSet.remove(keycap);
+					this.viewport.keyboard.remove(keycap);
 				}
 			}
 		}

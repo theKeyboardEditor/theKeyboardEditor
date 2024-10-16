@@ -8,6 +8,7 @@ import ceramic.Entity;
  * Look up "Command Pattern" for more information
  */
 class Action extends Entity {
+	public var queueReversable = true;
 	@event function actionCompleted();
 
 	//	@event function actionReverted();

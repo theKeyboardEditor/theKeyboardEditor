@@ -36,7 +36,7 @@ class DeleteKeys extends Action {
 			// recreate keyson:
 			this.device.insertKey(recreatedKey.sourceKey);
 			// recreate Ceramic:
-			this.viewport.keycapSet.add(recreatedKey);
+			this.viewport.keyboard.add(recreatedKey);
 			i++;
 		}
 	}

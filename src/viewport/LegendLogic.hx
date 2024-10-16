@@ -76,10 +76,10 @@ class LegendLogic extends Entity implements Component {
 						// TODO make this work for legends!
 						if (viewport.selectedKeycaps.length > 0) {
 							// note we reference the Array member [0] for move vector!
-							final xStep = Viewport.coggify(legendPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
+							final xStep = Viewport.snap(legendPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
 								Viewport.placingStep)
 								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x;
-							final yStep = Viewport.coggify(legendPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
+							final yStep = Viewport.snap(legendPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
 								Viewport.placingStep)
 								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y;
 							for (key in viewport.selectedKeycaps) {
@@ -106,7 +106,7 @@ class LegendLogic extends Entity implements Component {
 							final keyWidth = body.width;
 							final keyHeight = body.height;
 							if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-								final keysOnUnit: Array<Keycap> = Reflect.getProperty(viewport.keycapSet, 'children');
+								final keysOnUnit: Array<Keycap> = cast viewport.keyboard.children;
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
 										key.select();
@@ -181,7 +181,7 @@ class LegendLogic extends Entity implements Component {
 							final keyWidth = body.width;
 							final keyHeight = body.height;
 							if (keyX > boxX && keyX + keyWidth < boxX + boxWidth && keyY > boxY && keyY + keyHeight < boxY + boxHeight) {
-								final keysOnUnit: Array<Keycap> = Reflect.getProperty(viewport.keycapSet, 'children');
+								final keysOnUnit: Array<Keycap> = cast viewport.keyboard.children;
 								for (key in keysOnUnit) {
 									if (key.sourceKey == k) {
 										key.select();

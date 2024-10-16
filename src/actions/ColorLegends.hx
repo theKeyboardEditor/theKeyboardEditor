@@ -41,7 +41,7 @@ class ColorLegends extends Action {
 	}
 
 	override public function undo() {
-		// restore by the recorded keycapSet shapes:
+		// restore by the recorded keyboard shapes:
 		for (member in this.coloredKeyLegends.keys) {
 			for (k in this.targets) {
 				if (k.sourceKey.legends[0].legend == member.legends[0].legend) {

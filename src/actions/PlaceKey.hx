@@ -5,13 +5,13 @@ import keyson.Axis;
 import keyson.Keyson;
 
 class PlaceKey extends Action {
-	final viewport: Viewport;
 	var placed: Keycap; // it holds all info for undo/redo
+	var key: keyson.Key;
+	final viewport: Viewport;
 	final shape: String;
 	final device: keyson.Keyboard; // the receiving unit
 	final x: Float; // in 1U keyson units
 	final y: Float;
-	var key: keyson.Key;
 
 	override public function new(viewport: Viewport, device: keyson.Keyboard, shape: String, x: Float, y: Float) {
 		super();
@@ -34,8 +34,13 @@ class PlaceKey extends Action {
 		final keycap: Keycap = KeyMaker.createKey(this.device, key, this.viewport.unit, this.viewport.gapX, this.viewport.gapY,
 			Std.parseInt(this.device.defaults.keyColor));
 		keycap.pos(this.viewport.unit * this.key.position[Axis.X], this.viewport.unit * this.key.position[Axis.Y]);
+
 		keycap.component('logic', new viewport.KeyLogic(viewport));
-		this.viewport.keycapSet.add(keycap);
+		for (legend in keycap.legends) {
+			legend.component('logic', new viewport.LegendLogic(viewport, keycap));
+		}
+
+		this.viewport.keyboard.add(keycap);
 		this.placed = keycap;
 		super.act(type);
 	}
@@ -46,7 +51,7 @@ class PlaceKey extends Action {
 				// clear keyson:
 				this.device.removeKey(placed.sourceKey);
 				// clear Ceramic:
-				this.viewport.keycapSet.remove(placed);
+				this.viewport.keyboard.remove(placed);
 			}
 		}
 		super.undo();
