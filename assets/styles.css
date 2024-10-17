@@ -18,7 +18,7 @@
 	height: 100%;
 	padding: 0;
 	margin: 0;
-	background-color: #1d2021;
+	background-color: $solid-background-color;
 }
 #tabs .tabview-content {
 	background-color: #282828;
@@ -31,6 +31,9 @@
 }
 .item-picker-container {
 	border: none;
+}
+.left-dropdown {
+	height: 32px;
 }
 
 /* Status Bar */
@@ -45,12 +48,40 @@
 	padding-left: 12px;
 	padding-right: 12px;
 }
+#pos {
+	text-align: right;
+}
 
 /* Sidebars */
+.sidebar-body {
+	width: 160px;
+	height: 100%;
+	spacing: 0;
+	background-color: #1d2021;
+}
+
+.sidebar-main {
+	width: 100%;
+	height: 100%;
+}
+.sidebar-title {
+	margin: 0;
+	width: 100%;
+	height: 32px;
+	background-color: $accent-color-darker; 
+	border-bottom: 2px solid $accent-color;
+}
+.sidebar-title label {
+	text-align: center;
+	horizontal-align: center;
+	vertical-align: center;
+}
 .left-box {
 	spacing: 0;
 }
-
 #color-sidebar button:down, #place-sidebar button:down {
 	border: 2px solid $accent-color;
+}
+#keys {
+	spacing: 4px;
 }

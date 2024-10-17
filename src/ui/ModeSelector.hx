@@ -6,7 +6,7 @@ import haxe.ui.events.UIEvent;
 @xml('
 <vbox style="spacing: 0">
 	<menu-item-picker id="picker" showText="false" showIcon="false" width="64px" height="32px" panelWidth="200" animatable="false" verticalAlign="center">
-		<item-renderer id="itemPickerRenderer">
+		<item-renderer id="itemPickerRenderer" height="32px" verticalAlign="center">
 			<image resource="icons/kebab-dropdown" horizontalAlign="center" />
 		</item-renderer>
 		<data>
@@ -19,12 +19,12 @@ import haxe.ui.events.UIEvent;
 		</data>
 	</menu-item-picker>
 	<button-bar selectedIndex="0" direction="vertical" id="modes" styleName="modeSelector">
-		<button id="place-mode" text="Place" icon="icons/place-mode" width="32px" height="32px" iconPosition="top" />
-		<button id="edit-mode" text="Edit" icon="icons/edit-mode" width="32px" height="32px" iconPosition="top" />
-		<button id="unit-mode" text="Unit" icon="icons/unit-mode" width="32px" height="32px" iconPosition="top" />
-		<button id="legend-mode" text="Legend" icon="icons/legend-mode" width="32px" height="32px" iconPosition="top" />
-		<button id="color-mode" text="Color" icon="icons/color-mode" width="32px" height="32px" iconPosition="top" />
-		<button id="present-mode" text="Present" icon="icons/keyboard-mode" width="32px" height="32px" iconPosition="top" />
+		<button id="place-mode" text="Place" icon="icons/place-mode" iconPosition="top" />
+		<button id="edit-mode" text="Edit" icon="icons/edit-mode" iconPosition="top" />
+		<button id="unit-mode" text="Unit" icon="icons/unit-mode" iconPosition="top" />
+		<button id="legend-mode" text="Legend" icon="icons/legend-mode" iconPosition="top" />
+		<button id="color-mode" text="Color" icon="icons/color-mode" iconPosition="top" />
+		<button id="present-mode" text="Present" icon="icons/keyboard-mode" iconPosition="top" />
 	</button-bar>
 </vbox>
 ')

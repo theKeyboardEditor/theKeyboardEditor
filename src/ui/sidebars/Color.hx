@@ -6,14 +6,14 @@ import haxe.ui.events.UIEvent;
 import haxe.ui.util.Variant;
 
 @xml('
-<vbox id="color-sidebar" width="160" height="100%" style="padding: 4px; background-color: #1d2021;">
-	<dropdown width="100%" id="palettes-list" text="Palettes" />
-	<stack id="palettes-stack" width="156px" height="80%" horizontalAlign="center" verticalAlign="center" />
-	<hbox height="20%" horizontalAlign="center">
-		<box style="background-color: #282828" width="128px" height="128px" horizontalAlign="center" verticalAlign="bottom">
-			<keycap-box id="preview" width="100%" height="100%" bodyColor="#00ff00" />
-		</box>
-	</hbox>
+<vbox id="color-sidebar" styleName="sidebar-body">
+	<box styleName="sidebar-title">
+		<label text="Color" />
+	</box>
+	<vbox styleName="sidebar-main">
+		<dropdown width="100%" id="palettes-list" text="Palettes" />
+		<stack id="palettes-stack" width="156px" height="100%" horizontalAlign="center" verticalAlign="center" />
+	</vbox>
 </vbox>
 ')
 class Color extends VBox {
@@ -38,21 +38,6 @@ class Color extends VBox {
 		// Grab default colors
 		final defaultBodyColor = viewport.keyson?.units[viewport.focusedUnit].defaults?.keyColor;
 		final defaultLegendColor = viewport.keyson?.units[viewport.focusedUnit].defaults?.legendColor;
-
-		// Set the properties of the preview keycap
-		preview.legendColor = Std.parseInt(defaultLegendColor);
-		preview.bodyColor = Std.parseInt(defaultBodyColor);
-		preview.tooltip = 'Click to apply default colors';
-		if (viewport != null) {
-			preview.onClick = e -> {
-				// TODO: work only on LMB
-				if (e.shiftKey) {
-					viewport.colorSelectedKeyLegends(Std.parseInt(viewport.keyson?.units[viewport.focusedUnit].defaults?.legendColor));
-				} else {
-					viewport.colorSelectedKeys(Std.parseInt(viewport.keyson?.units[viewport.focusedUnit].defaults?.keyColor));
-				}
-			};
-		}
 
 		return viewport;
 	}

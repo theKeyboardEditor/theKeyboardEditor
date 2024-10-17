@@ -9,6 +9,7 @@
 	<themes>
 		<keyboard-editor-theme parent="dark">
 			<style resource="themes/styles.css" />
+			<var name="solid-background-color" value="#1d2021" />
 			<var name="normal-text-color" value="#fcfcfc" />
 			<var name="hover-text-color" value="#fcfcfc" />
 			<var name="down-text-color" value="#fcfcfc" />
