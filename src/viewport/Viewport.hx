@@ -118,7 +118,7 @@ class Viewport extends Scene {
 		this.add(keyboard);
 
 		var grid = new Grid({
-			fg: ceramic.Color.ORANGE,
+			fg: 0xff1d2021,
 			primaryStepX: unit * viewScale,
 			primaryStepY: unit * viewScale,
 			subStepX: placingStep * viewScale,
