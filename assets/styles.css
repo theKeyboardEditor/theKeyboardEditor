@@ -25,9 +25,12 @@
 }
 
 /* Picker */
-.menu-item-picker {
-	background-color: #1d2021;
+#picker {
+	background-color: $solid-background-color;
 	border: none;
+}
+#picker:hover {
+	background-color: $hover-background-color;
 }
 .item-picker-container {
 	border: none;

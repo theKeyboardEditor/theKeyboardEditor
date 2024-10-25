@@ -22,7 +22,7 @@ class Project extends Entity {
 	}
 
 	function ready() {
-		Toolkit.init({text_offset: -2});
+		Toolkit.init({text_offset: -1});
 		// Set MainScene as the current scene (see MainScene.hx)
 		app.scenes.main = new Preloader(() -> new MainScene());
 		Toolkit.theme = 'keyboard-editor-theme';

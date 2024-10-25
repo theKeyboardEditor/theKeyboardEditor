@@ -20,6 +20,10 @@ class Index extends VBox {
 	public function switchMode(mode: Mode) {
 		var modes = cast(sidebarsStack.getComponentAt(sidebarsStack.selectedIndex), ui.SidebarCollection).modeSelector.modes;
 		modes.selectedButton = modes.findComponent(mode);
+		if (mode == Place) {
+			trace("boo");
+			(cast tabs.selectedPage : ui.ViewportContainer).display.clearSelection();
+		}
 	}
 
 	@:bind(tabs, UIEvent.CHANGE)

@@ -10,9 +10,9 @@ import haxe.ui.util.Variant;
 	<box styleName="sidebar-title">
 		<label text="Color" />
 	</box>
-	<vbox styleName="sidebar-main">
-		<dropdown width="100%" id="palettes-list" text="Palettes" />
-		<stack id="palettes-stack" width="156px" height="100%" horizontalAlign="center" verticalAlign="center" />
+	<vbox styleName="sidebar-main" style="spacing: 0;">
+		<dropdown width="100%" id="palettes-list" />
+		<stack id="palettes-stack" width="100%" height="100%" horizontalAlign="center" verticalAlign="center" />
 	</vbox>
 </vbox>
 ')
@@ -29,23 +29,24 @@ class Color extends VBox {
 	function set_viewport(viewport: Viewport) {
 		this.viewport = viewport;
 
+		palettesList.dataSource.clear();
 		// Insert all palettes from the current keyson in the dropdown
 		for (palette in viewport.keyson?.palettes) {
-			addPalette(palette);
+			addPalette(palette, false);
 		}
 		palettesList.dataSource.add("Import from JSON");
-
-		// Grab default colors
-		final defaultBodyColor = viewport.keyson?.units[viewport.focusedUnit].defaults?.keyColor;
-		final defaultLegendColor = viewport.keyson?.units[viewport.focusedUnit].defaults?.legendColor;
 
 		return viewport;
 	}
 
-	inline function addPalette(palette: keyson.Keyson.Palette) {
+	function addPalette(palette: keyson.Keyson.Palette, ?change: Bool = true) {
 		final ds = palettesList.dataSource;
-		ds.insert(ds.size - 1, palette.name);
+		final pos = ds.size - 1;
+		ds.insert(pos, palette.name);
 		palettesStack.addComponent(new PaletteColorView(palette, viewport));
+		if (change) {
+			palettesList.selectedItem = ds.get(pos);
+		}
 	}
 
 	@:bind(palettesList, UIEvent.CHANGE)

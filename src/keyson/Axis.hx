@@ -5,6 +5,6 @@ package keyson;
  * It will compile down to just X = 0, Y = 1
  */
 enum abstract Axis(Int) to Int {
-	var X;
-	var Y;
+	var X = 0;
+	var Y = 1;
 }

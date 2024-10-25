@@ -182,7 +182,7 @@ class Keyboard {
  */
 class Key {
 	public var id: Int;
-	public var position: Array<Float>;
+	public var position: Array<Float> = [];
 	public var shape: String;
 	@:optional public var stabilizer: String = "";
 	@:optional public var angle: Float = 0.0;
@@ -242,7 +242,7 @@ enum abstract ColorMatchingProfile(String) from String {
  */
 class KeyLegend {
 	public var legend: String = "";
-	@:optional public var legendSize: Float = 24.0;
+	@:optional public var legendSize: Null<Float> = 24.0;
 	@:optional public var color: String = "0xFF00000f";
 	@:optional public var position: Array<Float> = [5.0, 5.0];
 
@@ -253,7 +253,7 @@ class KeyLegend {
 // Various key position features/replacements and their respective properties:
 
 class LEDFeature {
-	public var diameter: Float; // diameter usually 3.0 or 5.0 mm
+	public var diameter: Null<Float>; // diameter usually 3.0 or 5.0 mm
 }
 
 class EncoderFeature {

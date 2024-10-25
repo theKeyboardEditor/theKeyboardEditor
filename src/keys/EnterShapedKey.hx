@@ -46,8 +46,7 @@ class EnterShapedKey extends Keycap {
 
 		// TODO  There is still some oddity to fix with BEA and XT_2U
 		if (this.border != null) {
-			if (this.selected != null)
-				this.selected = this.border.visible;
+			this.selected = this.border.visible;
 			this.border.destroy();
 		}
 		this.border = new Border();

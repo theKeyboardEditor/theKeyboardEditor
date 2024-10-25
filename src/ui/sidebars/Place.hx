@@ -10,7 +10,7 @@ import haxe.ui.events.UIEvent;
 	<box styleName="sidebar-title">
 		<label text="Place" />
 	</box>
-	<scrollview styleName="sidebar-main" contentWidth="100%" autoHideScrolls="true" onmousewheel="event.cancel();">
+	<scrollview styleName="sidebar-main" contentWidth="100%" autoHideScrolls="true">
 		<vbox width="100%" horizontalAlign="center" verticalAlign="center">
 			<button-bar id="keys" layout="grid" layoutColumns="2" horizontalAlign="center" verticalAlign="center"></button-bar>
 		</vbox>

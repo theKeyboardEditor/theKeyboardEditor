@@ -23,8 +23,7 @@ class RectangularKey extends Keycap {
 	override public function computeContent() {
 		// on recompute we clear old obsolete shapes
 		if (this.border != null) {
-			if (this.selected != null)
-				this.selected = this.border.visible;
+			this.selected = this.border.visible;
 			this.border.destroy();
 		}
 		this.border = new Border();

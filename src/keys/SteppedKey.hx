@@ -26,8 +26,7 @@ class SteppedKey extends Keycap {
 
 	override public function computeContent() {
 		if (this.border != null) {
-			if (this.selected != null)
-				this.selected = this.border.visible;
+			this.selected = this.border.visible;
 			this.border.destroy();
 		}
 		this.border = new Border();

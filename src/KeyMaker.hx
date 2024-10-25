@@ -20,8 +20,8 @@ class KeyMaker {
 		var heightNorth: Float = 0;
 		var widthSouth: Float = 0;
 		var heightSouth: Float = 0;
-		var offsetSouthX: Float = 0;
-		var offsetSouthY: Float = 0;
+		var offsetSouthX: Null<Float> = 0;
+		var offsetSouthY: Null<Float> = 0;
 
 		var stepWidth: Float = 0;
 		var stepHeight: Float = 0;
