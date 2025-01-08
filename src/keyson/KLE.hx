@@ -3,6 +3,21 @@ package keyson;
 using StringTools;
 using haxe.io.Bytes;
 
+typedef KeyType = {
+	x: Null<Float>,
+	f: Null<Int>,
+	w: Null<Float>,
+	h: Null<Float>,
+	y: Null<Float>,
+	rx: Null<Float>,
+	ry: Null<Float>,
+	w2: Null<Float>,
+	a: Null<Int>,
+	c: String,
+	t: String,
+	d: Bool
+}
+
 class KLE {
 	// @formatter:off
 	public static final legendSanitizers: Map<String, String> = [
@@ -65,7 +80,7 @@ class KLE {
 			// No clue why this works, but code will break without it
 			row[0];
 			x = 0;
-			for (column in row) {
+			for (column in (row:Array<KeyType>)) {
 				if (column.y != null) {
 					y = y + column.y;
 				}
