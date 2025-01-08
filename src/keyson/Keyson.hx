@@ -66,7 +66,7 @@ class Palette {
 	/**
 	 * Amount of colors
 	 */
-	@:optional public var size: Int = 1;
+	@:optional public var size: Null<Int> = 1;
 
 	/**
 	 * List of colors
@@ -116,7 +116,7 @@ class Keyboard {
 	@:optional public var position: Array<Float> = [0.0, 0.0];
 	@:optional public var angle: Array<Float> = [0, 0];
 	@:optional public var relativeRotationCenter: Array<Float> = [];
-	@:optional public var size: Int = 0;
+	@:optional public var size: Null<Int> = 0;
 	@:optional public var keys: Array<Key> = [];
 
 	public function new() {}
@@ -185,13 +185,13 @@ class Key {
 	public var position: Array<Float> = [];
 	public var shape: String;
 	@:optional public var stabilizer: String = "";
-	@:optional public var angle: Float = 0.0;
+	@:optional public var angle: Null<Float> = 0.0;
 	@:optional public var relativeRotationCenter: Array<Float> = [0, 0];
 	@:optional public var features: Array<String> = [];
 	@:optional public var homingFeature: HomingFeature = None;
 	@:optional public var color: String = "0xFFFFFFFF";
 	@:optional public var spacerSize: Array<Float>;
-	@:optional public var amountOfLegends: Int = 0;
+	@:optional public var amountOfLegends: Null<Int> = 0;
 	@:optional public var legends: Array<KeyLegend> = [];
 
 	public function new(id: Int, shape: String, position: Array<Float>, legend: String) {
