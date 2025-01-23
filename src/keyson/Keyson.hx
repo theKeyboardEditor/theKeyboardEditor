@@ -110,7 +110,7 @@ class Keyboard {
 	@:optional public var caseColor: String = "0xFFFCFCFC";
 	@:optional public var legendSizeUnits: String = "U/100";
 	@:optional public var keyboardFont: String = "default";
-	@:optional public var keyboardFontSize: Float = 24.0;
+	@:optional public var keyboardFontSize: Int = 24;
 	@:optional public var profile: Profile = OEM;
 	@:optional public var keySculpt: String = "R3";
 	@:optional public var position: Array<Float> = [0.0, 0.0];
@@ -242,7 +242,7 @@ enum abstract ColorMatchingProfile(String) from String {
  */
 class KeyLegend {
 	public var legend: String = "";
-	@:optional public var legendSize: Null<Float> = 24.0;
+	@:optional public var legendSize: Null<Int> = 24;
 	@:optional public var color: String = "0xFF00000f";
 	@:optional public var position: Array<Float> = [5.0, 5.0];
 

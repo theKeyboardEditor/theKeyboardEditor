@@ -19,7 +19,6 @@ typedef KeyType = {
 }
 
 class KLE {
-	// @formatter:off
 	public static final legendSanitizers: Map<String, String> = [
 		"<BR>" => "\n",
 		"<br>" => "\n",
@@ -49,36 +48,33 @@ class KLE {
 		"&darr;" => "↓",
 		"&larr;" => "←",
 		"&rarr;" => "→",
-		"&crarr;" => "↵"
+		"&crarr;" => "↵",
 	];
-	// @formatter:on
+
+	static final fontSizes: Array<Int> = [20, 11, 14, 20, 24, 26, 27, 28, 30, 32];
+
 	// Converts a json string from Keyboard Layout Editor to Keyson's object format
 	public static function toKeyson(name: String, string: String): Keyson {
 		var keyson = new keyson.Keyson();
 		keyson.name = name;
 		keyson.comment = 'Imported by Keyson.KLE';
 
-		var kle = haxe.Json.parse(string);
-		kle[0];
+		var kle: Array<Array<KeyType>> = haxe.Json.parse(string);
 
 		var w: Float = 1;
 		var x: Float = 0;
 		var y: Float = 0;
-		var posX: Float = 0;
-		var posY: Float = 0; // legend coordinates
+		var legendX: Float = 0;
+		var legendY: Float = 0;
 		var xNext: Float = 1;
-		var shape: String = "1U";
 		var bodyColor: String = "0xFFFAFAFA";
 		var legendColor: String = "0xFF000000";
-		var key: Keyson.Key;
-		var legendSize: Float = 20;
-		var fontSizes: Array<Float> = [20, 11, 14, 20, 24, 26, 27, 28, 30, 32];
+		var legendSize: Int = 20;
 
 		keyson.units[0].defaults.legendPosition = [6.0, 0.0];
 
 		for (row in kle) {
-			// No clue why this works, but code will break without it
-			row[0];
+			var shape = "1U";
 			x = 0;
 			for (column in (row:Array<KeyType>)) {
 				if (column.y != null) {
@@ -107,16 +103,16 @@ class KLE {
 					}
 
 					// ISO keys need an 0.25U offset to the left
-					if (shape == "ISO") {
-						key = keyson.units[0].createKey(shape, [x - 0.25, y], legend);
+					var key = if (shape == "ISO") {
+						keyson.units[0].createKey(shape, [x - 0.25, y], legend);
 					} else {
-						key = keyson.units[0].createKey(shape, [x, y], legend);
+						keyson.units[0].createKey(shape, [x, y], legend);
 					}
 
 					key.color = bodyColor;
 					key.legends[0].color = legendColor;
 					key.legends[0].legendSize = legendSize;
-					key.legends[0].position = [posX, posY];
+					key.legends[0].position = [legendX, legendY];
 
 					// Some presumed defaults
 					w = 1;
@@ -158,11 +154,11 @@ class KLE {
 						 * TODO: this should actually be the middle but we don't have centered text just yet
 						 */
 						if ((column.a & 1 << 0) == 1 << 0) {
-							posX = 18;
+							legendX = 18;
 						}
 
 						// bitmask 1 << 1 (0x02) seems to be for X offset to the middle
-						posY = if ((column.a & 1 << 1) == 1 << 1) legendSize * 0.8 else 0;
+						legendY = if ((column.a & 1 << 1) == 1 << 1) legendSize * 0.8 else 0;
 					}
 					x--;
 				}

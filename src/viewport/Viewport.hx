@@ -117,16 +117,16 @@ class Viewport extends Scene {
 		keyboard = generateVisualFromKeyson(keyson);
 		this.add(keyboard);
 
-		var grid = new Grid({
-			fg: 0xff1d2021,
-			primaryStepX: unit * viewScale,
-			primaryStepY: unit * viewScale,
-			subStepX: placingStep * viewScale,
-			subStepY: placingStep * viewScale
-		});
-		grid.depth = -5;
-		grid.size(width, height);
-		this.add(grid);
+		//var grid = new Grid({
+		//	fg: 0xff1d2021,
+		//	primaryStepX: unit * viewScale,
+		//	primaryStepY: unit * viewScale,
+		//	subStepX: placingStep * viewScale,
+		//	subStepY: placingStep * viewScale
+		//});
+		//grid.depth = -5;
+		//grid.size(width, height);
+		//this.add(grid);
 
 		// var gridFilter = new ceramic.Filter();
 		// gridFilter.explicitRender = true;

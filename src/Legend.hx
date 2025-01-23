@@ -8,8 +8,7 @@ import viewport.Pivot;
 
 class Legend extends Visual {
 	@content public var color: Int = 0xffFF0000; // gray default
-	//	public var legendFont: String;  // TODO custom fonts
-	@content public var fontSize: Float;
+	@content public var fontSize: Int;
 	@content public var content: String = '|Empty|';
 
 	public var border: ceramic.Border;
@@ -64,6 +63,7 @@ class Legend extends Visual {
 		legend.color = this.color;
 		legend.pointSize = this.fontSize;
 		legend.depth = 50;
+		legend.preRenderedSize = this.fontSize;
 		this.size(legend.width, legend.height);
 		this.add(legend);
 
