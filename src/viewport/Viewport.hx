@@ -23,7 +23,7 @@ class Viewport extends Scene {
 	 * Ceramic elements
 	 */
 	public var keyboard: Visual;
-	public var placer: Placer;
+	public var placer: viewport.visuals.Placer;
 	public var selectionBox: SelectionBox;
 
 	// Movement variables
@@ -55,6 +55,32 @@ class Viewport extends Scene {
 	public var viewScale: Float = 1.0;
 
 	public inline static final placingStep: Float = Std.int(100 / 4);
+
+	/**
+	 * Initializes the scene
+	 */
+	override public function create() {
+		activeMode.state = Place;
+		activeMode.set(Place, new PlaceMode(this));
+
+		keyboard = generateVisualFromKeyson(keyson);
+		this.add(keyboard);
+
+		placer = new viewport.visuals.Placer();
+		placer.piecesSize = unit * viewScale;
+		placer.size(unit * viewScale, unit * viewScale);
+		placer.anchor(0, 0);
+		placer.depth = 10;
+		placer.component('logic', new viewport.components.PlacerLogic(this));
+		this.add(placer);
+
+		selectionBox = new SelectionBox();
+		this.selectionBox.depth = 600;
+		this.selectionBox.visible = false;
+		this.add(selectionBox);
+
+		inputCreate();
+	}
 
 	/**
 	 * Dispatches keyboard and mouse inputs to the separate functions
@@ -114,49 +140,6 @@ class Viewport extends Scene {
 	}
 
 	/**
-	 * Initializes the scene
-	 */
-	override public function create() {
-		activeMode.state = Place;
-		keyboard = generateVisualFromKeyson(keyson);
-		this.add(keyboard);
-
-		//var grid = new Grid({
-		//	fg: 0xff1d2021,
-		//	primaryStepX: unit * viewScale,
-		//	primaryStepY: unit * viewScale,
-		//	subStepX: placingStep * viewScale,
-		//	subStepY: placingStep * viewScale
-		//});
-		//grid.depth = -5;
-		//grid.size(width, height);
-		//this.add(grid);
-
-		// var gridFilter = new ceramic.Filter();
-		// gridFilter.explicitRender = true;
-		// gridFilter.autoRender = false;
-		// gridFilter.size(grid.width, grid.height);
-		// gridFilter.content.add(grid);
-		// this.add(gridFilter);
-		// gridFilter.render();
-
-		placer = new Placer();
-		placer.piecesSize = unit * viewScale;
-		placer.size(unit * viewScale, unit * viewScale);
-		placer.anchor(0, 0);
-		placer.depth = 10;
-		placer.component('logic', new PlacerLogic(this));
-		this.add(placer);
-
-		selectionBox = new SelectionBox();
-		this.selectionBox.depth = 600;
-		this.selectionBox.visible = false;
-		this.add(selectionBox);
-
-		inputCreate();
-	}
-
-	/**
 	 * Runs every frame
 	 */
 	override public function update(delta: Float) {
@@ -186,9 +169,9 @@ class Viewport extends Scene {
 			for (key in keyboardUnit.keys) {
 				final keycap = KeyMaker.createKey(keyboardUnit, key, unit, gapX, gapY, Std.parseInt(keyboardUnit.defaults.keyColor));
 				keycap.pos(unit * key.position[Axis.X], unit * key.position[Axis.Y]);
-				keycap.component('logic', new KeyLogic(this));
+				keycap.component('logic', new viewport.components.KeyLogic(this));
 				for (legend in keycap.legends) {
-					legend.component('logic', new LegendLogic(this, keycap));
+					legend.component('logic', new viewport.components.LegendLogic(this, keycap));
 				}
 				workingSet.add(keycap);
 			}
@@ -293,17 +276,6 @@ class Viewport extends Scene {
 		worksurfaceDrag = this.selectionBox.visible = false;
 
 		switch (activeMode.state) {
-			case Place:
-				final shape = CopyBuffer.designatedKey ?? "1U";
-				keyboardUnit = keyson.units[focusedUnit];
-
-				// TODO calculate proper shape size and offset:
-				var x = placer.x / unit;
-				var y = placer.y / unit;
-				gapX = Std.int((keyboardUnit.keyStep[Axis.X] - keyboardUnit.capSize[Axis.X]) / keyboardUnit.keyStep[Axis.X] * unit * viewScale);
-				gapY = Std.int((keyboardUnit.keyStep[Axis.Y] - keyboardUnit.capSize[Axis.Y]) / keyboardUnit.keyStep[Axis.Y] * unit * viewScale);
-
-				queue.push(new actions.PlaceKey(this, keyboardUnit, shape, x, y));
 			case Edit | Unit | Color | Present:
 				if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 					clearSelection();

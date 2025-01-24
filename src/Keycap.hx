@@ -6,7 +6,7 @@ class Keycap extends ceramic.Visual {
 	@content public var legends: Array<Legend>;
 
 	public var border: ceramic.Border;
-	@content public var pivot: viewport.Pivot;
+	@content public var pivot: viewport.visuals.Pivot;
 	@content public var sourceKey: keyson.Keyson.Key;
 
 	public function select() {

@@ -4,7 +4,7 @@ import ceramic.Border;
 import ceramic.Color;
 import ceramic.Visual;
 import ceramic.Text;
-import viewport.Pivot;
+import viewport.visuals.Pivot;
 
 class Legend extends Visual {
 	@content public var color: Int = 0xffFF0000; // gray default
@@ -12,7 +12,7 @@ class Legend extends Visual {
 	@content public var content: String = '|Empty|';
 
 	public var border: ceramic.Border;
-	@content public var pivot: viewport.Pivot;
+	@content public var pivot: Pivot;
 
 	var selected: Bool = false;
 

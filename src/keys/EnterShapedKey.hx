@@ -2,7 +2,7 @@ package keys;
 
 import ceramic.Shape;
 import ceramic.Border;
-import viewport.Pivot;
+import viewport.visuals.Pivot;
 
 /**
  * Draws a enter shaped rectangle with nice rounded corners

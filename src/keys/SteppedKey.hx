@@ -2,7 +2,7 @@ package keys;
 
 import ceramic.Border;
 import ceramic.RoundedRect;
-import viewport.Pivot;
+import viewport.visuals.Pivot;
 
 class SteppedKey extends Keycap {
 	/**

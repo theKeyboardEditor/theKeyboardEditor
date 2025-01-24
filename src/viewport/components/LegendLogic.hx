@@ -1,81 +1,85 @@
-package viewport;
+package viewport.components;
 
 import ceramic.Entity;
 import ceramic.Component;
 import ceramic.TouchInfo;
 
-class KeyLogic extends Entity implements Component {
-	@entity var keycap: Keycap;
+class LegendLogic extends Entity implements Component {
+	@entity var legend: Legend;
 
+	public var keycap: Keycap;
 	public var viewport: viewport.Viewport;
 	// drag threshold in pixels
 	public var dragThreshold: Float = 2;
 
-	var keycapIsDragged = false;
-	// keycap position before the drag
-	var keycapPosStartX: Float = 0.0;
-	var keycapPosStartY: Float = 0.0;
+	var legendIsDragged = false;
+	// legend position before the drag
+	var legendPosStartX: Float = 0.0;
+	var legendPosStartY: Float = 0.0;
 
-	public function new(viewport: viewport.Viewport) {
+	public function new(viewport: viewport.Viewport, keycap: Keycap) {
 		super();
 		this.viewport = viewport;
+		this.keycap = keycap;
 	}
 
 	function bindAsComponent() {
 		final doubleClick = new ceramic.DoubleClick();
-		doubleClick.onDoubleClick(keycap, handleDoubleClick);
-		keycap.component('doubleClick', doubleClick);
+		doubleClick.onDoubleClick(legend, handleDoubleClick);
+		legend.component('doubleClick', doubleClick);
 
-		keycap.onPointerDown(keycap, keyMouseDown);
+		legend.onPointerDown(legend, legendMouseDown);
 	}
 
 	/**
 	 * This gets called only if clicked over a key on the worksurface!
 	 * because we create keys in actions we need this accesible (thus public) from there
 	 */
-	public function keyMouseDown(info: TouchInfo) {
+	public function legendMouseDown(info: TouchInfo) {
 		// Reset on each begin
-		keycapIsDragged = false;
+		legendIsDragged = false;
 		viewport.placer.visible = (viewport.activeMode.state == Place);
 
-		// Set where the keycap is before the drag
-		keycapPosStartX = keycap.x;
-		keycapPosStartY = keycap.y;
+		// Set where the legend is before the drag
+		legendPosStartX = legend.x;
+		legendPosStartY = legend.y;
 
 		// Set where the pointer is
 		viewport.pointerStartX = screen.pointerX;
 		viewport.pointerStartY = screen.pointerY;
 
 		// Move along as we pan the touch
-		screen.onPointerMove(this, keyMouseMove);
+		screen.onPointerMove(this, legendMouseMove);
 
 		// Finish the drag when the pointer is released
 		screen.oncePointerUp(this, (info) -> {
-			keyMouseUp(info, keycap);
+			legendMouseUp(info, legend);
 		});
 	}
 
 	/**
 	 * Called during key movement (mouse key down)
 	 */
-	function keyMouseMove(info: TouchInfo) {
+	function legendMouseMove(info: TouchInfo) {
 		if (viewport.dragThreshold != -1
 			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.dragThreshold
 				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.dragThreshold))
-			keycapIsDragged = true;
+			legendIsDragged = true;
 		switch (viewport.activeMode.state) {
-			case Edit | Unit | Color | Legend:
+			case Legend:
 				// react only on drag event
-				if (keycapIsDragged) {
+				if (legendIsDragged) {
 					// clicked on a selected keycap?
+					// TODO find out the right keycap!
 					if (viewport.selectedKeycaps.contains(keycap)) {
 						// only ever try drag if any selection exists
+						// TODO make this work for legends!
 						if (viewport.selectedKeycaps.length > 0) {
 							// note we reference the Array member [0] for move vector!
-							final xStep = Viewport.snap(keycapPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
+							final xStep = Viewport.snap(legendPosStartX + (screen.pointerX - viewport.pointerStartX) / viewport.viewScale,
 								Viewport.placingStep)
 								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x;
-							final yStep = Viewport.snap(keycapPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
+							final yStep = Viewport.snap(legendPosStartY + (screen.pointerY - viewport.pointerStartY) / viewport.viewScale,
 								Viewport.placingStep)
 								- viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y;
 							for (key in viewport.selectedKeycaps) {
@@ -84,7 +88,7 @@ class KeyLogic extends Entity implements Component {
 							}
 						}
 					} else {
-						viewport.selectionBox.visible = keycapIsDragged;
+						viewport.selectionBox.visible = legendIsDragged;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							viewport.clearSelection();
 						}
@@ -120,39 +124,37 @@ class KeyLogic extends Entity implements Component {
 	/**
 	 * Called after the drag (touch/press is released)
 	 */
-	function keyMouseUp(info: TouchInfo, keycap: Keycap) {
+	function legendMouseUp(info: TouchInfo, legend: Legend) {
 		switch (viewport.activeMode.state) {
-			case Place:
-				viewport.placer.visible = true;
-			case Edit | Unit | Color | Legend:
+			case Legend:
 				viewport.selectionBox.visible = false;
 				viewport.placer.size(viewport.unit * viewport.viewScale, viewport.unit * viewport.viewScale);
 				viewport.placerMismatchX = 0;
 				viewport.placerMismatchY = 0;
 				// SELECTING
 				//  - by click only when not dragging
-				if (!keycapIsDragged) {
+				if (!legendIsDragged) {
 					if (app.input.keyPressed(LCTRL) || app.input.keyPressed(RCTRL)) {
 						// ctrl for deselect
 						viewport.selectedKeycaps.remove(keycap);
-						keycap.deselect();
+						legend.deselect();
 					} else {
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							// CLEAR if no SHIFT key is pressed
 							viewport.clearSelection();
 						}
-						// put last selected keycap to position [0] in keycaps
+						// put last selected legend to position [0] in keycaps
 						viewport.selectedKeycaps.unshift(keycap);
-						keycap.select();
+						legend.select();
 					}
 				} else {
 					// DRAGGING
 					//  the selected (if any) keys and the dragg event happened on a selected key
 					if (viewport.selectedKeycaps.length > 0 && viewport.selectedKeycaps.contains(keycap)) {
 						var x = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].x
-							- keycapPosStartX) / viewport.unit * viewport.viewScale;
+							- legendPosStartX) / viewport.unit * viewport.viewScale;
 						var y = (viewport.selectedKeycaps[viewport.selectedKeycaps.indexOf(keycap)].y
-							- keycapPosStartY) / viewport.unit * viewport.viewScale;
+							- legendPosStartY) / viewport.unit * viewport.viewScale;
 						// only try to move if  x and y is not zero and we have any selected keys to move at all
 						// if (x != 0 || y != 0 && viewport.selectedKeycaps.length > 0) {
 						if (viewport.selectedKeycaps.length > 0) {
@@ -160,7 +162,7 @@ class KeyLogic extends Entity implements Component {
 								y / viewport.viewScale));
 						}
 					} else {
-						// DRAGGING outside a selected keycap results in a rectangle selection
+						// DRAGGING outside a selected legend results in a rectangle selection
 						viewport.selectionBox.visible = false;
 						if (!app.input.keyPressed(LSHIFT) && !app.input.keyPressed(RSHIFT)) {
 							viewport.clearSelection();
@@ -198,12 +200,10 @@ class KeyLogic extends Entity implements Component {
 		}
 
 		// The touch is already over, now cleanup and return from there
-		screen.offPointerMove(keyMouseMove);
+		screen.offPointerMove(legendMouseMove);
 	}
 	public function handleDoubleClick(): Void {
-		// TODO immediately switch ui to Legend-mode
-		// igonre if already in Legend-mode
-		// TODO initiate text entry filed for the keycap that received the click:
+		// TODO initiate text entry filed for the legend that received the click:
 		viewport.indexGui.switchMode(Legend);
 	}
 }

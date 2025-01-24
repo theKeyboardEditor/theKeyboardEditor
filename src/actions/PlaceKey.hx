@@ -35,9 +35,9 @@ class PlaceKey extends Action {
 			Std.parseInt(this.device.defaults.keyColor));
 		keycap.pos(this.viewport.unit * this.key.position[Axis.X], this.viewport.unit * this.key.position[Axis.Y]);
 
-		keycap.component('logic', new viewport.KeyLogic(viewport));
+		keycap.component('logic', new viewport.components.KeyLogic(viewport));
 		for (legend in keycap.legends) {
-			legend.component('logic', new viewport.LegendLogic(viewport, keycap));
+			legend.component('logic', new viewport.components.LegendLogic(viewport, keycap));
 		}
 
 		this.viewport.keyboard.add(keycap);

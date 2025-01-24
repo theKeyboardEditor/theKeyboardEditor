@@ -1,7 +1,8 @@
-package viewport;
+package viewport.components;
 
 import ceramic.Entity;
 import ceramic.Component;
+import viewport.visuals.Placer;
 import keyson.Axis;
 
 class PlacerLogic extends Entity implements Component {

@@ -1,4 +1,4 @@
-package viewport;
+package viewport.visuals;
 
 import ceramic.Arc;
 import ceramic.Quad;

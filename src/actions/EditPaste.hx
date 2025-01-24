@@ -31,7 +31,7 @@ class EditPaste extends Action {
 			final keycap: Keycap = KeyMaker.createKey(clonedKeys, key, viewport.unit, viewport.gapX, viewport.gapY,
 				Std.parseInt(viewport.keyboardUnit.defaults.keyColor));
 			keycap.pos(viewport.unit * key.position[Axis.X] + x, viewport.unit * key.position[Axis.Y] + y);
-			keycap.component('logic', new viewport.KeyLogic(viewport));
+			keycap.component('logic', new viewport.components.KeyLogic(viewport));
 			viewport.keyboard.add(keycap);
 		}
 		this.device.sortKeys();
