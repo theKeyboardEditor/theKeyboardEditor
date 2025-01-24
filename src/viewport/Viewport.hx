@@ -3,11 +3,12 @@ package viewport;
 import ceramic.Visual;
 import ceramic.Scene;
 import ceramic.TouchInfo;
+import ceramic.StateMachine;
 import keyson.Axis;
 import keyson.Keyson;
 
 class Viewport extends Scene {
-	public var activeMode: Mode = Place;
+	@component public var activeMode = new StateMachine<Mode>();
 
 	public var keyson: keyson.Keyson;
 	public final queue = new ActionQueue();
@@ -116,6 +117,7 @@ class Viewport extends Scene {
 	 * Initializes the scene
 	 */
 	override public function create() {
+		activeMode.state = Place;
 		keyboard = generateVisualFromKeyson(keyson);
 		this.add(keyboard);
 
@@ -253,7 +255,7 @@ class Viewport extends Scene {
 		}
 
 		// only during a selection drag: update selected keys (replace selection)
-		if (this.selectionBox.visible == true && worksurfaceDrag && activeMode != Place && activeMode != Present) {
+		if (this.selectionBox.visible == true && worksurfaceDrag && activeMode.state != Place && activeMode.state != Present) {
 			final boxX = this.selectionBox.x;
 			final boxY = this.selectionBox.y;
 			final boxWidth = this.selectionBox.width;
@@ -290,7 +292,7 @@ class Viewport extends Scene {
 	function viewportMouseUp(info: TouchInfo) {
 		worksurfaceDrag = this.selectionBox.visible = false;
 
-		switch (activeMode) {
+		switch (activeMode.state) {
 			case Place:
 				final shape = CopyBuffer.designatedKey ?? "1U";
 				keyboardUnit = keyson.units[focusedUnit];

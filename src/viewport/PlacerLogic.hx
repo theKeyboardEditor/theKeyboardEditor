@@ -22,7 +22,7 @@ class PlacerLogic extends Entity implements Component {
 	 * Runs every frame, used to position the placer
 	 */
 	function update(delta: Float) {
-		switch (viewport.activeMode) {
+		switch (viewport.activeMode.state) {
 			case Place:
 				final shape = if (CopyBuffer.designatedKey != null) CopyBuffer.designatedKey else "1U";
 				final unit = viewport.keyson.units[0];

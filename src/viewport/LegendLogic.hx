@@ -38,7 +38,7 @@ class LegendLogic extends Entity implements Component {
 	public function legendMouseDown(info: TouchInfo) {
 		// Reset on each begin
 		legendIsDragged = false;
-		viewport.placer.visible = (viewport.activeMode == Place);
+		viewport.placer.visible = (viewport.activeMode.state == Place);
 
 		// Set where the legend is before the drag
 		legendPosStartX = legend.x;
@@ -65,7 +65,7 @@ class LegendLogic extends Entity implements Component {
 			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.dragThreshold
 				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.dragThreshold))
 			legendIsDragged = true;
-		switch (viewport.activeMode) {
+		switch (viewport.activeMode.state) {
 			case Legend:
 				// react only on drag event
 				if (legendIsDragged) {
@@ -125,7 +125,7 @@ class LegendLogic extends Entity implements Component {
 	 * Called after the drag (touch/press is released)
 	 */
 	function legendMouseUp(info: TouchInfo, legend: Legend) {
-		switch (viewport.activeMode) {
+		switch (viewport.activeMode.state) {
 			case Legend:
 				viewport.selectionBox.visible = false;
 				viewport.placer.size(viewport.unit * viewport.viewScale, viewport.unit * viewport.viewScale);

@@ -36,7 +36,7 @@ class KeyLogic extends Entity implements Component {
 	public function keyMouseDown(info: TouchInfo) {
 		// Reset on each begin
 		keycapIsDragged = false;
-		viewport.placer.visible = (viewport.activeMode == Place);
+		viewport.placer.visible = (viewport.activeMode.state == Place);
 
 		// Set where the keycap is before the drag
 		keycapPosStartX = keycap.x;
@@ -63,7 +63,7 @@ class KeyLogic extends Entity implements Component {
 			&& (Math.abs(screen.pointerX - viewport.pointerStartX) > viewport.dragThreshold
 				|| Math.abs(screen.pointerY - viewport.pointerStartY) > viewport.dragThreshold))
 			keycapIsDragged = true;
-		switch (viewport.activeMode) {
+		switch (viewport.activeMode.state) {
 			case Edit | Unit | Color | Legend:
 				// react only on drag event
 				if (keycapIsDragged) {
@@ -121,7 +121,7 @@ class KeyLogic extends Entity implements Component {
 	 * Called after the drag (touch/press is released)
 	 */
 	function keyMouseUp(info: TouchInfo, keycap: Keycap) {
-		switch (viewport.activeMode) {
+		switch (viewport.activeMode.state) {
 			case Place:
 				viewport.placer.visible = true;
 			case Edit | Unit | Color | Legend:

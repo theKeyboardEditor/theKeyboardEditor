@@ -25,6 +25,6 @@ class SidebarCollection extends HBox {
 	@:bind(modeSelector.modes, UIEvent.CHANGE)
 	function onModeChange(_) {
 		sidebars.selectedIndex = modeSelector.modes.selectedIndex;
-		viewport.activeMode = modeSelector.modes.selectedButton.id;
+		viewport.activeMode.state = modeSelector.modes.selectedButton.id;
 	}
 }

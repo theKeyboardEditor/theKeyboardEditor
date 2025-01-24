@@ -43,7 +43,6 @@ class MainScene extends Scene {
 		this.store = new ceramic.PersistentData("keyboard");
 
 		this.gui = new ui.Index();
-		this.gui.mainScene = this;
 		Screen.instance.addComponent(gui);
 
 		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
