@@ -20,9 +20,11 @@ import haxe.ui.events.UIEvent;
  * A collection of different sidebars that we can switch between
  */
 class SidebarCollection extends HBox {
+	public var viewport: viewport.Viewport;
+
 	@:bind(modeSelector.modes, UIEvent.CHANGE)
 	function onModeChange(_) {
 		sidebars.selectedIndex = modeSelector.modes.selectedIndex;
-		Index.activeMode = modeSelector.modes.selectedButton.id;
+		viewport.activeMode = modeSelector.modes.selectedButton.id;
 	}
 }

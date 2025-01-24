@@ -13,15 +13,12 @@ import haxe.ui.events.UIEvent;
 </vbox>
 ')
 class Index extends VBox {
-	public static var activeMode: Mode = Place;
-
 	public var mainScene: MainScene;
 
 	public function switchMode(mode: Mode) {
 		var modes = cast(sidebarsStack.getComponentAt(sidebarsStack.selectedIndex), ui.SidebarCollection).modeSelector.modes;
 		modes.selectedButton = modes.findComponent(mode);
 		if (mode == Place) {
-			trace("boo");
 			(cast tabs.selectedPage : ui.ViewportContainer).display.clearSelection();
 		}
 	}

@@ -7,6 +7,8 @@ import keyson.Axis;
 import keyson.Keyson;
 
 class Viewport extends Scene {
+	public var activeMode: Mode = Place;
+
 	public var keyson: keyson.Keyson;
 	public final queue = new ActionQueue();
 	public var indexGui: Null<ui.Index>;
@@ -251,7 +253,7 @@ class Viewport extends Scene {
 		}
 
 		// only during a selection drag: update selected keys (replace selection)
-		if (this.selectionBox.visible == true && worksurfaceDrag && ui.Index.activeMode != Place && ui.Index.activeMode != Present) {
+		if (this.selectionBox.visible == true && worksurfaceDrag && activeMode != Place && activeMode != Present) {
 			final boxX = this.selectionBox.x;
 			final boxY = this.selectionBox.y;
 			final boxWidth = this.selectionBox.width;
@@ -288,7 +290,7 @@ class Viewport extends Scene {
 	function viewportMouseUp(info: TouchInfo) {
 		worksurfaceDrag = this.selectionBox.visible = false;
 
-		switch (ui.Index.activeMode) {
+		switch (activeMode) {
 			case Place:
 				final shape = CopyBuffer.designatedKey ?? "1U";
 				keyboardUnit = keyson.units[focusedUnit];

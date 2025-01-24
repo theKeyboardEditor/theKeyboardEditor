@@ -124,6 +124,7 @@ class MainScene extends Scene {
 		gui.tabs.selectedPage = container;
 
 		var sidebars = new ui.SidebarCollection();
+		sidebars.viewport = viewport;
 		sidebars.colorSidebar.viewport = viewport;
 		sidebars.editSidebar.viewport = viewport;
 		sidebars.modeSelector.mainScene = this;
