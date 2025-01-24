@@ -72,6 +72,7 @@
 	width: 100%;
 	height: 32px;
 	background-color: $accent-color-darker; 
+	border: none;
 	border-bottom: 2px solid $accent-color;
 }
 .sidebar-title label {
