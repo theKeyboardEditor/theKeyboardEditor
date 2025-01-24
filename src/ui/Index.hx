@@ -9,10 +9,15 @@ import haxe.ui.events.UIEvent;
 		<stack width="224px" height="100%" id="sidebars-stack" selectedIndex="0" />
 		<tabview id="tabs" closable="true" />
 	</hbox>
-	<status />
+	<status id="status" />
 </vbox>
 ')
 class Index extends VBox {
+	public function new() {
+		super();
+		StatusBar.element = status;
+	}
+
 	public function switchMode(mode: Mode) {
 		var modes = cast(sidebarsStack.getComponentAt(sidebarsStack.selectedIndex), ui.SidebarCollection).modeSelector.modes;
 		modes.selectedButton = modes.findComponent(mode);
