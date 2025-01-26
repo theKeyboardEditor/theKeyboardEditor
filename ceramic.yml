@@ -1,8 +1,8 @@
 app:
-  package: theKeyboardEditor.editor
-  name: theKeyboardEditor
-  displayName: theKeyboardEditor
-  author: theKeyboardEditor Contributors
+  package: TheKeyboardEditor.editor
+  name: TheKeyboardEditor
+  displayName: TheKeyboardEditor
+  author: TheKeyboardEditor Contributors
   version: "1.0"
 
   plugins:

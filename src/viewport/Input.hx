@@ -13,6 +13,7 @@ enum abstract ViewportInput(Int) {
 	final UNDO;
 	final REDO;
 	final DELETE_SELECTED;
+	final UNSELECT_SELECTED;
 	final COPY;
 	final CUT;
 	final PASTE;
@@ -36,6 +37,7 @@ class Input extends InputMap<ViewportInput> {
 
 		this.bindScanCode(DELETE_SELECTED, BACKSPACE);
 		this.bindScanCode(DELETE_SELECTED, DELETE);
+		this.bindScanCode(UNSELECT_SELECTED, ESCAPE);
 
 		this.bindScanCode(HOME, HOME);
 

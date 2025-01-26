@@ -27,7 +27,7 @@ class Viewport extends Scene {
 	public var selectionBox: SelectionBox;
 
 	// Movement variables
-	inline static final keyboardSpeed: Int = 35;
+	inline static final keyboardSpeed: Int = 35 * 60;
 
 	public var pointerStartX: Float = 0.0;
 	public var pointerStartY: Float = 0.0;
@@ -98,29 +98,29 @@ class Viewport extends Scene {
 		}
 
 		if (inputMap.pressed(PAN_UP)) {
-			this.y += keyboardSpeed;
+			this.y += keyboardSpeed * delta;
 		}
 
 		if (inputMap.pressed(PAN_DOWN)) {
-			this.y -= keyboardSpeed;
+			this.y -= keyboardSpeed * delta;
 		}
 
 		if (inputMap.pressed(PAN_LEFT)) {
-			this.x += keyboardSpeed;
+			this.x += keyboardSpeed * delta;
 		}
 
 		if (inputMap.pressed(PAN_RIGHT)) {
-			this.x -= keyboardSpeed;
+			this.x -= keyboardSpeed * delta;
 		}
 
 		if (inputMap.pressed(ZOOM_IN)) {
-			this.scaleX = Math.min(2.0, this.scaleX + keyboardSpeed / 1000);
+			this.scaleX = Math.min(2.0, this.scaleX + (keyboardSpeed * delta) / 1000);
 			this.scaleY = this.scaleX;
 			viewScale = this.scaleX;
 		}
 
 		if (inputMap.pressed(ZOOM_OUT)) {
-			this.scaleX = Math.max(0.25, this.scaleX - keyboardSpeed / 1000);
+			this.scaleX = Math.max(0.25, this.scaleX - (keyboardSpeed * delta) / 1000);
 			this.scaleY = this.scaleX;
 			viewScale = this.scaleX;
 		}
@@ -132,6 +132,10 @@ class Viewport extends Scene {
 				queue.push(new actions.DeleteKeys(this, keyboardUnit, selectedKeycaps));
 				clearSelection();
 			}
+		}
+
+		if (inputMap.pressed(UNSELECT_SELECTED)) {
+			clearSelection();
 		}
 
 		if (inputMap.pressed(HOME)) {
