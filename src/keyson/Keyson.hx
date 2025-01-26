@@ -1,8 +1,8 @@
 package keyson;
 
 /**
- * Conversion from a theKeyboardEditor keyboard design object into JSON string and back
- * https://github.com/theKeyboardEditor/keyson
+ * Conversion from a TheKeyboardEditor keyboard design object into JSON string and back
+ * https://github.com/TheKeyboardEditor/keyson
  */
 class Keyson {
 	// the version string for later compatibility tracking:
